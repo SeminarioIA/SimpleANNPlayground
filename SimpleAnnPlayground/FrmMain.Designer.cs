@@ -39,8 +39,30 @@
             this.BtnOutputNeurone = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.MnuFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuFileSave = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuEdit = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuEditUndo = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuEditRedo = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuEditDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuEditCopy = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuEditCut = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuEditPaste = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuEditOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -56,7 +78,7 @@
             this.BtnInputNeurone,
             this.BtnInternalNeurone,
             this.BtnOutputNeurone});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(777, 56);
             this.toolStrip1.TabIndex = 0;
@@ -134,12 +156,160 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.White;
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 56);
+            this.pictureBox1.Location = new System.Drawing.Point(0, 80);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(777, 395);
+            this.pictureBox1.Size = new System.Drawing.Size(777, 371);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuFile,
+            this.MnuEdit,
+            this.MnuHelp});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(777, 24);
+            this.menuStrip1.TabIndex = 3;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // MnuFile
+            // 
+            this.MnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuFileNew,
+            this.MnuFileOpen,
+            this.toolStripMenuItem1,
+            this.MnuFileSave,
+            this.MnuFileSaveAs,
+            this.toolStripMenuItem2,
+            this.MnuFileExit});
+            this.MnuFile.Name = "MnuFile";
+            this.MnuFile.Size = new System.Drawing.Size(37, 20);
+            this.MnuFile.Text = "File";
+            // 
+            // MnuFileNew
+            // 
+            this.MnuFileNew.Name = "MnuFileNew";
+            this.MnuFileNew.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileNew.Text = "New";
+            // 
+            // MnuFileOpen
+            // 
+            this.MnuFileOpen.Name = "MnuFileOpen";
+            this.MnuFileOpen.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileOpen.Text = "Open";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MnuFileSave
+            // 
+            this.MnuFileSave.Name = "MnuFileSave";
+            this.MnuFileSave.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileSave.Text = "Save";
+            // 
+            // MnuFileSaveAs
+            // 
+            this.MnuFileSaveAs.Name = "MnuFileSaveAs";
+            this.MnuFileSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileSaveAs.Text = "Save As";
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MnuFileExit
+            // 
+            this.MnuFileExit.Name = "MnuFileExit";
+            this.MnuFileExit.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileExit.Text = "Exit";
+            // 
+            // MnuEdit
+            // 
+            this.MnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuEditUndo,
+            this.MnuEditRedo,
+            this.toolStripMenuItem3,
+            this.MnuEditDelete,
+            this.MnuEditCopy,
+            this.MnuEditCut,
+            this.MnuEditPaste,
+            this.toolStripMenuItem4,
+            this.MnuEditOptions});
+            this.MnuEdit.Name = "MnuEdit";
+            this.MnuEdit.Size = new System.Drawing.Size(39, 20);
+            this.MnuEdit.Text = "Edit";
+            // 
+            // MnuEditUndo
+            // 
+            this.MnuEditUndo.Name = "MnuEditUndo";
+            this.MnuEditUndo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditUndo.Text = "Undo";
+            // 
+            // MnuEditRedo
+            // 
+            this.MnuEditRedo.Name = "MnuEditRedo";
+            this.MnuEditRedo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditRedo.Text = "Redo";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MnuEditDelete
+            // 
+            this.MnuEditDelete.Name = "MnuEditDelete";
+            this.MnuEditDelete.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditDelete.Text = "Delete";
+            // 
+            // MnuEditCopy
+            // 
+            this.MnuEditCopy.Name = "MnuEditCopy";
+            this.MnuEditCopy.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCopy.Text = "Copy";
+            // 
+            // MnuEditCut
+            // 
+            this.MnuEditCut.Name = "MnuEditCut";
+            this.MnuEditCut.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCut.Text = "Cut";
+            // 
+            // MnuEditPaste
+            // 
+            this.MnuEditPaste.Name = "MnuEditPaste";
+            this.MnuEditPaste.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditPaste.Text = "Paste";
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MnuEditOptions
+            // 
+            this.MnuEditOptions.Name = "MnuEditOptions";
+            this.MnuEditOptions.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditOptions.Text = "Options";
+            // 
+            // MnuHelp
+            // 
+            this.MnuHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuHelpAbout});
+            this.MnuHelp.Name = "MnuHelp";
+            this.MnuHelp.Size = new System.Drawing.Size(44, 20);
+            this.MnuHelp.Text = "Help";
+            // 
+            // MnuHelpAbout
+            // 
+            this.MnuHelpAbout.Name = "MnuHelpAbout";
+            this.MnuHelpAbout.Size = new System.Drawing.Size(107, 22);
+            this.MnuHelpAbout.Text = "About";
             // 
             // FrmMain
             // 
@@ -149,7 +319,9 @@
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrmMain";
             this.Text = "Red Neuronal Artificial Interactiva";
@@ -157,6 +329,8 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -174,5 +348,26 @@
         private ToolStripButton BtnOutputNeurone;
         private StatusStrip statusStrip1;
         private PictureBox pictureBox1;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem MnuFile;
+        private ToolStripMenuItem MnuFileNew;
+        private ToolStripMenuItem MnuFileOpen;
+        private ToolStripSeparator toolStripMenuItem1;
+        private ToolStripMenuItem MnuFileSave;
+        private ToolStripMenuItem MnuFileSaveAs;
+        private ToolStripSeparator toolStripMenuItem2;
+        private ToolStripMenuItem MnuFileExit;
+        private ToolStripMenuItem MnuEdit;
+        private ToolStripMenuItem MnuEditUndo;
+        private ToolStripMenuItem MnuEditRedo;
+        private ToolStripSeparator toolStripMenuItem3;
+        private ToolStripMenuItem MnuEditDelete;
+        private ToolStripMenuItem MnuEditCopy;
+        private ToolStripMenuItem MnuEditCut;
+        private ToolStripMenuItem MnuEditPaste;
+        private ToolStripSeparator toolStripMenuItem4;
+        private ToolStripMenuItem MnuEditOptions;
+        private ToolStripMenuItem MnuHelp;
+        private ToolStripMenuItem MnuHelpAbout;
     }
 }

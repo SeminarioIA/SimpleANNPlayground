@@ -35,7 +35,7 @@ namespace SimpleAnnPlayground
         {
             foreach (Control control in GetSelfAndChildrenRecursive(form))
             {
-                // If control is a toolStrip the buttons are items.
+                // If control is a toolStrip the child controls are items.
                 if (control is ToolStrip toolStrip)
                 {
                     foreach (ToolStripItem item in toolStrip.Items)
@@ -43,6 +43,18 @@ namespace SimpleAnnPlayground
                         if (words.ContainsKey(item.Name))
                         {
                             item.Text = words[item.Name][(int)language];
+                        }
+
+                        // If the toolStrip contains child elements.
+                        if (item is ToolStripDropDownItem downItems)
+                        {
+                            foreach (ToolStripItem downItem in downItems.DropDownItems)
+                            {
+                                if (words.ContainsKey(downItem.Name))
+                                {
+                                    downItem.Text = words[downItem.Name][(int)language];
+                                }
+                            }
                         }
                     }
                 }

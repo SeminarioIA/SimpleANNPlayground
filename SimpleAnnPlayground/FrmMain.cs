@@ -20,8 +20,32 @@ namespace SimpleAnnPlayground
             // Spanish language text.
             { "Spanish", new () { "Spanish", "Español" } },
 
-            // Controls text.
+            // Window text.
             { "FrmMain", new () { "Interactive Artificial Neural Network", "Red Neuronal Artificial Interactiva" } },
+
+            // File menus texts.
+            { "MnuFile", new () { "&File", "&Archivo" } },
+            { "MnuFileNew", new () { "&New", "&Nuevo" } },
+            { "MnuFileOpen", new () { "&Open", "&Abrir" } },
+            { "MnuFileSave", new () { "&Save", "&Guardar" } },
+            { "MnuFileSaveAs", new () { "Save &As", "Guardar &como" } },
+            { "MnuFileExit", new () { "&Exit", "&Salir" } },
+
+            // Edit menus texts.
+            { "MnuEdit", new () { "&Edit", "&Edición" } },
+            { "MnuEditUndo", new () { "&Undo", "&Deshacer" } },
+            { "MnuEditRedo", new () { "&Redo", "&Rehacer" } },
+            { "MnuEditDelete", new () { "&Delete", "&Eliminar" } },
+            { "MnuEditCopy", new () { "&Copy", "&Copiar" } },
+            { "MnuEditCut", new () { "Cu&t", "Cor&tar" } },
+            { "MnuEditPaste", new () { "&Paste", "&Pegar" } },
+            { "MnuEditOptions", new () { "&Options", "&Opciones" } },
+
+            // Help menus texts.
+            { "MnuHelp", new () { "&Help", "Ay&uda" } },
+            { "MnuHelpAbout", new () { "&About", "&Acerca de" } },
+
+            // Buttons texts.
             { "BtnNew", new () { "New", "Nuevo" } },
             { "BtnOpen", new () { "Open", "Abrir" } },
             { "BtnSave", new () { "Save", "Guardar" } },
