@@ -41,6 +41,10 @@ namespace SimpleAnnPlayground
             { "MnuEditPaste", new () { "&Paste", "&Pegar" } },
             { "MnuEditOptions", new () { "&Options", "&Opciones" } },
 
+            // Tools menus texts.
+            { "MnuTools", new () { "&Tools", "&Herramientas" } },
+            { "MnuToolsLanguage", new () { "&Language", "&Idioma" } },
+
             // Help menus texts.
             { "MnuHelp", new () { "&Help", "Ay&uda" } },
             { "MnuHelpAbout", new () { "&About", "&Acerca de" } },
@@ -64,10 +68,54 @@ namespace SimpleAnnPlayground
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
-            // Changing the form language
-#pragma warning disable IDE0022 // Use expression body for methods
-            Languages.ChangeFormLanguage(this, FormWords, Languages.Language.Spanish);
-#pragma warning restore IDE0022 // Use expression body for methods
+            // Getting application language from user settings.
+            Languages.Language formLanguage = Enum.TryParse(typeof(Languages.Language), Properties.Settings.Default.DefaultLanguage, out object? objLanguage) && objLanguage is not null
+                ? (Languages.Language)objLanguage
+                : Languages.Language.English;
+
+            // Filling language menu
+            foreach (Languages.Language language in Enum.GetValues(typeof(Languages.Language)))
+            {
+                if (MnuToolsLanguage.DropDownItems.Add(language.ToString()) is ToolStripMenuItem mnuLang)
+                {
+                    // Set language item name
+                    mnuLang.Name = language.ToString();
+
+                    // Add item Click event
+                    mnuLang.Click += MnuLang_Click;
+
+                    // Store the language represented by the item in the object tag.
+                    mnuLang.Tag = language;
+
+                    // Check the item to let know the user which language is selected.
+                    if (language == formLanguage) mnuLang.Checked = true;
+                }
+            }
+
+            // Applying form language.
+            Languages.ChangeFormLanguage(this, FormWords, formLanguage);
+        }
+
+        private void MnuLang_Click(object? sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem selectetItem)
+            {
+                // Get the new selected language.
+                Languages.Language language = (Languages.Language)selectetItem.Tag;
+
+                // Apply language to the form.
+                Languages.ChangeFormLanguage(this, FormWords, language);
+
+                // Uncheck all the language items and check only the selected one.
+                foreach (ToolStripMenuItem item in MnuToolsLanguage.DropDownItems)
+                {
+                    item.Checked = item == selectetItem;
+                }
+
+                // Save language selection in the application settings.
+                Properties.Settings.Default.DefaultLanguage = language.ToString();
+                Properties.Settings.Default.Save();
+            }
         }
     }
 }

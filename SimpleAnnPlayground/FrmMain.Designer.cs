@@ -60,6 +60,8 @@
             this.MnuEditOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuTools = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuToolsLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -168,6 +170,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MnuFile,
             this.MnuEdit,
+            this.MnuTools,
             this.MnuHelp});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -308,8 +311,22 @@
             // MnuHelpAbout
             // 
             this.MnuHelpAbout.Name = "MnuHelpAbout";
-            this.MnuHelpAbout.Size = new System.Drawing.Size(107, 22);
+            this.MnuHelpAbout.Size = new System.Drawing.Size(180, 22);
             this.MnuHelpAbout.Text = "About";
+            // 
+            // MnuTools
+            // 
+            this.MnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuToolsLanguage});
+            this.MnuTools.Name = "MnuTools";
+            this.MnuTools.Size = new System.Drawing.Size(46, 20);
+            this.MnuTools.Text = "Tools";
+            // 
+            // MnuToolsLanguage
+            // 
+            this.MnuToolsLanguage.Name = "MnuToolsLanguage";
+            this.MnuToolsLanguage.Size = new System.Drawing.Size(180, 22);
+            this.MnuToolsLanguage.Text = "Language";
             // 
             // FrmMain
             // 
@@ -369,5 +386,7 @@
         private ToolStripMenuItem MnuEditOptions;
         private ToolStripMenuItem MnuHelp;
         private ToolStripMenuItem MnuHelpAbout;
+        private ToolStripMenuItem MnuTools;
+        private ToolStripMenuItem MnuToolsLanguage;
     }
 }
