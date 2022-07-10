@@ -46,16 +46,7 @@ namespace SimpleAnnPlayground
                         }
 
                         // If the toolStrip contains child elements.
-                        if (item is ToolStripDropDownItem downItems)
-                        {
-                            foreach (ToolStripItem downItem in downItems.DropDownItems)
-                            {
-                                if (words.ContainsKey(downItem.Name))
-                                {
-                                    downItem.Text = words[downItem.Name][(int)language];
-                                }
-                            }
-                        }
+                        SetMenuLanguage(item, words, language);
                     }
                 }
                 else
@@ -83,6 +74,28 @@ namespace SimpleAnnPlayground
                 foreach (Control child in GetSelfAndChildrenRecursive(container))
                 {
                     yield return child;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Sets the text language for a menu item recursively.
+        /// </summary>
+        /// <param name="item">The item to change the language.</param>
+        /// <param name="words">The dictionary containing the words.</param>
+        /// <param name="language">The selected language.</param>
+        private static void SetMenuLanguage(ToolStripItem item, Dictionary<string, List<string>> words, Language language)
+        {
+            // If the toolStrip contains child elements.
+            if (item is ToolStripDropDownItem downItems)
+            {
+                foreach (ToolStripItem downItem in downItems.DropDownItems)
+                {
+                    if (words.ContainsKey(downItem.Name))
+                    {
+                        downItem.Text = words[downItem.Name][(int)language];
+                        SetMenuLanguage(downItem, words, language);
+                    }
                 }
             }
         }
