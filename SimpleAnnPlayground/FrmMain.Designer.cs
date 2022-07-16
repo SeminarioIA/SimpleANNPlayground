@@ -120,7 +120,8 @@
             // 
             // BtnInputNeurone
             // 
-            this.BtnInputNeurone.Image = ((System.Drawing.Image)(resources.GetObject("BtnInputNeurone.Image")));
+            //this.BtnInputNeurone.Image = ((System.Drawing.Image)(resources.GetObject("BtnInputNeurone.Image")));
+            this.BtnInputNeurone.Image = global::SimpleAnnPlayground.Properties.Resources.entradaIcono_32;
             this.BtnInputNeurone.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnInputNeurone.Name = "BtnInputNeurone";
             this.BtnInputNeurone.Size = new System.Drawing.Size(41, 53);
@@ -129,7 +130,8 @@
             // 
             // BtnInternalNeurone
             // 
-            this.BtnInternalNeurone.Image = ((System.Drawing.Image)(resources.GetObject("BtnInternalNeurone.Image")));
+            //this.BtnInternalNeurone.Image = ((System.Drawing.Image)(resources.GetObject("BtnInternalNeurone.Image")));
+            this.BtnInternalNeurone.Image = global::SimpleAnnPlayground.Properties.Resources.internaIcono_32;
             this.BtnInternalNeurone.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnInternalNeurone.Name = "BtnInternalNeurone";
             this.BtnInternalNeurone.Size = new System.Drawing.Size(55, 53);
@@ -138,7 +140,8 @@
             // 
             // BtnOutputNeurone
             // 
-            this.BtnOutputNeurone.Image = ((System.Drawing.Image)(resources.GetObject("BtnOutputNeurone.Image")));
+            //this.BtnOutputNeurone.Image = ((System.Drawing.Image)(resources.GetObject("BtnOutputNeurone.Image")));
+            this.BtnOutputNeurone.Image = global::SimpleAnnPlayground.Properties.Resources.salidaIcono_32;
             this.BtnOutputNeurone.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnOutputNeurone.Name = "BtnOutputNeurone";
             this.BtnOutputNeurone.Size = new System.Drawing.Size(52, 53);

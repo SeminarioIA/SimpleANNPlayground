@@ -89,5 +89,26 @@ namespace SimpleAnnPlayground.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+
+        internal static System.Drawing.Bitmap entradaIcono_32 {
+            get {
+                object obj = ResourceManager.GetObject("entradaIcono_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        internal static System.Drawing.Bitmap internaIcono_32 {
+            get {
+                object obj = ResourceManager.GetObject("internaIcono_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+
+        internal static System.Drawing.Bitmap salidaIcono_32 {
+            get {
+                object obj = ResourceManager.GetObject("salidaIcono_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

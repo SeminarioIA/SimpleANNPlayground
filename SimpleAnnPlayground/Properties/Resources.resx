@@ -127,4 +127,13 @@
   <data name="open_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\open_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="entradaIcono_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\entradaIcono_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="internaIcono_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\internaIcono_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="salidaIcono_32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\salidaIcono_32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

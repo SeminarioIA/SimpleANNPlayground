@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SimpleAnnPlayground</name>
+    </assembly>
+    <members>
+        <member name="T:SimpleAnnPlayground.FrmMain">
+            <summary>
+            Main window for the application.
+            </summary>
+        </member>
+        <member name="F:SimpleAnnPlayground.FrmMain.FormWords">
+            <summary>
+            Contains the words for each control.
+            </summary>
+        </member>
+        <member name="M:SimpleAnnPlayground.FrmMain.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:SimpleAnnPlayground.FrmMain"/> class.
+            </summary>
+        </member>
+        <member name="F:SimpleAnnPlayground.FrmMain.components">
+            <summary>
+             Required designer variable.
+            </summary>
+        </member>
+        <member name="M:SimpleAnnPlayground.FrmMain.Dispose(System.Boolean)">
+            <summary>
+             Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:SimpleAnnPlayground.FrmMain.InitializeComponent">
+            <summary>
+             Required method for Designer support - do not modify
+             the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:SimpleAnnPlayground.Languages">
+            <summary>
+            Class that contains all the strings for the supported languages.
+            </summary>
+        </member>
+        <member name="T:SimpleAnnPlayground.Languages.Language">
+            <summary>
+            Enumeration of the supported languages.
+            </summary>
+        </member>
+        <member name="F:SimpleAnnPlayground.Languages.Language.English">
+            <summary>
+            English language.
+            </summary>
+        </member>
+        <member name="F:SimpleAnnPlayground.Languages.Language.Spanish">
+            <summary>
+            Spanish language.
+            </summary>
+        </member>
+        <member name="M:SimpleAnnPlayground.Languages.ChangeFormLanguage(System.Windows.Forms.Form,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},SimpleAnnPlayground.Languages.Language)">
+            <summary>
+            Changes the language being shown in a Windows form.
+            </summary>
+            <param name="form">The form to apply the language.</param>
+            <param name="words">The dictionary containing the words.</param>
+            <param name="language">The selected language.</param>
+        </member>
+        <member name="M:SimpleAnnPlayground.Languages.GetSelfAndChildrenRecursive(System.Windows.Forms.Control)">
+            <summary>
+            Gets an enumeration of the controls contained in a container including itself.
+            </summary>
+            <param name="parent">The parent control.</param>
+            <returns>The enumeration of controls.</returns>
+        </member>
+        <member name="M:SimpleAnnPlayground.Languages.SetMenuLanguage(System.Windows.Forms.ToolStripItem,System.Collections.Generic.Dictionary{System.String,System.Collections.Generic.List{System.String}},SimpleAnnPlayground.Languages.Language)">
+            <summary>
+            Sets the text language for a menu item recursively.
+            </summary>
+            <param name="item">The item to change the language.</param>
+            <param name="words">The dictionary containing the words.</param>
+            <param name="language">The selected language.</param>
+        </member>
+        <member name="T:SimpleAnnPlayground.Program">
+            <summary>
+            This is the entry point for the application execution.
+            </summary>
+        </member>
+        <member name="M:SimpleAnnPlayground.Program.Main">
+            <summary>
+             The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:SimpleAnnPlayground.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:SimpleAnnPlayground.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:SimpleAnnPlayground.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:SimpleAnnPlayground.Properties.Resources.new_32">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:SimpleAnnPlayground.Properties.Resources.open_32">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="P:SimpleAnnPlayground.Properties.Resources.save_32">
+            <summary>
+              Looks up a localized resource of type System.Drawing.Bitmap.
+            </summary>
+        </member>
+        <member name="T:SimpleAnnPlayground.ApplicationConfiguration">
+            <summary>
+             Bootstrap the application configuration.
+            </summary>
+        </member>
+        <member name="M:SimpleAnnPlayground.ApplicationConfiguration.Initialize">
+            <summary>
+             Bootstrap the application as follows:
+             <code>
+             Application.EnableVisualStyles();
+             Application.SetCompatibleTextRenderingDefault(false);
+             Application.SetHighDpiMode(HighDpiMode.SystemAware);
+            </code>
+            </summary>
+        </member>
+    </members>
+</doc>
