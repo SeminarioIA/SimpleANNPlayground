@@ -64,6 +64,11 @@ namespace SimpleAnnPlayground
         public FrmMain()
         {
             InitializeComponent();
+
+#if DEBUG
+            // Add debug elements.
+            MnuDebug.Visible = true;
+#endif
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -115,6 +120,14 @@ namespace SimpleAnnPlayground
                 // Save language selection in the application settings.
                 Properties.Settings.Default.DefaultLanguage = language.ToString();
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        private void MnuElementDesigner_Click(object sender, EventArgs e)
+        {
+            using (Debugging.FrmElementDesigner frmElementDesigner = new Debugging.FrmElementDesigner())
+            {
+                _ = frmElementDesigner.ShowDialog();
             }
         }
     }
