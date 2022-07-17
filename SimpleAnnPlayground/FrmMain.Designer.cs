@@ -61,6 +61,8 @@
             this.MnuToolsLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuDebug = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuElementDesigner = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -170,7 +172,8 @@
             this.MnuFile,
             this.MnuEdit,
             this.MnuTools,
-            this.MnuHelp});
+            this.MnuHelp,
+            this.MnuDebug});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(777, 24);
@@ -327,6 +330,23 @@
             this.MnuHelpAbout.Size = new System.Drawing.Size(107, 22);
             this.MnuHelpAbout.Text = "About";
             // 
+            // MnuDebug
+            // 
+            this.MnuDebug.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.MnuDebug.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuElementDesigner});
+            this.MnuDebug.Name = "MnuDebug";
+            this.MnuDebug.Size = new System.Drawing.Size(54, 20);
+            this.MnuDebug.Text = "Debug";
+            this.MnuDebug.Visible = false;
+            // 
+            // MnuElementDesigner
+            // 
+            this.MnuElementDesigner.Name = "MnuElementDesigner";
+            this.MnuElementDesigner.Size = new System.Drawing.Size(180, 22);
+            this.MnuElementDesigner.Text = "Element designer";
+            this.MnuElementDesigner.Click += new System.EventHandler(this.MnuElementDesigner_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -387,5 +407,7 @@
         private ToolStripMenuItem MnuHelpAbout;
         private ToolStripMenuItem MnuTools;
         private ToolStripMenuItem MnuToolsLanguage;
+        private ToolStripMenuItem MnuDebug;
+        private ToolStripMenuItem MnuElementDesigner;
     }
 }
