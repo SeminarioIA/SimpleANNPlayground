@@ -4,8 +4,7 @@
 
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Utils.FileManagment;
-using System.Globalization;
-using System.Text;
+using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Debugging
 {
@@ -27,6 +26,7 @@ namespace SimpleAnnPlayground.Debugging
             InitializeComponent();
 
             FileManager = new TextFileManager();
+            FileManager.AddFileFormat("cmpt", "Draw component.");
             FileManager.FilePathChanged += FileManager_FilePathChanged;
         }
 
@@ -104,13 +104,13 @@ namespace SimpleAnnPlayground.Debugging
         /// <returns>The encoded data in string format.</returns>
         private string SerializeData()
         {
-            var data = new StringBuilder();
+            var elements = new Collection<Element>();
             foreach (Element element in ClbElements.Items)
             {
-                _ = data.AppendLine(element.Serialize());
+                elements.Add(element);
             }
 
-            return data.ToString();
+            return Component.Serialize(elements);
         }
 
         /// <summary>
@@ -121,43 +121,9 @@ namespace SimpleAnnPlayground.Debugging
         {
             ClbElements.Items.Clear();
 
-            foreach (string line in content.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var element in Component.Deserialize(content))
             {
-                var data = new List<string>(line.Split(", ", StringSplitOptions.None));
-                var elementTypeName = Enum.Parse<ElementsHelper.Types>(data.First());
-                var elementType = ElementsHelper.ElementsTypes[(int)elementTypeName];
-                var element = Activator.CreateInstance(elementType, Color.Black, 0f, 0f) as Element;
-                foreach (string param in data.Skip(1))
-                {
-                    string[] nameValue = param.Split(": ");
-                    string name = nameValue[0];
-                    string value = nameValue[1];
-                    var property = elementType.GetProperty(name);
-                    if (property != null)
-                    {
-                        if (property.PropertyType == typeof(float))
-                        {
-                            property.SetValue(element, float.Parse(value, CultureInfo.CurrentCulture));
-                        }
-                        else if (property.PropertyType == typeof(Color?))
-                        {
-                            if (string.IsNullOrEmpty(value))
-                            {
-                                property.SetValue(element, null);
-                            }
-                            else
-                            {
-                                property.SetValue(element, Color.FromName(value));
-                            }
-                        }
-                        else if (property.PropertyType == typeof(Color))
-                        {
-                            property.SetValue(element, Color.FromName(value));
-                        }
-                    }
-                }
-
-                if (element != null) _ = ClbElements.Items.Add(element, true);
+                _ = ClbElements.Items.Add(element, true);
             }
 
             // Paint objects in the picture box
