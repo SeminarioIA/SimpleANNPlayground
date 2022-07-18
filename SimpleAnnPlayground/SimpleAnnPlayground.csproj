@@ -24,10 +24,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Graphical\ElementsHelper.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <None Remove="Graphical\Components\InternalNeuron.cmpt" />
     <None Remove="stylecop.json" />
   </ItemGroup>
 
@@ -36,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Graphical\ElementsHelper.cs" />
+    <Resource Include="Graphical\Components\InternalNeuron.cmpt" />
   </ItemGroup>
 
   <ItemGroup>
