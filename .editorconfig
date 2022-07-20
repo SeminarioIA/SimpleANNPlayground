@@ -720,3 +720,4 @@ dotnet_diagnostic.IDE0005.severity = warning
 dotnet_diagnostic.IDE0052.severity = warning
 dotnet_diagnostic.CA1001.severity = warning
 dotnet_diagnostic.SA1500.severity = silent
+dotnet_diagnostic.SA1407.severity = silent

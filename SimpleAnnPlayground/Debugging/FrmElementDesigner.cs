@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Utils.FileManagment;
 using System.Collections.ObjectModel;
@@ -14,9 +15,24 @@ namespace SimpleAnnPlayground.Debugging
     public partial class FrmElementDesigner : Form
     {
         /// <summary>
-        /// Indicates if the list is being ordered.
+        /// Indicates if a list is being ordered.
         /// </summary>
         private bool _ordering;
+
+        /// <summary>
+        /// Indicates if a list item is being selected.
+        /// </summary>
+        private bool _selecting;
+
+        /// <summary>
+        /// Indicates if a list item is being checked.
+        /// </summary>
+        private bool _checking;
+
+        /// <summary>
+        /// The component being edited.
+        /// </summary>
+        private Component _component;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FrmElementDesigner"/> class.
@@ -24,6 +40,8 @@ namespace SimpleAnnPlayground.Debugging
         public FrmElementDesigner()
         {
             InitializeComponent();
+
+            _component = new Component();
 
             FileManager = new TextFileManager();
             FileManager.AddFileFormat("cmpt", "Draw component.");
@@ -37,7 +55,7 @@ namespace SimpleAnnPlayground.Debugging
 
         private void FrmElementDesigner_Load(object sender, EventArgs e)
         {
-            ElementsHelper.AddMenuPerElement(BtnAdd, BtnAdd_Click);
+            Element.AddMenuPerElement(BtnAdd, BtnAdd_Click);
         }
 
         /// <summary>
@@ -65,6 +83,10 @@ namespace SimpleAnnPlayground.Debugging
 
         private void ClbElements_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (_selecting) return;
+            _selecting = true;
+            LstConnectors.SelectedItem = null;
+
             if (ClbElements.SelectedItem is Element element)
             {
                 PgdProperties.SelectedObject = element;
@@ -78,9 +100,15 @@ namespace SimpleAnnPlayground.Debugging
                 BtnUp.Enabled = false;
                 BtnDown.Enabled = false;
             }
+
+            _selecting = false;
         }
 
-        private void ClbElements_SelectedValueChanged(object sender, EventArgs e) => PicDraw.Invalidate();
+        private void ClbElements_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (_checking) return;
+            PicDraw.Invalidate();
+        }
 
         private void PgdProperties_PropertyValueChanged(object s, PropertyValueChangedEventArgs e) => PicDraw.Invalidate();
 
@@ -92,9 +120,21 @@ namespace SimpleAnnPlayground.Debugging
             if (_ordering) return;
 
             // Paint only the checked items.
-            foreach (Element element in ClbElements.CheckedItems)
+            if (CkbElements.Checked)
             {
-                element?.Paint(e.Graphics);
+                foreach (Element element in ClbElements.CheckedItems)
+                {
+                    element?.Paint(e.Graphics);
+                }
+            }
+
+            // Paint connectors if the connectors box is checked.
+            if (CkbConnectors.Checked)
+            {
+                foreach (Connector connector in LstConnectors.Items)
+                {
+                    connector?.Paint(e.Graphics);
+                }
             }
         }
 
@@ -110,7 +150,17 @@ namespace SimpleAnnPlayground.Debugging
                 elements.Add(element);
             }
 
-            return Component.Serialize(elements);
+            var connectors = new Collection<Connector>();
+            foreach (Connector connector in LstConnectors.Items)
+            {
+                connectors.Add(connector);
+            }
+
+            _component = new Component(elements, connectors);
+
+            string json = JsonConvert.SerializeObject(_component, Formatting.Indented);
+
+            return json; // Component.Serialize(elements);
         }
 
         /// <summary>
@@ -119,11 +169,20 @@ namespace SimpleAnnPlayground.Debugging
         /// <param name="content">The file content.</param>
         private void DeserializeData(string content)
         {
-            ClbElements.Items.Clear();
+            _component.Deserialize(content);
 
-            foreach (var element in Component.Deserialize(content))
+            // Add the elements
+            ClbElements.Items.Clear();
+            foreach (var element in _component.Elements)
             {
                 _ = ClbElements.Items.Add(element, true);
+            }
+
+            // Add the connectors
+            LstConnectors.Items.Clear();
+            foreach (var connector in _component.Connectors)
+            {
+                _ = LstConnectors.Items.Add(connector);
             }
 
             // Paint objects in the picture box
@@ -177,6 +236,61 @@ namespace SimpleAnnPlayground.Debugging
             ClbElements.SelectedItem = element;
             _ordering = false;
 
+            PicDraw.Invalidate();
+        }
+
+        private void BtnReload_Click(object sender, EventArgs e)
+        {
+            if (Owner is FrmMain frmMain)
+            {
+                frmMain.ReloadComponents();
+            }
+        }
+
+        private void BtnAddConnector_Click(object sender, EventArgs e)
+        {
+            var connector = new Connector(0f, 0f);
+            LstConnectors.SelectedIndex = LstConnectors.Items.Add(connector);
+        }
+
+        private void BtnDeleteConnector_Click(object sender, EventArgs e)
+        {
+            LstConnectors.Items.Remove(LstConnectors.SelectedItem);
+        }
+
+        private void LstConnectors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_selecting) return;
+            _selecting = true;
+            ClbElements.SelectedItem = null;
+
+            if (LstConnectors.SelectedItem is Connector connector)
+            {
+                PgdProperties.SelectedObject = connector;
+                BtnDeleteConnector.Enabled = true;
+            }
+            else
+            {
+                BtnDeleteConnector.Enabled = false;
+            }
+
+            _selecting = false;
+        }
+
+        private void CkbConnectors_CheckedChanged(object sender, EventArgs e)
+        {
+            PicDraw.Invalidate();
+        }
+
+        private void CkbElements_CheckedChanged(object sender, EventArgs e)
+        {
+            _checking = true;
+            for (int index = 0; index < ClbElements.Items.Count; index++)
+            {
+                ClbElements.SetItemChecked(index, CkbElements.Checked);
+            }
+
+            _checking = false;
             PicDraw.Invalidate();
         }
     }

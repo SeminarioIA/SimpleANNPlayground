@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Utils.Serialization;
 using System.ComponentModel;
 
 namespace SimpleAnnPlayground.Graphical
@@ -9,7 +10,7 @@ namespace SimpleAnnPlayground.Graphical
     /// <summary>
     /// Represents a draw element for a drawable object.
     /// </summary>
-    public abstract class Element
+    public abstract partial class Element
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Element"/> class.
@@ -49,6 +50,25 @@ namespace SimpleAnnPlayground.Graphical
         public override string ToString() => GetType().Name;
 
         /// <summary>
+        /// Deserializes an Element of the given <paramref name="type"/> from a <paramref name="text"/> string.
+        /// </summary>
+        /// <param name="type">The type of the new element.</param>
+        /// <param name="text">The text string containing the element data.</param>
+        /// <returns>The new element created from the text.</returns>
+        internal static Element Deserialize(Types type, string text)
+        {
+            var elementType = ElementsTypes[(int)type];
+            var element = Activator.CreateInstance(elementType, Color.Black, 0f, 0f) as Element;
+            if (element != null)
+            {
+                var properties = TextSerializer.Deserialize(text);
+                PropertiesHelper.SetProperties(element, properties);
+            }
+
+            return element ?? throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Paints the element in a graphics object.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
@@ -60,24 +80,8 @@ namespace SimpleAnnPlayground.Graphical
         /// <returns>The string containing the serialized object.</returns>
         internal string Serialize()
         {
-            var data = new List<string>();
-            var type = GetType();
-            data.Add(type.Name);
-            foreach (var property in type.GetProperties())
-            {
-                string name = property.Name;
-                object? value = property.GetValue(this, null);
-                if (value is Color color)
-                {
-                    data.Add($"{name}: {color.Name}");
-                }
-                else
-                {
-                    data.Add($"{name}: {value}");
-                }
-            }
-
-            return string.Join(", ", data);
+            var properties = PropertiesHelper.GetProperties(this);
+            return TextSerializer.Serialize(properties);
         }
     }
 }

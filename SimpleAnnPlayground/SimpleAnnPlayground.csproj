@@ -24,16 +24,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Graphical\Components\InternalNeuron.cmpt" />
     <None Remove="stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Graphical\Components\InternalNeuron.cmpt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,6 +64,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Graphical\Components\InternalNeuron.cmpt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

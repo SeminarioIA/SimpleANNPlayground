@@ -1,0 +1,11 @@
+Elements:
+  Box:
+    BackColor: LightGray, Width: 14, Height: 30, Color: Black, X: 8, Y: 0
+  Triangle:
+    OffsetX1: 0, OffsetY1: 10, OffsetX2: 5, OffsetY2: 5, BackColor: Black, Color: Black, X: 3, Y: 10
+  Triangle:
+    OffsetX1: 0, OffsetY1: 10, OffsetX2: 5, OffsetY2: 5, BackColor: Black, Color: Black, X: 23, Y: 10
+
+Connectors:
+  X: 0, Y: 15
+  X: 30, Y: 15

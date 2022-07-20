@@ -2,30 +2,55 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Utils.Serialization;
 using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Text;
 
 namespace SimpleAnnPlayground.Graphical
 {
     /// <summary>
     /// Represents a graphical component formed by multiple elements.
     /// </summary>
-    public abstract class Component
+    public partial class Component : ITextSerializable
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Component"/> class.
         /// </summary>
-        /// <param name="elements">List of elements to add to this component.</param>
-        protected Component(Collection<Element> elements)
+        public Component()
+        {
+            Elements = new ReadOnlyCollection<Element>(new Collection<Element>());
+            Connectors = new ReadOnlyCollection<Connector>(new Collection<Connector>());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Component"/> class.
+        /// </summary>
+        /// <param name="text">The text string containing the Component information.</param>
+        public Component(string text)
+            : this()
+        {
+            Deserialize(text);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Component"/> class.
+        /// </summary>
+        /// <param name="elements">The list of elements.</param>
+        /// <param name="connectors">The list of components.</param>
+        internal Component(Collection<Element> elements, Collection<Connector> connectors)
         {
             Elements = new ReadOnlyCollection<Element>(elements);
+            Connectors = new ReadOnlyCollection<Connector>(connectors);
         }
 
         /// <summary>
         /// Gets the collection of <seealso cref="Element"/> objects of this component.
         /// </summary>
         public ReadOnlyCollection<Element> Elements { get; private set; }
+
+        /// <summary>
+        /// Gets the collection of <seealso cref="Connector"/> objects of this component.
+        /// </summary>
+        public ReadOnlyCollection<Connector> Connectors { get; private set; }
 
         /// <summary>
         /// Gets or sets the location of this component.
@@ -35,67 +60,76 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Serializes a collection of elements into a string.
         /// </summary>
-        /// <param name="elements">The collection of elements.</param>
         /// <returns>A string with all the elements serialized.</returns>
-        internal static string Serialize(Collection<Element> elements)
+        public string Serialize()
         {
-            var data = new StringBuilder();
-            foreach (Element element in elements)
+            var data = new List<KeyValuePair<string, string>>();
+            foreach (Element element in Elements)
             {
-                _ = data.AppendLine(element.Serialize());
+                data.Add(new KeyValuePair<string, string>(element.ToString(), element.Serialize()));
             }
 
-            return data.ToString();
+            foreach (Connector connector in Connectors)
+            {
+                data.Add(new KeyValuePair<string, string>(nameof(Connector), connector.Serialize()));
+            }
+
+            return TextSerializer.Serialize(data);
         }
 
         /// <summary>
-        /// Deserializes a string containing all the elementes serialized.
+        /// Deserializes a string containing this Component properties.
         /// </summary>
-        /// <param name="content">The string containing the serialized elements.</param>
-        /// <returns>A new <see cref="Component"/> from the serialized content.</returns>
-        internal static Collection<Element> Deserialize(string content)
+        /// <param name="text">The string containing the serialized elements.</param>
+        public void Deserialize(string text)
         {
-            Collection<Element> elements = new Collection<Element>();
-            foreach (string line in content.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
+            if (text == null) return;
+            var elements = new Collection<Element>();
+            var connectors = new Collection<Connector>();
+
+            // Iterate the list of keys in the string.
+            foreach (var item in TextSerializer.Deserialize(text))
             {
-                var data = new List<string>(line.Split(", ", StringSplitOptions.None));
-                var elementTypeName = Enum.Parse<ElementsHelper.Types>(data.First());
-                var elementType = ElementsHelper.ElementsTypes[(int)elementTypeName];
-                var element = Activator.CreateInstance(elementType, Color.Black, 0f, 0f) as Element;
-                foreach (string param in data.Skip(1))
+                // Get the elements for this object.
+                switch (item.Key)
                 {
-                    string[] nameValue = param.Split(": ");
-                    string name = nameValue[0];
-                    string value = nameValue[1];
-                    var property = elementType.GetProperty(name);
-                    if (property != null)
+                    case nameof(Elements):
                     {
-                        if (property.PropertyType == typeof(float))
+                        // Iterate for each element in the item value.
+                        foreach (var element in TextSerializer.Deserialize(item.Value))
                         {
-                            property.SetValue(element, float.Parse(value, CultureInfo.CurrentCulture));
+                            elements.Add(Element.Deserialize(Enum.Parse<Element.Types>(element.Key), element.Value));
                         }
-                        else if (property.PropertyType == typeof(Color?))
+
+                        // Assing the elements list.
+                        Elements = new ReadOnlyCollection<Element>(elements);
+                        break;
+                    }
+
+                    case nameof(Connectors):
+                    {
+                        foreach (string conn in TextSerializer.DeserializeList(item.Value))
                         {
-                            if (string.IsNullOrEmpty(value))
-                            {
-                                property.SetValue(element, null);
-                            }
-                            else
-                            {
-                                property.SetValue(element, Color.FromName(value));
-                            }
+                            var connector = new Connector(0f, 0f);
+                            connector.Deserialize(conn);
+                            connectors.Add(connector);
                         }
-                        else if (property.PropertyType == typeof(Color))
-                        {
-                            property.SetValue(element, Color.FromName(value));
-                        }
+
+                        // Assing the connectors list.
+                        Connectors = new ReadOnlyCollection<Connector>(connectors);
+                        break;
                     }
                 }
-
-                if (element != null) elements.Add(element);
             }
+        }
 
-            return elements;
+        /// <summary>
+        /// Reloads the graphical elements for this component.
+        /// </summary>
+        /// <param name="elements">The new graphical elements.</param>
+        internal void ReloadElements(Collection<Element> elements)
+        {
+            Elements = new ReadOnlyCollection<Element>(elements);
         }
 
         /// <summary>
@@ -108,12 +142,22 @@ namespace SimpleAnnPlayground.Graphical
         {
             if (location == null) location = Location;
 
+            // Translate the transform to the componnent coordinates.
             graphics.TranslateTransform(location.Value.X, location.Value.Y);
+
+            // Draw component elements.
             foreach (Element element in Elements)
             {
                 element.Paint(graphics);
             }
 
+            // Draw elements connectors.
+            foreach (Connector connector in Connectors)
+            {
+                connector.Paint(graphics);
+            }
+
+            // Restore transform.
             graphics.TranslateTransform(-location.Value.X, -location.Value.Y);
         }
     }
