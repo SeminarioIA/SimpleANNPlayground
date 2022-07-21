@@ -23,6 +23,17 @@ namespace SimpleAnnPlayground.Graphical
         public List<CanvasObject> Objects { get; private set; }
 
         /// <summary>
+        /// Converts a color object into another color with less bright.
+        /// </summary>
+        /// <param name="color">The color to convert.</param>
+        /// <param name="shadow">Indicates if the operation will be performed.</param>
+        /// <returns>The resulting shadow color.</returns>
+        public static Color GetShadowColor(Color color, bool shadow)
+        {
+            return shadow ? Color.FromArgb(ShadowValue(color.R), ShadowValue(color.G), ShadowValue(color.B)) : color;
+        }
+
+        /// <summary>
         /// Draws all the canvas objects over a graphics.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
@@ -32,6 +43,13 @@ namespace SimpleAnnPlayground.Graphical
             {
                 obj.Draw(graphics);
             }
+        }
+
+        private static int ShadowValue(byte value)
+        {
+            int diff = byte.MaxValue - value;
+            int inc = 9 * diff / 10;
+            return inc + value;
         }
     }
 }

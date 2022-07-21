@@ -41,7 +41,7 @@ namespace SimpleAnnPlayground.Utils.Serialization
         public static string Serialize(List<KeyValuePair<string, string>> data)
         {
             // Get the serialization format.
-            if (data.All(pair => !pair.Value.Contains(Environment.NewLine, StringComparison.Ordinal)))
+            if (data.All(pair => !pair.Value.Contains(Environment.NewLine, StringComparison.Ordinal) && !pair.Value.Contains(',', StringComparison.Ordinal)))
             {
                 // Line format.
                 return SerializeLined(data);
@@ -92,7 +92,13 @@ namespace SimpleAnnPlayground.Utils.Serialization
         /// <returns>The list of elements.</returns>
         public static List<string> DeserializeList(string text)
         {
-            return text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var lines = new List<string>();
+            foreach (string line in text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
+            {
+                lines.Add(line.Substring(2));
+            }
+
+            return lines;
         }
 
         private static string SerializeIdented(List<KeyValuePair<string, string>> data)

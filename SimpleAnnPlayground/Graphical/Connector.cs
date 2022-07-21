@@ -4,7 +4,6 @@
 
 using SimpleAnnPlayground.Utils.Serialization;
 using System.ComponentModel;
-using System.Globalization;
 
 namespace SimpleAnnPlayground.Graphical
 {
@@ -19,9 +18,14 @@ namespace SimpleAnnPlayground.Graphical
         private static readonly SizeF _shape = new (5, 5);
 
         /// <summary>
-        /// Indicates the radio for the connector element.
+        /// Indicates the color for the connector.
         /// </summary>
         private static readonly Color Color = Color.Blue;
+
+        /// <summary>
+        /// Indicates the color for the shadow of the connector.
+        /// </summary>
+        private static readonly Color ShadowColor = Color.LightBlue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Connector"/> class.
@@ -70,15 +74,17 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <inheritdoc/>
-        public override string ToString() => $"( X={X}, Y={Y} )";
+        public override string ToString() => nameof(Connector);
 
         /// <summary>
         /// Paints the connector in a graphics object.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
-        internal void Paint(Graphics graphics)
+        /// <param name="shadowDraw">Indicates if the connector is drawn as a shadow.</param>
+        internal void Paint(Graphics graphics, bool shadowDraw = false)
         {
-            using (Brush brush = new SolidBrush(Color))
+            Color color = shadowDraw ? ShadowColor : Color;
+            using (Brush brush = new SolidBrush(color))
             {
                 float x = X - _shape.Width / 2f;
                 float y = Y - _shape.Height / 2f;

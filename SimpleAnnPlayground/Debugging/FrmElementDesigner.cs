@@ -2,7 +2,6 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-using Newtonsoft.Json;
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Utils.FileManagment;
 using System.Collections.ObjectModel;
@@ -17,22 +16,22 @@ namespace SimpleAnnPlayground.Debugging
         /// <summary>
         /// Indicates if a list is being ordered.
         /// </summary>
-        private bool _ordering;
-
-        /// <summary>
-        /// Indicates if a list item is being selected.
-        /// </summary>
-        private bool _selecting;
-
-        /// <summary>
-        /// Indicates if a list item is being checked.
-        /// </summary>
-        private bool _checking;
+        private bool _busy;
 
         /// <summary>
         /// The component being edited.
         /// </summary>
         private Component _component;
+
+        /// <summary>
+        /// The component center is being drawn.
+        /// </summary>
+        private bool _drawCenter;
+
+        /// <summary>
+        /// The state to draw the component.
+        /// </summary>
+        private Component.State _state = Component.State.None;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FrmElementDesigner"/> class.
@@ -46,6 +45,14 @@ namespace SimpleAnnPlayground.Debugging
             FileManager = new TextFileManager();
             FileManager.AddFileFormat("cmpt", "Draw component.");
             FileManager.FilePathChanged += FileManager_FilePathChanged;
+
+            _busy = true;
+            foreach (Component.State mode in Enum.GetValues(typeof(Component.State)))
+            {
+                _ = LstModes.Items.Add(mode);
+            }
+
+            _busy = false;
         }
 
         /// <summary>
@@ -73,19 +80,26 @@ namespace SimpleAnnPlayground.Debugging
         {
             if (sender is ToolStripMenuItem mnuItem && mnuItem.Tag is Type elementType)
             {
+                _busy = true;
                 var element = Activator.CreateInstance(elementType, Color.Black, 0f, 0f) as Element;
                 ClbElements.SelectedIndex = ClbElements.Items.Add(element, true);
+                BtnDelete.Enabled = true;
+                BtnUp.Enabled = true;
+                BtnDown.Enabled = false;
+                PgdProperties.SelectedObject = element;
 
                 // Refresh elements in the picture box.
                 PicDraw.Invalidate();
+                _busy = false;
             }
         }
 
         private void ClbElements_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_selecting) return;
-            _selecting = true;
+            if (_busy) return;
+            _busy = true;
             LstConnectors.SelectedItem = null;
+            _drawCenter = false;
 
             if (ClbElements.SelectedItem is Element element)
             {
@@ -101,12 +115,12 @@ namespace SimpleAnnPlayground.Debugging
                 BtnDown.Enabled = false;
             }
 
-            _selecting = false;
+            PicDraw.Invalidate();
+            _busy = false;
         }
 
         private void ClbElements_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (_checking) return;
             PicDraw.Invalidate();
         }
 
@@ -117,23 +131,36 @@ namespace SimpleAnnPlayground.Debugging
         /// </summary>
         private void PicDraw_Paint(object sender, PaintEventArgs e)
         {
-            if (_ordering) return;
-
             // Paint only the checked items.
+            _component.Elements.Clear();
             if (CkbElements.Checked)
             {
                 foreach (Element element in ClbElements.CheckedItems)
                 {
-                    element?.Paint(e.Graphics);
+                    _component.Elements.Add(element);
                 }
             }
 
             // Paint connectors if the connectors box is checked.
+            _component.Connectors.Clear();
             if (CkbConnectors.Checked)
             {
                 foreach (Connector connector in LstConnectors.Items)
                 {
-                    connector?.Paint(e.Graphics);
+                    _component.Connectors.Add(connector);
+                }
+            }
+
+            _component.Paint(e.Graphics, PointF.Empty, _state, CkbConnectors.Checked);
+
+            // Paint the component center with a cross.
+            if (_drawCenter)
+            {
+                using (Pen pen = new Pen(Color.Red, 0.1f))
+                {
+                    const int CROSS_SIZE = 3;
+                    e.Graphics.DrawLine(pen, _component.X - CROSS_SIZE, _component.Y, _component.X + CROSS_SIZE, _component.Y);
+                    e.Graphics.DrawLine(pen, _component.X, _component.Y - CROSS_SIZE, _component.X, _component.Y + CROSS_SIZE);
                 }
             }
         }
@@ -144,23 +171,19 @@ namespace SimpleAnnPlayground.Debugging
         /// <returns>The encoded data in string format.</returns>
         private string SerializeData()
         {
-            var elements = new Collection<Element>();
+            _component.Elements.Clear();
             foreach (Element element in ClbElements.Items)
             {
-                elements.Add(element);
+                _component.Elements.Add(element);
             }
 
-            var connectors = new Collection<Connector>();
+            _component.Connectors.Clear();
             foreach (Connector connector in LstConnectors.Items)
             {
-                connectors.Add(connector);
+                _component.Connectors.Add(connector);
             }
 
-            _component = new Component(elements, connectors);
-
-            string json = JsonConvert.SerializeObject(_component, Formatting.Indented);
-
-            return json; // Component.Serialize(elements);
+            return _component.Serialize();
         }
 
         /// <summary>
@@ -169,6 +192,7 @@ namespace SimpleAnnPlayground.Debugging
         /// <param name="content">The file content.</param>
         private void DeserializeData(string content)
         {
+            _busy = true;
             _component.Deserialize(content);
 
             // Add the elements
@@ -185,8 +209,11 @@ namespace SimpleAnnPlayground.Debugging
                 _ = LstConnectors.Items.Add(connector);
             }
 
+            LstModes.SelectedIndex = 0;
+
             // Paint objects in the picture box
             PicDraw.Invalidate();
+            _busy = false;
         }
 
         private void BtnSave_Click(object sender, EventArgs e) => _ = FileManager.Save(SerializeData());
@@ -211,7 +238,7 @@ namespace SimpleAnnPlayground.Debugging
 
         private void BtnUp_Click(object sender, EventArgs e)
         {
-            _ordering = true;
+            _busy = true;
             object element = ClbElements.SelectedItem;
             int index = ClbElements.SelectedIndex - 1;
             bool itemChecked = ClbElements.GetItemChecked(index);
@@ -219,14 +246,14 @@ namespace SimpleAnnPlayground.Debugging
             ClbElements.Items.Insert(index, element);
             ClbElements.SetItemChecked(index, itemChecked);
             ClbElements.SelectedItem = element;
-            _ordering = false;
 
             PicDraw.Invalidate();
+            _busy = false;
         }
 
         private void BtnDown_Click(object sender, EventArgs e)
         {
-            _ordering = true;
+            _busy = true;
             object element = ClbElements.SelectedItem;
             int index = ClbElements.SelectedIndex + 1;
             bool itemChecked = ClbElements.GetItemChecked(index);
@@ -234,9 +261,9 @@ namespace SimpleAnnPlayground.Debugging
             ClbElements.Items.Insert(index, element);
             ClbElements.SetItemChecked(index, itemChecked);
             ClbElements.SelectedItem = element;
-            _ordering = false;
 
             PicDraw.Invalidate();
+            _busy = false;
         }
 
         private void BtnReload_Click(object sender, EventArgs e)
@@ -260,9 +287,10 @@ namespace SimpleAnnPlayground.Debugging
 
         private void LstConnectors_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_selecting) return;
-            _selecting = true;
+            if (_busy) return;
+            _busy = true;
             ClbElements.SelectedItem = null;
+            _drawCenter = false;
 
             if (LstConnectors.SelectedItem is Connector connector)
             {
@@ -274,7 +302,7 @@ namespace SimpleAnnPlayground.Debugging
                 BtnDeleteConnector.Enabled = false;
             }
 
-            _selecting = false;
+            _busy = false;
         }
 
         private void CkbConnectors_CheckedChanged(object sender, EventArgs e)
@@ -284,14 +312,55 @@ namespace SimpleAnnPlayground.Debugging
 
         private void CkbElements_CheckedChanged(object sender, EventArgs e)
         {
-            _checking = true;
+            _busy = true;
             for (int index = 0; index < ClbElements.Items.Count; index++)
             {
                 ClbElements.SetItemChecked(index, CkbElements.Checked);
             }
 
-            _checking = false;
             PicDraw.Invalidate();
+            _busy = false;
+        }
+
+        private void PicDraw_Click(object sender, EventArgs e)
+        {
+            if (_busy) return;
+            _busy = true;
+            ClbElements.SelectedItem = null;
+            LstConnectors.SelectedItem = null;
+            _drawCenter = true;
+            PgdProperties.SelectedObject = _component;
+            PicDraw.Invalidate();
+            _busy = false;
+        }
+
+        private void LstModes_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_busy) return;
+            _busy = true;
+            if (LstModes.SelectedItem != null)
+            {
+                _state = (Component.State)LstModes.SelectedItem;
+                if (_state.HasFlag(Component.State.SimulationStep)
+                        || _state.HasFlag(Component.State.SimulationPass)
+                        || _state.HasFlag(Component.State.SimulationError))
+                {
+                    ClbElements.SelectedItem = null;
+                    LstConnectors.SelectedItem = null;
+                    PgdProperties.SelectedObject = _component.Selector;
+                }
+
+                PicDraw.Invalidate();
+            }
+
+            _busy = false;
+        }
+
+        private void FrmElementDesigner_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Hide();
+            e.Cancel = true;
+            _ = Owner.Focus();
         }
     }
 }

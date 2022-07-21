@@ -174,5 +174,10 @@ namespace SimpleAnnPlayground
         {
             _picture.Draw(e.Graphics);
         }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
+        }
     }
 }

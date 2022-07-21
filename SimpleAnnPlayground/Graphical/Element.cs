@@ -69,12 +69,6 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <summary>
-        /// Paints the element in a graphics object.
-        /// </summary>
-        /// <param name="graphics">The graphics object.</param>
-        internal abstract void Paint(Graphics graphics);
-
-        /// <summary>
         /// Serializes the element information into a string.
         /// </summary>
         /// <returns>The string containing the serialized object.</returns>
@@ -83,5 +77,12 @@ namespace SimpleAnnPlayground.Graphical
             var properties = PropertiesHelper.GetProperties(this);
             return TextSerializer.Serialize(properties);
         }
+
+        /// <summary>
+        /// Paints the element in a graphics object.
+        /// </summary>
+        /// <param name="graphics">The graphics object.</param>
+        /// <param name="shadowDraw">Indicates if the connector is drawn as a shadow.</param>
+        internal abstract void Paint(Graphics graphics, bool shadowDraw = false);
     }
 }

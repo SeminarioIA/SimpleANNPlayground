@@ -64,9 +64,9 @@ namespace SimpleAnnPlayground.Graphical.Elements
         public float Y2 { get; set; }
 
         /// <inheritdoc/>
-        internal override void Paint(Graphics graphics)
+        internal override void Paint(Graphics graphics, bool shadowDraw)
         {
-            using (Pen pen = new Pen(Color))
+            using (Pen pen = new Pen(Canvas.GetShadowColor(Color, shadowDraw)))
             {
                 graphics.DrawLine(pen, X, Y, X2, Y2);
             }

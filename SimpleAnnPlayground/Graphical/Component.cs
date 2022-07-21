@@ -4,6 +4,7 @@
 
 using SimpleAnnPlayground.Utils.Serialization;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace SimpleAnnPlayground.Graphical
 {
@@ -17,8 +18,9 @@ namespace SimpleAnnPlayground.Graphical
         /// </summary>
         public Component()
         {
-            Elements = new ReadOnlyCollection<Element>(new Collection<Element>());
-            Connectors = new ReadOnlyCollection<Connector>(new Collection<Connector>());
+            Elements = new Collection<Element>();
+            Connectors = new Collection<Connector>();
+            Selector = new Selector(0f, 0f);
         }
 
         /// <summary>
@@ -36,26 +38,92 @@ namespace SimpleAnnPlayground.Graphical
         /// </summary>
         /// <param name="elements">The list of elements.</param>
         /// <param name="connectors">The list of components.</param>
-        internal Component(Collection<Element> elements, Collection<Connector> connectors)
+        /// <param name="selector">The selector object.</param>
+        internal Component(Collection<Element> elements, Collection<Connector> connectors, Selector selector)
         {
-            Elements = new ReadOnlyCollection<Element>(elements);
-            Connectors = new ReadOnlyCollection<Connector>(connectors);
+            Elements = elements;
+            Connectors = connectors;
+            Selector = selector;
         }
 
         /// <summary>
-        /// Gets the collection of <seealso cref="Element"/> objects of this component.
-        /// </summary>
-        public ReadOnlyCollection<Element> Elements { get; private set; }
+        /// Defines the state for the component.
+        /// </summary>3
+        [Flags]
+        public enum State
+        {
+            /// <summary>
+            /// The component is being drawn alone.
+            /// </summary>
+            None = 0,
+
+            /// <summary>
+            /// The component is being drawn alone in the background.
+            /// </summary>
+            Shadow = 1,
+
+            /// <summary>
+            /// The component is selected.
+            /// </summary>
+            Selected = 2,
+
+            /// <summary>
+            /// The component is going to be executed in the simulation.
+            /// </summary>
+            SimulationStep = 4,
+
+            /// <summary>
+            /// The component was succesfully simulated.
+            /// </summary>
+            SimulationPass = 8,
+
+            /// <summary>
+            /// The component had a simulation error.
+            /// </summary>
+            SimulationError = 16,
+
+            /// <summary>
+            /// There is a warning about the component.
+            /// </summary>
+            ComponentWarn = 32,
+
+            /// <summary>
+            /// There is an error about the component.
+            /// </summary>
+            ComponentError = 64,
+        }
 
         /// <summary>
         /// Gets the collection of <seealso cref="Connector"/> objects of this component.
         /// </summary>
-        public ReadOnlyCollection<Connector> Connectors { get; private set; }
+        [Browsable(false)]
+        public Collection<Connector> Connectors { get; private set; }
 
         /// <summary>
-        /// Gets or sets the location of this component.
+        /// Gets the collection of <seealso cref="Element"/> objects of this component.
         /// </summary>
-        public PointF Location { get; set; }
+        [Browsable(false)]
+        public Collection<Element> Elements { get; private set; }
+
+        /// <summary>
+        /// Gets the collection of <seealso cref="Element"/> objects of this component.
+        /// </summary>
+        [Browsable(false)]
+        public Selector Selector { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the center X coordinate of this component.
+        /// </summary>
+        [Category("Center")]
+        [Description("The center X coordinate of this element.")]
+        public float X { get; set; }
+
+        /// <summary>
+        /// Gets or sets the center Y coordinate of this component.
+        /// </summary>
+        [Category("Center")]
+        [Description("The center Y coordinate of this element.")]
+        public float Y { get; set; }
 
         /// <summary>
         /// Serializes a collection of elements into a string.
@@ -64,15 +132,27 @@ namespace SimpleAnnPlayground.Graphical
         public string Serialize()
         {
             var data = new List<KeyValuePair<string, string>>();
+
+            // Serialize elements.
+            var elements = new List<KeyValuePair<string, string>>();
             foreach (Element element in Elements)
             {
-                data.Add(new KeyValuePair<string, string>(element.ToString(), element.Serialize()));
+                elements.Add(new KeyValuePair<string, string>(element.ToString(), element.Serialize()));
             }
 
+            data.Add(new KeyValuePair<string, string>(nameof(Elements), TextSerializer.Serialize(elements)));
+
+            // Serialize connectors.
+            var connectors = new List<string>();
             foreach (Connector connector in Connectors)
             {
-                data.Add(new KeyValuePair<string, string>(nameof(Connector), connector.Serialize()));
+                connectors.Add(connector.Serialize());
             }
+
+            data.Add(new KeyValuePair<string, string>(nameof(Connectors), TextSerializer.SerializeList(connectors)));
+
+            // Serialize the selector.
+            data.Add(new KeyValuePair<string, string>(nameof(Selector), Selector.Serialize()));
 
             return TextSerializer.Serialize(data);
         }
@@ -102,7 +182,7 @@ namespace SimpleAnnPlayground.Graphical
                         }
 
                         // Assing the elements list.
-                        Elements = new ReadOnlyCollection<Element>(elements);
+                        Elements = elements;
                         break;
                     }
 
@@ -116,20 +196,17 @@ namespace SimpleAnnPlayground.Graphical
                         }
 
                         // Assing the connectors list.
-                        Connectors = new ReadOnlyCollection<Connector>(connectors);
+                        Connectors = connectors;
+                        break;
+                    }
+
+                    case nameof(Selector):
+                    {
+                        Selector.Deserialize(item.Value);
                         break;
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Reloads the graphical elements for this component.
-        /// </summary>
-        /// <param name="elements">The new graphical elements.</param>
-        internal void ReloadElements(Collection<Element> elements)
-        {
-            Elements = new ReadOnlyCollection<Element>(elements);
         }
 
         /// <summary>
@@ -138,27 +215,52 @@ namespace SimpleAnnPlayground.Graphical
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
         /// <param name="location">The location to draw the component.</param>
-        internal void Paint(Graphics graphics, PointF? location = null)
+        /// <param name="state">The component state.</param>
+        /// <param name="shadowConnectors">Indicates if the connectors are shown as a shadow.</param>
+        /// <param name="selectConnector">Indicates if a connector will be selected.</param>
+        internal void Paint(Graphics graphics, PointF location, State state = State.None, bool shadowConnectors = false, Connector? selectConnector = null)
         {
-            if (location == null) location = Location;
-
             // Translate the transform to the componnent coordinates.
-            graphics.TranslateTransform(location.Value.X, location.Value.Y);
+            graphics.TranslateTransform(location.X, location.Y);
+
+            // Draw backgroung selector
+            if (state.HasFlag(State.SimulationStep) || state.HasFlag(State.SimulationPass) || state.HasFlag(State.SimulationError))
+            {
+                Selector.Paint(graphics, false, state);
+            }
 
             // Draw component elements.
             foreach (Element element in Elements)
             {
-                element.Paint(graphics);
+                element.Paint(graphics, state.HasFlag(State.Shadow));
             }
 
-            // Draw elements connectors.
-            foreach (Connector connector in Connectors)
+            // Draw connectors.
+            if (!state.HasFlag(State.Shadow))
             {
-                connector.Paint(graphics);
+                if (shadowConnectors)
+                {
+                    // Draw elements connectors.
+                    foreach (Connector connector in Connectors)
+                    {
+                        connector.Paint(graphics);
+                    }
+                }
+
+                if (selectConnector != null && Connectors.Contains(selectConnector))
+                {
+                    selectConnector.Paint(graphics);
+                }
+            }
+
+            // Draw Selector
+            if (state.HasFlag(State.Selected))
+            {
+                Selector.Paint(graphics, true);
             }
 
             // Restore transform.
-            graphics.TranslateTransform(-location.Value.X, -location.Value.Y);
+            graphics.TranslateTransform(-location.X, -location.Y);
         }
     }
 }

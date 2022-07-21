@@ -35,21 +35,22 @@
             this.SpcElements = new System.Windows.Forms.SplitContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.ClbModes = new System.Windows.Forms.CheckedListBox();
+            this.LstModes = new System.Windows.Forms.ListBox();
             this.LbModes = new System.Windows.Forms.Label();
             this.ClbElements = new System.Windows.Forms.CheckedListBox();
-            this.CkbElements = new System.Windows.Forms.CheckBox();
-            this.LstConnectors = new System.Windows.Forms.ListBox();
-            this.CkbConnectors = new System.Windows.Forms.CheckBox();
-            this.PgdProperties = new System.Windows.Forms.PropertyGrid();
-            this.TstElements = new System.Windows.Forms.ToolStrip();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
             this.BtnAdd = new System.Windows.Forms.ToolStripDropDownButton();
             this.BtnDelete = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.BtnUp = new System.Windows.Forms.ToolStripButton();
             this.BtnDown = new System.Windows.Forms.ToolStripButton();
-            this.BtnDeleteConnector = new System.Windows.Forms.ToolStripButton();
+            this.CkbElements = new System.Windows.Forms.CheckBox();
+            this.LstConnectors = new System.Windows.Forms.ListBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.BtnAddConnector = new System.Windows.Forms.ToolStripButton();
+            this.BtnDeleteConnector = new System.Windows.Forms.ToolStripButton();
+            this.CkbConnectors = new System.Windows.Forms.CheckBox();
+            this.PgdProperties = new System.Windows.Forms.PropertyGrid();
             this.TstButtons = new System.Windows.Forms.ToolStrip();
             this.BtnNew = new System.Windows.Forms.ToolStripButton();
             this.BtnOpen = new System.Windows.Forms.ToolStripButton();
@@ -74,7 +75,8 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.TstElements.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.TstButtons.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,8 +97,7 @@
             // SpcMain.Panel2
             // 
             this.SpcMain.Panel2.Controls.Add(this.SpcElements);
-            this.SpcMain.Panel2.Controls.Add(this.TstElements);
-            this.SpcMain.Size = new System.Drawing.Size(1105, 440);
+            this.SpcMain.Size = new System.Drawing.Size(939, 440);
             this.SpcMain.SplitterDistance = 466;
             this.SpcMain.SplitterWidth = 5;
             this.SpcMain.TabIndex = 0;
@@ -110,6 +111,7 @@
             this.PicDraw.Size = new System.Drawing.Size(449, 423);
             this.PicDraw.TabIndex = 0;
             this.PicDraw.TabStop = false;
+            this.PicDraw.Click += new System.EventHandler(this.PicDraw_Click);
             this.PicDraw.Paint += new System.Windows.Forms.PaintEventHandler(this.PicDraw_Paint);
             // 
             // HscDraw
@@ -132,7 +134,7 @@
             // 
             this.SpcElements.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SpcElements.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.SpcElements.Location = new System.Drawing.Point(38, 0);
+            this.SpcElements.Location = new System.Drawing.Point(0, 0);
             this.SpcElements.Name = "SpcElements";
             // 
             // SpcElements.Panel1
@@ -142,8 +144,8 @@
             // SpcElements.Panel2
             // 
             this.SpcElements.Panel2.Controls.Add(this.PgdProperties);
-            this.SpcElements.Size = new System.Drawing.Size(596, 440);
-            this.SpcElements.SplitterDistance = 175;
+            this.SpcElements.Size = new System.Drawing.Size(468, 440);
+            this.SpcElements.SplitterDistance = 186;
             this.SpcElements.TabIndex = 2;
             // 
             // splitContainer1
@@ -160,8 +162,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.LstConnectors);
+            this.splitContainer1.Panel2.Controls.Add(this.toolStrip1);
             this.splitContainer1.Panel2.Controls.Add(this.CkbConnectors);
-            this.splitContainer1.Size = new System.Drawing.Size(175, 440);
+            this.splitContainer1.Size = new System.Drawing.Size(186, 440);
             this.splitContainer1.SplitterDistance = 325;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -174,34 +177,36 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.ClbModes);
+            this.splitContainer2.Panel1.Controls.Add(this.LstModes);
             this.splitContainer2.Panel1.Controls.Add(this.LbModes);
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.ClbElements);
+            this.splitContainer2.Panel2.Controls.Add(this.toolStrip2);
             this.splitContainer2.Panel2.Controls.Add(this.CkbElements);
-            this.splitContainer2.Size = new System.Drawing.Size(175, 325);
+            this.splitContainer2.Size = new System.Drawing.Size(186, 325);
             this.splitContainer2.SplitterDistance = 136;
             this.splitContainer2.TabIndex = 0;
             // 
-            // ClbModes
+            // LstModes
             // 
-            this.ClbModes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ClbModes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ClbModes.FormattingEnabled = true;
-            this.ClbModes.Location = new System.Drawing.Point(0, 23);
-            this.ClbModes.Name = "ClbModes";
-            this.ClbModes.Size = new System.Drawing.Size(175, 113);
-            this.ClbModes.TabIndex = 3;
-            this.ClbModes.UseCompatibleTextRendering = true;
+            this.LstModes.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LstModes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LstModes.FormattingEnabled = true;
+            this.LstModes.ItemHeight = 20;
+            this.LstModes.Location = new System.Drawing.Point(0, 23);
+            this.LstModes.Name = "LstModes";
+            this.LstModes.Size = new System.Drawing.Size(186, 113);
+            this.LstModes.TabIndex = 2;
+            this.LstModes.SelectedIndexChanged += new System.EventHandler(this.LstModes_SelectedIndexChanged);
             // 
             // LbModes
             // 
             this.LbModes.Dock = System.Windows.Forms.DockStyle.Top;
             this.LbModes.Location = new System.Drawing.Point(0, 0);
             this.LbModes.Name = "LbModes";
-            this.LbModes.Size = new System.Drawing.Size(175, 23);
+            this.LbModes.Size = new System.Drawing.Size(186, 23);
             this.LbModes.TabIndex = 4;
             this.LbModes.Text = "Modes";
             // 
@@ -210,21 +215,86 @@
             this.ClbElements.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ClbElements.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ClbElements.FormattingEnabled = true;
-            this.ClbElements.Location = new System.Drawing.Point(0, 24);
+            this.ClbElements.Location = new System.Drawing.Point(30, 24);
             this.ClbElements.Name = "ClbElements";
-            this.ClbElements.Size = new System.Drawing.Size(175, 161);
+            this.ClbElements.Size = new System.Drawing.Size(156, 161);
             this.ClbElements.TabIndex = 0;
             this.ClbElements.UseCompatibleTextRendering = true;
             this.ClbElements.SelectedIndexChanged += new System.EventHandler(this.ClbElements_SelectedIndexChanged);
             this.ClbElements.SelectedValueChanged += new System.EventHandler(this.ClbElements_SelectedValueChanged);
             // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.toolStrip2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BtnAdd,
+            this.BtnDelete,
+            this.toolStripSeparator1,
+            this.BtnUp,
+            this.BtnDown});
+            this.toolStrip2.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(30, 161);
+            this.toolStrip2.TabIndex = 3;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // BtnAdd
+            // 
+            this.BtnAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.BtnAdd.Image = global::SimpleAnnPlayground.Properties.Resources.d_add;
+            this.BtnAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnAdd.Name = "BtnAdd";
+            this.BtnAdd.Size = new System.Drawing.Size(27, 20);
+            this.BtnAdd.Text = "Add";
+            // 
+            // BtnDelete
+            // 
+            this.BtnDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.BtnDelete.Enabled = false;
+            this.BtnDelete.Image = global::SimpleAnnPlayground.Properties.Resources.d_remove;
+            this.BtnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnDelete.Name = "BtnDelete";
+            this.BtnDelete.Size = new System.Drawing.Size(27, 20);
+            this.BtnDelete.Text = "Delete";
+            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(27, 6);
+            // 
+            // BtnUp
+            // 
+            this.BtnUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.BtnUp.Enabled = false;
+            this.BtnUp.Image = global::SimpleAnnPlayground.Properties.Resources.d_up;
+            this.BtnUp.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnUp.Name = "BtnUp";
+            this.BtnUp.Size = new System.Drawing.Size(27, 20);
+            this.BtnUp.Text = "Move up";
+            this.BtnUp.Click += new System.EventHandler(this.BtnUp_Click);
+            // 
+            // BtnDown
+            // 
+            this.BtnDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.BtnDown.Enabled = false;
+            this.BtnDown.Image = global::SimpleAnnPlayground.Properties.Resources.d_down;
+            this.BtnDown.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnDown.Name = "BtnDown";
+            this.BtnDown.Size = new System.Drawing.Size(27, 20);
+            this.BtnDown.Text = "Move down";
+            this.BtnDown.Click += new System.EventHandler(this.BtnDown_Click);
+            // 
             // CkbElements
             // 
             this.CkbElements.AutoSize = true;
+            this.CkbElements.Checked = true;
+            this.CkbElements.CheckState = System.Windows.Forms.CheckState.Checked;
             this.CkbElements.Dock = System.Windows.Forms.DockStyle.Top;
             this.CkbElements.Location = new System.Drawing.Point(0, 0);
             this.CkbElements.Name = "CkbElements";
-            this.CkbElements.Size = new System.Drawing.Size(175, 24);
+            this.CkbElements.Size = new System.Drawing.Size(186, 24);
             this.CkbElements.TabIndex = 2;
             this.CkbElements.Text = "Show elements";
             this.CkbElements.UseVisualStyleBackColor = true;
@@ -236,11 +306,43 @@
             this.LstConnectors.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LstConnectors.FormattingEnabled = true;
             this.LstConnectors.ItemHeight = 20;
-            this.LstConnectors.Location = new System.Drawing.Point(0, 24);
+            this.LstConnectors.Location = new System.Drawing.Point(24, 24);
             this.LstConnectors.Name = "LstConnectors";
-            this.LstConnectors.Size = new System.Drawing.Size(175, 87);
+            this.LstConnectors.Size = new System.Drawing.Size(162, 87);
             this.LstConnectors.TabIndex = 1;
             this.LstConnectors.SelectedIndexChanged += new System.EventHandler(this.LstConnectors_SelectedIndexChanged);
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BtnAddConnector,
+            this.BtnDeleteConnector});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(24, 87);
+            this.toolStrip1.TabIndex = 2;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // BtnAddConnector
+            // 
+            this.BtnAddConnector.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.BtnAddConnector.Image = global::SimpleAnnPlayground.Properties.Resources.d_add;
+            this.BtnAddConnector.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnAddConnector.Name = "BtnAddConnector";
+            this.BtnAddConnector.Size = new System.Drawing.Size(21, 20);
+            this.BtnAddConnector.Text = "toolStripButton1";
+            // 
+            // BtnDeleteConnector
+            // 
+            this.BtnDeleteConnector.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.BtnDeleteConnector.Enabled = false;
+            this.BtnDeleteConnector.Image = global::SimpleAnnPlayground.Properties.Resources.d_remove;
+            this.BtnDeleteConnector.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnDeleteConnector.Name = "BtnDeleteConnector";
+            this.BtnDeleteConnector.Size = new System.Drawing.Size(21, 20);
+            this.BtnDeleteConnector.Text = "toolStripButton2";
             // 
             // CkbConnectors
             // 
@@ -250,7 +352,7 @@
             this.CkbConnectors.Dock = System.Windows.Forms.DockStyle.Top;
             this.CkbConnectors.Location = new System.Drawing.Point(0, 0);
             this.CkbConnectors.Name = "CkbConnectors";
-            this.CkbConnectors.Size = new System.Drawing.Size(175, 24);
+            this.CkbConnectors.Size = new System.Drawing.Size(186, 24);
             this.CkbConnectors.TabIndex = 0;
             this.CkbConnectors.Text = "Show connectors";
             this.CkbConnectors.UseVisualStyleBackColor = true;
@@ -261,98 +363,9 @@
             this.PgdProperties.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PgdProperties.Location = new System.Drawing.Point(0, 0);
             this.PgdProperties.Name = "PgdProperties";
-            this.PgdProperties.Size = new System.Drawing.Size(417, 440);
+            this.PgdProperties.Size = new System.Drawing.Size(278, 440);
             this.PgdProperties.TabIndex = 0;
             this.PgdProperties.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.PgdProperties_PropertyValueChanged);
-            // 
-            // TstElements
-            // 
-            this.TstElements.Dock = System.Windows.Forms.DockStyle.Left;
-            this.TstElements.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.TstElements.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.TstElements.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.BtnAdd,
-            this.BtnDelete,
-            this.toolStripSeparator1,
-            this.BtnUp,
-            this.BtnDown,
-            this.BtnDeleteConnector,
-            this.BtnAddConnector});
-            this.TstElements.Location = new System.Drawing.Point(0, 0);
-            this.TstElements.Name = "TstElements";
-            this.TstElements.Size = new System.Drawing.Size(38, 440);
-            this.TstElements.TabIndex = 0;
-            this.TstElements.Text = "toolStrip1";
-            // 
-            // BtnAdd
-            // 
-            this.BtnAdd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.BtnAdd.Image = global::SimpleAnnPlayground.Properties.Resources.d_add;
-            this.BtnAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnAdd.Name = "BtnAdd";
-            this.BtnAdd.Size = new System.Drawing.Size(35, 28);
-            this.BtnAdd.Text = "Add";
-            // 
-            // BtnDelete
-            // 
-            this.BtnDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.BtnDelete.Enabled = false;
-            this.BtnDelete.Image = global::SimpleAnnPlayground.Properties.Resources.d_remove;
-            this.BtnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnDelete.Name = "BtnDelete";
-            this.BtnDelete.Size = new System.Drawing.Size(35, 28);
-            this.BtnDelete.Text = "Delete";
-            this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(35, 6);
-            // 
-            // BtnUp
-            // 
-            this.BtnUp.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.BtnUp.Enabled = false;
-            this.BtnUp.Image = global::SimpleAnnPlayground.Properties.Resources.d_up;
-            this.BtnUp.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnUp.Name = "BtnUp";
-            this.BtnUp.Size = new System.Drawing.Size(35, 28);
-            this.BtnUp.Text = "Move up";
-            this.BtnUp.Click += new System.EventHandler(this.BtnUp_Click);
-            // 
-            // BtnDown
-            // 
-            this.BtnDown.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.BtnDown.Enabled = false;
-            this.BtnDown.Image = global::SimpleAnnPlayground.Properties.Resources.d_down;
-            this.BtnDown.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnDown.Name = "BtnDown";
-            this.BtnDown.Size = new System.Drawing.Size(35, 28);
-            this.BtnDown.Text = "Move down";
-            this.BtnDown.Click += new System.EventHandler(this.BtnDown_Click);
-            // 
-            // BtnDeleteConnector
-            // 
-            this.BtnDeleteConnector.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.BtnDeleteConnector.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.BtnDeleteConnector.Enabled = false;
-            this.BtnDeleteConnector.Image = global::SimpleAnnPlayground.Properties.Resources.d_remove;
-            this.BtnDeleteConnector.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnDeleteConnector.Name = "BtnDeleteConnector";
-            this.BtnDeleteConnector.Size = new System.Drawing.Size(35, 28);
-            this.BtnDeleteConnector.Text = "toolStripButton2";
-            this.BtnDeleteConnector.Click += new System.EventHandler(this.BtnDeleteConnector_Click);
-            // 
-            // BtnAddConnector
-            // 
-            this.BtnAddConnector.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.BtnAddConnector.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.BtnAddConnector.Image = global::SimpleAnnPlayground.Properties.Resources.d_add;
-            this.BtnAddConnector.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnAddConnector.Name = "BtnAddConnector";
-            this.BtnAddConnector.Size = new System.Drawing.Size(35, 28);
-            this.BtnAddConnector.Text = "toolStripButton1";
-            this.BtnAddConnector.Click += new System.EventHandler(this.BtnAddConnector_Click);
             // 
             // TstButtons
             // 
@@ -366,7 +379,7 @@
             this.BtnReload});
             this.TstButtons.Location = new System.Drawing.Point(0, 0);
             this.TstButtons.Name = "TstButtons";
-            this.TstButtons.Size = new System.Drawing.Size(1105, 31);
+            this.TstButtons.Size = new System.Drawing.Size(939, 31);
             this.TstButtons.TabIndex = 1;
             this.TstButtons.Text = "toolStrip1";
             // 
@@ -420,7 +433,7 @@
             // 
             this.StsBar.Location = new System.Drawing.Point(0, 471);
             this.StsBar.Name = "StsBar";
-            this.StsBar.Size = new System.Drawing.Size(1105, 22);
+            this.StsBar.Size = new System.Drawing.Size(939, 22);
             this.StsBar.TabIndex = 2;
             this.StsBar.Text = "statusStrip1";
             // 
@@ -428,7 +441,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1105, 493);
+            this.ClientSize = new System.Drawing.Size(939, 493);
             this.Controls.Add(this.SpcMain);
             this.Controls.Add(this.TstButtons);
             this.Controls.Add(this.StsBar);
@@ -436,10 +449,10 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrmElementDesigner";
             this.Text = "Element Designer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmElementDesigner_FormClosing);
             this.Load += new System.EventHandler(this.FrmElementDesigner_Load);
             this.SpcMain.Panel1.ResumeLayout(false);
             this.SpcMain.Panel2.ResumeLayout(false);
-            this.SpcMain.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpcMain)).EndInit();
             this.SpcMain.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.PicDraw)).EndInit();
@@ -457,8 +470,10 @@
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            this.TstElements.ResumeLayout(false);
-            this.TstElements.PerformLayout();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.TstButtons.ResumeLayout(false);
             this.TstButtons.PerformLayout();
             this.ResumeLayout(false);
@@ -474,28 +489,29 @@
         private StatusStrip StsBar;
         private HScrollBar HscDraw;
         private VScrollBar VscDraw;
-        private ToolStrip TstElements;
-        private ToolStripButton BtnDelete;
-        private ToolStripSeparator toolStripSeparator1;
-        private ToolStripButton BtnUp;
-        private ToolStripButton BtnDown;
         private ToolStripButton BtnNew;
         private ToolStripButton BtnOpen;
         private ToolStripButton BtnSave;
         private ToolStripButton BtnSaveAs;
         private SplitContainer SpcElements;
         private PropertyGrid PgdProperties;
-        private ToolStripDropDownButton BtnAdd;
         private CheckedListBox ClbElements;
         private ToolStripButton BtnReload;
         private SplitContainer splitContainer1;
         private ListBox LstConnectors;
         private CheckBox CkbConnectors;
-        private ToolStripButton BtnDeleteConnector;
-        private ToolStripButton BtnAddConnector;
         private SplitContainer splitContainer2;
-        private CheckedListBox ClbModes;
         private Label LbModes;
         private CheckBox CkbElements;
+        private ListBox LstModes;
+        private ToolStrip toolStrip2;
+        private ToolStripDropDownButton BtnAdd;
+        private ToolStripButton BtnDelete;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripButton BtnUp;
+        private ToolStripButton BtnDown;
+        private ToolStrip toolStrip1;
+        private ToolStripButton BtnAddConnector;
+        private ToolStripButton BtnDeleteConnector;
     }
 }
