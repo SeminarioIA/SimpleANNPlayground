@@ -128,6 +128,7 @@
             this.BtnInputNeurone.Size = new System.Drawing.Size(41, 53);
             this.BtnInputNeurone.Text = "Input";
             this.BtnInputNeurone.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnInputNeurone.Click += new System.EventHandler(this.BtnInputNeurone_Click);
             // 
             // BtnInternalNeurone
             // 

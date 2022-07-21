@@ -150,7 +150,7 @@ namespace SimpleAnnPlayground.Debugging
                 }
             }
 
-            _component.Paint(e.Graphics, PointF.Empty, _state, CkbConnectors.Checked);
+            _component.Paint(e.Graphics, PointF.Empty, _state, CkbConnectors.Checked, LstConnectors.SelectedItem as Connector);
 
             // Paint the component center with a cross.
             if (_drawCenter)
@@ -275,13 +275,19 @@ namespace SimpleAnnPlayground.Debugging
 
         private void BtnAddConnector_Click(object sender, EventArgs e)
         {
+            _busy = true;
             var connector = new Connector(0f, 0f);
             LstConnectors.SelectedIndex = LstConnectors.Items.Add(connector);
+            PicDraw.Invalidate();
+            _busy = false;
         }
 
         private void BtnDeleteConnector_Click(object sender, EventArgs e)
         {
+            _busy = true;
             LstConnectors.Items.Remove(LstConnectors.SelectedItem);
+            PicDraw.Invalidate();
+            _busy = false;
         }
 
         private void LstConnectors_SelectedIndexChanged(object sender, EventArgs e)
@@ -301,6 +307,7 @@ namespace SimpleAnnPlayground.Debugging
                 BtnDeleteConnector.Enabled = false;
             }
 
+            PicDraw.Invalidate();
             _busy = false;
         }
 

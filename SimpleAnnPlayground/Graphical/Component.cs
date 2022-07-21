@@ -238,13 +238,10 @@ namespace SimpleAnnPlayground.Graphical
             // Draw connectors.
             if (!state.HasFlag(State.Shadow))
             {
-                if (shadowConnectors)
+                // Draw elements connectors.
+                foreach (Connector connector in Connectors)
                 {
-                    // Draw elements connectors.
-                    foreach (Connector connector in Connectors)
-                    {
-                        connector.Paint(graphics);
-                    }
+                    connector.Paint(graphics, shadowConnectors);
                 }
 
                 if (selectConnector != null && Connectors.Contains(selectConnector))
