@@ -4,7 +4,6 @@
 
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Utils.FileManagment;
-using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Debugging
 {
@@ -14,14 +13,14 @@ namespace SimpleAnnPlayground.Debugging
     public partial class FrmElementDesigner : Form
     {
         /// <summary>
-        /// Indicates if a list is being ordered.
-        /// </summary>
-        private bool _busy;
-
-        /// <summary>
         /// The component being edited.
         /// </summary>
-        private Component _component;
+        private readonly Component _component;
+
+        /// <summary>
+        /// Indicates if there is an operation being executed.
+        /// </summary>
+        private bool _busy;
 
         /// <summary>
         /// The component center is being drawn.
