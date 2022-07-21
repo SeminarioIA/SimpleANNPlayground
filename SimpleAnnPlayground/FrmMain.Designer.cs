@@ -148,6 +148,7 @@
             this.BtnOutputNeurone.Size = new System.Drawing.Size(52, 53);
             this.BtnOutputNeurone.Text = "Output";
             this.BtnOutputNeurone.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnOutputNeurone.Click += new System.EventHandler(this.BtnOutputNeurone_Click);
             // 
             // statusStrip1
             // 
