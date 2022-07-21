@@ -38,6 +38,7 @@
             this.BtnInternalNeurone = new System.Windows.Forms.ToolStripButton();
             this.BtnOutputNeurone = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.LblMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.PicWorkspace = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.MnuFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,6 +66,7 @@
             this.MnuDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuElementDesigner = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -152,12 +154,24 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 451);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.LblMousePosition});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 449);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(777, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(777, 24);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // LblMousePosition
+            // 
+            this.LblMousePosition.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.LblMousePosition.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.LblMousePosition.Name = "LblMousePosition";
+            this.LblMousePosition.Size = new System.Drawing.Size(53, 19);
+            this.LblMousePosition.Text = "X: -, Y: -";
             // 
             // PicWorkspace
             // 
@@ -166,10 +180,12 @@
             this.PicWorkspace.Location = new System.Drawing.Point(0, 80);
             this.PicWorkspace.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PicWorkspace.Name = "PicWorkspace";
-            this.PicWorkspace.Size = new System.Drawing.Size(777, 371);
+            this.PicWorkspace.Size = new System.Drawing.Size(777, 369);
             this.PicWorkspace.TabIndex = 2;
             this.PicWorkspace.TabStop = false;
             this.PicWorkspace.Paint += new System.Windows.Forms.PaintEventHandler(this.PicWorkspace_Paint);
+            this.PicWorkspace.MouseLeave += new System.EventHandler(this.PicWorkspace_MouseLeave);
+            this.PicWorkspace.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PicWorkspace_MouseMove);
             // 
             // menuStrip1
             // 
@@ -370,6 +386,8 @@
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -415,5 +433,6 @@
         private ToolStripMenuItem MnuToolsLanguage;
         private ToolStripMenuItem MnuDebug;
         private ToolStripMenuItem MnuElementDesigner;
+        private ToolStripStatusLabel LblMousePosition;
     }
 }

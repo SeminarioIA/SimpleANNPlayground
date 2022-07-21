@@ -198,5 +198,15 @@ namespace SimpleAnnPlayground
         {
             e.Cancel = false;
         }
+
+        private void PicWorkspace_MouseMove(object sender, MouseEventArgs e)
+        {
+            LblMousePosition.Text = $"X: {e.X}, Y: {e.Y}";
+        }
+
+        private void PicWorkspace_MouseLeave(object sender, EventArgs e)
+        {
+            LblMousePosition.Text = "X: -, Y: -";
+        }
     }
 }
