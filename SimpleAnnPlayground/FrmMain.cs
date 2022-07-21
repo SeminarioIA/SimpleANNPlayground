@@ -132,6 +132,9 @@ namespace SimpleAnnPlayground
 
             // Applying form language.
             Languages.ChangeFormLanguage(this, FormWords, formLanguage);
+
+            // Load components
+            Component.ReloadComponents(@"Graphical\Components");
         }
 
         private void MnuLang_Click(object? sender, EventArgs e)
@@ -162,9 +165,17 @@ namespace SimpleAnnPlayground
             ReloadComponents();
         }
 
+        private void BtnInputNeurone_Click(object sender, EventArgs e)
+        {
+            var neuron = new Ann.Neurons.Input(5, 30);
+            _picture.Objects.Add(neuron);
+            _shadow.Objects.Add(neuron);
+            PicWorkspace.Invalidate();
+        }
+
         private void BtnInternalNeurone_Click(object sender, EventArgs e)
         {
-            var neuron = new Ann.Neurons.Internal(30, 30);
+            var neuron = new Ann.Neurons.Internal(50, 30);
             _picture.Objects.Add(neuron);
             _shadow.Objects.Add(neuron);
             PicWorkspace.Invalidate();

@@ -52,7 +52,7 @@ $@"
         /// <summary>
         /// Gets the graphical object that represents an {component}.
         /// </summary>
-        internal static Component {component} {{ get; private set; }} = new Component(File.ReadAllText(@""Graphical\Components\{component}.cmpt""));
+        internal static Component {component} {{ get; private set; }} = new Component();
 ");
             }
 

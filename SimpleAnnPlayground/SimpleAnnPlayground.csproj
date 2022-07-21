@@ -64,6 +64,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Graphical\Components\InputNeuron.cmpt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Graphical\Components\InternalNeuron.cmpt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
