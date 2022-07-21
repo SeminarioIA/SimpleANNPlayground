@@ -88,7 +88,20 @@ namespace SimpleAnnPlayground.Utils.FileManagment
         /// </summary>
         /// <param name="fileContent">The content to save in the file.</param>
         /// <returns>True if the operation was successful.</returns>
-        public bool Save(object fileContent) => string.IsNullOrEmpty(FilePath) ? SaveAs(fileContent) : (fileContent?.Equals(FileContent) ?? false) || SaveOperation();
+        public bool Save(object fileContent)
+        {
+            if (string.IsNullOrEmpty(FilePath))
+            {
+                return SaveAs(fileContent);
+            }
+            else if (fileContent?.Equals(FileContent) == false)
+            {
+                FileContent = fileContent;
+                return SaveOperation();
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Saves the passed file content with a new file name.

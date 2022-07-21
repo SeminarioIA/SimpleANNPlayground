@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                _frmElementDesigner.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -37,7 +38,7 @@
             this.BtnInternalNeurone = new System.Windows.Forms.ToolStripButton();
             this.BtnOutputNeurone = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.PicWorkspace = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.MnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,7 @@
             this.MnuDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuElementDesigner = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -136,6 +137,7 @@
             this.BtnInternalNeurone.Size = new System.Drawing.Size(55, 53);
             this.BtnInternalNeurone.Text = "Internal";
             this.BtnInternalNeurone.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnInternalNeurone.Click += new System.EventHandler(this.BtnInternalNeurone_Click);
             // 
             // BtnOutputNeurone
             // 
@@ -155,16 +157,17 @@
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // pictureBox1
+            // PicWorkspace
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.White;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(0, 80);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(777, 371);
-            this.pictureBox1.TabIndex = 2;
-            this.pictureBox1.TabStop = false;
+            this.PicWorkspace.BackColor = System.Drawing.Color.White;
+            this.PicWorkspace.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PicWorkspace.Location = new System.Drawing.Point(0, 80);
+            this.PicWorkspace.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.PicWorkspace.Name = "PicWorkspace";
+            this.PicWorkspace.Size = new System.Drawing.Size(777, 371);
+            this.PicWorkspace.TabIndex = 2;
+            this.PicWorkspace.TabStop = false;
+            this.PicWorkspace.Paint += new System.Windows.Forms.PaintEventHandler(this.PicWorkspace_Paint);
             // 
             // menuStrip1
             // 
@@ -343,7 +346,7 @@
             // MnuElementDesigner
             // 
             this.MnuElementDesigner.Name = "MnuElementDesigner";
-            this.MnuElementDesigner.Size = new System.Drawing.Size(180, 22);
+            this.MnuElementDesigner.Size = new System.Drawing.Size(165, 22);
             this.MnuElementDesigner.Text = "Element designer";
             this.MnuElementDesigner.Click += new System.EventHandler(this.MnuElementDesigner_Click);
             // 
@@ -352,7 +355,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(777, 473);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.PicWorkspace);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -361,10 +364,11 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrmMain";
             this.Text = "Red Neuronal Artificial Interactiva";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -383,7 +387,7 @@
         private ToolStripButton BtnInternalNeurone;
         private ToolStripButton BtnOutputNeurone;
         private StatusStrip statusStrip1;
-        private PictureBox pictureBox1;
+        private PictureBox PicWorkspace;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem MnuFile;
         private ToolStripMenuItem MnuFileNew;

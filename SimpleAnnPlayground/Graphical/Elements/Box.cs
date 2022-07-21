@@ -79,18 +79,18 @@ namespace SimpleAnnPlayground.Graphical.Elements
         public float Height { get; set; }
 
         /// <inheritdoc/>
-        internal override void Paint(Graphics graphics)
+        internal override void Paint(Graphics graphics, bool shadowDraw)
         {
-            using (Pen pen = new Pen(Color))
+            if (!shadowDraw && BackColor != null)
             {
-                if (BackColor != null)
+                using (Brush brush = new SolidBrush(BackColor.Value))
                 {
-                    using (Brush brush = new SolidBrush(BackColor.Value))
-                    {
-                        graphics.FillRectangle(brush, X, Y, Width, Height);
-                    }
+                    graphics.FillRectangle(brush, X, Y, Width, Height);
                 }
+            }
 
+            using (Pen pen = new Pen(Canvas.GetShadowColor(Color, shadowDraw)))
+            {
                 graphics.DrawRectangle(pen, X, Y, Width, Height);
             }
         }

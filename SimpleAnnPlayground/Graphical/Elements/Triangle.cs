@@ -109,7 +109,7 @@ namespace SimpleAnnPlayground.Graphical.Elements
         public Color? BackColor { get; set; }
 
         /// <inheritdoc/>
-        internal override void Paint(Graphics graphics)
+        internal override void Paint(Graphics graphics, bool shadowDraw)
         {
             PointF[] triangle = new PointF[]
             {
@@ -118,16 +118,16 @@ namespace SimpleAnnPlayground.Graphical.Elements
                 new PointF(X + OffsetX2, Y + OffsetY2),
             };
 
-            using (Pen pen = new Pen(Color))
+            if (!shadowDraw && BackColor != null)
             {
-                if (BackColor != null)
+                using (Brush brush = new SolidBrush(BackColor.Value))
                 {
-                    using (Brush brush = new SolidBrush(BackColor.Value))
-                    {
-                        graphics.FillPolygon(brush, triangle);
-                    }
+                    graphics.FillPolygon(brush, triangle);
                 }
+            }
 
+            using (Pen pen = new Pen(Canvas.GetShadowColor(Color, shadowDraw)))
+            {
                 graphics.DrawPolygon(pen, triangle);
             }
         }

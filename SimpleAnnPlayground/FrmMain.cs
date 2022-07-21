@@ -2,6 +2,10 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Debugging;
+using SimpleAnnPlayground.Graphical;
+using System.Diagnostics;
+
 namespace SimpleAnnPlayground
 {
     /// <summary>
@@ -59,6 +63,21 @@ namespace SimpleAnnPlayground
         };
 
         /// <summary>
+        /// The main canvas to be displayed by the application.
+        /// </summary>
+        private readonly Canvas _picture;
+
+        /// <summary>
+        /// The shadow canvas to save the current state.
+        /// </summary>
+        private readonly Canvas _shadow;
+
+        /// <summary>
+        /// The form to design components using elements.
+        /// </summary>
+        private readonly FrmElementDesigner _frmElementDesigner;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FrmMain"/> class.
         /// </summary>
         public FrmMain()
@@ -69,6 +88,20 @@ namespace SimpleAnnPlayground
             // Add debug elements.
             MnuDebug.Visible = true;
 #endif
+            _frmElementDesigner = new FrmElementDesigner();
+
+            _picture = new Canvas();
+            _shadow = new Canvas();
+        }
+
+        /// <summary>
+        /// Reloads the graphical components from the file system.
+        /// </summary>
+        internal void ReloadComponents()
+        {
+            string path = Debugger.IsAttached ? @"..\..\..\Graphical\Components" : ".";
+            Component.ReloadComponents(path);
+            PicWorkspace.Invalidate();
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -125,10 +158,26 @@ namespace SimpleAnnPlayground
 
         private void MnuElementDesigner_Click(object sender, EventArgs e)
         {
-            using (Debugging.FrmElementDesigner frmElementDesigner = new Debugging.FrmElementDesigner())
-            {
-                _ = frmElementDesigner.ShowDialog();
-            }
+            _frmElementDesigner.Show(this);
+            ReloadComponents();
+        }
+
+        private void BtnInternalNeurone_Click(object sender, EventArgs e)
+        {
+            var neuron = new Ann.Neurons.Internal(30, 30);
+            _picture.Objects.Add(neuron);
+            _shadow.Objects.Add(neuron);
+            PicWorkspace.Invalidate();
+        }
+
+        private void PicWorkspace_Paint(object sender, PaintEventArgs e)
+        {
+            _picture.Draw(e.Graphics);
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = false;
         }
     }
 }
