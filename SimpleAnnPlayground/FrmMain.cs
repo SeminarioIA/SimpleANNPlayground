@@ -181,6 +181,14 @@ namespace SimpleAnnPlayground
             PicWorkspace.Invalidate();
         }
 
+        private void BtnOutputNeurone_Click(object sender, EventArgs e)
+        {
+            var neuron = new Ann.Neurons.Output(95, 30);
+            _picture.Objects.Add(neuron);
+            _shadow.Objects.Add(neuron);
+            PicWorkspace.Invalidate();
+        }
+
         private void PicWorkspace_Paint(object sender, PaintEventArgs e)
         {
             _picture.Draw(e.Graphics);
