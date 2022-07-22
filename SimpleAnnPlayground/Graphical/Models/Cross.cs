@@ -2,7 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-namespace SimpleAnnPlayground.Graphical
+namespace SimpleAnnPlayground.Graphical.Models
 {
     /// <summary>
     /// Represents an cross object to draw.
@@ -48,7 +48,7 @@ namespace SimpleAnnPlayground.Graphical
         /// <param name="graphics">The object to perform the paint operation.</param>
         internal void Paint(Graphics graphics)
         {
-            using (Pen pen = new Pen(Color.Red, CrossWidth))
+            using (var pen = new Pen(Color.Red, CrossWidth))
             {
                 graphics.DrawLine(pen, Location.X - Size, Location.Y, Location.X + Size, Location.Y);
                 graphics.DrawLine(pen, Location.X, Location.Y - Size, Location.X, Location.Y + Size);

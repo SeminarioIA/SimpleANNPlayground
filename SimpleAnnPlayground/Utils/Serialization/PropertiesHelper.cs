@@ -2,7 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-using SimpleAnnPlayground.Graphical;
+using SimpleAnnPlayground.Graphical.Models;
 using System.Globalization;
 
 namespace SimpleAnnPlayground.Utils.Serialization

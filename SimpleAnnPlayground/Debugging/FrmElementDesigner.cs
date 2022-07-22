@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical;
+using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Utils.FileManagment;
 
 namespace SimpleAnnPlayground.Debugging
@@ -164,13 +165,13 @@ namespace SimpleAnnPlayground.Debugging
                 }
             }
 
-            _component.Paint(e.Graphics, PointF.Empty, _state, CkbConnectors.Checked, LstConnectors.SelectedItem as Connector);
+            _component.Paint(e.Graphics, PointF.Empty, _state, LstConnectors.SelectedItem as Connector);
 
             // Paint the component center with a cross.
             if (_drawCenter)
             {
                 const int CROSS_SIZE = 3;
-                var cross = new Cross(Color.Red, _component.Location, CROSS_SIZE);
+                var cross = new Cross(Color.Red, _component.Center, CROSS_SIZE);
                 cross.Paint(e.Graphics);
             }
         }
@@ -220,6 +221,8 @@ namespace SimpleAnnPlayground.Debugging
             }
 
             LstModes.SelectedIndex = 0;
+            PgdProperties.SelectedObject = _component;
+            _drawCenter = true;
 
             // Paint objects in the picture box
             PicDraw.Invalidate();

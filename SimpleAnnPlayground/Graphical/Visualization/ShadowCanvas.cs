@@ -2,7 +2,9 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-namespace SimpleAnnPlayground.Graphical
+using System.Collections.ObjectModel;
+
+namespace SimpleAnnPlayground.Graphical.Visualization
 {
     /// <summary>
     /// Represents a shadow of a <see cref="Canvas"/>.
@@ -20,21 +22,24 @@ namespace SimpleAnnPlayground.Graphical
         public override void AddObject(CanvasObject obj)
         {
             object? copy = Activator.CreateInstance(obj.GetType(), obj);
-            if (copy is CanvasObject canvasObject)
+            if (copy is CanvasObject shadow)
             {
-                base.AddObject(canvasObject);
-                canvasObject.SetStateFlag(Component.State.Shadow);
+                base.AddObject(shadow);
+                shadow.State = Component.State.Shadow;
             }
         }
 
         /// <summary>
         /// Executes a move operation over an object.
         /// </summary>
-        /// <param name="obj">The moving object.</param>
-        internal void MoveObject(CanvasObject obj)
+        /// <param name="objects">The collection of objects to move.</param>
+        internal void MoveObjects(Collection<CanvasObject> objects)
         {
-            var shadow = Objects.First(shadow => shadow.Equals(obj));
-            shadow.Location = obj.Location;
+            foreach (CanvasObject obj in objects)
+            {
+                var shadow = Objects.First(shadow => shadow.Equals(obj));
+                shadow.Location = obj.Location;
+            }
         }
     }
 }

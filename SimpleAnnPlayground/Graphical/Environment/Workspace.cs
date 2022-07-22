@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Graphical.Visualization;
 using System.Drawing.Drawing2D;
 
 namespace SimpleAnnPlayground.Graphical.Environment
@@ -54,15 +55,15 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <summary>
         /// Forces to paint the workspace.
         /// </summary>
-        public void Paint() => PictureBox.Invalidate();
+        public void Refresh() => PictureBox.Invalidate();
 
         private void PictureBox_Paint(object? sender, PaintEventArgs e)
         {
             // Draw the shadow canvas.
-            Shadow.Draw(e.Graphics);
+            Shadow.Paint(e.Graphics);
 
             // Draw the main canvas.
-            Canvas.Draw(e.Graphics);
+            Canvas.Paint(e.Graphics);
 
             // Draw mouse tool controls.
             MouseTool.Paint(e.Graphics);

@@ -2,9 +2,11 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Utils.Serialization;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace SimpleAnnPlayground.Graphical
 {
@@ -133,16 +135,8 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Gets the component location.
         /// </summary>
-        public PointF Location => new (X, Y);
-
-        /// <summary>
-        /// Gets a copy of this component connectors.
-        /// </summary>
-        /// <returns>A collection of the connectors copies.</returns>
-        public Collection<Connector> GetConnectorsCopy()
-        {
-            return new Collection<Connector>(Connectors.ToList().ConvertAll(conn => new Connector(conn)));
-        }
+        [Browsable(false)]
+        public PointF Center => new (X, Y);
 
         /// <summary>
         /// Serializes a collection of elements into a string.
@@ -172,6 +166,9 @@ namespace SimpleAnnPlayground.Graphical
 
             // Serialize the selector.
             data.Add(new KeyValuePair<string, string>(nameof(Selector), Selector.Serialize()));
+
+            // Serialize the component center.
+            data.Add(new KeyValuePair<string, string>(nameof(Center), $"X: {X}, Y: {Y}"));
 
             return TextSerializer.Serialize(data);
         }
@@ -224,6 +221,14 @@ namespace SimpleAnnPlayground.Graphical
                         Selector.Deserialize(item.Value);
                         break;
                     }
+
+                    case nameof(Center):
+                    {
+                        var center = TextSerializer.Deserialize(item.Value).ToDictionary(pair => pair.Key, pair => float.Parse(pair.Value, CultureInfo.CurrentCulture));
+                        X = center[nameof(X)];
+                        Y = center[nameof(Y)];
+                        break;
+                    }
                 }
             }
         }
@@ -235,12 +240,11 @@ namespace SimpleAnnPlayground.Graphical
         /// <param name="graphics">The graphics object.</param>
         /// <param name="location">The location to draw the component.</param>
         /// <param name="state">The component state.</param>
-        /// <param name="shadowConnectors">Indicates if the connectors are shown as a shadow.</param>
         /// <param name="selectConnector">Indicates if a connector will be selected.</param>
-        internal void Paint(Graphics graphics, PointF location, State state = State.None, bool shadowConnectors = false, Connector? selectConnector = null)
+        internal void Paint(Graphics graphics, PointF location, State state = State.None, Connector? selectConnector = null)
         {
             // Translate the transform to the componnent coordinates.
-            graphics.TranslateTransform(location.X, location.Y);
+            graphics.TranslateTransform(location.X - Center.X, location.Y - Center.Y);
 
             // Draw backgroung selector
             if (state.HasFlag(State.SimulationStep) || state.HasFlag(State.SimulationPass) || state.HasFlag(State.SimulationError))
@@ -279,7 +283,7 @@ namespace SimpleAnnPlayground.Graphical
             }
 
             // Restore transform.
-            graphics.TranslateTransform(-location.X, -location.Y);
+            graphics.TranslateTransform(Center.X - location.X, Center.Y - location.Y);
         }
     }
 }

@@ -5,7 +5,7 @@
 using SimpleAnnPlayground.Utils.Serialization;
 using System.ComponentModel;
 
-namespace SimpleAnnPlayground.Graphical
+namespace SimpleAnnPlayground.Graphical.Models
 {
     /// <summary>
     /// Represents an element to be drawn as a rectangle.
@@ -172,7 +172,7 @@ namespace SimpleAnnPlayground.Graphical
 
             if (selected)
             {
-                using (Pen pen = new Pen(SelectionColor, 0.1f) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash })
+                using (var pen = new Pen(SelectionColor, 0.1f) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash })
                 {
                     graphics.DrawRectangle(pen, X, Y, Width, Height);
                 }
