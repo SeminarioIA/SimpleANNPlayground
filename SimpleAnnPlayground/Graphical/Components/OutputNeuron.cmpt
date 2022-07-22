@@ -7,6 +7,6 @@ Elements:
     BackColor: Black, Width: 8, Height: 3, Color: Black, X: 26, Y: 16
   
 Connectors:
-    X: 3, Y: 18
+  Type: Input, X: 3, Y: 18
 Selector:
   X: 0, Y: 0, Width: 37, Height: 37

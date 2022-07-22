@@ -20,36 +20,84 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Indicates the color for the connector.
         /// </summary>
-        private static readonly Color Color = Color.Blue;
+        private static readonly Color InputColor = Color.Blue;
 
         /// <summary>
         /// Indicates the color for the shadow of the connector.
         /// </summary>
-        private static readonly Color ShadowColor = Color.LightBlue;
+        private static readonly Color InputShadowColor = Color.LightBlue;
+
+        /// <summary>
+        /// Indicates the color for the connector.
+        /// </summary>
+        private static readonly Color OutputColor = Color.Red;
+
+        /// <summary>
+        /// Indicates the color for the shadow of the connector.
+        /// </summary>
+        private static readonly Color OutputShadowColor = Color.LightCoral;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Connector"/> class.
         /// </summary>
-        /// <param name="x">The X coordinate of the element.</param>
-        /// <param name="y">The Y coordinate of the element.</param>
-        public Connector(float x, float y)
+        public Connector()
         {
-            X = x;
-            Y = y;
         }
 
         /// <summary>
-        /// Gets or sets the X coordinate of this element.
+        /// Initializes a new instance of the <see cref="Connector"/> class.
+        /// </summary>
+        /// <param name="type">The type of connector.</param>
+        public Connector(Types type)
+        {
+            Type = type;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Connector"/> class.
+        /// </summary>
+        /// <param name="other">The object to copy.</param>
+        internal Connector(Connector other)
+        {
+            X = other.X;
+            Y = other.Y;
+            Type = other.Type;
+        }
+
+        /// <summary>
+        /// The type of connector.
+        /// </summary>
+        public enum Types
+        {
+            /// <summary>
+            /// An input connector.
+            /// </summary>
+            Input,
+
+            /// <summary>
+            /// An output connector.
+            /// </summary>
+            Output,
+        }
+
+        /// <summary>
+        /// Gets or sets the type of connector.
+        /// </summary>
+        [Description("The connector type.")]
+        public Types Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets the X coordinate of this connector.
         /// </summary>
         [Category("Location")]
-        [Description("The X coordinate of this element.")]
+        [Description("The X coordinate of this connector.")]
         public float X { get; set; }
 
         /// <summary>
-        /// Gets or sets the Y coordinate of this element.
+        /// Gets or sets the Y coordinate of this connector.
         /// </summary>
         [Category("Location")]
-        [Description("The Y coordinate of this element.")]
+        [Description("The Y coordinate of this connector.")]
         public float Y { get; set; }
 
         /// <summary>
@@ -74,7 +122,7 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <inheritdoc/>
-        public override string ToString() => nameof(Connector);
+        public override string ToString() => Type.ToString();
 
         /// <summary>
         /// Paints the connector in a graphics object.
@@ -83,13 +131,27 @@ namespace SimpleAnnPlayground.Graphical
         /// <param name="shadowDraw">Indicates if the connector is drawn as a shadow.</param>
         internal void Paint(Graphics graphics, bool shadowDraw = false)
         {
-            Color color = shadowDraw ? ShadowColor : Color;
+            Color color = Type == Types.Input
+                ? shadowDraw ? InputShadowColor : InputColor
+                : shadowDraw ? OutputShadowColor : OutputColor;
+
             using (Brush brush = new SolidBrush(color))
             {
                 float x = X - _shape.Width / 2f;
                 float y = Y - _shape.Height / 2f;
                 graphics.FillEllipse(brush, x, y, _shape.Width, _shape.Height);
             }
+        }
+
+        /// <summary>
+        /// Determines if a point is part if this connector.
+        /// </summary>
+        /// <param name="point">The passed point.</param>
+        /// <returns>True if the point is part of the connector.</returns>
+        internal bool HasPoint(Point point)
+        {
+            var rect = new RectangleF(new PointF(X - _shape.Width / 2f, Y - _shape.Height / 2f), _shape);
+            return rect.Contains(point);
         }
     }
 }

@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Graphical;
 using System.Globalization;
 
 namespace SimpleAnnPlayground.Utils.Serialization
@@ -23,20 +24,23 @@ namespace SimpleAnnPlayground.Utils.Serialization
 
             foreach (var property in objType.GetProperties())
             {
-                string name = property.Name;
-                object? value = property.GetValue(obj);
+                if (property.CanWrite && property.CanRead)
+                {
+                    string name = property.Name;
+                    object? value = property.GetValue(obj);
 
-                if (value is ITextSerializable serializable)
-                {
-                    properties.Add(new KeyValuePair<string, string>(name, serializable.Serialize()));
-                }
-                else if (value is Color color)
-                {
-                    properties.Add(new KeyValuePair<string, string>(name, color.Name));
-                }
-                else
-                {
-                    properties.Add(new KeyValuePair<string, string>(name, value?.ToString() ?? string.Empty));
+                    if (value is ITextSerializable serializable)
+                    {
+                        properties.Add(new KeyValuePair<string, string>(name, serializable.Serialize()));
+                    }
+                    else if (value is Color color)
+                    {
+                        properties.Add(new KeyValuePair<string, string>(name, color.Name));
+                    }
+                    else
+                    {
+                        properties.Add(new KeyValuePair<string, string>(name, value?.ToString() ?? string.Empty));
+                    }
                 }
             }
 
@@ -79,6 +83,14 @@ namespace SimpleAnnPlayground.Utils.Serialization
                     else if (property.PropertyType == typeof(Color))
                     {
                         property.SetValue(obj, Color.FromName(prop.Value));
+                    }
+                    else if (property.PropertyType == typeof(Connector.Types))
+                    {
+                        property.SetValue(obj, Enum.Parse<Connector.Types>(prop.Value));
+                    }
+                    else
+                    {
+                        throw new NotImplementedException(property.PropertyType.Name);
                     }
                 }
             }

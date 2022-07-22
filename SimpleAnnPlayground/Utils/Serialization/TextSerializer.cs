@@ -60,7 +60,7 @@ namespace SimpleAnnPlayground.Utils.Serialization
         /// <returns>The serialized string.</returns>
         public static string SerializeList(List<string> data)
         {
-            return string.Join(Environment.NewLine, data.ConvertAll(line => $"  {line}"));
+            return string.Join(Environment.NewLine, data.ConvertAll(line => $"{line}"));
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace SimpleAnnPlayground.Utils.Serialization
             var lines = new List<string>();
             foreach (string line in text.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries))
             {
-                lines.Add(line.Substring(2));
+                lines.Add(line);
             }
 
             return lines;

@@ -4,6 +4,7 @@
 
 using SimpleAnnPlayground.Debugging;
 using SimpleAnnPlayground.Graphical;
+using SimpleAnnPlayground.Graphical.Environment;
 using System.Diagnostics;
 
 namespace SimpleAnnPlayground
@@ -63,19 +64,14 @@ namespace SimpleAnnPlayground
         };
 
         /// <summary>
-        /// The main canvas to be displayed by the application.
-        /// </summary>
-        private readonly Canvas _picture;
-
-        /// <summary>
-        /// The shadow canvas to save the current state.
-        /// </summary>
-        private readonly Canvas _shadow;
-
-        /// <summary>
         /// The form to design components using elements.
         /// </summary>
         private readonly FrmElementDesigner _frmElementDesigner;
+
+        /// <summary>
+        /// The design workspace area.
+        /// </summary>
+        private readonly Workspace _workspace;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FrmMain"/> class.
@@ -90,8 +86,10 @@ namespace SimpleAnnPlayground
 #endif
             _frmElementDesigner = new FrmElementDesigner();
 
-            _picture = new Canvas();
-            _shadow = new Canvas();
+            // Add workspace object.
+            _workspace = new Workspace(PicWorkspace);
+            _workspace.MouseTool.MouseMove += MouseTool_MouseMove;
+            _workspace.MouseTool.ObjectAdded += MouseTool_ObjectAdded;
         }
 
         /// <summary>
@@ -137,6 +135,11 @@ namespace SimpleAnnPlayground
             Component.ReloadComponents(@"Graphical\Components");
         }
 
+        private void MouseTool_MouseMove(object? sender, EventArgs e)
+        {
+            LblMousePosition.Text = _workspace.MouseTool.Location is PointF point ? $"X: {point.X}, Y: {point.Y}" : "X: -, Y: -";
+        }
+
         private void MnuLang_Click(object? sender, EventArgs e)
         {
             if (sender is ToolStripMenuItem selectetItem)
@@ -165,48 +168,32 @@ namespace SimpleAnnPlayground
             ReloadComponents();
         }
 
-        private void BtnInputNeurone_Click(object sender, EventArgs e)
-        {
-            var neuron = new Ann.Neurons.Input(5, 30);
-            _picture.Objects.Add(neuron);
-            _shadow.Objects.Add(neuron);
-            PicWorkspace.Invalidate();
-        }
-
-        private void BtnInternalNeurone_Click(object sender, EventArgs e)
-        {
-            var neuron = new Ann.Neurons.Internal(50, 30);
-            _picture.Objects.Add(neuron);
-            _shadow.Objects.Add(neuron);
-            PicWorkspace.Invalidate();
-        }
-
-        private void BtnOutputNeurone_Click(object sender, EventArgs e)
-        {
-            var neuron = new Ann.Neurons.Output(95, 30);
-            _picture.Objects.Add(neuron);
-            _shadow.Objects.Add(neuron);
-            PicWorkspace.Invalidate();
-        }
-
-        private void PicWorkspace_Paint(object sender, PaintEventArgs e)
-        {
-            _picture.Draw(e.Graphics);
-        }
-
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = false;
         }
 
-        private void PicWorkspace_MouseMove(object sender, MouseEventArgs e)
+        private void BtnInsertNeurone_Click(object? sender, EventArgs e)
         {
-            LblMousePosition.Text = $"X: {e.X}, Y: {e.Y}";
+            var insertButtons = new ToolStripButton[] { BtnInputNeurone, BtnInternalNeurone, BtnOutputNeurone };
+            ToolStripButton? button = sender as ToolStripButton;
+
+            if (button?.Checked ?? false) button = null;
+
+            foreach (var btn in insertButtons)
+            {
+                btn.Checked = btn == button;
+            }
+
+            if (button == BtnInputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(0, 0));
+            else if (button == BtnInternalNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Internal(0, 0));
+            else if (button == BtnOutputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Output(0, 0));
+            else _workspace.MouseTool.CancelOperation();
         }
 
-        private void PicWorkspace_MouseLeave(object sender, EventArgs e)
+        private void MouseTool_ObjectAdded(object? sender, ObjectAddedEventArgs e)
         {
-            LblMousePosition.Text = "X: -, Y: -";
+            BtnInsertNeurone_Click(null, new EventArgs());
         }
     }
 }

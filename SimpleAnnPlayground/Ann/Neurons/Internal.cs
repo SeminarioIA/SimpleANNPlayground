@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical;
+using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Ann.Neurons
 {
@@ -19,6 +20,29 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public Internal(int x, int y)
             : base(Component.InternalNeuron, x, y)
         {
+            Inputs = new Collection<Connection>();
+            Outputs = new Collection<Connection>();
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Internal"/> class.
+        /// </summary>
+        /// <param name="other">Other object to copy.</param>
+        public Internal(Internal other)
+            : base(other)
+        {
+            Inputs = other.Inputs;
+            Outputs = other.Outputs;
+        }
+
+        /// <summary>
+        /// Gets the input connections of this object.
+        /// </summary>
+        public Collection<Connection> Inputs { get; private set; }
+
+        /// <summary>
+        /// Gets the output connections of this object.
+        /// </summary>
+        public Collection<Connection> Outputs { get; private set; }
     }
 }

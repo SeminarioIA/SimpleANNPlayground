@@ -5,7 +5,7 @@
 namespace SimpleAnnPlayground.Graphical
 {
     /// <summary>
-    /// Represents a canvas to graw graphical objects.
+    /// Represents a canvas to draw graphical objects.
     /// </summary>
     internal class Canvas
     {
@@ -20,7 +20,7 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Gets the list of objects on this canvas.
         /// </summary>
-        public List<CanvasObject> Objects { get; private set; }
+        protected List<CanvasObject> Objects { get; private set; }
 
         /// <summary>
         /// Converts a color object into another color with less bright.
@@ -34,10 +34,34 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <summary>
+        /// Adds an object to the canvas.
+        /// </summary>
+        /// <param name="obj">The object to be added.</param>
+        public virtual void AddObject(CanvasObject obj) => Objects.Add(obj);
+
+        /// <summary>
+        /// Determines if a location touches a <see cref="CanvasObject"/>.
+        /// </summary>
+        /// <param name="location">The location to test.</param>
+        /// <returns>The object in the location, otherwise null.</returns>
+        public CanvasObject? IsObject(PointF location)
+        {
+            foreach (var obj in Objects)
+            {
+                if (obj.HasPoint(Point.Truncate(location)))
+                {
+                    return obj;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Draws all the canvas objects over a graphics.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
-        public void Draw(Graphics graphics)
+        internal void Draw(Graphics graphics)
         {
             foreach (CanvasObject obj in Objects)
             {
@@ -48,7 +72,7 @@ namespace SimpleAnnPlayground.Graphical
         private static int ShadowValue(byte value)
         {
             int diff = byte.MaxValue - value;
-            int inc = 9 * diff / 10;
+            int inc = 93 * diff / 100;
             return inc + value;
         }
     }
