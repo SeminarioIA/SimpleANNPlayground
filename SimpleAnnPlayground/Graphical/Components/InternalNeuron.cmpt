@@ -7,7 +7,7 @@ Elements:
     OffsetX1: 0, OffsetY1: 10, OffsetX2: 5, OffsetY2: 5, BackColor: Black, Color: Black, X: 26, Y: 13
   
 Connectors:
-    X: 3, Y: 18
-    X: 33, Y: 18
+  Type: Input, X: 3, Y: 18
+  Type: Output, X: 33, Y: 18
 Selector:
   X: 0, Y: 0, Width: 37, Height: 37

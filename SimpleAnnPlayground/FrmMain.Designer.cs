@@ -130,7 +130,7 @@
             this.BtnInputNeurone.Size = new System.Drawing.Size(41, 53);
             this.BtnInputNeurone.Text = "Input";
             this.BtnInputNeurone.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.BtnInputNeurone.Click += new System.EventHandler(this.BtnInputNeurone_Click);
+            this.BtnInputNeurone.Click += new System.EventHandler(this.BtnInsertNeurone_Click);
             // 
             // BtnInternalNeurone
             // 
@@ -140,7 +140,7 @@
             this.BtnInternalNeurone.Size = new System.Drawing.Size(55, 53);
             this.BtnInternalNeurone.Text = "Internal";
             this.BtnInternalNeurone.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.BtnInternalNeurone.Click += new System.EventHandler(this.BtnInternalNeurone_Click);
+            this.BtnInternalNeurone.Click += new System.EventHandler(this.BtnInsertNeurone_Click);
             // 
             // BtnOutputNeurone
             // 
@@ -150,7 +150,7 @@
             this.BtnOutputNeurone.Size = new System.Drawing.Size(52, 53);
             this.BtnOutputNeurone.Text = "Output";
             this.BtnOutputNeurone.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.BtnOutputNeurone.Click += new System.EventHandler(this.BtnOutputNeurone_Click);
+            this.BtnOutputNeurone.Click += new System.EventHandler(this.BtnInsertNeurone_Click);
             // 
             // statusStrip1
             // 
@@ -183,9 +183,6 @@
             this.PicWorkspace.Size = new System.Drawing.Size(777, 369);
             this.PicWorkspace.TabIndex = 2;
             this.PicWorkspace.TabStop = false;
-            this.PicWorkspace.Paint += new System.Windows.Forms.PaintEventHandler(this.PicWorkspace_Paint);
-            this.PicWorkspace.MouseLeave += new System.EventHandler(this.PicWorkspace_MouseLeave);
-            this.PicWorkspace.MouseMove += new System.Windows.Forms.MouseEventHandler(this.PicWorkspace_MouseMove);
             // 
             // menuStrip1
             // 

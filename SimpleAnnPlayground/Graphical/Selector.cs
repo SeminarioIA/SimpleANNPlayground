@@ -40,7 +40,7 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// The color used to signal the component when is selected.
         /// </summary>
-        public static readonly Color SelectionColor = Color.Black;
+        public static readonly Color SelectionColor = Color.Blue;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Selector"/> class.
@@ -97,6 +97,11 @@ namespace SimpleAnnPlayground.Graphical
         [Category("Size")]
         [Description("The height of this element.")]
         public float Height { get; set; }
+
+        /// <summary>
+        /// Gets the selector rectangle for this object.
+        /// </summary>
+        public RectangleF Rectangle => new (X, Y, Width, Height);
 
         /// <inheritdoc/>
         public override string ToString() => GetType().Name;

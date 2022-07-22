@@ -63,34 +63,39 @@ namespace SimpleAnnPlayground.Graphical
             Shadow = 1,
 
             /// <summary>
+            /// The component has the cursor on it.
+            /// </summary>
+            Hover = 2,
+
+            /// <summary>
             /// The component is selected.
             /// </summary>
-            Selected = 2,
+            Selected = 4,
 
             /// <summary>
             /// The component is going to be executed in the simulation.
             /// </summary>
-            SimulationStep = 4,
+            SimulationStep = 8,
 
             /// <summary>
             /// The component was succesfully simulated.
             /// </summary>
-            SimulationPass = 8,
+            SimulationPass = 16,
 
             /// <summary>
             /// The component had a simulation error.
             /// </summary>
-            SimulationError = 16,
+            SimulationError = 32,
 
             /// <summary>
             /// There is a warning about the component.
             /// </summary>
-            ComponentWarn = 32,
+            ComponentWarn = 64,
 
             /// <summary>
             /// There is an error about the component.
             /// </summary>
-            ComponentError = 64,
+            ComponentError = 128,
         }
 
         /// <summary>
@@ -124,6 +129,20 @@ namespace SimpleAnnPlayground.Graphical
         [Category("Center")]
         [Description("The center Y coordinate of this element.")]
         public float Y { get; set; }
+
+        /// <summary>
+        /// Gets the component location.
+        /// </summary>
+        public PointF Location => new (X, Y);
+
+        /// <summary>
+        /// Gets a copy of this component connectors.
+        /// </summary>
+        /// <returns>A collection of the connectors copies.</returns>
+        public Collection<Connector> GetConnectorsCopy()
+        {
+            return new Collection<Connector>(Connectors.ToList().ConvertAll(conn => new Connector(conn)));
+        }
 
         /// <summary>
         /// Serializes a collection of elements into a string.
@@ -190,7 +209,7 @@ namespace SimpleAnnPlayground.Graphical
                     {
                         foreach (string conn in TextSerializer.DeserializeList(item.Value))
                         {
-                            var connector = new Connector(0f, 0f);
+                            var connector = new Connector();
                             connector.Deserialize(conn);
                             connectors.Add(connector);
                         }
@@ -238,10 +257,13 @@ namespace SimpleAnnPlayground.Graphical
             // Draw connectors.
             if (!state.HasFlag(State.Shadow))
             {
-                // Draw elements connectors.
-                foreach (Connector connector in Connectors)
+                if (state.HasFlag(State.Hover))
                 {
-                    connector.Paint(graphics, shadowConnectors);
+                    // Draw elements connectors.
+                    foreach (Connector connector in Connectors)
+                    {
+                        connector.Paint(graphics, true);
+                    }
                 }
 
                 if (selectConnector != null && Connectors.Contains(selectConnector))

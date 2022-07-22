@@ -123,7 +123,21 @@ namespace SimpleAnnPlayground.Debugging
             PicDraw.Invalidate();
         }
 
-        private void PgdProperties_PropertyValueChanged(object s, PropertyValueChangedEventArgs e) => PicDraw.Invalidate();
+        private void PgdProperties_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            _busy = true;
+            if (LstConnectors.SelectedItem != null)
+            {
+                int index = LstConnectors.SelectedIndex;
+                object connector = LstConnectors.SelectedItem;
+                LstConnectors.Items.Remove(connector);
+                LstConnectors.Items.Insert(index, connector);
+                LstConnectors.SelectedItem = connector;
+            }
+
+            PicDraw.Invalidate();
+            _busy = false;
+        }
 
         /// <summary>
         /// Paints the picture box content.
@@ -155,12 +169,9 @@ namespace SimpleAnnPlayground.Debugging
             // Paint the component center with a cross.
             if (_drawCenter)
             {
-                using (Pen pen = new Pen(Color.Red, 0.1f))
-                {
-                    const int CROSS_SIZE = 3;
-                    e.Graphics.DrawLine(pen, _component.X - CROSS_SIZE, _component.Y, _component.X + CROSS_SIZE, _component.Y);
-                    e.Graphics.DrawLine(pen, _component.X, _component.Y - CROSS_SIZE, _component.X, _component.Y + CROSS_SIZE);
-                }
+                const int CROSS_SIZE = 3;
+                var cross = new Cross(Color.Red, _component.Location, CROSS_SIZE);
+                cross.Paint(e.Graphics);
             }
         }
 
@@ -276,8 +287,9 @@ namespace SimpleAnnPlayground.Debugging
         private void BtnAddConnector_Click(object sender, EventArgs e)
         {
             _busy = true;
-            var connector = new Connector(0f, 0f);
+            var connector = new Connector();
             LstConnectors.SelectedIndex = LstConnectors.Items.Add(connector);
+            PgdProperties.SelectedObject = connector;
             PicDraw.Invalidate();
             _busy = false;
         }
