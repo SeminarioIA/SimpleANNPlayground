@@ -177,11 +177,14 @@ namespace SimpleAnnPlayground.Graphical.Environment
 
             if (Inserting != null)
             {
-                Workspace.Canvas.AddObject(Inserting);
-                Workspace.Shadow.AddObject(Inserting);
-                Inserting.SetStateFlag(Component.State.Selected);
-                ObjectAdded?.Invoke(this, new ObjectAddedEventArgs(Inserting, Workspace));
-                Inserting = null;
+                if (!Workspace.Canvas.IntesectsObject(Inserting))
+                {
+                    Workspace.Canvas.AddObject(Inserting);
+                    Workspace.Shadow.AddObject(Inserting);
+                    Inserting.SetStateFlag(Component.State.Selected);
+                    ObjectAdded?.Invoke(this, new ObjectAddedEventArgs(Inserting, Workspace));
+                    Inserting = null;
+                }
             }
             else if (Moving != null)
             {
@@ -257,6 +260,10 @@ namespace SimpleAnnPlayground.Graphical.Environment
             if (State == MouseState.Idle)
             {
                 Workspace.Canvas.UpdateMousePosition(Location.Value);
+            }
+            else if (Inserting != null)
+            {
+                Workspace.PictureBox.Cursor = Workspace.Canvas.IntesectsObject(Inserting) ? Cursors.No : Cursors.Cross;
             }
             else if (Selecting != null)
             {

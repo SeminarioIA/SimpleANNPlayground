@@ -61,6 +61,24 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <summary>
+        /// Determines if an object intersects another object.
+        /// </summary>
+        /// <param name="object">The object to test.</param>
+        /// <returns>True if there is an object intercting, otherwise false.</returns>
+        public bool IntesectsObject(CanvasObject @object)
+        {
+            foreach (var obj in Objects)
+            {
+                if (obj != @object && obj.SelectionArea.IntersectsWith(@object.SelectionArea))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Selects all the objects on this canvas.
         /// </summary>
         internal void SelectAll()
