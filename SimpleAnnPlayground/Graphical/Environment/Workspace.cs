@@ -59,10 +59,10 @@ namespace SimpleAnnPlayground.Graphical.Environment
         private void PictureBox_Paint(object? sender, PaintEventArgs e)
         {
             // Draw the shadow canvas.
-            Shadow.Draw(e.Graphics);
+            Shadow.Paint(e.Graphics);
 
             // Draw the main canvas.
-            Canvas.Draw(e.Graphics);
+            Canvas.Paint(e.Graphics);
 
             // Draw mouse tool controls.
             MouseTool.Paint(e.Graphics);

@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Utils;
 using System.Collections.ObjectModel;
@@ -215,6 +216,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
             }
             else if (Connecting != null)
             {
+                if (Connecting.Finish() is Connection connection)
+                {
+                    Workspace.Canvas.AddConnection(connection);
+                }
+
                 Connecting = null;
             }
 
@@ -248,7 +254,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                 {
                     // Paint the object being inserted
                     Inserting.Location = Point.Truncate(point);
-                    Inserting.Draw(graphics);
+                    Inserting.Paint(graphics);
                 }
                 else if (Selecting != null)
                 {
@@ -294,8 +300,8 @@ namespace SimpleAnnPlayground.Graphical.Environment
             }
             else if (Connecting != null)
             {
-                Connecting.UpdateEndPoint(Location.Value);
                 Workspace.Canvas.UpdateConnectingPosition(Location.Value, Connecting);
+                Connecting.Update(Location.Value, Workspace.Canvas.GetActiveObject(Connecting.Source));
             }
 
             MouseMove?.Invoke(this, new EventArgs());

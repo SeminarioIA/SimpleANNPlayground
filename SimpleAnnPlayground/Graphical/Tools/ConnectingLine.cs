@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Ann.Neurons;
+
 namespace SimpleAnnPlayground.Graphical.Tools
 {
     /// <summary>
@@ -64,9 +66,25 @@ namespace SimpleAnnPlayground.Graphical.Tools
         /// Updates the mouse location.
         /// </summary>
         /// <param name="location">The current mouse location.</param>
-        public void UpdateEndPoint(PointF location)
+        /// <param name="destination">The current destination object.</param>
+        public void Update(PointF location, CanvasObject? destination)
         {
             EndPoint = location;
+            Destination = destination;
+            End = destination?.ActiveConnector;
+        }
+
+        /// <summary>
+        /// Ends the connection and returns a new connection object if was successful.
+        /// </summary>
+        /// <returns>The connection object.</returns>
+        public Connection? Finish()
+        {
+            return Destination != null && End != null
+                ? End.Type == Connector.Types.Input
+                    ? new Connection(Destination, End, Source, Start)
+                    : new Connection(Source, Start, Destination, End)
+                : null;
         }
 
         /// <summary>

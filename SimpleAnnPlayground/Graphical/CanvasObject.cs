@@ -108,7 +108,7 @@ namespace SimpleAnnPlayground.Graphical
         /// Draws the object over a canvas.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
-        public void Draw(Graphics graphics)
+        public void Paint(Graphics graphics)
         {
             Component?.Paint(graphics, Location, State, false, ActiveConnector);
         }

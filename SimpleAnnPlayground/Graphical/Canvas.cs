@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Tools;
 using System.Collections.ObjectModel;
 
@@ -18,12 +19,18 @@ namespace SimpleAnnPlayground.Graphical
         public Canvas()
         {
             Objects = new List<CanvasObject>();
+            Connections = new List<Connection>();
         }
 
         /// <summary>
         /// Gets the list of objects on this canvas.
         /// </summary>
-        protected List<CanvasObject> Objects { get; private set; }
+        protected List<CanvasObject> Objects { get; }
+
+        /// <summary>
+        /// Gets the list of connections on this canvas.
+        /// </summary>
+        protected List<Connection> Connections { get; }
 
         /// <summary>
         /// Converts a color object into another color with less bright.
@@ -41,6 +48,12 @@ namespace SimpleAnnPlayground.Graphical
         /// </summary>
         /// <param name="obj">The object to be added.</param>
         public virtual void AddObject(CanvasObject obj) => Objects.Add(obj);
+
+        /// <summary>
+        /// Adds a connection between two object to this canvas.
+        /// </summary>
+        /// <param name="connection">The connection to be added.</param>
+        public virtual void AddConnection(Connection connection) => Connections.Add(connection);
 
         /// <summary>
         /// Determines if a location touches a <see cref="CanvasObject"/>.
@@ -76,6 +89,21 @@ namespace SimpleAnnPlayground.Graphical
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets the object with an active connector.
+        /// </summary>
+        /// <param name="except">The known active object to except.</param>
+        /// <returns>The active object.</returns>
+        internal CanvasObject? GetActiveObject(CanvasObject except)
+        {
+            foreach (var obj in Objects)
+            {
+                if (obj != except && obj.ActiveConnector != null) return obj;
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -178,11 +206,18 @@ namespace SimpleAnnPlayground.Graphical
         /// Draws all the canvas objects over a graphics.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
-        internal void Draw(Graphics graphics)
+        internal void Paint(Graphics graphics)
         {
+            // Paint the objects.
             foreach (CanvasObject obj in Objects)
             {
-                obj.Draw(graphics);
+                obj.Paint(graphics);
+            }
+
+            // Paint the connections.
+            foreach (Connection conn in Connections)
+            {
+                conn.Paint(graphics);
             }
         }
 

@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical;
+using SimpleAnnPlayground.Graphical.Interfaces;
 using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Ann.Neurons
@@ -10,7 +11,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
     /// <summary>
     /// Represents an internal neurone in a neural network.
     /// </summary>
-    internal class Input : CanvasObject
+    internal class Input : CanvasObject, IConnectableOutputs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Input"/> class.
