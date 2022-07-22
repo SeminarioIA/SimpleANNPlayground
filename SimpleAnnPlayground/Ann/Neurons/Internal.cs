@@ -3,15 +3,14 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical;
-using SimpleAnnPlayground.Graphical.Interfaces;
-using System.Collections.ObjectModel;
+using SimpleAnnPlayground.Graphical.Visualization;
 
 namespace SimpleAnnPlayground.Ann.Neurons
 {
     /// <summary>
     /// Represents an internal neurone in a neural network.
     /// </summary>
-    internal class Internal : CanvasObject, IConnectableInputs, IConnectableOutputs
+    internal class Internal : CanvasObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Internal"/> class.
@@ -21,8 +20,6 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public Internal(int x, int y)
             : base(Component.InternalNeuron, x, y)
         {
-            Inputs = new Collection<Connection>();
-            Outputs = new Collection<Connection>();
         }
 
         /// <summary>
@@ -32,18 +29,6 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public Internal(Internal other)
             : base(other)
         {
-            Inputs = other.Inputs;
-            Outputs = other.Outputs;
         }
-
-        /// <summary>
-        /// Gets the input connections of this object.
-        /// </summary>
-        public Collection<Connection> Inputs { get; private set; }
-
-        /// <summary>
-        /// Gets the output connections of this object.
-        /// </summary>
-        public Collection<Connection> Outputs { get; private set; }
     }
 }

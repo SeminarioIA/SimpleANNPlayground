@@ -3,6 +3,8 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Graphical.Models;
+using SimpleAnnPlayground.Graphical.Terminals;
 
 namespace SimpleAnnPlayground.Graphical.Tools
 {
@@ -14,17 +16,19 @@ namespace SimpleAnnPlayground.Graphical.Tools
         private const float Width = 0.1f;
 
         /// <summary>
+        /// Gets the end point for the connecting line.
+        /// </summary>
+        private PointF _endPoint;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ConnectingLine"/> class.
         /// </summary>
-        /// <param name="source">The source object for the connection.</param>
-        /// <param name="start">The start connector.</param>
-        public ConnectingLine(CanvasObject source, Connector start)
+        /// <param name="startTerminal">The terminal object for the connection.</param>
+        public ConnectingLine(Terminal startTerminal)
         {
-            Source = source;
-            Start = start;
-            StartPoint = Source.GetAbsolute(Start.Location);
-            EndPoint = StartPoint;
-            Type = Start.Type == Connector.Types.Input ? Connector.Types.Output : Connector.Types.Input;
+            Start = startTerminal;
+            _endPoint = Start.Location;
+            Type = Start is InputTerminal ? Connector.Types.Output : Connector.Types.Input;
         }
 
         /// <summary>
@@ -33,45 +37,24 @@ namespace SimpleAnnPlayground.Graphical.Tools
         public Connector.Types Type { get; }
 
         /// <summary>
-        /// Gets the source object of the connection.
+        /// Gets the start terminal.
         /// </summary>
-        public CanvasObject Source { get; }
+        public Terminal Start { get; }
 
         /// <summary>
-        /// Gets the start connector.
+        /// Gets the end terminal.
         /// </summary>
-        public Connector Start { get; }
-
-        /// <summary>
-        /// Gets the start point for the connecting line.
-        /// </summary>
-        public PointF StartPoint { get; }
-
-        /// <summary>
-        /// Gets the source object of the connection.
-        /// </summary>
-        public CanvasObject? Destination { get; private set; }
-
-        /// <summary>
-        /// Gets the start connector.
-        /// </summary>
-        public Connector? End { get; private set; }
-
-        /// <summary>
-        /// Gets the end point for the connecting line.
-        /// </summary>
-        public PointF EndPoint { get; private set; }
+        public Terminal? End { get; private set; }
 
         /// <summary>
         /// Updates the mouse location.
         /// </summary>
         /// <param name="location">The current mouse location.</param>
-        /// <param name="destination">The current destination object.</param>
-        public void Update(PointF location, CanvasObject? destination)
+        /// <param name="end">The current end terminal.</param>
+        public void Update(PointF location, Terminal? end)
         {
-            EndPoint = location;
-            Destination = destination;
-            End = destination?.ActiveConnector;
+            _endPoint = location;
+            End = end;
         }
 
         /// <summary>
@@ -80,11 +63,18 @@ namespace SimpleAnnPlayground.Graphical.Tools
         /// <returns>The connection object.</returns>
         public Connection? Finish()
         {
-            return Destination != null && End != null
-                ? End.Type == Connector.Types.Input
-                    ? new Connection(Destination, End, Source, Start)
-                    : new Connection(Source, Start, Destination, End)
-                : null;
+            if (Start is OutputTerminal start && End is InputTerminal end)
+            {
+                return new Connection(start, end);
+            }
+            else if (End is OutputTerminal start2 && Start is InputTerminal end2)
+            {
+                return new Connection(start2, end2);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -93,10 +83,10 @@ namespace SimpleAnnPlayground.Graphical.Tools
         /// <param name="graphics">To paint the line.</param>
         internal void Paint(Graphics graphics)
         {
-            Color color = Start.Type == Connector.Types.Input ? Connector.InputColor : Connector.OutputColor;
+            Color color = Start is InputTerminal ? Connector.InputColor : Connector.OutputColor;
             using (Pen pen = new Pen(color, Width))
             {
-                graphics.DrawLine(pen, StartPoint, EndPoint);
+                graphics.DrawLine(pen, Start.Location, _endPoint);
             }
         }
     }

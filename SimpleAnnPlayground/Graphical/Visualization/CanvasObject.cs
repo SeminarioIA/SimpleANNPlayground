@@ -2,10 +2,11 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-using System.Collections.ObjectModel;
+using SimpleAnnPlayground.Graphical.Models;
+using SimpleAnnPlayground.Graphical.Terminals;
 using static SimpleAnnPlayground.Graphical.Component;
 
-namespace SimpleAnnPlayground.Graphical
+namespace SimpleAnnPlayground.Graphical.Visualization
 {
     /// <summary>
     /// Represents an object to be drawn on a <seealso cref="Canvas"/>.
@@ -30,9 +31,10 @@ namespace SimpleAnnPlayground.Graphical
         {
             Instance = _instances++;
             Id = other.Id;
-            Component = other.Component;
-            Connectors = other.Component.Connectors;
             Location = other.Location;
+            Component = other.Component;
+            Inputs = other.Inputs.ConvertAll(input => new InputTerminal(input));
+            Outputs = other.Outputs.ConvertAll(output => new OutputTerminal(output));
         }
 
         /// <summary>
@@ -45,9 +47,17 @@ namespace SimpleAnnPlayground.Graphical
         {
             Instance = _instances++;
             Id = _ids++;
-            Component = component;
-            Connectors = component.GetConnectorsCopy();
             Location = new Point(x, y);
+            Component = component;
+            Inputs = new List<InputTerminal>();
+            Outputs = new List<OutputTerminal>();
+
+            foreach (var connector in component.Connectors)
+            {
+                if (connector.Type == Connector.Types.Input) Inputs.Add(new InputTerminal(this, connector));
+                else if (connector.Type == Connector.Types.Output) Outputs.Add(new OutputTerminal(this, connector));
+                else throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -58,7 +68,17 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Gets the connectors of this object.
         /// </summary>
-        public Collection<Connector> Connectors { get; private set; }
+        public List<InputTerminal> Inputs { get; }
+
+        /// <summary>
+        /// Gets the connectors of this object.
+        /// </summary>
+        public List<OutputTerminal> Outputs { get; }
+
+        /// <summary>
+        /// Gets the list of all the terminals.
+        /// </summary>
+        public List<Terminal> Terminals => new List<Terminal>().Union(Inputs).Union(Outputs).ToList();
 
         /// <summary>
         /// Gets or sets the state of this object.
@@ -68,7 +88,7 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Gets the active connector with the cursor over it.
         /// </summary>
-        public Connector? ActiveConnector { get; private set; }
+        public Terminal? ActiveTerminal { get; private set; }
 
         /// <summary>
         /// Gets the instance number of this object.
@@ -105,12 +125,22 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <summary>
+        /// Gets a generic copy of a <see cref="CanvasObject"/>.
+        /// </summary>
+        /// <param name="other">The object to copy.</param>
+        /// <returns>A new object copy of <paramref name="other"/>.</returns>
+        public static CanvasObject Copy(CanvasObject other)
+        {
+            return Activator.CreateInstance(other.GetType(), other) as CanvasObject ?? throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Draws the object over a canvas.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
         public void Paint(Graphics graphics)
         {
-            Component?.Paint(graphics, Location, State, false, ActiveConnector);
+            Component?.Paint(graphics, Location, State, ActiveTerminal?.Connector);
         }
 
         /// <summary>
@@ -137,7 +167,7 @@ namespace SimpleAnnPlayground.Graphical
             }
             else
             {
-                ActiveConnector = null;
+                ActiveTerminal = null;
             }
         }
 
@@ -154,7 +184,7 @@ namespace SimpleAnnPlayground.Graphical
             }
             else
             {
-                ActiveConnector = null;
+                ActiveTerminal = null;
             }
         }
 
@@ -225,24 +255,35 @@ namespace SimpleAnnPlayground.Graphical
         private void SelectConnector(PointF location, Connector.Types? type = null)
         {
             MakeRelative(ref location);
-            foreach (var connector in Component.Connectors)
+            if (type == Connector.Types.Input)
             {
-                if (type != null)
+                foreach (var terminal in Inputs)
                 {
-                    if (connector.Type == type)
-                    {
-                        ActiveConnector = connector;
-                        return;
-                    }
-                }
-                else if (connector.HasPoint(location))
-                {
-                    ActiveConnector = connector;
+                    ActiveTerminal = terminal;
                     return;
                 }
             }
+            else if (type == Connector.Types.Output)
+            {
+                foreach (var terminal in Outputs)
+                {
+                    ActiveTerminal = terminal;
+                    return;
+                }
+            }
+            else
+            {
+                foreach (var terminal in Terminals)
+                {
+                    if (terminal.Connector.HasPoint(location))
+                    {
+                        ActiveTerminal = terminal;
+                        return;
+                    }
+                }
+            }
 
-            ActiveConnector = null;
+            ActiveTerminal = null;
         }
     }
 }

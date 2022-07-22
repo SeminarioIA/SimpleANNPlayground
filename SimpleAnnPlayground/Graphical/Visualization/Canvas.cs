@@ -3,10 +3,11 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Graphical.Tools;
 using System.Collections.ObjectModel;
 
-namespace SimpleAnnPlayground.Graphical
+namespace SimpleAnnPlayground.Graphical.Visualization
 {
     /// <summary>
     /// Represents a canvas to draw graphical objects.
@@ -65,9 +66,7 @@ namespace SimpleAnnPlayground.Graphical
             foreach (var obj in Objects)
             {
                 if (obj.HasPoint(location))
-                {
                     return obj;
-                }
             }
 
             return null;
@@ -83,9 +82,7 @@ namespace SimpleAnnPlayground.Graphical
             foreach (var obj in Objects)
             {
                 if (obj != @object && obj.SelectionArea.IntersectsWith(@object.SelectionArea))
-                {
                     return true;
-                }
             }
 
             return false;
@@ -96,11 +93,11 @@ namespace SimpleAnnPlayground.Graphical
         /// </summary>
         /// <param name="except">The known active object to except.</param>
         /// <returns>The active object.</returns>
-        internal CanvasObject? GetActiveObject(CanvasObject except)
+        internal Terminal? GetActiveObject(CanvasObject except)
         {
             foreach (var obj in Objects)
             {
-                if (obj != except && obj.ActiveConnector != null) return obj;
+                if (obj != except && obj.ActiveTerminal != null) return obj.ActiveTerminal;
             }
 
             return null;
@@ -198,7 +195,7 @@ namespace SimpleAnnPlayground.Graphical
         {
             foreach (var obj in Objects)
             {
-                if (obj != connecting.Source) obj.OnMouseConnecting(Point.Truncate(location), connecting.Type);
+                if (obj != connecting.Start.Owner) obj.OnMouseConnecting(Point.Truncate(location), connecting.Type);
             }
         }
 

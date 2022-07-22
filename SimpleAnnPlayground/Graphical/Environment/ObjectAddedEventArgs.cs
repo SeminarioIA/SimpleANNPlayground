@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Graphical.Visualization;
+
 namespace SimpleAnnPlayground.Graphical.Environment
 {
     /// <summary>

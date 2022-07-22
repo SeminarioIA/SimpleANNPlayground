@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Utils.Serialization;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -138,15 +139,6 @@ namespace SimpleAnnPlayground.Graphical
         public PointF Center => new (X, Y);
 
         /// <summary>
-        /// Gets a copy of this component connectors.
-        /// </summary>
-        /// <returns>A collection of the connectors copies.</returns>
-        public Collection<Connector> GetConnectorsCopy()
-        {
-            return new Collection<Connector>(Connectors.ToList().ConvertAll(conn => new Connector(conn)));
-        }
-
-        /// <summary>
         /// Serializes a collection of elements into a string.
         /// </summary>
         /// <returns>A string with all the elements serialized.</returns>
@@ -248,9 +240,8 @@ namespace SimpleAnnPlayground.Graphical
         /// <param name="graphics">The graphics object.</param>
         /// <param name="location">The location to draw the component.</param>
         /// <param name="state">The component state.</param>
-        /// <param name="shadowConnectors">Indicates if the connectors are shown as a shadow.</param>
         /// <param name="selectConnector">Indicates if a connector will be selected.</param>
-        internal void Paint(Graphics graphics, PointF location, State state = State.None, bool shadowConnectors = false, Connector? selectConnector = null)
+        internal void Paint(Graphics graphics, PointF location, State state = State.None, Connector? selectConnector = null)
         {
             // Translate the transform to the componnent coordinates.
             graphics.TranslateTransform(location.X - Center.X, location.Y - Center.Y);

@@ -3,7 +3,10 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Graphical.Models;
+using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Graphical.Tools;
+using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Utils;
 using System.Collections.ObjectModel;
 
@@ -175,13 +178,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <summary>
         /// Starts connecting two objects.
         /// </summary>
-        /// <param name="obj">The source object to connect.</param>
-        /// <param name="start">The selected connector.</param>
-        public void StartConnection(CanvasObject obj, Connector start)
+        /// <param name="startTerminal">The selected connector.</param>
+        public void StartConnection(Terminal startTerminal)
         {
             Workspace.Canvas.UnselectAll();
-            obj.ClearStateFlag(Component.State.Hover);
-            Connecting = new ConnectingLine(obj, start);
+            Connecting = new ConnectingLine(startTerminal);
             Workspace.PictureBox.Cursor = Cursors.Cross;
             Workspace.Refresh();
         }
@@ -301,7 +302,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             else if (Connecting != null)
             {
                 Workspace.Canvas.UpdateConnectingPosition(Location.Value, Connecting);
-                Connecting.Update(Location.Value, Workspace.Canvas.GetActiveObject(Connecting.Source));
+                Connecting.Update(Location.Value, Workspace.Canvas.GetActiveObject(Connecting.Start.Owner));
             }
 
             MouseMove?.Invoke(this, new EventArgs());
@@ -318,21 +319,27 @@ namespace SimpleAnnPlayground.Graphical.Environment
 
         private void PictureBox_MouseDown(object? sender, MouseEventArgs e)
         {
+            // Start an action from the mouse only id idle.
             if (Location != null && State == MouseState.Idle)
             {
+                // Check if the cursor is over an object.
                 if (Workspace.Canvas.IsObject(Location.Value) is CanvasObject obj)
                 {
-                    if (obj.ActiveConnector != null)
+                    // Check if the cursor is also over a connection terminal.
+                    if (obj.ActiveTerminal != null)
                     {
-                        StartConnection(obj, obj.ActiveConnector);
+                        // Start connecting terminals.
+                        StartConnection(obj.ActiveTerminal);
                     }
                     else
                     {
+                        // Move the selected objects.
                         MoveObjects(obj, Location.Value);
                     }
                 }
                 else
                 {
+                    // If blank space then start a selection box.
                     StartSelection(Location.Value);
                 }
             }

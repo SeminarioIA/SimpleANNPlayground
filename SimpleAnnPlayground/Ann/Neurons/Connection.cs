@@ -2,7 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-using SimpleAnnPlayground.Graphical;
+using SimpleAnnPlayground.Graphical.Terminals;
 
 namespace SimpleAnnPlayground.Ann.Neurons
 {
@@ -17,37 +17,23 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <summary>
         /// Initializes a new instance of the <see cref="Connection"/> class.
         /// </summary>
-        /// <param name="source">The source component.</param>
-        /// <param name="input">The input connector in the source component.</param>
-        /// <param name="destination">The destination component.</param>
-        /// <param name="output">The output connector in the destination component.</param>
-        public Connection(CanvasObject source, Connector input, CanvasObject destination, Connector output)
+        /// <param name="source">The input terminal in the source component.</param>
+        /// <param name="destination">The output terminal in the destination component.</param>
+        public Connection(OutputTerminal source, InputTerminal destination)
         {
             Source = source;
-            Input = input;
             Destination = destination;
-            Output = output;
         }
 
         /// <summary>
         /// Gets the source object.
         /// </summary>
-        public CanvasObject Source { get; private set; }
-
-        /// <summary>
-        /// Gets the input connector.
-        /// </summary>
-        public Connector Input { get; private set; }
+        public OutputTerminal Source { get; private set; }
 
         /// <summary>
         /// Gets the destination object.
         /// </summary>
-        public CanvasObject Destination { get; private set; }
-
-        /// <summary>
-        /// Gets the output connector.
-        /// </summary>
-        public Connector Output { get; private set; }
+        public InputTerminal Destination { get; private set; }
 
         /// <summary>
         /// Paints the connection in a <see cref="Graphics"/> object.
@@ -57,7 +43,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
         {
             using (Pen pen = new Pen(_color, Width))
             {
-                graphics.DrawLine(pen, Source.GetAbsolute(Input.Location), Destination.GetAbsolute(Output.Location));
+                graphics.DrawLine(pen, Source.Location, Destination.Location);
             }
         }
     }

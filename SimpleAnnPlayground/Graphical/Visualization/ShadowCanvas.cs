@@ -4,7 +4,7 @@
 
 using System.Collections.ObjectModel;
 
-namespace SimpleAnnPlayground.Graphical
+namespace SimpleAnnPlayground.Graphical.Visualization
 {
     /// <summary>
     /// Represents a shadow of a <see cref="Canvas"/>.

@@ -5,7 +5,7 @@
 using SimpleAnnPlayground.Utils.Serialization;
 using System.ComponentModel;
 
-namespace SimpleAnnPlayground.Graphical
+namespace SimpleAnnPlayground.Graphical.Models
 {
     /// <summary>
     /// Represents a connector to join elements.
@@ -25,7 +25,7 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Indicates the radio for the connector element.
         /// </summary>
-        private static readonly SizeF _shape = new (5, 5);
+        private static readonly SizeF _shape = new(5, 5);
 
         /// <summary>
         /// Indicates the color for the shadow of the connector.
@@ -51,17 +51,6 @@ namespace SimpleAnnPlayground.Graphical
         public Connector(Types type)
         {
             Type = type;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Connector"/> class.
-        /// </summary>
-        /// <param name="other">The object to copy.</param>
-        internal Connector(Connector other)
-        {
-            X = other.X;
-            Y = other.Y;
-            Type = other.Type;
         }
 
         /// <summary>

@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical.Environment;
+using SimpleAnnPlayground.Graphical.Visualization;
 using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Graphical.Tools

@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical;
+using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Utils.FileManagment;
 
 namespace SimpleAnnPlayground.Debugging
@@ -164,7 +165,7 @@ namespace SimpleAnnPlayground.Debugging
                 }
             }
 
-            _component.Paint(e.Graphics, PointF.Empty, _state, CkbConnectors.Checked, LstConnectors.SelectedItem as Connector);
+            _component.Paint(e.Graphics, PointF.Empty, _state, LstConnectors.SelectedItem as Connector);
 
             // Paint the component center with a cross.
             if (_drawCenter)
