@@ -13,24 +13,24 @@ namespace SimpleAnnPlayground.Graphical
     public class Connector : ITextSerializable
     {
         /// <summary>
+        /// Indicates the color for the connector.
+        /// </summary>
+        public static readonly Color InputColor = Color.Blue;
+
+        /// <summary>
+        /// Indicates the color for the connector.
+        /// </summary>
+        public static readonly Color OutputColor = Color.Red;
+
+        /// <summary>
         /// Indicates the radio for the connector element.
         /// </summary>
         private static readonly SizeF _shape = new (5, 5);
 
         /// <summary>
-        /// Indicates the color for the connector.
-        /// </summary>
-        private static readonly Color InputColor = Color.Blue;
-
-        /// <summary>
         /// Indicates the color for the shadow of the connector.
         /// </summary>
         private static readonly Color InputShadowColor = Color.LightBlue;
-
-        /// <summary>
-        /// Indicates the color for the connector.
-        /// </summary>
-        private static readonly Color OutputColor = Color.Red;
 
         /// <summary>
         /// Indicates the color for the shadow of the connector.
@@ -99,6 +99,11 @@ namespace SimpleAnnPlayground.Graphical
         [Category("Location")]
         [Description("The Y coordinate of this connector.")]
         public float Y { get; set; }
+
+        /// <summary>
+        /// Gets the location point of this connector.
+        /// </summary>
+        public PointF Location => new (X, Y);
 
         /// <summary>
         /// Deserializes an Connector from a <paramref name="text"/> string.

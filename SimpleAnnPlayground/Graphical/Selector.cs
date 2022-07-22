@@ -101,7 +101,7 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Gets the selector rectangle for this object.
         /// </summary>
-        public RectangleF Rectangle => new(X, Y, Width, Height);
+        public RectangleF Rectangle => new (X, Y, Width, Height);
 
         /// <inheritdoc/>
         public override string ToString() => GetType().Name;

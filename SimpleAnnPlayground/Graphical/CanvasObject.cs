@@ -120,8 +120,7 @@ namespace SimpleAnnPlayground.Graphical
         /// <returns>True if the point belongs to this object.</returns>
         public bool HasPoint(PointF point)
         {
-            point.X += Component.Center.X - Location.X;
-            point.Y += Component.Center.Y - Location.Y;
+            MakeRelative(ref point);
             var rect = Component.Selector.Rectangle;
             return rect.Contains(point);
         }
@@ -135,6 +134,27 @@ namespace SimpleAnnPlayground.Graphical
             if (AdjustStateFlag(State.Hover, HasPoint(location)))
             {
                 SelectConnector(location);
+            }
+            else
+            {
+                ActiveConnector = null;
+            }
+        }
+
+        /// <summary>
+        /// Method to be called when the mouse is connecting over the object.
+        /// </summary>
+        /// <param name="location">The cursor location.</param>
+        /// <param name="type">The connector type looking for.</param>
+        public void OnMouseConnecting(Point location, Connector.Types type)
+        {
+            if (HasPoint(location))
+            {
+                SelectConnector(location, type);
+            }
+            else
+            {
+                ActiveConnector = null;
             }
         }
 
@@ -176,16 +196,46 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <summary>
+        /// Gets the absolute location of this object.
+        /// </summary>
+        /// <param name="point">The point to adjust.</param>
+        /// <returns>The relative point.</returns>
+        internal PointF GetAbsolute(PointF point)
+        {
+            point.X -= Component.Center.X - Location.X;
+            point.Y -= Component.Center.Y - Location.Y;
+            return point;
+        }
+
+        /// <summary>
+        /// Gets the relative location of this object.
+        /// </summary>
+        /// <param name="point">The point to adjust.</param>
+        private void MakeRelative(ref PointF point)
+        {
+            point.X += Component.Center.X - Location.X;
+            point.Y += Component.Center.Y - Location.Y;
+        }
+
+        /// <summary>
         /// Selects the connector if the passed location belongs to it.
         /// </summary>
         /// <param name="location">The location point.</param>
-        private void SelectConnector(PointF location)
+        /// <param name="type">The connector type to looking for.</param>
+        private void SelectConnector(PointF location, Connector.Types? type = null)
         {
-            location.X -= Location.X;
-            location.Y -= Location.Y;
+            MakeRelative(ref location);
             foreach (var connector in Component.Connectors)
             {
-                if (connector.HasPoint(location))
+                if (type != null)
+                {
+                    if (connector.Type == type)
+                    {
+                        ActiveConnector = connector;
+                        return;
+                    }
+                }
+                else if (connector.HasPoint(location))
                 {
                     ActiveConnector = connector;
                     return;

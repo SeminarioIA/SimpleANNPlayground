@@ -120,6 +120,31 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <summary>
+        /// Updated the mouse position in the workspace.
+        /// </summary>
+        /// <param name="location">The mouse location.</param>
+        internal void UpdateMousePosition(PointF location)
+        {
+            foreach (var obj in Objects)
+            {
+                obj.OnMouseMove(Point.Truncate(location));
+            }
+        }
+
+        /// <summary>
+        /// Updated the mouse position in the workspace when connecting.
+        /// </summary>
+        /// <param name="location">The mouse location.</param>
+        /// <param name="connecting">The object being connected.</param>
+        internal void UpdateConnectingPosition(PointF location, ConnectingLine connecting)
+        {
+            foreach (var obj in Objects)
+            {
+                if (obj != connecting.Source) obj.OnMouseConnecting(Point.Truncate(location), connecting.Type);
+            }
+        }
+
+        /// <summary>
         /// Draws all the canvas objects over a graphics.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>

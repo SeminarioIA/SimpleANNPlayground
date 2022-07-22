@@ -74,6 +74,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
         public MouseState State => Selecting != null ? MouseState.Selecting
             : Inserting != null ? MouseState.Inserting
             : Moving != null ? MouseState.Moving
+            : Connecting != null ? MouseState.Connecting
             : MouseState.Idle;
 
         /// <summary>
@@ -110,6 +111,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Gets the selection rectangle in the workspace.
         /// </summary>
         public SelectionBox? Selecting { get; private set; }
+
+        /// <summary>
+        /// Gets the line when connecting two objects.
+        /// </summary>
+        public ConnectingLine? Connecting { get; private set; }
 
         /// <summary>
         /// Configures the mouse tool to insert an object.
@@ -149,6 +155,20 @@ namespace SimpleAnnPlayground.Graphical.Environment
         }
 
         /// <summary>
+        /// Starts connecting two objects.
+        /// </summary>
+        /// <param name="obj">The source object to connect.</param>
+        /// <param name="start">The selected connector.</param>
+        public void StartConnection(CanvasObject obj, Connector start)
+        {
+            Workspace.Canvas.UnselectAll();
+            obj.ClearStateFlag(Component.State.Hover);
+            Connecting = new ConnectingLine(obj, start);
+            Workspace.PictureBox.Cursor = Cursors.Cross;
+            Workspace.Refresh();
+        }
+
+        /// <summary>
         /// Finishes the current operation.
         /// </summary>
         public void FinishOperation()
@@ -172,6 +192,10 @@ namespace SimpleAnnPlayground.Graphical.Environment
             {
                 Selecting = null;
             }
+            else if (Connecting != null)
+            {
+                Connecting = null;
+            }
 
             Workspace.PictureBox.Cursor = Cursors.Default;
         }
@@ -186,6 +210,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Inserting = null;
             Moving = null;
             Selecting = null;
+            Connecting = null;
 
             Workspace.PictureBox.Cursor = Cursors.Default;
         }
@@ -198,16 +223,21 @@ namespace SimpleAnnPlayground.Graphical.Environment
         {
             if (Configuration.CrossVisible && Location is PointF point)
             {
-                if (Inserting is CanvasObject inserting)
+                if (Inserting != null)
                 {
                     // Paint the object being inserted
-                    inserting.Location = Point.Truncate(point);
-                    inserting.Draw(graphics);
+                    Inserting.Location = Point.Truncate(point);
+                    Inserting.Draw(graphics);
                 }
-                else if (Selecting is SelectionBox selecting)
+                else if (Selecting != null)
                 {
-                    // Paint selection rectangle.
-                    selecting.Paint(graphics);
+                    // Paint the selection rectangle.
+                    Selecting.Paint(graphics);
+                }
+                else if (Connecting != null)
+                {
+                    // Paint the connecting line.
+                    Connecting.Paint(graphics);
                 }
 
                 // Paint a mouse cross.
@@ -224,7 +254,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
             ControlLocation = e.Location;
             Location = Space.ScalePoint((PointF)ControlLocation, Workspace.Transform);
 
-            if (Selecting != null)
+            if (State == MouseState.Idle)
+            {
+                Workspace.Canvas.UpdateMousePosition(Location.Value);
+            }
+            else if (Selecting != null)
             {
                 Selecting.Extend(Location.Value);
                 Workspace.Canvas.SelectArea(Selecting);
@@ -232,6 +266,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
             else if (Moving != null)
             {
                 Moving.UpdateDestination(Location.Value);
+            }
+            else if (Connecting != null)
+            {
+                Connecting.UpdateEndPoint(Location.Value);
+                Workspace.Canvas.UpdateConnectingPosition(Location.Value, Connecting);
             }
 
             MouseMove?.Invoke(this, new EventArgs());
@@ -252,7 +291,14 @@ namespace SimpleAnnPlayground.Graphical.Environment
             {
                 if (Workspace.Canvas.IsObject(Location.Value) is CanvasObject obj)
                 {
-                    MoveObjects(obj, Location.Value);
+                    if (obj.ActiveConnector != null)
+                    {
+                        StartConnection(obj, obj.ActiveConnector);
+                    }
+                    else
+                    {
+                        MoveObjects(obj, Location.Value);
+                    }
                 }
                 else
                 {
