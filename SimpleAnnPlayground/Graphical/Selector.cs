@@ -101,7 +101,7 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Gets the selector rectangle for this object.
         /// </summary>
-        public RectangleF Rectangle => new (X, Y, Width, Height);
+        public RectangleF Rectangle => new(X, Y, Width, Height);
 
         /// <inheritdoc/>
         public override string ToString() => GetType().Name;
@@ -172,7 +172,7 @@ namespace SimpleAnnPlayground.Graphical
 
             if (selected)
             {
-                using (Pen pen = new Pen(SelectionColor, 0.1f) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash })
+                using (var pen = new Pen(SelectionColor, 0.1f) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash })
                 {
                     graphics.DrawRectangle(pen, X, Y, Width, Height);
                 }

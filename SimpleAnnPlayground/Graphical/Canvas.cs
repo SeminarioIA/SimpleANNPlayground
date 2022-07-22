@@ -2,6 +2,9 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Graphical.Tools;
+using System.Collections.ObjectModel;
+
 namespace SimpleAnnPlayground.Graphical
 {
     /// <summary>
@@ -48,13 +51,72 @@ namespace SimpleAnnPlayground.Graphical
         {
             foreach (var obj in Objects)
             {
-                if (obj.HasPoint(Point.Truncate(location)))
+                if (obj.HasPoint(location))
                 {
                     return obj;
                 }
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Selects all the objects on this canvas.
+        /// </summary>
+        internal void SelectAll()
+        {
+            foreach (var obj in Objects)
+            {
+                obj.SetStateFlag(Component.State.Selected);
+            }
+        }
+
+        /// <summary>
+        /// Deselects all the objects on this canvas.
+        /// </summary>
+        internal void UnselectAll()
+        {
+            foreach (var obj in Objects)
+            {
+                obj.ClearStateFlag(Component.State.Selected);
+            }
+        }
+
+        /// <summary>
+        /// Selects all the objects contained in the selection box.
+        /// </summary>
+        /// <param name="box">The selection box.</param>
+        internal void SelectArea(SelectionBox box)
+        {
+            if (box.Inclusive)
+            {
+                foreach (var obj in Objects)
+                {
+                    _ = obj.AdjustStateFlag(Component.State.Selected, box.Rectangle.IntersectsWith(obj.SelectionArea));
+                }
+            }
+            else
+            {
+                foreach (var obj in Objects)
+                {
+                    _ = obj.AdjustStateFlag(Component.State.Selected, box.Rectangle.Contains(obj.SelectionArea));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Obtains a collection of the selected objects.
+        /// </summary>
+        /// <returns>The collection of selected objects.</returns>
+        internal Collection<CanvasObject> GetSelectedObjects()
+        {
+            var selected = new Collection<CanvasObject>();
+            foreach (var obj in Objects)
+            {
+                if (obj.State.HasFlag(Component.State.Selected)) selected.Add(obj);
+            }
+
+            return selected;
         }
 
         /// <summary>

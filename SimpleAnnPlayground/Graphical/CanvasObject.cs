@@ -61,9 +61,9 @@ namespace SimpleAnnPlayground.Graphical
         public Collection<Connector> Connectors { get; private set; }
 
         /// <summary>
-        /// Gets the state of this object.
+        /// Gets or sets the state of this object.
         /// </summary>
-        public State State { get; private set; }
+        public State State { get; set; }
 
         /// <summary>
         /// Gets the active connector with the cursor over it.
@@ -91,6 +91,20 @@ namespace SimpleAnnPlayground.Graphical
         public Point Location { get; set; }
 
         /// <summary>
+        /// Gets the selection area of this object.
+        /// </summary>
+        public RectangleF SelectionArea
+        {
+            get
+            {
+                RectangleF rect = Component.Selector.Rectangle;
+                rect.X += Location.X;
+                rect.Y += Location.Y;
+                return rect;
+            }
+        }
+
+        /// <summary>
         /// Draws the object over a canvas.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
@@ -104,9 +118,10 @@ namespace SimpleAnnPlayground.Graphical
         /// </summary>
         /// <param name="point">The point to check.</param>
         /// <returns>True if the point belongs to this object.</returns>
-        public bool HasPoint(Point point)
+        public bool HasPoint(PointF point)
         {
-            point.Offset(-Location.X, -Location.Y);
+            point.X += Component.Center.X - Location.X;
+            point.Y += Component.Center.Y - Location.Y;
             var rect = Component.Selector.Rectangle;
             return rect.Contains(point);
         }
@@ -164,9 +179,10 @@ namespace SimpleAnnPlayground.Graphical
         /// Selects the connector if the passed location belongs to it.
         /// </summary>
         /// <param name="location">The location point.</param>
-        private void SelectConnector(Point location)
+        private void SelectConnector(PointF location)
         {
-            location.Offset(-Location.X, -Location.Y);
+            location.X -= Location.X;
+            location.Y -= Location.Y;
             foreach (var connector in Component.Connectors)
             {
                 if (connector.HasPoint(location))

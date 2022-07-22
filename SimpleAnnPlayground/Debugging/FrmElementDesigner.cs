@@ -170,7 +170,7 @@ namespace SimpleAnnPlayground.Debugging
             if (_drawCenter)
             {
                 const int CROSS_SIZE = 3;
-                var cross = new Cross(Color.Red, _component.Location, CROSS_SIZE);
+                var cross = new Cross(Color.Red, _component.Center, CROSS_SIZE);
                 cross.Paint(e.Graphics);
             }
         }
@@ -220,6 +220,8 @@ namespace SimpleAnnPlayground.Debugging
             }
 
             LstModes.SelectedIndex = 0;
+            PgdProperties.SelectedObject = _component;
+            _drawCenter = true;
 
             // Paint objects in the picture box
             PicDraw.Invalidate();

@@ -54,7 +54,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <summary>
         /// Forces to paint the workspace.
         /// </summary>
-        public void Paint() => PictureBox.Invalidate();
+        public void Refresh() => PictureBox.Invalidate();
 
         private void PictureBox_Paint(object? sender, PaintEventArgs e)
         {

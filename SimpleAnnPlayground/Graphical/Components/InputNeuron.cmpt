@@ -10,3 +10,5 @@ Connectors:
   Type: Output, X: 33, Y: 18
 Selector:
   X: 0, Y: 0, Width: 37, Height: 37
+Center:
+  X: 18, Y: 18

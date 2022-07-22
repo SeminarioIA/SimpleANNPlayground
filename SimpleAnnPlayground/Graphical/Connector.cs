@@ -148,7 +148,7 @@ namespace SimpleAnnPlayground.Graphical
         /// </summary>
         /// <param name="point">The passed point.</param>
         /// <returns>True if the point is part of the connector.</returns>
-        internal bool HasPoint(Point point)
+        internal bool HasPoint(PointF point)
         {
             var rect = new RectangleF(new PointF(X - _shape.Width / 2f, Y - _shape.Height / 2f), _shape);
             return rect.Contains(point);

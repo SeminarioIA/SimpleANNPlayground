@@ -5,6 +5,7 @@
 using SimpleAnnPlayground.Utils.Serialization;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace SimpleAnnPlayground.Graphical
 {
@@ -133,7 +134,8 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Gets the component location.
         /// </summary>
-        public PointF Location => new (X, Y);
+        [Browsable(false)]
+        public PointF Center => new (X, Y);
 
         /// <summary>
         /// Gets a copy of this component connectors.
@@ -172,6 +174,9 @@ namespace SimpleAnnPlayground.Graphical
 
             // Serialize the selector.
             data.Add(new KeyValuePair<string, string>(nameof(Selector), Selector.Serialize()));
+
+            // Serialize the component center.
+            data.Add(new KeyValuePair<string, string>(nameof(Center), $"X: {X}, Y: {Y}"));
 
             return TextSerializer.Serialize(data);
         }
@@ -224,6 +229,14 @@ namespace SimpleAnnPlayground.Graphical
                         Selector.Deserialize(item.Value);
                         break;
                     }
+
+                    case nameof(Center):
+                    {
+                        var center = TextSerializer.Deserialize(item.Value).ToDictionary(pair => pair.Key, pair => float.Parse(pair.Value, CultureInfo.CurrentCulture));
+                        X = center[nameof(X)];
+                        Y = center[nameof(Y)];
+                        break;
+                    }
                 }
             }
         }
@@ -240,7 +253,7 @@ namespace SimpleAnnPlayground.Graphical
         internal void Paint(Graphics graphics, PointF location, State state = State.None, bool shadowConnectors = false, Connector? selectConnector = null)
         {
             // Translate the transform to the componnent coordinates.
-            graphics.TranslateTransform(location.X, location.Y);
+            graphics.TranslateTransform(location.X - Center.X, location.Y - Center.Y);
 
             // Draw backgroung selector
             if (state.HasFlag(State.SimulationStep) || state.HasFlag(State.SimulationPass) || state.HasFlag(State.SimulationError))
@@ -279,7 +292,7 @@ namespace SimpleAnnPlayground.Graphical
             }
 
             // Restore transform.
-            graphics.TranslateTransform(-location.X, -location.Y);
+            graphics.TranslateTransform(Center.X - location.X, Center.Y - location.Y);
         }
     }
 }
