@@ -4,6 +4,7 @@
 
 using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Utils;
+using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Graphical.Environment
 {
@@ -136,8 +137,24 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <param name="startPoint">The movement start point.</param>
         public void MoveObjects(CanvasObject obj, PointF startPoint)
         {
-            obj.SetStateFlag(Component.State.Selected);
-            Moving = new MovingBag(startPoint, Workspace.Canvas.GetSelectedObjects());
+            // Get the collection of selected objects.
+            var selection = Workspace.Canvas.GetSelectedObjects();
+
+            // Move the collection only if the mouse is over a selected object.
+            if (!selection.Contains(obj))
+            {
+                // if not, then change the selection to the mouse object.
+                selection = new Collection<CanvasObject>
+                {
+                    obj,
+                };
+            }
+
+            // Unselect all the objects while moving.
+            Workspace.Canvas.UnselectAll();
+
+            // Create the moving bag to move the objects.
+            Moving = new MovingBag(startPoint, selection);
             Workspace.PictureBox.Cursor = Cursors.SizeAll;
             Workspace.Refresh();
         }
@@ -189,6 +206,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             else if (Moving != null)
             {
                 Workspace.Shadow.MoveObjects(Moving.Selection);
+                Workspace.Canvas.Select(Moving.Selection);
                 Moving = null;
             }
             else if (Selecting != null)

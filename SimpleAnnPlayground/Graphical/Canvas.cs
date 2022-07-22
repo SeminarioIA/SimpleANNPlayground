@@ -79,6 +79,18 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <summary>
+        /// Selects the objects in the given collection.
+        /// </summary>
+        /// <param name="objects">The collection of objects to select.</param>
+        internal void Select(Collection<CanvasObject> objects)
+        {
+            foreach (var obj in objects)
+            {
+                if (Objects.Contains(obj)) obj.SetStateFlag(Component.State.Selected);
+            }
+        }
+
+        /// <summary>
         /// Selects all the objects on this canvas.
         /// </summary>
         internal void SelectAll()
@@ -96,7 +108,7 @@ namespace SimpleAnnPlayground.Graphical
         {
             foreach (var obj in Objects)
             {
-                obj.ClearStateFlag(Component.State.Selected);
+                obj.ClearStateFlag(Component.State.Selected | Component.State.Hover);
             }
         }
 
