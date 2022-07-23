@@ -4,10 +4,10 @@
 
 using SimpleAnnPlayground.Graphical.Visualization;
 
-namespace SimpleAnnPlayground.Graphical.Environment
+namespace SimpleAnnPlayground.Graphical.Environment.EventsArgs
 {
     /// <summary>
-    /// Event arguments for the ObjectAddedEvent.
+    /// Event arguments for the <see cref="MouseTool.ObjectAdded"/> event.
     /// </summary>
     internal class ObjectAddedEventArgs : EventArgs
     {

@@ -5,6 +5,7 @@
 using SimpleAnnPlayground.Debugging;
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Environment;
+using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using System.Diagnostics;
 
 namespace SimpleAnnPlayground
@@ -63,10 +64,17 @@ namespace SimpleAnnPlayground
             { "BtnOutputNeurone", new () { "Output", "Salida" } },
         };
 
+#if DEBUG
         /// <summary>
         /// The form to design components using elements.
         /// </summary>
         private readonly FrmElementDesigner _frmElementDesigner;
+
+        /// <summary>
+        /// The form to design components using elements.
+        /// </summary>
+        private readonly FrmObjectsViewer _frmObjectsViewer;
+#endif
 
         /// <summary>
         /// The design workspace area.
@@ -80,16 +88,18 @@ namespace SimpleAnnPlayground
         {
             InitializeComponent();
 
-#if DEBUG
-            // Add debug elements.
-            MnuDebug.Visible = true;
-#endif
-            _frmElementDesigner = new FrmElementDesigner();
-
             // Add workspace object.
             _workspace = new Workspace(PicWorkspace);
             _workspace.MouseTool.MouseMove += MouseTool_MouseMove;
             _workspace.MouseTool.ObjectAdded += MouseTool_ObjectAdded;
+            _workspace.MouseTool.SelectionChanged += MouseTool_SelectionChanged;
+
+#if DEBUG
+            // Add debug elements.
+            MnuDebug.Visible = true;
+            _frmElementDesigner = new FrmElementDesigner();
+            _frmObjectsViewer = new FrmObjectsViewer(_workspace);
+#endif
         }
 
         /// <summary>
@@ -135,6 +145,13 @@ namespace SimpleAnnPlayground
             Component.ReloadComponents(@"Graphical\Components");
         }
 
+        private void MouseTool_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+        {
+#if DEBUG
+            _frmObjectsViewer.SelectObject(e.SelectedObject ?? _workspace);
+#endif
+        }
+
         private void MouseTool_MouseMove(object? sender, EventArgs e)
         {
             LblMousePosition.Text = _workspace.MouseTool.Location is PointF point ? $"X: {point.X}, Y: {point.Y}" : "X: -, Y: -";
@@ -162,10 +179,19 @@ namespace SimpleAnnPlayground
             }
         }
 
-        private void MnuElementDesigner_Click(object sender, EventArgs e)
+        private void MnuDebugElementDesigner_Click(object sender, EventArgs e)
         {
+#if DEBUG
             _frmElementDesigner.Show(this);
             ReloadComponents();
+#endif
+        }
+
+        private void MnuDebugObjectsViewer_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            _frmObjectsViewer.Show(this);
+#endif
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)

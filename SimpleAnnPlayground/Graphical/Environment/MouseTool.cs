@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Graphical.Tools;
@@ -41,6 +42,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Ocurs when an object is added to a workspace.
         /// </summary>
         public event EventHandler<ObjectAddedEventArgs>? ObjectAdded;
+
+        /// <summary>
+        /// Ocurs when the mouse had selected a new object.
+        /// </summary>
+        public event EventHandler<SelectionChangedEventArgs>? SelectionChanged;
 
         /// <summary>
         /// The current state of the <see cref="MouseTool"/>.
@@ -201,6 +207,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                     Workspace.Canvas.AddObject(Inserting);
                     Workspace.Shadow.AddObject(Inserting);
                     Inserting.SetStateFlag(Component.State.Selected);
+                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Inserting));
                     ObjectAdded?.Invoke(this, new ObjectAddedEventArgs(Inserting, Workspace));
                     Inserting = null;
                 }
@@ -209,10 +216,12 @@ namespace SimpleAnnPlayground.Graphical.Environment
             {
                 Workspace.Shadow.MoveObjects(Moving.Selection);
                 Workspace.Canvas.Select(Moving.Selection);
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Moving.Selection.FirstOrDefault()));
                 Moving = null;
             }
             else if (Selecting != null)
             {
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Workspace.Canvas.GetSelectedObjects().FirstOrDefault()));
                 Selecting = null;
             }
             else if (Connecting != null)

@@ -16,12 +16,15 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+#if DEBUG
                 _frmElementDesigner.Dispose();
+                _frmObjectsViewer.Dispose();
+#endif
             }
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+#region Windows Form Designer generated code
 
         /// <summary>
         ///  Required method for Designer support - do not modify
@@ -64,7 +67,8 @@
             this.MnuHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuDebug = new System.Windows.Forms.ToolStripMenuItem();
-            this.MnuElementDesigner = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuDebugElementDesigner = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuDebugObjectViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
@@ -352,18 +356,26 @@
             // 
             this.MnuDebug.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.MnuDebug.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MnuElementDesigner});
+            this.MnuDebugElementDesigner,
+            this.MnuDebugObjectViewer});
             this.MnuDebug.Name = "MnuDebug";
             this.MnuDebug.Size = new System.Drawing.Size(54, 20);
             this.MnuDebug.Text = "Debug";
             this.MnuDebug.Visible = false;
             // 
-            // MnuElementDesigner
+            // MnuDebugElementDesigner
             // 
-            this.MnuElementDesigner.Name = "MnuElementDesigner";
-            this.MnuElementDesigner.Size = new System.Drawing.Size(165, 22);
-            this.MnuElementDesigner.Text = "Element designer";
-            this.MnuElementDesigner.Click += new System.EventHandler(this.MnuElementDesigner_Click);
+            this.MnuDebugElementDesigner.Name = "MnuDebugElementDesigner";
+            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugElementDesigner.Text = "Element designer";
+            this.MnuDebugElementDesigner.Click += new System.EventHandler(this.MnuDebugElementDesigner_Click);
+            // 
+            // MnuDebugObjectViewer
+            // 
+            this.MnuDebugObjectViewer.Name = "MnuDebugObjectViewer";
+            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugObjectViewer.Text = "Objects viewer";
+            this.MnuDebugObjectViewer.Click += new System.EventHandler(this.MnuDebugObjectsViewer_Click);
             // 
             // FrmMain
             // 
@@ -393,7 +405,7 @@
 
         }
 
-        #endregion
+#endregion
 
         private ToolStrip toolStrip1;
         private ToolStripButton BtnNew;
@@ -429,7 +441,8 @@
         private ToolStripMenuItem MnuTools;
         private ToolStripMenuItem MnuToolsLanguage;
         private ToolStripMenuItem MnuDebug;
-        private ToolStripMenuItem MnuElementDesigner;
+        private ToolStripMenuItem MnuDebugElementDesigner;
         private ToolStripStatusLabel LblMousePosition;
+        private ToolStripMenuItem MnuDebugObjectViewer;
     }
 }
