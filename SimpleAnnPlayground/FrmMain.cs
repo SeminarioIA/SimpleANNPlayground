@@ -222,5 +222,39 @@ namespace SimpleAnnPlayground
         {
             BtnInsertNeurone_Click(null, new EventArgs());
         }
+
+        private void LbZoom_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (sender is Label label)
+            {
+                label.BorderStyle = BorderStyle.Fixed3D;
+            }
+        }
+
+        private void LbZoom_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (sender is Label label)
+            {
+                label.BorderStyle = BorderStyle.None;
+            }
+        }
+
+        private void LbZoomOut_Click(object sender, EventArgs e)
+        {
+            _workspace.ZoomOut();
+            LbZoom.Text = $"{_workspace.Zoom} %";
+        }
+
+        private void LbZoomIn_Click(object sender, EventArgs e)
+        {
+            _workspace.ZoomIn();
+            LbZoom.Text = $"{_workspace.Zoom} %";
+        }
+
+        private void LbZoom_Click(object sender, EventArgs e)
+        {
+            _workspace.RestoreZoom();
+            LbZoom.Text = $"{_workspace.Zoom} %";
+        }
     }
 }

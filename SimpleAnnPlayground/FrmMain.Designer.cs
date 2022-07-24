@@ -435,6 +435,7 @@
             this.LbZoom.TabIndex = 2;
             this.LbZoom.Text = "100 %";
             this.LbZoom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LbZoom.Click += new System.EventHandler(this.LbZoom_Click);
             // 
             // LbZoomOut
             // 
@@ -446,6 +447,9 @@
             this.LbZoomOut.TabIndex = 0;
             this.LbZoomOut.Text = "-";
             this.LbZoomOut.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LbZoomOut.Click += new System.EventHandler(this.LbZoomOut_Click);
+            this.LbZoomOut.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LbZoom_MouseDown);
+            this.LbZoomOut.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LbZoom_MouseUp);
             // 
             // LbZoomIn
             // 
@@ -457,6 +461,9 @@
             this.LbZoomIn.TabIndex = 1;
             this.LbZoomIn.Text = "+";
             this.LbZoomIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.LbZoomIn.Click += new System.EventHandler(this.LbZoomIn_Click);
+            this.LbZoomIn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LbZoom_MouseDown);
+            this.LbZoomIn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LbZoom_MouseUp);
             // 
             // FrmMain
             // 
