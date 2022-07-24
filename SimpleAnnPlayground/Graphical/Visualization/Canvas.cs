@@ -19,14 +19,14 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// </summary>
         public Canvas()
         {
-            Objects = new List<CanvasObject>();
+            Objects = new Collection<CanvasObject>();
             Connections = new List<Connection>();
         }
 
         /// <summary>
         /// Gets the list of objects on this canvas.
         /// </summary>
-        protected List<CanvasObject> Objects { get; }
+        protected Collection<CanvasObject> Objects { get; }
 
         /// <summary>
         /// Gets the list of connections on this canvas.
@@ -63,7 +63,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <returns>The object in the location, otherwise null.</returns>
         public CanvasObject? IsObject(PointF location)
         {
-            foreach (var obj in Objects)
+            foreach (var obj in Objects.Reverse())
             {
                 if (obj.HasPoint(location))
                     return obj;
