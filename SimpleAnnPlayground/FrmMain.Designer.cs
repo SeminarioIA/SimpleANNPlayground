@@ -62,6 +62,8 @@
             this.MnuEditPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuEditOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuView = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuViewCenterScreen = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuToolsLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -203,6 +205,7 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MnuFile,
             this.MnuEdit,
+            this.MnuView,
             this.MnuTools,
             this.MnuHelp,
             this.MnuDebug});
@@ -333,6 +336,21 @@
             this.MnuEditOptions.Name = "MnuEditOptions";
             this.MnuEditOptions.Size = new System.Drawing.Size(116, 22);
             this.MnuEditOptions.Text = "Options";
+            // 
+            // MnuView
+            // 
+            this.MnuView.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuViewCenterScreen});
+            this.MnuView.Name = "MnuView";
+            this.MnuView.Size = new System.Drawing.Size(44, 20);
+            this.MnuView.Text = "View";
+            // 
+            // MnuViewCenterScreen
+            // 
+            this.MnuViewCenterScreen.Name = "MnuViewCenterScreen";
+            this.MnuViewCenterScreen.Size = new System.Drawing.Size(180, 22);
+            this.MnuViewCenterScreen.Text = "Center screen";
+            this.MnuViewCenterScreen.Click += new System.EventHandler(this.MnuViewCenterScreen_Click);
             // 
             // MnuTools
             // 
@@ -544,5 +562,7 @@
         private Label LbZoomIn;
         private Label LbZoomOut;
         private Label LbZoom;
+        private ToolStripMenuItem MnuView;
+        private ToolStripMenuItem MnuViewCenterScreen;
     }
 }
