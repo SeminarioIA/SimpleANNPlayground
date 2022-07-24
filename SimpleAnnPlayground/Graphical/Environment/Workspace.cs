@@ -14,6 +14,16 @@ namespace SimpleAnnPlayground.Graphical.Environment
     internal class Workspace
     {
         /// <summary>
+        /// The zoom scale of this workspace.
+        /// </summary>
+        private readonly int[] _zoomScale = new int[] { 50, 80, 100, 150, 200, 300, 500 };
+
+        /// <summary>
+        /// The selected zoom index from the zoom scale.
+        /// </summary>
+        private int _zoomIndex;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Workspace"/> class.
         /// </summary>
         /// <param name="pictureBox">The PictureBox for this workspace.</param>
@@ -40,10 +50,10 @@ namespace SimpleAnnPlayground.Graphical.Environment
             VScrollBar.Maximum = WorkSheet.Bounds.Bottom;
 
             // Scrollbars events.
-            HScrollBar.ValueChanged += HScrollBar_ValueChanged;
-            VScrollBar.ValueChanged += VScrollBar_ValueChanged;
+            HScrollBar.ValueChanged += ScrollBar_ValueChanged;
+            VScrollBar.ValueChanged += ScrollBar_ValueChanged;
 
-            CenterSheetView();
+            RestoreZoom();
         }
 
         /// <summary>
@@ -92,6 +102,16 @@ namespace SimpleAnnPlayground.Graphical.Environment
         public ShadowCanvas Shadow { get; private set; }
 
         /// <summary>
+        /// Gets the current zoom value.
+        /// </summary>
+        public int Zoom => _zoomScale[_zoomIndex];
+
+        /// <summary>
+        /// Gets the current transform scale.
+        /// </summary>
+        public float Scale => Zoom / 100f;
+
+        /// <summary>
         /// Forces to paint the workspace.
         /// </summary>
         public void Refresh() => PictureBox.Invalidate();
@@ -104,6 +124,42 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Transform.Reset();
             Transform.Translate(PictureBox.Width / 2, PictureBox.Height / 2);
             PictureBox.Invalidate();
+        }
+
+        /// <summary>
+        /// Executes a zoom in operation in the workspace.
+        /// </summary>
+        public void ZoomIn()
+        {
+            if (_zoomIndex < _zoomScale.Length - 1) _zoomIndex++;
+            UpdateTransform();
+        }
+
+        /// <summary>
+        /// Executes a zoom out operation in the workspace.
+        /// </summary>
+        public void ZoomOut()
+        {
+            if (_zoomIndex > 0) _zoomIndex--;
+            UpdateTransform();
+        }
+
+        /// <summary>
+        /// Restores the zoom to the default value.
+        /// </summary>
+        public void RestoreZoom()
+        {
+            _zoomIndex = _zoomScale.ToList().IndexOf(100);
+            UpdateTransform();
+        }
+
+        private void UpdateTransform()
+        {
+            Transform.Reset();
+            Transform.Translate(PictureBox.Width / 2f, PictureBox.Height / 2f);
+            Transform.Scale(Scale, Scale);
+            Transform.Translate(-HScrollBar?.Value ?? 0, -VScrollBar?.Value ?? 0);
+            Refresh();
         }
 
         private void PictureBox_Paint(object? sender, PaintEventArgs e)
@@ -126,25 +182,13 @@ namespace SimpleAnnPlayground.Graphical.Environment
 
         private void PictureBox_Resize(object? sender, EventArgs e)
         {
-            Transform.Reset();
-            Transform.Translate(PictureBox.Width / 2, PictureBox.Height / 2);
-            PictureBox.Invalidate();
+            UpdateTransform();
         }
 
-        private void HScrollBar_ValueChanged(object? sender, EventArgs e)
+        private void ScrollBar_ValueChanged(object? sender, EventArgs e)
         {
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(HScrollBar));
-            Transform.Reset();
-            Transform.Translate(PictureBox.Width / 2f - HScrollBar?.Value ?? 0, PictureBox.Height / 2f - VScrollBar?.Value ?? 0);
-            Refresh();
-        }
-
-        private void VScrollBar_ValueChanged(object? sender, EventArgs e)
-        {
-            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(VScrollBar));
-            Transform.Reset();
-            Transform.Translate(PictureBox.Width / 2f - HScrollBar?.Value ?? 0, PictureBox.Height / 2f - VScrollBar?.Value ?? 0);
-            Refresh();
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(sender));
+            UpdateTransform();
         }
     }
 }
