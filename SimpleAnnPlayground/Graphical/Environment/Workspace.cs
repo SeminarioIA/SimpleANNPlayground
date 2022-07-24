@@ -19,18 +19,26 @@ namespace SimpleAnnPlayground.Graphical.Environment
         public Workspace(PictureBox pictureBox)
         {
             PictureBox = pictureBox;
+            WorkSheet = new WorkSheet(new Size(PictureBox.Width - 50, pictureBox.Height - 50));
             MouseTool = new MouseTool(this);
             Transform = new Matrix();
             Canvas = new Canvas();
             Shadow = new ShadowCanvas();
 
             PictureBox.Paint += PictureBox_Paint;
+            PictureBox.Resize += PictureBox_Resize;
+            CenterSheetView();
         }
 
         /// <summary>
         /// Gets the <seealso cref="PictureBox"/> object linked to this workspace.
         /// </summary>
         public PictureBox PictureBox { get; private set; }
+
+        /// <summary>
+        /// Gets the workspace sheet.
+        /// </summary>
+        public WorkSheet WorkSheet { get; private set; }
 
         /// <summary>
         /// Gets the active <seealso cref="MouseTool"/> object.
@@ -57,8 +65,24 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// </summary>
         public void Refresh() => PictureBox.Invalidate();
 
+        /// <summary>
+        /// Centers the sheet in the viewing area.
+        /// </summary>
+        public void CenterSheetView()
+        {
+            Transform.Reset();
+            Transform.Translate(PictureBox.Width / 2, PictureBox.Height / 2);
+            PictureBox.Invalidate();
+        }
+
         private void PictureBox_Paint(object? sender, PaintEventArgs e)
         {
+            e.Graphics.Transform = Transform;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Draw the work sheet.
+            WorkSheet.Paint(e.Graphics);
+
             // Draw the shadow canvas.
             Shadow.Paint(e.Graphics);
 
@@ -67,6 +91,13 @@ namespace SimpleAnnPlayground.Graphical.Environment
 
             // Draw mouse tool controls.
             MouseTool.Paint(e.Graphics);
+        }
+
+        private void PictureBox_Resize(object? sender, EventArgs e)
+        {
+            Transform.Reset();
+            Transform.Translate(PictureBox.Width / 2, PictureBox.Height / 2);
+            PictureBox.Invalidate();
         }
     }
 }

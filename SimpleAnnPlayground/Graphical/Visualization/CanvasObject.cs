@@ -118,8 +118,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             get
             {
                 RectangleF rect = Component.Selector.Rectangle;
-                rect.X += Location.X;
-                rect.Y += Location.Y;
+                rect.Location = GetAbsolute(rect.Location);
                 return rect;
             }
         }
@@ -232,8 +231,8 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <returns>The relative point.</returns>
         internal PointF GetAbsolute(PointF point)
         {
-            point.X -= Component.Center.X - Location.X;
-            point.Y -= Component.Center.Y - Location.Y;
+            point.X += Location.X - Component.Center.X;
+            point.Y += Location.Y - Component.Center.Y;
             return point;
         }
 

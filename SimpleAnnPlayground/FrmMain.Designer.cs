@@ -179,7 +179,7 @@
             // 
             // PicWorkspace
             // 
-            this.PicWorkspace.BackColor = System.Drawing.Color.White;
+            this.PicWorkspace.BackColor = System.Drawing.Color.DarkGray;
             this.PicWorkspace.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PicWorkspace.Location = new System.Drawing.Point(0, 80);
             this.PicWorkspace.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
@@ -366,14 +366,14 @@
             // MnuDebugElementDesigner
             // 
             this.MnuDebugElementDesigner.Name = "MnuDebugElementDesigner";
-            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugElementDesigner.Text = "Element designer";
             this.MnuDebugElementDesigner.Click += new System.EventHandler(this.MnuDebugElementDesigner_Click);
             // 
             // MnuDebugObjectViewer
             // 
             this.MnuDebugObjectViewer.Name = "MnuDebugObjectViewer";
-            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugObjectViewer.Text = "Objects viewer";
             this.MnuDebugObjectViewer.Click += new System.EventHandler(this.MnuDebugObjectsViewer_Click);
             // 
