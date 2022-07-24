@@ -48,7 +48,7 @@ namespace SimpleAnnPlayground.Graphical.Models
         /// <param name="graphics">The object to perform the paint operation.</param>
         internal void Paint(Graphics graphics)
         {
-            using (var pen = new Pen(Color.Red, CrossWidth))
+            using (var pen = new Pen(Color, CrossWidth))
             {
                 graphics.DrawLine(pen, Location.X - Size, Location.Y, Location.X + Size, Location.Y);
                 graphics.DrawLine(pen, Location.X, Location.Y - Size, Location.X, Location.Y + Size);

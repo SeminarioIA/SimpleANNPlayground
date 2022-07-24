@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Visualization;
 
 namespace SimpleAnnPlayground.Graphical.Environment
@@ -17,8 +18,14 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <param name="size">The sheet size.</param>
         public WorkSheet(Size size)
         {
+            Cross = new Cross(Color.DarkGray, PointF.Empty, 10);
             Size = size;
         }
+
+        /// <summary>
+        /// Gets the center cross.
+        /// </summary>
+        public Cross Cross { get; }
 
         /// <summary>
         /// Gets the sheet size.
@@ -65,6 +72,9 @@ namespace SimpleAnnPlayground.Graphical.Environment
             {
                 graphics.DrawRectangle(pen, Bounds);
             }
+
+            // Draw center cross.
+            Cross.Paint(graphics);
         }
     }
 }
