@@ -69,12 +69,12 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <summary>
         /// Gets the horizontal scroll bar control of this workspace.
         /// </summary>
-        public HScrollBar? HScrollBar { get; }
+        public HScrollBar HScrollBar { get; }
 
         /// <summary>
         /// Gets the vertical scroll bar control of this workspace.
         /// </summary>
-        public VScrollBar? VScrollBar { get; }
+        public VScrollBar VScrollBar { get; }
 
         /// <summary>
         /// Gets the workspace sheet.
@@ -121,9 +121,8 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// </summary>
         public void CenterSheetView()
         {
-            Transform.Reset();
-            Transform.Translate(PictureBox.Width / 2, PictureBox.Height / 2);
-            PictureBox.Invalidate();
+            HScrollBar.Value = 0;
+            VScrollBar.Value = 0;
         }
 
         /// <summary>
@@ -158,7 +157,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Transform.Reset();
             Transform.Translate(PictureBox.Width / 2f, PictureBox.Height / 2f);
             Transform.Scale(Scale, Scale);
-            Transform.Translate(-HScrollBar?.Value ?? 0, -VScrollBar?.Value ?? 0);
+            Transform.Translate(-HScrollBar.Value, -VScrollBar.Value);
             Refresh();
         }
 
