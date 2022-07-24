@@ -69,10 +69,20 @@
             this.MnuDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuDebugElementDesigner = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuDebugObjectViewer = new System.Windows.Forms.ToolStripMenuItem();
+            this.VsbMain = new System.Windows.Forms.VScrollBar();
+            this.ScBotom = new System.Windows.Forms.SplitContainer();
+            this.HsbMain = new System.Windows.Forms.HScrollBar();
+            this.LbZoom = new System.Windows.Forms.Label();
+            this.LbZoomOut = new System.Windows.Forms.Label();
+            this.LbZoomIn = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ScBotom)).BeginInit();
+            this.ScBotom.Panel1.SuspendLayout();
+            this.ScBotom.Panel2.SuspendLayout();
+            this.ScBotom.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -184,7 +194,7 @@
             this.PicWorkspace.Location = new System.Drawing.Point(0, 80);
             this.PicWorkspace.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PicWorkspace.Name = "PicWorkspace";
-            this.PicWorkspace.Size = new System.Drawing.Size(777, 369);
+            this.PicWorkspace.Size = new System.Drawing.Size(760, 352);
             this.PicWorkspace.TabIndex = 2;
             this.PicWorkspace.TabStop = false;
             // 
@@ -377,12 +387,85 @@
             this.MnuDebugObjectViewer.Text = "Objects viewer";
             this.MnuDebugObjectViewer.Click += new System.EventHandler(this.MnuDebugObjectsViewer_Click);
             // 
+            // VsbMain
+            // 
+            this.VsbMain.Dock = System.Windows.Forms.DockStyle.Right;
+            this.VsbMain.Location = new System.Drawing.Point(760, 80);
+            this.VsbMain.Name = "VsbMain";
+            this.VsbMain.Size = new System.Drawing.Size(17, 369);
+            this.VsbMain.TabIndex = 4;
+            // 
+            // ScBotom
+            // 
+            this.ScBotom.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ScBotom.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.ScBotom.Location = new System.Drawing.Point(0, 432);
+            this.ScBotom.Name = "ScBotom";
+            // 
+            // ScBotom.Panel1
+            // 
+            this.ScBotom.Panel1.Controls.Add(this.HsbMain);
+            // 
+            // ScBotom.Panel2
+            // 
+            this.ScBotom.Panel2.Controls.Add(this.LbZoom);
+            this.ScBotom.Panel2.Controls.Add(this.LbZoomOut);
+            this.ScBotom.Panel2.Controls.Add(this.LbZoomIn);
+            this.ScBotom.Size = new System.Drawing.Size(760, 17);
+            this.ScBotom.SplitterDistance = 636;
+            this.ScBotom.TabIndex = 5;
+            // 
+            // HsbMain
+            // 
+            this.HsbMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.HsbMain.Location = new System.Drawing.Point(0, 0);
+            this.HsbMain.Name = "HsbMain";
+            this.HsbMain.Size = new System.Drawing.Size(636, 17);
+            this.HsbMain.TabIndex = 0;
+            // 
+            // LbZoom
+            // 
+            this.LbZoom.BackColor = System.Drawing.Color.White;
+            this.LbZoom.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.LbZoom.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LbZoom.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LbZoom.Location = new System.Drawing.Point(17, 0);
+            this.LbZoom.Name = "LbZoom";
+            this.LbZoom.Size = new System.Drawing.Size(86, 17);
+            this.LbZoom.TabIndex = 2;
+            this.LbZoom.Text = "100 %";
+            this.LbZoom.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LbZoomOut
+            // 
+            this.LbZoomOut.Dock = System.Windows.Forms.DockStyle.Left;
+            this.LbZoomOut.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LbZoomOut.Location = new System.Drawing.Point(0, 0);
+            this.LbZoomOut.Name = "LbZoomOut";
+            this.LbZoomOut.Size = new System.Drawing.Size(17, 17);
+            this.LbZoomOut.TabIndex = 0;
+            this.LbZoomOut.Text = "-";
+            this.LbZoomOut.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // LbZoomIn
+            // 
+            this.LbZoomIn.Dock = System.Windows.Forms.DockStyle.Right;
+            this.LbZoomIn.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.LbZoomIn.Location = new System.Drawing.Point(103, 0);
+            this.LbZoomIn.Name = "LbZoomIn";
+            this.LbZoomIn.Size = new System.Drawing.Size(17, 17);
+            this.LbZoomIn.TabIndex = 1;
+            this.LbZoomIn.Text = "+";
+            this.LbZoomIn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(777, 473);
             this.Controls.Add(this.PicWorkspace);
+            this.Controls.Add(this.ScBotom);
+            this.Controls.Add(this.VsbMain);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
@@ -400,6 +483,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.ScBotom.Panel1.ResumeLayout(false);
+            this.ScBotom.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.ScBotom)).EndInit();
+            this.ScBotom.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -444,5 +531,11 @@
         private ToolStripMenuItem MnuDebugElementDesigner;
         private ToolStripStatusLabel LblMousePosition;
         private ToolStripMenuItem MnuDebugObjectViewer;
+        private VScrollBar VsbMain;
+        private SplitContainer ScBotom;
+        private HScrollBar HsbMain;
+        private Label LbZoomIn;
+        private Label LbZoomOut;
+        private Label LbZoom;
     }
 }

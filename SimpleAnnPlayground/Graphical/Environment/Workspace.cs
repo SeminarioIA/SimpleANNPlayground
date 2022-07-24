@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Visualization;
 using System.Drawing.Drawing2D;
 
@@ -16,24 +17,54 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Initializes a new instance of the <see cref="Workspace"/> class.
         /// </summary>
         /// <param name="pictureBox">The PictureBox for this workspace.</param>
-        public Workspace(PictureBox pictureBox)
+        /// <param name="hScrollBar">The horizontal scroll bar control.</param>
+        /// <param name="vScrollBar">The vertical scroll bar control.</param>
+        public Workspace(PictureBox pictureBox, HScrollBar hScrollBar, VScrollBar vScrollBar)
         {
             PictureBox = pictureBox;
+            HScrollBar = hScrollBar;
+            VScrollBar = vScrollBar;
             WorkSheet = new WorkSheet(new Size(PictureBox.Width - 50, pictureBox.Height - 50));
             MouseTool = new MouseTool(this);
             Transform = new Matrix();
             Canvas = new Canvas();
             Shadow = new ShadowCanvas();
 
+            // PictureBox events.
             PictureBox.Paint += PictureBox_Paint;
             PictureBox.Resize += PictureBox_Resize;
+
+            HScrollBar.Minimum = WorkSheet.Bounds.Left;
+            HScrollBar.Maximum = WorkSheet.Bounds.Right;
+            VScrollBar.Minimum = WorkSheet.Bounds.Top;
+            VScrollBar.Maximum = WorkSheet.Bounds.Bottom;
+
+            // Scrollbars events.
+            HScrollBar.ValueChanged += HScrollBar_ValueChanged;
+            VScrollBar.ValueChanged += VScrollBar_ValueChanged;
+
             CenterSheetView();
         }
 
         /// <summary>
+        /// Ocurs when the mouse had selected a new object.
+        /// </summary>
+        public event EventHandler<SelectionChangedEventArgs>? SelectionChanged;
+
+        /// <summary>
         /// Gets the <seealso cref="PictureBox"/> object linked to this workspace.
         /// </summary>
-        public PictureBox PictureBox { get; private set; }
+        public PictureBox PictureBox { get; }
+
+        /// <summary>
+        /// Gets the horizontal scroll bar control of this workspace.
+        /// </summary>
+        public HScrollBar? HScrollBar { get; }
+
+        /// <summary>
+        /// Gets the vertical scroll bar control of this workspace.
+        /// </summary>
+        public VScrollBar? VScrollBar { get; }
 
         /// <summary>
         /// Gets the workspace sheet.
@@ -98,6 +129,22 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Transform.Reset();
             Transform.Translate(PictureBox.Width / 2, PictureBox.Height / 2);
             PictureBox.Invalidate();
+        }
+
+        private void HScrollBar_ValueChanged(object? sender, EventArgs e)
+        {
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(HScrollBar));
+            Transform.Reset();
+            Transform.Translate(PictureBox.Width / 2f - HScrollBar?.Value ?? 0, PictureBox.Height / 2f - VScrollBar?.Value ?? 0);
+            Refresh();
+        }
+
+        private void VScrollBar_ValueChanged(object? sender, EventArgs e)
+        {
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(VScrollBar));
+            Transform.Reset();
+            Transform.Translate(PictureBox.Width / 2f - HScrollBar?.Value ?? 0, PictureBox.Height / 2f - VScrollBar?.Value ?? 0);
+            Refresh();
         }
     }
 }
