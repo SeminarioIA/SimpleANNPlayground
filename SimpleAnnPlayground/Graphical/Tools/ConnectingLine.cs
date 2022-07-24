@@ -73,7 +73,7 @@ namespace SimpleAnnPlayground.Graphical.Tools
             }
             else
             {
-                throw new NotImplementedException();
+                return null;
             }
         }
 

@@ -202,7 +202,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
 
             if (Inserting != null)
             {
-                if (!Workspace.Canvas.IntesectsObject(Inserting))
+                if (Workspace.PictureBox.Cursor != Cursors.No)
                 {
                     Workspace.Canvas.AddObject(Inserting);
                     Workspace.Shadow.AddObject(Inserting);
@@ -297,7 +297,9 @@ namespace SimpleAnnPlayground.Graphical.Environment
             }
             else if (Inserting != null)
             {
-                Workspace.PictureBox.Cursor = Workspace.Canvas.IntesectsObject(Inserting) ? Cursors.No : Cursors.Cross;
+                bool overOther = Workspace.Canvas.IntesectsObject(Inserting);
+                bool insideSheet = Workspace.WorkSheet.IsInside(Inserting);
+                Workspace.PictureBox.Cursor = overOther || !insideSheet ? Cursors.No : Cursors.Cross;
             }
             else if (Selecting != null)
             {
