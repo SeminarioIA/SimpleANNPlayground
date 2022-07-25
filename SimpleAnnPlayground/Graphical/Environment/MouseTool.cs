@@ -248,7 +248,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                 if (Connecting.Finish() is Connection connection)
                 {
                     // Add the connection action to be able to undo later.
-                    Workspace.Actions.AddConnectionsAction(ActionType.Connected, new Collection<Connection> { connection });
+                    Workspace.Actions.AddConnectionsAction(new Collection<Connection> { connection });
                 }
 
                 Connecting = null;

@@ -44,9 +44,9 @@ namespace SimpleAnnPlayground.Actions
             Connected,
 
             /// <summary>
-            /// A disconnection of two neurons was performed.
+            /// A group of selected objects was deleted.
             /// </summary>
-            Disconnected,
+            Deleted,
         }
 
         /// <summary>
