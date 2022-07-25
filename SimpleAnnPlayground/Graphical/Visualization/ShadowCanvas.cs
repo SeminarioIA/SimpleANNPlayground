@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Graphical.Terminals;
 using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Graphical.Visualization
@@ -29,6 +31,24 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             }
         }
 
+        /// <inheritdoc/>
+        public override void AddConnection(Connection connection)
+        {
+            var shadow = new Connection(connection, this);
+            shadow.IsShadow = true;
+            base.AddConnection(shadow);
+        }
+
+        /// <summary>
+        /// Restores a previusly added and removed connection.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        public void RestoreShadowConnection(Connection connection)
+        {
+            if (!connection.IsShadow) throw new ArgumentException("Connection is not shadow", nameof(connection));
+            base.AddConnection(connection);
+        }
+
         /// <summary>
         /// Executes a move operation over an object.
         /// </summary>
@@ -40,6 +60,17 @@ namespace SimpleAnnPlayground.Graphical.Visualization
                 var shadow = Objects.First(shadow => shadow.Equals(obj));
                 shadow.Location = obj.Location;
             }
+        }
+
+        /// <summary>
+        /// Swaps an object by another.
+        /// </summary>
+        /// <param name="toRemove">The shadow object to remove.</param>
+        /// <param name="toAdd">The shadow object to add.</param>
+        internal void SwapObjects(CanvasObject? toRemove, CanvasObject? toAdd)
+        {
+            if (toRemove != null) _ = Objects.Remove(toRemove);
+            if (toAdd != null) Objects.Add(toAdd);
         }
     }
 }

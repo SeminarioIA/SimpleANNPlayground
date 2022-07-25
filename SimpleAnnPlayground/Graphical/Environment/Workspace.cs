@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Actions;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Visualization;
 using System.Drawing.Drawing2D;
@@ -39,6 +40,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Transform = new Matrix();
             Canvas = new Canvas();
             Shadow = new ShadowCanvas();
+            Actions = new ActionsManager(this);
 
             // PictureBox events.
             PictureBox.Paint += PictureBox_Paint;
@@ -100,6 +102,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Gets the shadow canvas where the original objects are saved.
         /// </summary>
         public ShadowCanvas Shadow { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="ActionsManager"/> of this workspace.
+        /// </summary>
+        public ActionsManager Actions { get; }
 
         /// <summary>
         /// Gets the current zoom value.

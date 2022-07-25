@@ -96,8 +96,9 @@ namespace SimpleAnnPlayground
             _workspace = new Workspace(PicWorkspace, HsbMain, VsbMain);
             _workspace.MouseTool.MouseMove += MouseTool_MouseMove;
             _workspace.MouseTool.ObjectAdded += MouseTool_ObjectAdded;
-            _workspace.MouseTool.SelectionChanged += MouseTool_SelectionChanged;
-            _workspace.SelectionChanged += MouseTool_SelectionChanged;
+            _workspace.MouseTool.SelectionChanged += Workspace_SelectionChanged;
+            _workspace.SelectionChanged += Workspace_SelectionChanged;
+            _workspace.Actions.ActionPerformed += Actions_ActionPerformed;
 
 #if DEBUG
             // Add debug elements.
@@ -150,7 +151,7 @@ namespace SimpleAnnPlayground
             Component.ReloadComponents(@"Graphical\Components");
         }
 
-        private void MouseTool_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+        private void Workspace_SelectionChanged(object? sender, SelectionChangedEventArgs e)
         {
 #if DEBUG
             _frmObjectsViewer.SelectObject(e.SelectedObject ?? _workspace);
@@ -264,6 +265,25 @@ namespace SimpleAnnPlayground
         private void MnuViewCenterScreen_Click(object sender, EventArgs e)
         {
             _workspace.CenterSheetView();
+        }
+
+        private void MnuEditUndo_Click(object sender, EventArgs e)
+        {
+            _workspace.Actions.Undo();
+            MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
+            MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+        }
+
+        private void MnuEditRedo_Click(object sender, EventArgs e)
+        {
+            _workspace.Actions.Redo();
+            MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
+            MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+        }
+
+        private void Actions_ActionPerformed(object? sender, EventArgs e)
+        {
+            MnuEditUndo.Enabled = true;
         }
     }
 }

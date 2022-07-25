@@ -10,6 +10,7 @@ using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Utils;
 using System.Collections.ObjectModel;
+using static SimpleAnnPlayground.Actions.RecordableAction;
 
 namespace SimpleAnnPlayground.Graphical.Environment
 {
@@ -204,19 +205,37 @@ namespace SimpleAnnPlayground.Graphical.Environment
             {
                 if (Workspace.PictureBox.Cursor != Cursors.No)
                 {
+                    // Add the object to the canvas.
                     Workspace.Canvas.AddObject(Inserting);
-                    Workspace.Shadow.AddObject(Inserting);
+
+                    // Select the new inserted object.
                     Inserting.SetStateFlag(Component.State.Selected);
+
+                    // Grab the insertion action to be able to undo later.
+                    Workspace.Actions.AddObjectsAction(ActionType.Inserted, Workspace.Canvas.GetSelectedObjects());
+
+                    // Invoke SelectionChanged event.
                     SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Inserting));
+
+                    // Invoke ObjectAdded event.
                     ObjectAdded?.Invoke(this, new ObjectAddedEventArgs(Inserting, Workspace));
+
+                    // Finish the operation clearing Inserting.
                     Inserting = null;
                 }
             }
             else if (Moving != null)
             {
-                Workspace.Shadow.MoveObjects(Moving.Selection);
+                // Grab the moving action to be able to undo later.
+                Workspace.Actions.AddObjectsAction(ActionType.Moved, Moving.Selection);
+
+                // Select the moved objects.
                 Workspace.Canvas.Select(Moving.Selection);
+
+                // Invoke SelectionChanged event.
                 SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Moving.Selection.FirstOrDefault()));
+
+                // Finish the operation clearing Moving.
                 Moving = null;
             }
             else if (Selecting != null)
@@ -228,7 +247,8 @@ namespace SimpleAnnPlayground.Graphical.Environment
             {
                 if (Connecting.Finish() is Connection connection)
                 {
-                    Workspace.Canvas.AddConnection(connection);
+                    // Add the connection action to be able to undo later.
+                    Workspace.Actions.AddConnectionsAction(ActionType.Connected, new Collection<Connection> { connection });
                 }
 
                 Connecting = null;

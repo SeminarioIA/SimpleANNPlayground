@@ -287,54 +287,64 @@
             // 
             // MnuEditUndo
             // 
+            this.MnuEditUndo.Enabled = false;
             this.MnuEditUndo.Name = "MnuEditUndo";
-            this.MnuEditUndo.Size = new System.Drawing.Size(116, 22);
+            this.MnuEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.MnuEditUndo.Size = new System.Drawing.Size(180, 22);
             this.MnuEditUndo.Text = "Undo";
+            this.MnuEditUndo.Click += new System.EventHandler(this.MnuEditUndo_Click);
             // 
             // MnuEditRedo
             // 
+            this.MnuEditRedo.Enabled = false;
             this.MnuEditRedo.Name = "MnuEditRedo";
-            this.MnuEditRedo.Size = new System.Drawing.Size(116, 22);
+            this.MnuEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.MnuEditRedo.Size = new System.Drawing.Size(180, 22);
             this.MnuEditRedo.Text = "Redo";
+            this.MnuEditRedo.Click += new System.EventHandler(this.MnuEditRedo_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(113, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuEditDelete
             // 
+            this.MnuEditDelete.Enabled = false;
             this.MnuEditDelete.Name = "MnuEditDelete";
-            this.MnuEditDelete.Size = new System.Drawing.Size(116, 22);
+            this.MnuEditDelete.Size = new System.Drawing.Size(180, 22);
             this.MnuEditDelete.Text = "Delete";
             // 
             // MnuEditCopy
             // 
+            this.MnuEditCopy.Enabled = false;
             this.MnuEditCopy.Name = "MnuEditCopy";
-            this.MnuEditCopy.Size = new System.Drawing.Size(116, 22);
+            this.MnuEditCopy.Size = new System.Drawing.Size(180, 22);
             this.MnuEditCopy.Text = "Copy";
             // 
             // MnuEditCut
             // 
+            this.MnuEditCut.Enabled = false;
             this.MnuEditCut.Name = "MnuEditCut";
-            this.MnuEditCut.Size = new System.Drawing.Size(116, 22);
+            this.MnuEditCut.Size = new System.Drawing.Size(180, 22);
             this.MnuEditCut.Text = "Cut";
             // 
             // MnuEditPaste
             // 
+            this.MnuEditPaste.Enabled = false;
             this.MnuEditPaste.Name = "MnuEditPaste";
-            this.MnuEditPaste.Size = new System.Drawing.Size(116, 22);
+            this.MnuEditPaste.Size = new System.Drawing.Size(180, 22);
             this.MnuEditPaste.Text = "Paste";
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(113, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuEditOptions
             // 
             this.MnuEditOptions.Name = "MnuEditOptions";
-            this.MnuEditOptions.Size = new System.Drawing.Size(116, 22);
+            this.MnuEditOptions.Size = new System.Drawing.Size(180, 22);
             this.MnuEditOptions.Text = "Options";
             // 
             // MnuView

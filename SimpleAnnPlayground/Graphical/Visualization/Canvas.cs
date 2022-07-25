@@ -51,10 +51,22 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         public virtual void AddObject(CanvasObject obj) => Objects.Add(obj);
 
         /// <summary>
+        /// Removes an object from the canvas.
+        /// </summary>
+        /// <param name="obj">The object to remove.</param>
+        public void RemoveObject(CanvasObject obj) => Objects.Remove(obj);
+
+        /// <summary>
         /// Adds a connection between two object to this canvas.
         /// </summary>
         /// <param name="connection">The connection to be added.</param>
         public virtual void AddConnection(Connection connection) => Connections.Add(connection);
+
+        /// <summary>
+        /// Removes a connection between two object from this canvas.
+        /// </summary>
+        /// <param name="connection">The connection to be removed.</param>
+        public void RemoveConnection(Connection connection) => Connections.Remove(connection);
 
         /// <summary>
         /// Determines if a location touches a <see cref="CanvasObject"/>.
@@ -172,6 +184,55 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             }
 
             return selected;
+        }
+
+        /// <summary>
+        /// Obtains the object in this <see cref="Canvas"/> that matches the given reference.
+        /// </summary>
+        /// <param name="reference">The reference object to find.</param>
+        /// <returns>The matching object.</returns>
+        internal CanvasObject? GetObjectFromReference(CanvasObject reference)
+        {
+            return Objects.FirstOrDefault(obj => obj.Equals(reference));
+        }
+
+        /// <summary>
+        /// Obtains the collection of objects on this <see cref="Canvas"/> that match the given collection.
+        /// </summary>
+        /// <param name="references">The reference objects to find.</param>
+        /// <returns>The collection of matching objects.</returns>
+        internal Collection<(CanvasObject, CanvasObject?)> GetObjectsWithReference(Collection<CanvasObject> references)
+        {
+            var objects = new Collection<(CanvasObject, CanvasObject?)>();
+            foreach (var reference in references)
+            {
+                if (Objects.FirstOrDefault(obj => obj.Equals(reference)) is CanvasObject obj)
+                {
+                    objects.Add((reference, obj));
+                }
+                else
+                {
+                    objects.Add((reference, null));
+                }
+            }
+
+            return objects;
+        }
+
+        /// <summary>
+        /// Obtains the collection of objects on this <see cref="Canvas"/> that match the given collection.
+        /// </summary>
+        /// <param name="references">The reference objects to find.</param>
+        /// <returns>The collection of matching objects.</returns>
+        internal Collection<(Connection, Connection)> GetConnectionsWithReference(Collection<Connection> references)
+        {
+            var connections = new Collection<(Connection, Connection)>();
+            foreach (var reference in references)
+            {
+                connections.Add((reference, Connections.First(obj => obj.Equals(reference))));
+            }
+
+            return connections;
         }
 
         /// <summary>

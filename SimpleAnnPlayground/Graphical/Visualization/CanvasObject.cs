@@ -11,26 +11,15 @@ namespace SimpleAnnPlayground.Graphical.Visualization
     /// <summary>
     /// Represents an object to be drawn on a <seealso cref="Canvas"/>.
     /// </summary>
-    internal abstract class CanvasObject
+    internal abstract class CanvasObject : DrawableObject
     {
-        /// <summary>
-        ///  The global instances count.
-        /// </summary>
-        private static int _instances;
-
-        /// <summary>
-        /// The global ids count.
-        /// </summary>
-        private static int _ids;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasObject"/> class.
         /// </summary>
         /// <param name="other">Other object to copy.</param>
         public CanvasObject(CanvasObject other)
+            : base(other)
         {
-            Instance = _instances++;
-            Id = other.Id;
             Location = other.Location;
             Component = other.Component;
             Inputs = other.Inputs.ConvertAll(input => new InputTerminal(input));
@@ -45,8 +34,6 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <param name="y">The Y coordinate.</param>
         protected CanvasObject(Component component, int x, int y)
         {
-            Instance = _instances++;
-            Id = _ids++;
             Location = new Point(x, y);
             Component = component;
             Inputs = new List<InputTerminal>();
@@ -91,16 +78,6 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         public Terminal? ActiveTerminal { get; private set; }
 
         /// <summary>
-        /// Gets the instance number of this object.
-        /// </summary>
-        public int Instance { get; }
-
-        /// <summary>
-        /// Gets the id number of this object.
-        /// </summary>
-        public int Id { get; }
-
-        /// <summary>
         /// Gets a value indicating whether the object is selected.
         /// </summary>
         public bool Selected => State.HasFlag(State.Selected);
@@ -131,6 +108,15 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         public static CanvasObject Copy(CanvasObject other)
         {
             return Activator.CreateInstance(other.GetType(), other) as CanvasObject ?? throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Copies the current object properties values to another object.
+        /// </summary>
+        /// <param name="other">The object to receive the values.</param>
+        public void CopyTo(CanvasObject other)
+        {
+            other.Location = Location;
         }
 
         /// <summary>
@@ -186,12 +172,6 @@ namespace SimpleAnnPlayground.Graphical.Visualization
                 ActiveTerminal = null;
             }
         }
-
-        /// <inheritdoc/>
-        public override bool Equals(object? obj) => obj is CanvasObject other && other.Id == Id;
-
-        /// <inheritdoc/>
-        public override int GetHashCode() => Id;
 
         /// <summary>
         /// Adjust a state flag from a boolean value.
