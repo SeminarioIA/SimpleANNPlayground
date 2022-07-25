@@ -94,13 +94,22 @@ namespace SimpleAnnPlayground.Actions
         }
 
         /// <summary>
-        /// Adds a new <see cref="ConnectionsActions"/> to the collection of actions.
+        /// Adds a new <see cref="ConnectionAction"/> to the collection of actions.
+        /// </summary>
+        /// <param name="connections">The list of refence connections.</param>
+        public void AddConnectionsAction(Collection<Connection> connections)
+        {
+            AddAction(new ConnectionAction(Workspace, connections));
+        }
+
+        /// <summary>
+        /// Adds a new <see cref="ConnectionAction"/> to the collection of actions.
         /// </summary>
         /// <param name="type">The type of action to add.</param>
-        /// <param name="connections">The list of refence connections.</param>
-        public void AddConnectionsAction(ActionType type, Collection<Connection> connections)
+        public void AddRemoveAction(ActionType type)
         {
-            AddAction(new ConnectionsActions(Workspace, type, connections));
+            AddAction(new RemoveAction(Workspace, type, Workspace.Canvas.GetSelectedObjects(), Workspace.Canvas.GetSelectedConnections()));
+            Workspace.Refresh();
         }
 
         private void AddAction(RecordableAction action)

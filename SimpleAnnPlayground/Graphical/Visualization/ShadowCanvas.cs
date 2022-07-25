@@ -3,7 +3,6 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Neurons;
-using SimpleAnnPlayground.Graphical.Terminals;
 using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Graphical.Visualization
@@ -31,6 +30,16 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             }
         }
 
+        /// <summary>
+        /// Restores a previusly added and removed object.
+        /// </summary>
+        /// <param name="obj">The object to restore.</param>
+        public void RestoreShadowObject(CanvasObject obj)
+        {
+            if (!obj.State.HasFlag(Component.State.Shadow)) throw new ArgumentException("Object is not shadow", nameof(obj));
+            base.AddObject(obj);
+        }
+
         /// <inheritdoc/>
         public override void AddConnection(Connection connection)
         {
@@ -42,7 +51,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Restores a previusly added and removed connection.
         /// </summary>
-        /// <param name="connection">The connection.</param>
+        /// <param name="connection">The connection to restore.</param>
         public void RestoreShadowConnection(Connection connection)
         {
             if (!connection.IsShadow) throw new ArgumentException("Connection is not shadow", nameof(connection));

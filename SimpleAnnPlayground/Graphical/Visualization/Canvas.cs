@@ -187,6 +187,32 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         }
 
         /// <summary>
+        /// Obtains a collection of the selected connections.
+        /// </summary>
+        /// <returns>The collection of selected connections.</returns>
+        internal Collection<Connection> GetSelectedConnections()
+        {
+            var objects = GetSelectedObjects();
+            if (objects.Any())
+            {
+                var connections = new Collection<Connection>();
+                foreach (var connection in Connections)
+                {
+                    if (objects.Contains(connection.Source.Owner) && !connections.Contains(connection))
+                    {
+                        connections.Add(connection);
+                    }
+                }
+
+                return connections;
+            }
+            else
+            {
+                throw new NotImplementedException("TODO: Implement select connections alone.");
+            }
+        }
+
+        /// <summary>
         /// Obtains the object in this <see cref="Canvas"/> that matches the given reference.
         /// </summary>
         /// <param name="reference">The reference object to find.</param>

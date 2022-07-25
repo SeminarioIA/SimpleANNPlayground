@@ -312,8 +312,10 @@
             // 
             this.MnuEditDelete.Enabled = false;
             this.MnuEditDelete.Name = "MnuEditDelete";
+            this.MnuEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.MnuEditDelete.Size = new System.Drawing.Size(180, 22);
             this.MnuEditDelete.Text = "Delete";
+            this.MnuEditDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
             // MnuEditCopy
             // 
@@ -358,7 +360,7 @@
             // MnuViewCenterScreen
             // 
             this.MnuViewCenterScreen.Name = "MnuViewCenterScreen";
-            this.MnuViewCenterScreen.Size = new System.Drawing.Size(180, 22);
+            this.MnuViewCenterScreen.Size = new System.Drawing.Size(146, 22);
             this.MnuViewCenterScreen.Text = "Center screen";
             this.MnuViewCenterScreen.Click += new System.EventHandler(this.MnuViewCenterScreen_Click);
             // 

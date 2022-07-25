@@ -156,6 +156,7 @@ namespace SimpleAnnPlayground
 #if DEBUG
             _frmObjectsViewer.SelectObject(e.SelectedObject ?? _workspace);
 #endif
+            MnuEditDelete.Enabled = e.SelectedObject != null;
         }
 
         private void MouseTool_MouseMove(object? sender, EventArgs e)
@@ -283,7 +284,13 @@ namespace SimpleAnnPlayground
 
         private void Actions_ActionPerformed(object? sender, EventArgs e)
         {
-            MnuEditUndo.Enabled = true;
+            MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
+            MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+        }
+
+        private void MnuEditDelete_Click(object sender, EventArgs e)
+        {
+            _workspace.Actions.AddRemoveAction(Actions.RecordableAction.ActionType.Deleted);
         }
     }
 }
