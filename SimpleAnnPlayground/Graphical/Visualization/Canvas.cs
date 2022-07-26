@@ -20,7 +20,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         public Canvas()
         {
             Objects = new Collection<CanvasObject>();
-            Connections = new List<Connection>();
+            Connections = new Collection<Connection>();
         }
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Gets the list of connections on this canvas.
         /// </summary>
-        protected List<Connection> Connections { get; }
+        protected Collection<Connection> Connections { get; }
 
         /// <summary>
         /// Converts a color object into another color with less bright.
@@ -79,6 +79,22 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             {
                 if (obj.HasPoint(location))
                     return obj;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Determines if a location touches a <see cref="Connection"/>.
+        /// </summary>
+        /// <param name="location">The location to test.</param>
+        /// <returns>The connection in the location, otherwise null.</returns>
+        public Connection? IsConnection(PointF location)
+        {
+            foreach (var connection in Connections.Reverse())
+            {
+                if (connection.HasPoint(location))
+                    return connection;
             }
 
             return null;
@@ -147,6 +163,11 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             {
                 obj.ClearStateFlag(Component.State.Selected | Component.State.Hover);
             }
+
+            foreach (var connection in Connections)
+            {
+                connection.IsSelected = false;
+            }
         }
 
         /// <summary>
@@ -160,6 +181,21 @@ namespace SimpleAnnPlayground.Graphical.Visualization
                 foreach (var obj in Objects)
                 {
                     _ = obj.AdjustStateFlag(Component.State.Selected, box.Rectangle.IntersectsWith(obj.SelectionArea));
+                }
+
+                if (GetSelectedObjects().Count == 0)
+                {
+                    foreach (var connection in Connections)
+                    {
+                        connection.IsSelected = box.IntersectsWith(connection);
+                    }
+                }
+                else
+                {
+                    foreach (var connection in Connections)
+                    {
+                        connection.IsSelected = false;
+                    }
                 }
             }
             else
@@ -193,9 +229,9 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         internal Collection<Connection> GetSelectedConnections()
         {
             var objects = GetSelectedObjects();
+            var connections = new Collection<Connection>();
             if (objects.Any())
             {
-                var connections = new Collection<Connection>();
                 foreach (var connection in Connections)
                 {
                     if (objects.Contains(connection.Source.Owner) && !connections.Contains(connection))
@@ -203,13 +239,16 @@ namespace SimpleAnnPlayground.Graphical.Visualization
                         connections.Add(connection);
                     }
                 }
-
-                return connections;
             }
             else
             {
-                throw new NotImplementedException("TODO: Implement select connections alone.");
+                foreach (var connection in Connections)
+                {
+                    if (connection.IsSelected) connections.Add(connection);
+                }
             }
+
+            return connections;
         }
 
         /// <summary>
