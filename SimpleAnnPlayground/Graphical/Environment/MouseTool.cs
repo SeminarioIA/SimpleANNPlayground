@@ -240,7 +240,8 @@ namespace SimpleAnnPlayground.Graphical.Environment
             }
             else if (Selecting != null)
             {
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Workspace.Canvas.GetSelectedObjects().FirstOrDefault()));
+                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Workspace.Canvas.GetSelectedObjects().FirstOrDefault() as object
+                    ?? Workspace.Canvas.GetSelectedConnections().FirstOrDefault()));
                 Selecting = null;
             }
             else if (Connecting != null)
@@ -367,6 +368,12 @@ namespace SimpleAnnPlayground.Graphical.Environment
                         // Move the selected objects.
                         MoveObjects(obj, Location.Value);
                     }
+                }
+                else if (Workspace.Canvas.IsConnection(Location.Value) is Connection connection)
+                {
+                    Workspace.Canvas.UnselectAll();
+                    connection.IsSelected = true;
+                    Workspace.Refresh();
                 }
                 else
                 {

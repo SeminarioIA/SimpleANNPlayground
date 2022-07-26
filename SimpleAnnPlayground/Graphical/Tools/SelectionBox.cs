@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Utils;
 using System.Drawing.Drawing2D;
 
 namespace SimpleAnnPlayground.Graphical.Tools
@@ -72,6 +74,19 @@ namespace SimpleAnnPlayground.Graphical.Tools
             _box.Y = Math.Min(StartPoint.Y, location.Y);
             _box.Width = Math.Abs(location.X - StartPoint.X);
             _box.Height = Math.Abs(location.Y - StartPoint.Y);
+        }
+
+        /// <summary>
+        /// Determines if the selection box intersects with the given <see cref="Connection"/>.
+        /// </summary>
+        /// <param name="connection">The connection to test.</param>
+        /// <returns>True if the selection intersects the connection, otherwise false.</returns>
+        internal bool IntersectsWith(Connection connection)
+        {
+            return Vectors.AreSegmentsIntersecting(connection.Source.Location, connection.Destination.Location, new PointF(_box.Left, _box.Top), new PointF(_box.Left, _box.Bottom))
+                || Vectors.AreSegmentsIntersecting(connection.Source.Location, connection.Destination.Location, new PointF(_box.Left, _box.Top), new PointF(_box.Right, _box.Top))
+                || Vectors.AreSegmentsIntersecting(connection.Source.Location, connection.Destination.Location, new PointF(_box.Right, _box.Top), new PointF(_box.Right, _box.Bottom))
+                || Vectors.AreSegmentsIntersecting(connection.Source.Location, connection.Destination.Location, new PointF(_box.Left, _box.Bottom), new PointF(_box.Right, _box.Bottom));
         }
     }
 }
