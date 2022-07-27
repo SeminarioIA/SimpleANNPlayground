@@ -4,6 +4,8 @@
 
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Visualization;
+using SimpleAnnPlayground.Utils;
+using System.Drawing.Drawing2D;
 
 namespace SimpleAnnPlayground.Actions
 {
@@ -68,5 +70,87 @@ namespace SimpleAnnPlayground.Actions
         /// Performs the action.
         /// </summary>
         public abstract void Redo();
+
+        /// <summary>
+        /// Paints the before actions picture.
+        /// </summary>
+        /// <param name="graphics">The graphics object to paint.</param>
+        public abstract void PaintBefore(Graphics graphics);
+
+        /// <summary>
+        /// Paints the after actions picture.
+        /// </summary>
+        /// <param name="graphics">The graphics object to paint.</param>
+        public abstract void PaintAfter(Graphics graphics);
+
+        /// <inheritdoc/>
+        public override string ToString() => Type.ToString();
+
+        /// <summary>
+        /// Adjusts a transform to the action bounds.
+        /// </summary>
+        /// <param name="transform">The transform.</param>
+        /// <param name="pictureBounds">The <see cref="PictureBox"/> bounds.</param>
+        internal void AdjustTransformToBounds(ref Matrix transform, Rectangle pictureBounds)
+        {
+            transform.Reset();
+            var actionBounds = CalcBounds();
+            transform.Translate(pictureBounds.Width / 2, pictureBounds.Height / 2);
+            transform.Scale(
+                Math.Min(pictureBounds.Width / actionBounds.Width, 1),
+                Math.Min(pictureBounds.Height / actionBounds.Height, 1));
+            transform.Translate(actionBounds.X, actionBounds.Y);
+        }
+
+        /// <summary>
+        /// Expands the bounds with respect to a point.
+        /// </summary>
+        /// <param name="topLeft">The top-left point of the bounds.</param>
+        /// <param name="botomRight">The botom-right point of the bounds.</param>
+        /// <param name="point">The point to expand the bounds.</param>
+        protected static void ExpandBounds(ref PointF topLeft, ref PointF botomRight, PointF point)
+        {
+            if (topLeft == PointF.Empty && botomRight == PointF.Empty)
+            {
+                topLeft = point;
+                botomRight = point;
+            }
+            else
+            {
+                if (point.X > botomRight.X) botomRight.X = point.X;
+                else if (point.X < topLeft.X) topLeft.X = point.X;
+                if (point.Y > botomRight.Y) botomRight.Y = point.Y;
+                else if (point.Y < topLeft.Y) topLeft.Y = point.Y;
+            }
+        }
+
+        /// <summary>
+        /// Expands the bounds with respect to a rectangle.
+        /// </summary>
+        /// <param name="topLeft">The top-left point of the bounds.</param>
+        /// <param name="botomRight">The botom-right point of the bounds.</param>
+        /// <param name="rect">The rectangle to expand the bounds.</param>
+        protected static void ExpandBounds(ref PointF topLeft, ref PointF botomRight, RectangleF rect)
+        {
+            var corner = rect.Location.OffsetTo(rect.Size.ToPointF());
+            if (topLeft == PointF.Empty && botomRight == PointF.Empty)
+            {
+                topLeft = rect.Location;
+                botomRight = corner;
+            }
+            else
+            {
+                if (rect.X < topLeft.X) topLeft.X = rect.X;
+                if (rect.Y < topLeft.Y) topLeft.Y = rect.Y;
+                if (corner.X > botomRight.X) botomRight.X = corner.X;
+                if (corner.Y > botomRight.Y) botomRight.Y = corner.Y;
+            }
+        }
+
+        /// <summary>
+        /// Calculates the bounds for all the objects contained on this action.
+        /// </summary>
+        /// <returns>A rectangle thar represents the bounds.</returns>
+        protected abstract RectangleF CalcBounds();
     }
 }

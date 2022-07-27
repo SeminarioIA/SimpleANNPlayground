@@ -4,6 +4,7 @@
 
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Visualization;
+using SimpleAnnPlayground.Utils;
 using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Actions
@@ -70,6 +71,39 @@ namespace SimpleAnnPlayground.Actions
             }
 
             Snapshot = snapshot;
+        }
+
+        /// <inheritdoc/>
+        public override void PaintBefore(Graphics graphics)
+        {
+            foreach (var (_, shadow) in Snapshot)
+            {
+                if (shadow != null) shadow.Paint(graphics);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void PaintAfter(Graphics graphics)
+        {
+            foreach (var (obj, _) in Snapshot)
+            {
+                obj.Paint(graphics);
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleF CalcBounds()
+        {
+            var topLeft = PointF.Empty;
+            var bottomRight = PointF.Empty;
+
+            foreach (var (obj, shadow) in Snapshot)
+            {
+                ExpandBounds(ref topLeft, ref bottomRight, obj.Bounds);
+                if (shadow != null) ExpandBounds(ref topLeft, ref bottomRight, shadow.Bounds);
+            }
+
+            return new RectangleF(topLeft, bottomRight.Substract(topLeft).ToSize());
         }
     }
 }

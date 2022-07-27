@@ -4,6 +4,7 @@
 
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
+using SimpleAnnPlayground.Utils;
 using static SimpleAnnPlayground.Graphical.Component;
 
 namespace SimpleAnnPlayground.Graphical.Visualization
@@ -99,6 +100,11 @@ namespace SimpleAnnPlayground.Graphical.Visualization
                 return rect;
             }
         }
+
+        /// <summary>
+        /// Gets the bounds rectangle for this object.
+        /// </summary>
+        public RectangleF Bounds => Component.Selector.Rectangle.OffsetTo(((PointF)Location).OffsetTo(Component.Center));
 
         /// <summary>
         /// Gets a generic copy of a <see cref="CanvasObject"/>.

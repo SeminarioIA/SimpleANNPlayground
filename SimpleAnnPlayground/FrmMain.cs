@@ -75,9 +75,14 @@ namespace SimpleAnnPlayground
         private readonly FrmElementDesigner _frmElementDesigner;
 
         /// <summary>
-        /// The form to design components using elements.
+        /// The form to view the selected object properties.
         /// </summary>
         private readonly FrmObjectsViewer _frmObjectsViewer;
+
+        /// <summary>
+        /// The form to view the document actions.
+        /// </summary>
+        private readonly FrmActionsViewer _frmActionsViewer;
 #endif
 
         /// <summary>
@@ -105,6 +110,7 @@ namespace SimpleAnnPlayground
             MnuDebug.Visible = true;
             _frmElementDesigner = new FrmElementDesigner();
             _frmObjectsViewer = new FrmObjectsViewer(_workspace);
+            _frmActionsViewer = new FrmActionsViewer(_workspace.Actions);
 #endif
         }
 
@@ -201,6 +207,14 @@ namespace SimpleAnnPlayground
 #endif
         }
 
+        private void MnuDebugActionsViewer_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            _frmActionsViewer.RefreshActions();
+            _frmActionsViewer.Show(this);
+#endif
+        }
+
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = false;
@@ -273,6 +287,7 @@ namespace SimpleAnnPlayground
             _workspace.Actions.Undo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+            _frmActionsViewer.RefreshActions();
         }
 
         private void MnuEditRedo_Click(object sender, EventArgs e)
@@ -280,12 +295,14 @@ namespace SimpleAnnPlayground
             _workspace.Actions.Redo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+            _frmActionsViewer.RefreshActions();
         }
 
         private void Actions_ActionPerformed(object? sender, EventArgs e)
         {
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+            _frmActionsViewer.RefreshActions();
         }
 
         private void MnuEditDelete_Click(object sender, EventArgs e)

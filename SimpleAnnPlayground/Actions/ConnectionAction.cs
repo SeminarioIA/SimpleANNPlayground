@@ -4,6 +4,7 @@
 
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Environment;
+using SimpleAnnPlayground.Utils;
 using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Actions
@@ -53,6 +54,41 @@ namespace SimpleAnnPlayground.Actions
                 Workspace.Canvas.AddConnection(connection);
                 Workspace.Shadow.RestoreShadowConnection(shadow);
             }
+        }
+
+        /// <inheritdoc/>
+        public override void PaintBefore(Graphics graphics)
+        {
+            foreach (var (_, shadow) in Snapshot)
+            {
+                shadow.Paint(graphics);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void PaintAfter(Graphics graphics)
+        {
+            foreach (var (connection, _) in Snapshot)
+            {
+                connection.Paint(graphics);
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleF CalcBounds()
+        {
+            var topLeft = PointF.Empty;
+            var bottomRight = PointF.Empty;
+
+            foreach (var (connection, shadow) in Snapshot)
+            {
+                ExpandBounds(ref topLeft, ref bottomRight, connection.Source.Location);
+                ExpandBounds(ref topLeft, ref bottomRight, connection.Destination.Location);
+                ExpandBounds(ref topLeft, ref bottomRight, shadow.Source.Location);
+                ExpandBounds(ref topLeft, ref bottomRight, shadow.Destination.Location);
+            }
+
+            return new RectangleF(topLeft, bottomRight.Substract(topLeft).ToSize());
         }
     }
 }

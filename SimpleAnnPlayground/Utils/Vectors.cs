@@ -10,17 +10,6 @@ namespace SimpleAnnPlayground.Utils
     internal static class Vectors
     {
         /// <summary>
-        /// Substracts a point from this point.
-        /// </summary>
-        /// <param name="point">The currect point.</param>
-        /// <param name="other">The point to substract.</param>
-        /// <returns>The result of sustracting <paramref name="other"/> to <paramref name="point"/>.</returns>
-        public static PointF Substract(this PointF point, PointF other)
-        {
-            return new PointF(point.X - other.X, point.Y - other.Y);
-        }
-
-        /// <summary>
         /// Calculates the cross product of vector p1 and p2.<br/>
         /// - If p1 is clockwise from p2 wrt origin then it returns +ve value.<br/>
         /// - If p2 is anti-clockwise from p2 wrt origin then it returns -ve value.<br/>

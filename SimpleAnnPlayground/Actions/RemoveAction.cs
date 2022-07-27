@@ -5,6 +5,7 @@
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Visualization;
+using SimpleAnnPlayground.Utils;
 using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Actions
@@ -86,6 +87,57 @@ namespace SimpleAnnPlayground.Actions
                 Workspace.Canvas.RemoveConnection(connection);
                 Workspace.Shadow.RemoveConnection(shadow);
             }
+        }
+
+        /// <inheritdoc/>
+        public override void PaintBefore(Graphics graphics)
+        {
+            foreach (var (_, shadow) in Objects)
+            {
+                if (shadow != null) shadow.Paint(graphics);
+            }
+
+            foreach (var (_, shadow) in Connections)
+            {
+                shadow.Paint(graphics);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void PaintAfter(Graphics graphics)
+        {
+            foreach (var (obj, _) in Objects)
+            {
+                obj.Paint(graphics);
+            }
+
+            foreach (var (connection, _) in Connections)
+            {
+                connection.Paint(graphics);
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleF CalcBounds()
+        {
+            var topLeft = PointF.Empty;
+            var bottomRight = PointF.Empty;
+
+            foreach (var (obj, shadow) in Objects)
+            {
+                ExpandBounds(ref topLeft, ref bottomRight, obj.Bounds);
+                if (shadow != null) ExpandBounds(ref topLeft, ref bottomRight, shadow.Bounds);
+            }
+
+            foreach (var (connection, shadow) in Connections)
+            {
+                ExpandBounds(ref topLeft, ref bottomRight, connection.Source.Location);
+                ExpandBounds(ref topLeft, ref bottomRight, connection.Destination.Location);
+                ExpandBounds(ref topLeft, ref bottomRight, shadow.Source.Location);
+                ExpandBounds(ref topLeft, ref bottomRight, shadow.Destination.Location);
+            }
+
+            return new RectangleF(topLeft, bottomRight.Substract(topLeft).ToSize());
         }
     }
 }

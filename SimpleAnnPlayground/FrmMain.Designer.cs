@@ -19,6 +19,7 @@
 #if DEBUG
                 _frmElementDesigner.Dispose();
                 _frmObjectsViewer.Dispose();
+                _frmActionsViewer.Dispose();
 #endif
             }
             base.Dispose(disposing);
@@ -71,6 +72,7 @@
             this.MnuDebug = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuDebugElementDesigner = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuDebugObjectViewer = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuDebugActionsViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.VsbMain = new System.Windows.Forms.VScrollBar();
             this.ScBotom = new System.Windows.Forms.SplitContainer();
             this.HsbMain = new System.Windows.Forms.HScrollBar();
@@ -290,7 +292,7 @@
             this.MnuEditUndo.Enabled = false;
             this.MnuEditUndo.Name = "MnuEditUndo";
             this.MnuEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.MnuEditUndo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditUndo.Size = new System.Drawing.Size(144, 22);
             this.MnuEditUndo.Text = "Undo";
             this.MnuEditUndo.Click += new System.EventHandler(this.MnuEditUndo_Click);
             // 
@@ -299,21 +301,21 @@
             this.MnuEditRedo.Enabled = false;
             this.MnuEditRedo.Name = "MnuEditRedo";
             this.MnuEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.MnuEditRedo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditRedo.Size = new System.Drawing.Size(144, 22);
             this.MnuEditRedo.Text = "Redo";
             this.MnuEditRedo.Click += new System.EventHandler(this.MnuEditRedo_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(141, 6);
             // 
             // MnuEditDelete
             // 
             this.MnuEditDelete.Enabled = false;
             this.MnuEditDelete.Name = "MnuEditDelete";
             this.MnuEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.MnuEditDelete.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditDelete.Size = new System.Drawing.Size(144, 22);
             this.MnuEditDelete.Text = "Delete";
             this.MnuEditDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
@@ -321,32 +323,32 @@
             // 
             this.MnuEditCopy.Enabled = false;
             this.MnuEditCopy.Name = "MnuEditCopy";
-            this.MnuEditCopy.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCopy.Size = new System.Drawing.Size(144, 22);
             this.MnuEditCopy.Text = "Copy";
             // 
             // MnuEditCut
             // 
             this.MnuEditCut.Enabled = false;
             this.MnuEditCut.Name = "MnuEditCut";
-            this.MnuEditCut.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCut.Size = new System.Drawing.Size(144, 22);
             this.MnuEditCut.Text = "Cut";
             // 
             // MnuEditPaste
             // 
             this.MnuEditPaste.Enabled = false;
             this.MnuEditPaste.Name = "MnuEditPaste";
-            this.MnuEditPaste.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditPaste.Size = new System.Drawing.Size(144, 22);
             this.MnuEditPaste.Text = "Paste";
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(141, 6);
             // 
             // MnuEditOptions
             // 
             this.MnuEditOptions.Name = "MnuEditOptions";
-            this.MnuEditOptions.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditOptions.Size = new System.Drawing.Size(144, 22);
             this.MnuEditOptions.Text = "Options";
             // 
             // MnuView
@@ -397,7 +399,8 @@
             this.MnuDebug.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.MnuDebug.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MnuDebugElementDesigner,
-            this.MnuDebugObjectViewer});
+            this.MnuDebugObjectViewer,
+            this.MnuDebugActionsViewer});
             this.MnuDebug.Name = "MnuDebug";
             this.MnuDebug.Size = new System.Drawing.Size(54, 20);
             this.MnuDebug.Text = "Debug";
@@ -406,16 +409,23 @@
             // MnuDebugElementDesigner
             // 
             this.MnuDebugElementDesigner.Name = "MnuDebugElementDesigner";
-            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(165, 22);
+            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(180, 22);
             this.MnuDebugElementDesigner.Text = "Element designer";
             this.MnuDebugElementDesigner.Click += new System.EventHandler(this.MnuDebugElementDesigner_Click);
             // 
             // MnuDebugObjectViewer
             // 
             this.MnuDebugObjectViewer.Name = "MnuDebugObjectViewer";
-            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(165, 22);
+            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(180, 22);
             this.MnuDebugObjectViewer.Text = "Objects viewer";
             this.MnuDebugObjectViewer.Click += new System.EventHandler(this.MnuDebugObjectsViewer_Click);
+            // 
+            // MnuDebugActionsViewer
+            // 
+            this.MnuDebugActionsViewer.Name = "MnuDebugActionsViewer";
+            this.MnuDebugActionsViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugActionsViewer.Text = "Actions viewer";
+            this.MnuDebugActionsViewer.Click += new System.EventHandler(this.MnuDebugActionsViewer_Click);
             // 
             // VsbMain
             // 
@@ -576,5 +586,6 @@
         private Label LbZoom;
         private ToolStripMenuItem MnuView;
         private ToolStripMenuItem MnuViewCenterScreen;
+        private ToolStripMenuItem MnuDebugActionsViewer;
     }
 }

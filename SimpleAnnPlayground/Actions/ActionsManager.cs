@@ -57,6 +57,16 @@ namespace SimpleAnnPlayground.Actions
         public bool CanRedo => _reverted.Any();
 
         /// <summary>
+        /// Gets the list of actions in the Undo stack.
+        /// </summary>
+        internal ReadOnlyCollection<RecordableAction> UndoStack => new(_actions.ToList());
+
+        /// <summary>
+        /// Gets the list of actions in the Redo stack.
+        /// </summary>
+        internal ReadOnlyCollection<RecordableAction> RedoStack => new(_reverted.ToList());
+
+        /// <summary>
         /// Reverts the latest performed action.
         /// </summary>
         public void Undo()
