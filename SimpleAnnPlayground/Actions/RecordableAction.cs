@@ -96,10 +96,9 @@ namespace SimpleAnnPlayground.Actions
             transform.Reset();
             var actionBounds = CalcBounds();
             transform.Translate(pictureBounds.Width / 2, pictureBounds.Height / 2);
-            transform.Scale(
-                Math.Min(pictureBounds.Width / actionBounds.Width, 1),
-                Math.Min(pictureBounds.Height / actionBounds.Height, 1));
-            transform.Translate(actionBounds.X, actionBounds.Y);
+            float scale = Math.Min(pictureBounds.Width / actionBounds.Width, Math.Min(pictureBounds.Height / actionBounds.Height, 1));
+            transform.Scale(scale, scale);
+            transform.Translate(35f - (actionBounds.X + actionBounds.Width / 2), -(actionBounds.Y + actionBounds.Height / 2));
         }
 
         /// <summary>
