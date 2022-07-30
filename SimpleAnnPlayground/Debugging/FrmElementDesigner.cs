@@ -40,7 +40,7 @@ namespace SimpleAnnPlayground.Debugging
         {
             InitializeComponent();
 
-            _component = new Component(PicDraw.Width / 2, PicDraw.Height / 2);
+            _component = new Component();
 
             FileManager = new TextFileManager();
             FileManager.AddFileFormat("cmpt", "Draw component.");
@@ -166,7 +166,8 @@ namespace SimpleAnnPlayground.Debugging
                 }
             }
 
-            _component.Paint(e.Graphics, PointF.Empty, _state, LstConnectors.SelectedItem as Connector);
+            PointF puntoCentro = new PointF(PicDraw.Height / 2, PicDraw.Width / 2);
+            _component.Paint(e.Graphics, puntoCentro, _state, LstConnectors.SelectedItem as Connector);
 
             // Paint the component center with a cross.
             if (_drawCenter)

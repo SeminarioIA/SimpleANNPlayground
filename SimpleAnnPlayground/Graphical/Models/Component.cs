@@ -26,22 +26,6 @@ namespace SimpleAnnPlayground.Graphical
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Component"/> class, it's an override of the previous Component() method.
-        /// </summary>
-        /// <param name="xSize">The center width of the parent.</param>
-        /// <param name="ySize">The center height of the parent.</param>
-        public Component(float xSize, float ySize)
-        {
-            Elements = new Collection<Element>();
-            Connectors = new Collection<Connector>();
-            Selector = new Selector(0f, 0f);
-            X = xSize;
-            Y = ySize;
-            DefaultX = X;
-            DefaultY = Y;
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Component"/> class.
         /// </summary>
         /// <param name="text">The text string containing the Component information.</param>
@@ -115,16 +99,6 @@ namespace SimpleAnnPlayground.Graphical
             /// </summary>
             ComponentError = 128,
         }
-
-        /// <summary>
-        /// Gets or sets the X center of component <seealso cref="DefaultX"/> objects of this component.
-        /// </summary>
-        public float DefaultX { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Y center of component <seealso cref="DefaultY"/> objects of this component.
-        /// </summary>
-        public float DefaultY { get; set; }
 
         /// <summary>
         /// Gets the collection of <seealso cref="Connector"/> objects of this component.
@@ -205,8 +179,6 @@ namespace SimpleAnnPlayground.Graphical
         /// <param name="text">The string containing the serialized elements.</param>
         public void Deserialize(string text)
         {
-            X = DefaultX;
-            Y = DefaultY;
             if (text == null) return;
             var elements = new Collection<Element>();
             var connectors = new Collection<Connector>();
@@ -253,10 +225,8 @@ namespace SimpleAnnPlayground.Graphical
                     case nameof(Center):
                     {
                         var center = TextSerializer.Deserialize(item.Value).ToDictionary(pair => pair.Key, pair => float.Parse(pair.Value, CultureInfo.CurrentCulture));
-                        X += -center[nameof(X)];
-                        Y += -center[nameof(Y)];
-                        X = -X;
-                        Y = -Y;
+                        X = center[nameof(X)];
+                        Y = center[nameof(Y)];
                         break;
                     }
                 }
