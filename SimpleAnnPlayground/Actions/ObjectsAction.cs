@@ -4,6 +4,7 @@
 
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Visualization;
+using SimpleAnnPlayground.Utils;
 using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Actions
@@ -23,13 +24,15 @@ namespace SimpleAnnPlayground.Actions
             : base(workspace, type)
         {
             // Save the old objects state.
-            Snapshot = Workspace.Shadow.GetObjectsWithReference(objects);
+            Snapshot = new Collection<(CanvasObject, CanvasObject?)>();
 
             // Apply the changes in the shadow.
-            foreach (var (obj, shadow) in Snapshot)
+            foreach (var (obj, shadow) in Workspace.Shadow.GetObjectsWithReference(objects))
             {
                 if (shadow != null) Workspace.Shadow.RemoveObject(shadow);
                 Workspace.Shadow.AddObject(obj);
+                var newShadow = Workspace.Shadow.GetObjectFromReference(obj) ?? throw new NotImplementedException();
+                Snapshot.Add((newShadow, shadow));
             }
         }
 
@@ -42,14 +45,21 @@ namespace SimpleAnnPlayground.Actions
         public override void Undo()
         {
             var snapshot = new Collection<(CanvasObject, CanvasObject?)>();
-            foreach (var (obj, oldShadow) in Snapshot)
+            foreach (var (after, before) in Snapshot)
             {
-                var shadow = Workspace.Shadow.GetObjectFromReference(obj);
-                snapshot.Add((obj, shadow));
-                if (shadow == null) Workspace.Canvas.AddObject(obj);
-                else if (oldShadow == null) Workspace.Canvas.RemoveObject(obj);
-                else oldShadow.CopyTo(obj);
-                Workspace.Shadow.SwapObjects(shadow, oldShadow);
+                var obj = Workspace.Canvas.GetObjectFromReference(after) ?? throw new NotImplementedException();
+                if (before == null)
+                {
+                    Workspace.Canvas.RemoveObject(after);
+                    snapshot.Add((after, obj));
+                    Workspace.Shadow.RemoveObject(after);
+                }
+                else
+                {
+                    before.CopyTo(obj);
+                    snapshot.Add((after, before));
+                    Workspace.Shadow.SwapObjects(after, before);
+                }
             }
 
             Snapshot = snapshot;
@@ -59,17 +69,57 @@ namespace SimpleAnnPlayground.Actions
         public override void Redo()
         {
             var snapshot = new Collection<(CanvasObject, CanvasObject?)>();
-            foreach (var (obj, oldShadow) in Snapshot)
+            foreach (var (after, before) in Snapshot)
             {
-                var shadow = Workspace.Shadow.GetObjectFromReference(obj);
-                snapshot.Add((obj, shadow));
-                if (shadow == null) Workspace.Canvas.AddObject(obj);
-                else if (oldShadow == null) Workspace.Canvas.RemoveObject(obj);
-                else oldShadow.CopyTo(obj);
-                Workspace.Shadow.SwapObjects(shadow, oldShadow);
+                if (before == null) throw new NotImplementedException();
+                var obj = Workspace.Canvas.GetObjectFromReference(after);
+                if (obj == null)
+                {
+                    Workspace.Canvas.AddObject(before);
+                    snapshot.Add((after, null));
+                }
+                else
+                {
+                    before.CopyTo(after);
+                    snapshot.Add((after, before));
+                    Workspace.Shadow.SwapObjects(obj, before);
+                }
             }
 
             Snapshot = snapshot;
+        }
+
+        /// <inheritdoc/>
+        public override void PaintBefore(Graphics graphics)
+        {
+            foreach (var (_, before) in Snapshot)
+            {
+                if (before != null) before.Component?.Paint(graphics, before.Location);
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void PaintAfter(Graphics graphics)
+        {
+            foreach (var (after, _) in Snapshot)
+            {
+                after.Component?.Paint(graphics, after.Location);
+            }
+        }
+
+        /// <inheritdoc/>
+        protected override RectangleF CalcBounds()
+        {
+            var topLeft = PointF.Empty;
+            var bottomRight = PointF.Empty;
+
+            foreach (var (after, before) in Snapshot)
+            {
+                ExpandBounds(ref topLeft, ref bottomRight, after.Bounds);
+                if (before != null) ExpandBounds(ref topLeft, ref bottomRight, before.Bounds);
+            }
+
+            return new RectangleF(topLeft, bottomRight.Substract(topLeft).ToSize());
         }
     }
 }
