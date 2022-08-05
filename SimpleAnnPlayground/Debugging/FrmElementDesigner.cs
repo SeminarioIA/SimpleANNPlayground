@@ -166,8 +166,8 @@ namespace SimpleAnnPlayground.Debugging
                 }
             }
 
-            PointF puntoCentro = new PointF(PicDraw.Height / 2, PicDraw.Width / 2);
-            _component.Paint(e.Graphics, puntoCentro, _state, LstConnectors.SelectedItem as Connector);
+            PointF centerPoint = new PointF(PicDraw.Height / 2, PicDraw.Width / 2);
+            _component.Paint(e.Graphics, centerPoint, _state, LstConnectors.SelectedItem as Connector);
 
             // Paint the component center with a cross.
             if (_drawCenter)
@@ -225,7 +225,6 @@ namespace SimpleAnnPlayground.Debugging
 
             LstModes.SelectedIndex = 0;
             PgdProperties.SelectedObject = _component;
-
             _drawCenter = true;
 
             // Paint objects in the picture box

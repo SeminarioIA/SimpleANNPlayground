@@ -104,8 +104,8 @@
             // 
             // PicDraw
             // 
-            this.PicDraw.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.PicDraw.BackColor = System.Drawing.Color.White;
+            this.PicDraw.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PicDraw.Location = new System.Drawing.Point(0, 0);
             this.PicDraw.Name = "PicDraw";
             this.PicDraw.Size = new System.Drawing.Size(449, 423);
