@@ -53,6 +53,7 @@ namespace SimpleAnnPlayground.Debugging
             }
 
             _busy = false;
+            _drawCenter = true;
         }
 
         /// <summary>
@@ -165,12 +166,14 @@ namespace SimpleAnnPlayground.Debugging
                 }
             }
 
-            _component.Paint(e.Graphics, PointF.Empty, _state, LstConnectors.SelectedItem as Connector);
+            PointF centerPoint = new PointF(PicDraw.Height / 2, PicDraw.Width / 2);
+            _component.Paint(e.Graphics, centerPoint, _state, LstConnectors.SelectedItem as Connector);
 
             // Paint the component center with a cross.
             if (_drawCenter)
             {
                 const int CROSS_SIZE = 3;
+
                 var cross = new Cross(Color.Red, _component.Center, CROSS_SIZE);
                 cross.Paint(e.Graphics);
             }

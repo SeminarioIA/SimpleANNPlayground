@@ -306,9 +306,9 @@
             this.LstConnectors.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LstConnectors.FormattingEnabled = true;
             this.LstConnectors.ItemHeight = 20;
-            this.LstConnectors.Location = new System.Drawing.Point(32, 24);
+            this.LstConnectors.Location = new System.Drawing.Point(24, 24);
             this.LstConnectors.Name = "LstConnectors";
-            this.LstConnectors.Size = new System.Drawing.Size(154, 87);
+            this.LstConnectors.Size = new System.Drawing.Size(162, 87);
             this.LstConnectors.TabIndex = 1;
             this.LstConnectors.SelectedIndexChanged += new System.EventHandler(this.LstConnectors_SelectedIndexChanged);
             // 
@@ -321,7 +321,7 @@
             this.BtnDeleteConnector});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(32, 87);
+            this.toolStrip1.Size = new System.Drawing.Size(24, 87);
             this.toolStrip1.TabIndex = 2;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -331,7 +331,7 @@
             this.BtnAddConnector.Image = global::SimpleAnnPlayground.Properties.Resources.d_add;
             this.BtnAddConnector.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnAddConnector.Name = "BtnAddConnector";
-            this.BtnAddConnector.Size = new System.Drawing.Size(29, 20);
+            this.BtnAddConnector.Size = new System.Drawing.Size(21, 20);
             this.BtnAddConnector.Text = "Add connector";
             this.BtnAddConnector.Click += new System.EventHandler(this.BtnAddConnector_Click);
             // 
@@ -342,7 +342,7 @@
             this.BtnDeleteConnector.Image = global::SimpleAnnPlayground.Properties.Resources.d_remove;
             this.BtnDeleteConnector.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnDeleteConnector.Name = "BtnDeleteConnector";
-            this.BtnDeleteConnector.Size = new System.Drawing.Size(29, 20);
+            this.BtnDeleteConnector.Size = new System.Drawing.Size(21, 20);
             this.BtnDeleteConnector.Text = "Remove connector";
             this.BtnDeleteConnector.Click += new System.EventHandler(this.BtnDeleteConnector_Click);
             // 
