@@ -51,7 +51,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Gets the graphical component linked to this object.
         /// </summary>
-        public Component Component { get; private set; }
+        public Component Component { get; }
 
         /// <summary>
         /// Gets the connectors of this object.
@@ -131,7 +131,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <param name="graphics">The graphics object.</param>
         public void Paint(Graphics graphics)
         {
-            Component?.Paint(graphics, Location, State, ActiveTerminal?.Connector);
+            Component.Paint(graphics, Location, State, ActiveTerminal?.Connector);
         }
 
         /// <summary>
