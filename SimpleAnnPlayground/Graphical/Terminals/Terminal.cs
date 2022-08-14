@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Visualization;
 
@@ -34,36 +35,9 @@ namespace SimpleAnnPlayground.Graphical.Terminals
         }
 
         /// <summary>
-        /// Enumerates the graphical states of a <see cref="Terminal"/>.
+        /// Gets or sets the <see cref="Connection"/> object.
         /// </summary>
-        [Flags]
-        public enum GraphState
-        {
-            /// <summary>
-            /// The default common state.
-            /// </summary>
-            None = 0,
-
-            /// <summary>
-            /// The <see cref="Terminal"/> is being hover by the mouse.
-            /// </summary>
-            Hover = 1,
-
-            /// <summary>
-            /// The <see cref="Terminal"/> is being selected.
-            /// </summary>
-            Selected = 2,
-
-            /// <summary>
-            /// The <see cref="Terminal"/> is has connections.
-            /// </summary>
-            Connected = 4,
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Terminal"/> graphical state.
-        /// </summary>
-        public GraphState State { get; private set; }
+        public Connection? Connection { get; internal set; }
 
         /// <summary>
         /// Gets the owner object of this terminal.
@@ -89,11 +63,5 @@ namespace SimpleAnnPlayground.Graphical.Terminals
         {
             return Activator.CreateInstance(other.GetType(), other) as Terminal ?? throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// Paints this terminal in a <see cref="Graphics"/> object.
-        /// </summary>
-        /// <param name="graphics">The graphics to paint.</param>
-        public abstract void Paint(Graphics graphics);
     }
 }

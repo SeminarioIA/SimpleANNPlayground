@@ -331,16 +331,16 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <param name="graphics">The graphics object.</param>
         internal void Paint(Graphics graphics)
         {
-            // Paint the objects.
-            foreach (CanvasObject obj in Objects)
-            {
-                obj.Paint(graphics);
-            }
-
             // Paint the connections.
             foreach (Connection conn in Connections)
             {
                 conn.Paint(graphics);
+            }
+
+            // Paint the objects.
+            foreach (CanvasObject obj in Objects)
+            {
+                obj.Paint(graphics);
             }
         }
 

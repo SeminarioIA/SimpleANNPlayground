@@ -13,29 +13,34 @@ namespace SimpleAnnPlayground.Graphical.Models
     public class Connector : ITextSerializable
     {
         /// <summary>
-        /// Indicates the color for the connector.
+        /// Indicates the color for an Input connector.
         /// </summary>
         public static readonly Color InputColor = Color.Blue;
 
         /// <summary>
-        /// Indicates the color for the connector.
+        /// Indicates the color for an Output connector.
         /// </summary>
         public static readonly Color OutputColor = Color.Red;
+
+        /// <summary>
+        /// Indicates the color for a connected connector.
+        /// </summary>
+        public static readonly Color ConnectedColor = Color.Black;
+
+        /// <summary>
+        /// Indicates the color for the shadow of the connector.
+        /// </summary>
+        public static readonly Color InputShadowColor = Color.LightBlue;
+
+        /// <summary>
+        /// Indicates the color for the shadow of the connector.
+        /// </summary>
+        public static readonly Color OutputShadowColor = Color.LightCoral;
 
         /// <summary>
         /// Indicates the radio for the connector element.
         /// </summary>
         private static readonly SizeF _shape = new(5, 5);
-
-        /// <summary>
-        /// Indicates the color for the shadow of the connector.
-        /// </summary>
-        private static readonly Color InputShadowColor = Color.LightBlue;
-
-        /// <summary>
-        /// Indicates the color for the shadow of the connector.
-        /// </summary>
-        private static readonly Color OutputShadowColor = Color.LightCoral;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Connector"/> class.
@@ -67,6 +72,27 @@ namespace SimpleAnnPlayground.Graphical.Models
             /// An output connector.
             /// </summary>
             Output,
+        }
+
+        /// <summary>
+        /// The draw mode for the connector.
+        /// </summary>
+        public enum DrawMode
+        {
+            /// <summary>
+            /// The connector is drawn as a shadow.
+            /// </summary>
+            Shadow,
+
+            /// <summary>
+            /// The connecto is drawn as hover.
+            /// </summary>
+            Hover,
+
+            /// <summary>
+            /// The connector is drawn as connected.
+            /// </summary>
+            Connected,
         }
 
         /// <summary>
@@ -122,12 +148,16 @@ namespace SimpleAnnPlayground.Graphical.Models
         /// Paints the connector in a graphics object.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
-        /// <param name="shadowDraw">Indicates if the connector is drawn as a shadow.</param>
-        internal void Paint(Graphics graphics, bool shadowDraw = false)
+        /// <param name="drawMode">Indicates how the connector is drawn as a shadow.</param>
+        internal void Paint(Graphics graphics, DrawMode drawMode)
         {
-            Color color = Type == Types.Input
-                ? shadowDraw ? InputShadowColor : InputColor
-                : shadowDraw ? OutputShadowColor : OutputColor;
+            Color color = drawMode switch
+            {
+                DrawMode.Shadow => Type == Types.Input ? InputShadowColor : OutputShadowColor,
+                DrawMode.Hover => Type == Types.Input ? InputColor : OutputColor,
+                DrawMode.Connected => ConnectedColor,
+                _ => throw new NotImplementedException()
+            };
 
             using (Brush brush = new SolidBrush(color))
             {

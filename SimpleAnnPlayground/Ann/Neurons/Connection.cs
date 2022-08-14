@@ -6,7 +6,6 @@ using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Utils;
-using System.Drawing.Drawing2D;
 
 namespace SimpleAnnPlayground.Ann.Neurons
 {
@@ -32,11 +31,13 @@ namespace SimpleAnnPlayground.Ann.Neurons
             CanvasObject shadowSourceOwner = shadowCanvas.GetObjectFromReference(other.Source.Owner) ?? throw new ArgumentException("Invalid connection source", nameof(other));
             int sourceTerminalIndex = other.Source.Owner.Outputs.IndexOf(other.Source);
             Source = shadowSourceOwner.Outputs[sourceTerminalIndex] ?? throw new ArgumentException("Invalid connection source", nameof(other));
+            Source.Connection = this;
 
             // Get the shadow destination terminal.
             CanvasObject shadowDestinationOwner = shadowCanvas.GetObjectFromReference(other.Destination.Owner) ?? throw new ArgumentException("Invalid connection destination", nameof(other));
             int destinationTerminalIndex = other.Destination.Owner.Inputs.IndexOf(other.Destination);
             Destination = shadowDestinationOwner.Inputs[destinationTerminalIndex] ?? throw new ArgumentException("Invalid connection destination", nameof(other));
+            Destination.Connection = this;
         }
 
         /// <summary>
@@ -47,7 +48,9 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public Connection(OutputTerminal source, InputTerminal destination)
         {
             Source = source;
+            Source.Connection = this;
             Destination = destination;
+            Destination.Connection = this;
         }
 
         /// <summary>
@@ -120,6 +123,16 @@ namespace SimpleAnnPlayground.Ann.Neurons
             {
                 graphics.DrawLine(pen, Source.Location, Destination.Location);
             }
+
+            // Draw source connectors.
+            graphics.TranslateTransform(Source.Owner.Location.X - Source.Owner.Component.Center.X, Source.Owner.Location.Y - Source.Owner.Component.Center.Y);
+            Source.Connector.Paint(graphics, Connector.DrawMode.Connected);
+            graphics.TranslateTransform(-Source.Owner.Location.X, -Source.Owner.Location.Y);
+
+            // Draw destination connectors.
+            graphics.TranslateTransform(Destination.Owner.Location.X, Destination.Owner.Location.Y);
+            Destination.Connector.Paint(graphics, Connector.DrawMode.Connected);
+            graphics.TranslateTransform(Source.Owner.Component.Center.X - Destination.Owner.Location.X, Source.Owner.Component.Center.Y - Destination.Owner.Location.Y);
         }
     }
 }

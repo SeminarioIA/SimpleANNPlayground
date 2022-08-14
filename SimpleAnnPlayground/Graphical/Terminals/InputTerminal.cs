@@ -32,10 +32,5 @@ namespace SimpleAnnPlayground.Graphical.Terminals
             : base(other)
         {
         }
-
-        /// <inheritdoc/>
-        public override void Paint(Graphics graphics)
-        {
-        }
     }
 }
