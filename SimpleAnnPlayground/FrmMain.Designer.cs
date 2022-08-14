@@ -33,7 +33,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.TspEdition = new System.Windows.Forms.ToolStrip();
             this.BtnNew = new System.Windows.Forms.ToolStripButton();
             this.BtnOpen = new System.Windows.Forms.ToolStripButton();
             this.BtnSave = new System.Windows.Forms.ToolStripButton();
@@ -41,7 +41,10 @@
             this.BtnInputNeurone = new System.Windows.Forms.ToolStripButton();
             this.BtnInternalNeurone = new System.Windows.Forms.ToolStripButton();
             this.BtnOutputNeurone = new System.Windows.Forms.ToolStripButton();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.BtnCheck = new System.Windows.Forms.ToolStripButton();
+            this.BtnTest = new System.Windows.Forms.ToolStripButton();
+            this.SspStatus = new System.Windows.Forms.StatusStrip();
             this.LblMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.PicWorkspace = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -79,34 +82,46 @@
             this.LbZoom = new System.Windows.Forms.Label();
             this.LbZoomOut = new System.Windows.Forms.Label();
             this.LbZoomIn = new System.Windows.Forms.Label();
-            this.toolStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
+            this.TspExecution = new System.Windows.Forms.ToolStrip();
+            this.BtnStop = new System.Windows.Forms.ToolStripButton();
+            this.BtnRun = new System.Windows.Forms.ToolStripButton();
+            this.BtnCxStep = new System.Windows.Forms.ToolStripButton();
+            this.BtnNeuronStep = new System.Windows.Forms.ToolStripButton();
+            this.BtnLayerStep = new System.Windows.Forms.ToolStripButton();
+            this.BtnTraining = new System.Windows.Forms.ToolStripButton();
+            this.TspEdition.SuspendLayout();
+            this.SspStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ScBotom)).BeginInit();
             this.ScBotom.Panel1.SuspendLayout();
             this.ScBotom.Panel2.SuspendLayout();
             this.ScBotom.SuspendLayout();
+            this.TspExecution.SuspendLayout();
             this.SuspendLayout();
             // 
-            // toolStrip1
+            // TspEdition
             // 
-            this.toolStrip1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.TspEdition.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TspEdition.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.TspEdition.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.TspEdition.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.BtnNew,
             this.BtnOpen,
             this.BtnSave,
             this.toolStripSeparator1,
             this.BtnInputNeurone,
             this.BtnInternalNeurone,
-            this.BtnOutputNeurone});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(777, 56);
-            this.toolStrip1.TabIndex = 0;
-            this.toolStrip1.Text = "toolStrip1";
+            this.BtnOutputNeurone,
+            this.toolStripSeparator2,
+            this.BtnCheck,
+            this.BtnTraining,
+            this.BtnTest});
+            this.TspEdition.Location = new System.Drawing.Point(0, 24);
+            this.TspEdition.Name = "TspEdition";
+            this.TspEdition.Size = new System.Drawing.Size(777, 56);
+            this.TspEdition.TabIndex = 0;
+            this.TspEdition.Text = "toolStrip1";
             // 
             // BtnNew
             // 
@@ -170,16 +185,39 @@
             this.BtnOutputNeurone.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnOutputNeurone.Click += new System.EventHandler(this.BtnInsertNeurone_Click);
             // 
-            // statusStrip1
+            // toolStripSeparator2
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 56);
+            // 
+            // BtnCheck
+            // 
+            this.BtnCheck.Image = global::SimpleAnnPlayground.Properties.Resources.check_32;
+            this.BtnCheck.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnCheck.Name = "BtnCheck";
+            this.BtnCheck.Size = new System.Drawing.Size(46, 53);
+            this.BtnCheck.Text = "Check";
+            this.BtnCheck.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // BtnTest
+            // 
+            this.BtnTest.Image = global::SimpleAnnPlayground.Properties.Resources.testing_32;
+            this.BtnTest.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnTest.Name = "BtnTest";
+            this.BtnTest.Size = new System.Drawing.Size(53, 53);
+            this.BtnTest.Text = "Testing";
+            this.BtnTest.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // SspStatus
+            // 
+            this.SspStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.LblMousePosition});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 449);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(777, 24);
-            this.statusStrip1.TabIndex = 1;
-            this.statusStrip1.Text = "statusStrip1";
+            this.SspStatus.Location = new System.Drawing.Point(0, 449);
+            this.SspStatus.Name = "SspStatus";
+            this.SspStatus.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
+            this.SspStatus.Size = new System.Drawing.Size(777, 24);
+            this.SspStatus.TabIndex = 1;
+            this.SspStatus.Text = "statusStrip1";
             // 
             // LblMousePosition
             // 
@@ -409,21 +447,21 @@
             // MnuDebugElementDesigner
             // 
             this.MnuDebugElementDesigner.Name = "MnuDebugElementDesigner";
-            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugElementDesigner.Text = "Element designer";
             this.MnuDebugElementDesigner.Click += new System.EventHandler(this.MnuDebugElementDesigner_Click);
             // 
             // MnuDebugObjectViewer
             // 
             this.MnuDebugObjectViewer.Name = "MnuDebugObjectViewer";
-            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugObjectViewer.Text = "Objects viewer";
             this.MnuDebugObjectViewer.Click += new System.EventHandler(this.MnuDebugObjectsViewer_Click);
             // 
             // MnuDebugActionsViewer
             // 
             this.MnuDebugActionsViewer.Name = "MnuDebugActionsViewer";
-            this.MnuDebugActionsViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugActionsViewer.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugActionsViewer.Text = "Actions viewer";
             this.MnuDebugActionsViewer.Click += new System.EventHandler(this.MnuDebugActionsViewer_Click);
             // 
@@ -505,16 +543,89 @@
             this.LbZoomIn.MouseDown += new System.Windows.Forms.MouseEventHandler(this.LbZoom_MouseDown);
             this.LbZoomIn.MouseUp += new System.Windows.Forms.MouseEventHandler(this.LbZoom_MouseUp);
             // 
+            // TspExecution
+            // 
+            this.TspExecution.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.TspExecution.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.TspExecution.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.TspExecution.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BtnStop,
+            this.BtnRun,
+            this.BtnCxStep,
+            this.BtnNeuronStep,
+            this.BtnLayerStep});
+            this.TspExecution.Location = new System.Drawing.Point(0, 80);
+            this.TspExecution.Name = "TspExecution";
+            this.TspExecution.Size = new System.Drawing.Size(760, 56);
+            this.TspExecution.TabIndex = 6;
+            this.TspExecution.Text = "toolStrip2";
+            this.TspExecution.Visible = false;
+            // 
+            // BtnStop
+            // 
+            this.BtnStop.Image = global::SimpleAnnPlayground.Properties.Resources.stop_32;
+            this.BtnStop.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnStop.Name = "BtnStop";
+            this.BtnStop.Size = new System.Drawing.Size(39, 53);
+            this.BtnStop.Text = "Stop";
+            this.BtnStop.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // BtnRun
+            // 
+            this.BtnRun.Image = global::SimpleAnnPlayground.Properties.Resources.start_32;
+            this.BtnRun.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnRun.Name = "BtnRun";
+            this.BtnRun.Size = new System.Drawing.Size(36, 53);
+            this.BtnRun.Text = "Run";
+            this.BtnRun.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // BtnCxStep
+            // 
+            this.BtnCxStep.Image = global::SimpleAnnPlayground.Properties.Resources.right_step_32;
+            this.BtnCxStep.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnCxStep.Name = "BtnCxStep";
+            this.BtnCxStep.Size = new System.Drawing.Size(57, 53);
+            this.BtnCxStep.Text = "Cx-Step";
+            this.BtnCxStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // BtnNeuronStep
+            // 
+            this.BtnNeuronStep.Image = global::SimpleAnnPlayground.Properties.Resources.right_step_32;
+            this.BtnNeuronStep.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnNeuronStep.Name = "BtnNeuronStep";
+            this.BtnNeuronStep.Size = new System.Drawing.Size(53, 53);
+            this.BtnNeuronStep.Text = "N-Step";
+            this.BtnNeuronStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // BtnLayerStep
+            // 
+            this.BtnLayerStep.Image = global::SimpleAnnPlayground.Properties.Resources.right_32;
+            this.BtnLayerStep.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnLayerStep.Name = "BtnLayerStep";
+            this.BtnLayerStep.Size = new System.Drawing.Size(49, 53);
+            this.BtnLayerStep.Text = "L-Step";
+            this.BtnLayerStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
+            // BtnTraining
+            // 
+            this.BtnTraining.Image = global::SimpleAnnPlayground.Properties.Resources.training_32;
+            this.BtnTraining.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnTraining.Name = "BtnTraining";
+            this.BtnTraining.Size = new System.Drawing.Size(58, 53);
+            this.BtnTraining.Text = "Training";
+            this.BtnTraining.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(777, 473);
+            this.Controls.Add(this.TspExecution);
             this.Controls.Add(this.PicWorkspace);
             this.Controls.Add(this.ScBotom);
             this.Controls.Add(this.VsbMain);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.SspStatus);
+            this.Controls.Add(this.TspEdition);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.MainMenuStrip = this.menuStrip1;
@@ -523,10 +634,10 @@
             this.Text = "Red Neuronal Artificial Interactiva";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.FrmMain_Load);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
+            this.TspEdition.ResumeLayout(false);
+            this.TspEdition.PerformLayout();
+            this.SspStatus.ResumeLayout(false);
+            this.SspStatus.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -534,6 +645,8 @@
             this.ScBotom.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.ScBotom)).EndInit();
             this.ScBotom.ResumeLayout(false);
+            this.TspExecution.ResumeLayout(false);
+            this.TspExecution.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -541,7 +654,7 @@
 
 #endregion
 
-        private ToolStrip toolStrip1;
+        private ToolStrip TspEdition;
         private ToolStripButton BtnNew;
         private ToolStripButton BtnOpen;
         private ToolStripButton BtnSave;
@@ -549,7 +662,7 @@
         private ToolStripButton BtnInputNeurone;
         private ToolStripButton BtnInternalNeurone;
         private ToolStripButton BtnOutputNeurone;
-        private StatusStrip statusStrip1;
+        private StatusStrip SspStatus;
         private PictureBox PicWorkspace;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem MnuFile;
@@ -587,5 +700,15 @@
         private ToolStripMenuItem MnuView;
         private ToolStripMenuItem MnuViewCenterScreen;
         private ToolStripMenuItem MnuDebugActionsViewer;
+        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripButton BtnCheck;
+        private ToolStripButton BtnTest;
+        private ToolStrip TspExecution;
+        private ToolStripButton BtnRun;
+        private ToolStripButton BtnStop;
+        private ToolStripButton BtnCxStep;
+        private ToolStripButton BtnNeuronStep;
+        private ToolStripButton BtnLayerStep;
+        private ToolStripButton BtnTraining;
     }
 }
