@@ -2,7 +2,6 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-using SourceGenerator.Generator.CodeSections;
 using System.Collections.ObjectModel;
 using System.Text;
 
@@ -85,17 +84,11 @@ namespace SourceGenerator.Generator.Members.Methods
         internal MethodSource(MethodAccess access, MethodScope scope, string name, string description = "")
             : base(name)
         {
-            Scope = scope;
             Access = access;
+            Scope = scope;
             Parameters = new Collection<Parameter>();
-            Code = new CodeBlock();
             SetDescription(description);
         }
-
-        /// <summary>
-        /// Gets the <see cref="MethodScope"/> attributes of this <see cref="MethodSource"/>.
-        /// </summary>
-        public MethodScope Scope { get; }
 
         /// <summary>
         /// Gets the <see cref="MethodAccess"/> attributes of this <see cref="MethodSource"/>.
@@ -103,29 +96,14 @@ namespace SourceGenerator.Generator.Members.Methods
         public MethodAccess Access { get; }
 
         /// <summary>
+        /// Gets the <see cref="MethodScope"/> attributes of this <see cref="MethodSource"/>.
+        /// </summary>
+        public MethodScope Scope { get; }
+
+        /// <summary>
         /// Gets the list of <see cref="Parameter"/> defined for this <see cref=" MethodSource"/>.
         /// </summary>
         public Collection<Parameter> Parameters { get; }
-
-        /// <summary>
-        /// Gets the <see cref="CodeBlock"/> of this method.
-        /// </summary>
-        public CodeBlock Code { get; private set; }
-
-        /// <summary>
-        /// Gets the method expression body.
-        /// </summary>
-        public string ExpressionBody { get; private set; }
-
-        /// <summary>
-        /// Sets the code of this method as Expression body.
-        /// </summary>
-        /// <param name="code">The expression code.</param>
-        public void SetExpressionBody(string code)
-        {
-            Code = null;
-            ExpressionBody = code;
-        }
 
         /// <summary>
         /// Adds a new <see cref="Parameter"/> to the source file.
@@ -203,15 +181,7 @@ namespace SourceGenerator.Generator.Members.Methods
 
             _ = source.Append(ToString());
 
-            if (ExpressionBody != null)
-            {
-                _ = source.AppendLine(" => " + ExpressionBody);
-            }
-            else
-            {
-                _ = source.AppendLine();
-                Code.Generate(source, identation);
-            }
+            base.Generate(source, identation);
         }
     }
 }

@@ -2,7 +2,9 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SourceGenerator.Generator.CodeSections;
 using SourceGenerator.Generator.Types;
+using System.Text;
 
 namespace SourceGenerator.Generator.Members
 {
@@ -18,6 +20,41 @@ namespace SourceGenerator.Generator.Members
         protected MemberSource(string name)
             : base(name)
         {
+            Code = new CodeBlock();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CodeBlock"/> of this method.
+        /// </summary>
+        public CodeBlock Code { get; private set; }
+
+        /// <summary>
+        /// Gets the method expression body.
+        /// </summary>
+        public string ExpressionBody { get; private set; }
+
+        /// <summary>
+        /// Sets the code of this method as Expression body.
+        /// </summary>
+        /// <param name="code">The expression code.</param>
+        public void SetExpressionBody(string code)
+        {
+            Code = null;
+            ExpressionBody = code;
+        }
+
+        /// <inheritdoc/>
+        internal override void Generate(StringBuilder source, int identation)
+        {
+            if (ExpressionBody != null)
+            {
+                _ = source.AppendLine(" => " + ExpressionBody);
+            }
+            else
+            {
+                _ = source.AppendLine();
+                Code.Generate(source, identation);
+            }
         }
     }
 }
