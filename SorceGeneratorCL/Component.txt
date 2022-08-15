@@ -6,30 +6,30 @@
 namespace SimpleAnnPlayground.Graphical
 {
     /// <summary>
-    /// Gets the graphical object that represents an OutputNeuron.
+    /// Helper class to make operations with the Graphical Components.
     /// </summary>
     public partial class Component
     {
         /// <summary>
-        /// 
+        /// Gets the graphical object that represents an InputNeuron.
         /// </summary>
-        internal static InputNeuron { get; }
+        internal static Component InputNeuron { get; private set; } = new Component();
 
         /// <summary>
-        /// 
+        /// Gets the graphical object that represents an InternalNeuron.
         /// </summary>
-        internal static InternalNeuron { get; }
+        internal static Component InternalNeuron { get; private set; } = new Component();
 
         /// <summary>
-        /// 
+        /// Gets the graphical object that represents an OutputNeuron.
         /// </summary>
-        internal static OutputNeuron { get; }
+        internal static Component OutputNeuron { get; private set; } = new Component();
 
         /// <summary>
         /// Load the components from their respective files.
         /// </summary>
-        /// <param name="path">The path where the components are located..</param>
-        internal static void ReloadComponents(path)
+        /// <param name="path">The path where the components are located.</param>
+        internal static void ReloadComponents(string path)
         {
             InputNeuron.Deserialize(File.ReadAllText(Path.Combine(path, @"InputNeuron.cmpt")));
             InternalNeuron.Deserialize(File.ReadAllText(Path.Combine(path, @"InternalNeuron.cmpt")));

@@ -11,13 +11,4 @@
     <ProjectReference Include="..\SourceGenerator\SourceGenerator.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Component.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Element.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
