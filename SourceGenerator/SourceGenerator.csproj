@@ -49,4 +49,9 @@
     </Compile>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Generator\Members\Fields\" />
+    <Folder Include="Generator\Members\Properties\" />
+  </ItemGroup>
+
 </Project>

@@ -666,6 +666,7 @@ dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:err
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:error
 dotnet_diagnostic.CA1016.severity = warning
 dotnet_diagnostic.CA1303.severity = suggestion
+dotnet_diagnostic.CA1308.severity = silent
 
 [*.cs]
 csharp_using_directive_placement = outside_namespace:error
