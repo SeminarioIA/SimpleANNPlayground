@@ -81,7 +81,7 @@ namespace SourceGenerator.Generator.Members.Methods
         {
             if (source == null) throw new ArgumentNullException(nameof(source));
             SourceSnippet.Ident(source, identation);
-            _ = source.AppendLine($"/// <param name=\"{Name}\">{Description}.</param>");
+            _ = source.AppendLine($"/// <param name=\"{Name}\">{Description}</param>");
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace SourceGenerator.Generator.Members.Methods
                     break;
             }
 
-            _ = source.Append(Name);
+            _ = source.Append($"{Type} {Name}");
 
             if (!string.IsNullOrWhiteSpace(PredefinedValue))
                 _ = source.Append($" = {PredefinedValue}");

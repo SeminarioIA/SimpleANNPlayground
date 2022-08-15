@@ -45,6 +45,11 @@ namespace SourceGenerator.Generator.Members.Properties
     public enum PropertyAccess
     {
         /// <summary>
+        /// The same access as the Property Get.
+        /// </summary>
+        Default,
+
+        /// <summary>
         /// The property is accesible externally.
         /// </summary>
         Public,
@@ -81,13 +86,15 @@ namespace SourceGenerator.Generator.Members.Properties
         /// <param name="access">The <see cref="MethodAccess"/> attributes.</param>
         /// <param name="scope">The <see cref="MethodScope"/> attributes.</param>
         /// <param name="name">The property name.</param>
-        /// <param name="description">The property description to add in the documentation.</param>
-        public PropertySource(PropertyAccess access, PropertyScope scope, string name, string description = "")
+        /// <param name="type">The property type.</param>
+        /// <param name="value">The property initialization value.</param>
+        public PropertySource(PropertyAccess access, PropertyScope scope, string type, string name, string value = "")
             : base(name)
         {
             Access = access;
             Scope = scope;
-            SetDescription(description);
+            Type = type;
+            Value = value;
         }
 
         /// <summary>
@@ -99,6 +106,16 @@ namespace SourceGenerator.Generator.Members.Properties
         /// Gets the <see cref="PropertyScope"/> attributes of this <see cref="PropertySource"/>.
         /// </summary>
         public PropertyScope Scope { get; }
+
+        /// <summary>
+        /// Gets the <see cref="PropertySource"/> type.
+        /// </summary>
+        public string Type { get; }
+
+        /// <summary>
+        /// Gets the <see cref="PropertySource"/> value.
+        /// </summary>
+        public string Value { get; private set; }
 
         /// <inheritdoc/>
         internal override void Generate(StringBuilder source, int identation)
@@ -188,7 +205,7 @@ namespace SourceGenerator.Generator.Members.Properties
                     break;
             }
 
-            _ = source.Append(Name);
+            _ = source.Append($"{Type} {Name} ");
         }
     }
 }

@@ -3,61 +3,34 @@
 // </copyright>
 
 using SourceGenerator.Generator.CodeSections;
-using SourceGenerator.Generator.Members.Methods;
+using System;
 using System.Text;
 
 namespace SourceGenerator.Generator.Members.Properties
 {
     /// <summary>
-    /// Specifies member access attributes used for <see cref="PropertySource"/>.
-    /// </summary>
-    public enum SetPropertyAccess
-    {
-        /// <summary>
-        /// The property is accesible externally.
-        /// </summary>
-        Public,
-
-        /// <summary>
-        /// The property can be accessed only from the same library.
-        /// </summary>
-        Internal,
-
-        /// <summary>
-        /// The property can be accessed only from derived classes.
-        /// </summary>
-        Protected,
-
-        /// <summary>
-        /// The property can only be accessed from the owner class.
-        /// </summary>
-        Private,
-
-        /// <summary>
-        /// Prevents derived classes from continue inheriting the property.
-        /// </summary>
-        Sealed,
-    }
-
-    /// <summary>
     /// Represents an auto property source code.
     /// </summary>
-    internal class AutoPropertySource : PropertySource
+    public class AutoPropertySource : PropertySource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoPropertySource"/> class.
         /// </summary>
-        /// <param name="access">The <see cref="MethodAccess"/> attributes.</param>
-        /// <param name="scope">The <see cref="MethodScope"/> attributes.</param>
+        /// <param name="access">The <see cref="PropertyAccess"/> attributes for the get property.</param>
+        /// <param name="scope">The <see cref="PropertyScope"/> attributes for the property.</param>
+        /// <param name="type">The property type.</param>
         /// <param name="name">The property name.</param>
-        /// <param name="description">The property description to add in the documentation.</param>
-        public AutoPropertySource(PropertyAccess access, PropertyScope scope, string name, string description = "")
-            : base(access, scope, name, description)
+        /// <param name="setAccess">The <see cref="PropertyAccess"/> attributes for the set property.</param>
+        /// <param name="value">The property initialization value.</param>
+        public AutoPropertySource(PropertyAccess access, PropertyScope scope, string type, string name, PropertyAccess setAccess = PropertyAccess.Default, string value = "")
+            : base(access, scope, type, name, value)
         {
+            SetAccess = setAccess;
+            SetCode = new CodeBlock();
         }
 
         /// <summary>
-        /// Gets the <see cref="SetPropertyAccess"/> attributes of this <see cref="AutoPropertySource"/>.
+        /// Gets the <see cref="PropertyAccess"/> attributes of this <see cref="AutoPropertySource"/>.
         /// </summary>
         public PropertyAccess SetAccess { get; }
 
@@ -86,9 +59,48 @@ namespace SourceGenerator.Generator.Members.Properties
         {
             GenerateDeclaration(source, identation);
 
-            if (Code.Sections.Count == 0)
+            string access;
+            switch (SetAccess)
             {
-                _ = ExpressionBody == null ? source.AppendLine(" { get; }") : source.AppendLine(" => " + ExpressionBody);
+                case PropertyAccess.Public:
+                    access = "public ";
+                    break;
+                case PropertyAccess.Internal:
+                    access = "internal ";
+                    break;
+                case PropertyAccess.Protected:
+                    access = "protected ";
+                    break;
+                case PropertyAccess.Private:
+                    access = "private ";
+                    break;
+                default:
+                    access = string.Empty;
+                    break;
+            }
+
+            if (Code.Sections.Count == 0 && SetCode.Sections.Count == 0)
+            {
+                if (ExpressionBody == null && SetBody == null)
+                {
+                    _ = source.Append($"{{ get; {access}set; }}");
+                }
+                else if (ExpressionBody != null && SetBody != null)
+                {
+                    _ = source.AppendLine();
+                    Ident(source, identation++);
+                    _ = source.AppendLine("{");
+
+                    _ = source.AppendLine("get => " + ExpressionBody);
+                    _ = source.AppendLine($"{access}set => " + SetBody);
+
+                    Ident(source, --identation);
+                    _ = source.Append('}');
+                }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
             }
             else
             {
@@ -106,9 +118,21 @@ namespace SourceGenerator.Generator.Members.Properties
                 Ident(source, --identation);
                 _ = source.AppendLine("}");
 
+                _ = source.AppendLine($"{access}set");
+                Ident(source, identation++);
+                _ = source.AppendLine("{");
+
+                _ = source.AppendLine();
+                SetCode.Generate(source, identation);
+
                 Ident(source, --identation);
                 _ = source.AppendLine("}");
+
+                Ident(source, --identation);
+                _ = source.Append('}');
             }
+
+            _ = string.IsNullOrWhiteSpace(Value) ? source.AppendLine() : source.AppendLine($" = {Value};");
         }
     }
 }

@@ -5,6 +5,7 @@
 using SourceGenerator.Generator.Members.Methods;
 using SourceGenerator.Generator.Members.Properties;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace SourceGenerator.Generator.Types
@@ -83,7 +84,6 @@ namespace SourceGenerator.Generator.Types
             Access = access;
             Scope = scope;
             Members = new Collection<SourceSnippet>();
-            SetDescription($"Initializes a new instance of the <see cref=\"{name}\"/> class.");
         }
 
         /// <summary>
@@ -148,12 +148,13 @@ namespace SourceGenerator.Generator.Types
         /// </summary>
         /// <param name="access">The <see cref="PropertyAccess"/> attributes.</param>
         /// <param name="scope">The <see cref="PropertyScope"/> attributes.</param>
-        /// <param name="name">The method name.</param>
-        /// <param name="description">The method description to add in the documentation.</param>
+        /// <param name="type">The <see cref="PropertySource"/> type.</param>
+        /// <param name="name">The <see cref="PropertySource"/> name.</param>
+        /// <param name="value">The property initialization value.</param>
         /// <returns>The current <see cref="ClassSource"/>.</returns>
-        public ClassSource AddProperty(PropertyAccess access, PropertyScope scope, string name, string description = "")
+        public ClassSource AddProperty(PropertyAccess access, PropertyScope scope, string type, string name, string value = "")
         {
-            var property = new PropertySource(access, scope, name, description);
+            var property = new PropertySource(access, scope, type, name, value);
             Members.Add(property);
             return this;
         }
@@ -163,13 +164,26 @@ namespace SourceGenerator.Generator.Types
         /// </summary>
         /// <param name="access">The <see cref="PropertyAccess"/> attributes.</param>
         /// <param name="scope">The <see cref="PropertyScope"/> attributes.</param>
-        /// <param name="name">The method name.</param>
-        /// <param name="description">The method description to add in the documentation.</param>
+        /// <param name="type">The <see cref="PropertySource"/> type.</param>
+        /// <param name="name">The <see cref="PropertySource"/> name.</param>
+        /// <param name="setAccess">The <see cref="PropertyAccess"/> attributes for the set property.</param>
+        /// <param name="value">The property initialization value.</param>
         /// <returns>The current <see cref="ClassSource"/>.</returns>
-        public ClassSource AddAutoProperty(PropertyAccess access, PropertyScope scope, string name, string description = "")
+        public ClassSource AddAutoProperty(PropertyAccess access, PropertyScope scope, string type, string name, PropertyAccess setAccess, string value = "")
         {
-            var property = new AutoPropertySource(access, scope, name, description);
+            var property = new AutoPropertySource(access, scope, type, name, setAccess, value);
             Members.Add(property);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds the description to the last member added to the class source codes.
+        /// </summary>
+        /// <param name="description">Description to add to the laset added source member.</param>
+        /// <returns>This <see cref="ClassSource"/>.</returns>
+        public ClassSource AddDoc(string description)
+        {
+            Members.Last().SetDescription(description);
             return this;
         }
 

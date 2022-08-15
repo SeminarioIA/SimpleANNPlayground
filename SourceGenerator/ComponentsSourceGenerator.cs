@@ -8,7 +8,7 @@ using SourceGenerator.Generator;
 using SourceGenerator.Generator.Members.Methods;
 using SourceGenerator.Generator.Members.Properties;
 using SourceGenerator.Generator.Types;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -22,6 +22,44 @@ namespace SourceGenerator
     [Generator]
     public class ComponentsSourceGenerator : ISourceGenerator
     {
+        /// <summary>
+        /// Generates the Component class.
+        /// </summary>
+        /// <param name="components">The components to add.</param>
+        /// <returns>The source code text.</returns>
+        public static SourceText GenerateComponentClass(string[] components)
+        {
+            if (components == null) throw new ArgumentNullException(nameof(components));
+
+            // Create Component.cs
+            var main = new SourceFileGenerator("Component", "SimpleAnnPlayground.Graphical");
+            var mainClass = main.AddClass(ClassAccess.Public, ClassScope.Partial, main.Name);
+            mainClass.SetDescription("Helper class to make operations with the Graphical Components.");
+
+            // Add a property for each component.
+            foreach (string component in components)
+            {
+                mainClass.AddAutoProperty(PropertyAccess.Internal, PropertyScope.Static, "Component", component, PropertyAccess.Private, "new Component()")
+                    .AddDoc($"Gets the graphical object that represents an {component}.")
+                    .End();
+            }
+
+            // Add ReloadComponents method.
+            var reloadMethod = mainClass.AddMethod(MethodAccess.Internal, MethodScope.Static, "ReloadComponents")
+                .AddParameter("string", "path", "The path where the components are located.");
+            reloadMethod.SetDescription("Load the components from their respective files.");
+
+            // Add the code to reload each component.
+            foreach (string component in components)
+            {
+                reloadMethod.Code
+                    .AddLine($"{component}.Deserialize(File.ReadAllText(Path.Combine(path, @\"{component}.cmpt\")))")
+                    .End();
+            }
+
+            return SourceText.From(main.Generate(), Encoding.UTF8);
+        }
+
         /// <inheritdoc/>
         public void Execute(GeneratorExecutionContext context)
         {
@@ -36,7 +74,8 @@ namespace SourceGenerator
             var files = Directory.EnumerateFiles(Path.Combine(projectDirectory, @"Graphical\Components"));
             var components = files.ToList().FindAll(file => Path.GetExtension(file) == ".cmpt").ConvertAll(cmpt => Path.GetFileNameWithoutExtension(cmpt));
 
-            GenerateComponentClass(context, components);
+            // Save the source file.
+            context.AddSource("Component.cs", GenerateComponentClass(components.ToArray()));
         }
 
         /// <inheritdoc/>
@@ -48,35 +87,6 @@ namespace SourceGenerator
                 // Debugger.Launch();
             }
 #endif
-        }
-
-        private static void GenerateComponentClass(GeneratorExecutionContext context, List<string> components)
-        {
-            // Create Component.cs
-            var main = new SourceFileGenerator("Component", "SimpleAnnPlayground.Graphical");
-            var mainClass = main.AddClass(ClassAccess.Public, ClassScope.Partial, main.Name);
-
-            // Add a property for each component.
-            foreach (string component in components)
-            {
-                mainClass.AddAutoProperty(PropertyAccess.Internal, PropertyScope.Static, component)
-                    .SetDescription($"Gets the graphical object that represents an {component}.");
-            }
-
-            // Add ReloadComponents method.
-            var reloadMethod = mainClass.AddMethod(MethodAccess.Internal, MethodScope.Static, "ReloadComponents", "Load the components from their respective files.")
-                .AddParameter("string", "path", "The path where the components are located.");
-
-            // Add the code to reload each component.
-            foreach (string component in components)
-            {
-                reloadMethod.Code
-                    .AddLine($"{component}.Deserialize(File.ReadAllText(Path.Combine(path, @\"{component}.cmpt\")))")
-                    .End();
-            }
-
-            // Save the source file.
-            context.AddSource(main.Name, SourceText.From(main.Generate(), Encoding.UTF8));
         }
     }
 }

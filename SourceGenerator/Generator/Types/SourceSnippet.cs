@@ -33,7 +33,7 @@ namespace SourceGenerator.Generator.Types
         /// <summary>
         /// Adds the description to the class.
         /// </summary>
-        /// <param name="description">Description to add to the class.</param>
+        /// <param name="description">Description to add to the source snippet.</param>
         public void SetDescription(string description) => Description = description;
 
         /// <summary>
@@ -64,6 +64,7 @@ namespace SourceGenerator.Generator.Types
         internal static void GenerateSummary(StringBuilder source, int identation, string description)
         {
             _ = source.AppendLine();
+            if (string.IsNullOrWhiteSpace(description)) return;
             Ident(source, identation);
             _ = source.AppendLine("/// <summary>");
             Ident(source, identation);
