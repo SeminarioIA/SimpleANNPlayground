@@ -55,7 +55,7 @@ namespace SourceGenerator.Generator.Members.Fields
     /// <summary>
     /// Represents a field element source code.
     /// </summary>
-    internal class FieldSource : MemberSource
+    public class FieldSource : MemberSource
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldSource"/> class.

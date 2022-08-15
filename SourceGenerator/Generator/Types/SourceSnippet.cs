@@ -36,6 +36,15 @@ namespace SourceGenerator.Generator.Types
         /// <param name="description">Description to add to the class.</param>
         public void SetDescription(string description) => Description = description;
 
+        /// <summary>
+        /// Ends the <see cref="SourceSnippet"/> code adding.
+        /// </summary>
+#pragma warning disable CA1822 // Mark members as static
+        public void End()
+#pragma warning restore CA1822 // Mark members as static
+        {
+        }
+
         /// <inheritdoc/>
         public override string ToString() => Name;
 

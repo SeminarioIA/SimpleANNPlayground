@@ -3,6 +3,7 @@
 // </copyright>
 
 using SourceGenerator.Generator.Members.Methods;
+using SourceGenerator.Generator.Members.Properties;
 using System.Collections.ObjectModel;
 using System.Text;
 
@@ -17,6 +18,11 @@ namespace SourceGenerator.Generator.Types
         /// The class does not contains defined attributes.
         /// </summary>
         Normal,
+
+        /// <summary>
+        /// The class is a partial definition.
+        /// </summary>
+        Partial,
 
         /// <summary>
         /// The class does not provide an implementation.
@@ -137,6 +143,36 @@ namespace SourceGenerator.Generator.Types
             return function;
         }
 
+        /// <summary>
+        /// Adds a new <see cref="PropertySource"/> to the <see cref="ClassSource"/>.
+        /// </summary>
+        /// <param name="access">The <see cref="PropertyAccess"/> attributes.</param>
+        /// <param name="scope">The <see cref="PropertyScope"/> attributes.</param>
+        /// <param name="name">The method name.</param>
+        /// <param name="description">The method description to add in the documentation.</param>
+        /// <returns>The current <see cref="ClassSource"/>.</returns>
+        public ClassSource AddProperty(PropertyAccess access, PropertyScope scope, string name, string description = "")
+        {
+            var property = new PropertySource(access, scope, name, description);
+            Members.Add(property);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a new <see cref="AutoPropertySource"/> to the <see cref="ClassSource"/>.
+        /// </summary>
+        /// <param name="access">The <see cref="PropertyAccess"/> attributes.</param>
+        /// <param name="scope">The <see cref="PropertyScope"/> attributes.</param>
+        /// <param name="name">The method name.</param>
+        /// <param name="description">The method description to add in the documentation.</param>
+        /// <returns>The current <see cref="ClassSource"/>.</returns>
+        public ClassSource AddAutoProperty(PropertyAccess access, PropertyScope scope, string name, string description = "")
+        {
+            var property = new AutoPropertySource(access, scope, name, description);
+            Members.Add(property);
+            return this;
+        }
+
         /// <inheritdoc/>
         public override string ToString() => $"class {Name}";
 
@@ -173,6 +209,9 @@ namespace SourceGenerator.Generator.Types
                     break;
                 case ClassScope.Static:
                     _ = source.Append("static ");
+                    break;
+                case ClassScope.Partial:
+                    _ = source.Append("partial ");
                     break;
                 case ClassScope.Normal:
                 default:

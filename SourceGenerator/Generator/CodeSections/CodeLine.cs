@@ -24,6 +24,6 @@ namespace SourceGenerator.Generator.CodeSections
         public string Code { get; }
 
         /// <inheritdoc/>
-        public override string ToString() => Code;
+        public override string ToString() => Code + ";";
     }
 }

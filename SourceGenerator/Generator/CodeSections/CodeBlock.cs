@@ -70,6 +70,15 @@ namespace SourceGenerator.Generator.CodeSections
         /// <returns>The parent <see cref="CodeBlock"/>.</returns>
         public CodeBlock Close() => Parent;
 
+        /// <summary>
+        /// Ends the <see cref="CodeBlock"/> code adding.
+        /// </summary>
+#pragma warning disable CA1822 // Mark members as static
+        public void End()
+#pragma warning restore CA1822 // Mark members as static
+        {
+        }
+
         /// <inheritdoc/>
         internal override void Generate(StringBuilder source, int identation)
         {
