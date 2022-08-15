@@ -6,6 +6,7 @@ using SimpleAnnPlayground.Debugging;
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
+using SimpleAnnPlayground.Graphical.Tools;
 using System.Diagnostics;
 
 namespace SimpleAnnPlayground
@@ -163,6 +164,8 @@ namespace SimpleAnnPlayground
             _frmObjectsViewer.SelectObject(e.SelectedObject ?? _workspace);
 #endif
             MnuEditDelete.Enabled = e.SelectedObject != null;
+            MnuEditCopy.Enabled = e.SelectedObject != null;
+            MnuEditCut.Enabled = e.SelectedObject != null;
         }
 
         private void MouseTool_MouseMove(object? sender, EventArgs e)
@@ -308,6 +311,22 @@ namespace SimpleAnnPlayground
         private void MnuEditDelete_Click(object sender, EventArgs e)
         {
             _workspace.Actions.AddRemoveAction(Actions.RecordableAction.ActionType.Deleted);
+        }
+
+        private void MnuEditCopy_Click(object sender, EventArgs e)
+        {
+            var copyBag = new ClipboardBag(_workspace);
+            Clipboard.SetData("SimpleAnnPlayground.Copy", copyBag.Serialize());
+            MnuEditPaste.Enabled = true;
+        }
+
+        private void MnuEditPaste_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.GetData("SimpleAnnPlayground.Copy") is string data)
+            {
+                var pasteBag = ClipboardBag.Deserialize(data);
+                pasteBag.Paste(_workspace);
+            }
         }
     }
 }

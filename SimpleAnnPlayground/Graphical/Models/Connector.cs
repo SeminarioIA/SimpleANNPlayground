@@ -2,7 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-using SimpleAnnPlayground.Utils.Serialization;
+using SimpleAnnPlayground.Utils.Serialization.Yml;
 using System.ComponentModel;
 
 namespace SimpleAnnPlayground.Graphical.Models
@@ -174,7 +174,9 @@ namespace SimpleAnnPlayground.Graphical.Models
         /// <returns>True if the point is part of the connector.</returns>
         internal bool HasPoint(PointF point)
         {
+            float extra = 5;
             var rect = new RectangleF(new PointF(X - _shape.Width / 2f, Y - _shape.Height / 2f), _shape);
+            rect.Inflate(extra, extra);
             return rect.Contains(point);
         }
     }

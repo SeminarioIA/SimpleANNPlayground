@@ -2,9 +2,11 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Visualization;
+using SimpleAnnPlayground.Utils.Serialization.Json;
 
 namespace SimpleAnnPlayground.Graphical.Terminals
 {
@@ -21,6 +23,7 @@ namespace SimpleAnnPlayground.Graphical.Terminals
         {
             Owner = other.Owner;
             Connector = other.Connector;
+            Index = other.Index;
         }
 
         /// <summary>
@@ -28,30 +31,41 @@ namespace SimpleAnnPlayground.Graphical.Terminals
         /// </summary>
         /// <param name="owner">The owning <see cref="CanvasObject"/>.</param>
         /// <param name="connector">The base connector.</param>
-        protected Terminal(CanvasObject owner, Connector connector)
+        /// <param name="index">The terminal index.</param>
+        protected Terminal(CanvasObject owner, Connector connector, int index)
         {
             Owner = owner;
             Connector = connector;
+            Index = index;
         }
 
         /// <summary>
         /// Gets or sets the <see cref="Connection"/> object.
         /// </summary>
+        [JsonIgnore]
         public Connection? Connection { get; internal set; }
 
         /// <summary>
         /// Gets the owner object of this terminal.
         /// </summary>
+        [JsonIgnore]
         public CanvasObject Owner { get; }
+
+        /// <summary>
+        /// Gets the index of this <see cref="Terminal"/>.
+        /// </summary>
+        public int Index { get; }
 
         /// <summary>
         /// Gets the base connector for this terminal.
         /// </summary>
+        [JsonIgnore]
         public Connector Connector { get; }
 
         /// <summary>
         /// Gets the location if this terminal.
         /// </summary>
+        [JsonIgnore]
         public PointF Location => Owner.GetAbsolute(Connector.Location);
 
         /// <summary>

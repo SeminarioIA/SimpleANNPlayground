@@ -1,36 +1,31 @@
 ﻿using SourceGenerator.Generator;
 using SourceGenerator.Generator.Members.Methods;
+using SourceGenerator.Generator.Members.Properties;
 using SourceGenerator.Generator.Types;
 
-var test = new SourceFileGenerator("Test", "MyProgram");
-test.AddReference("System");
-test.AddReference("System.Text");
+string[] components = new string[] { "InputNeuron", "InternalNeuron", "OutputNeuron" };
 
-var myClass = test.AddClass(ClassAccess.Public, "MyClass");
-myClass.SetDescription("Example class to test the SourceGenerator library project.");
+// Create Component.cs
+var main = new SourceFileGenerator("Component", "SimpleAnnPlayground.Graphical");
+var mainClass = main.AddClass(ClassAccess.Public, ClassScope.Partial, main.Name);
 
-myClass.AddConstructor(MethodAccess.Public).Code
-    .AddLine("Console.WriteLine(\"Hola mundo!\");")
-    .AddEmptyLine()
-    .AddLine("Console.WriteLine(\"Program end.\");")
-    ;
+// Add a property for each component.
+foreach (string component in components)
+{
+    mainClass.AddAutoProperty(PropertyAccess.Internal, PropertyScope.Static, component)
+        .SetDescription($"Gets the graphical object that represents an {component}.");
+}
 
-myClass.AddFunction(MethodAccess.Public, MethodScope.Override, "ToString")
-    .SetReturnValue("string")
-    .SetExpressionBody("\"hola\"")
-    ;
+// Add ReloadComponents method.
+var reloadMethod = mainClass.AddMethod(MethodAccess.Internal, MethodScope.Static, "ReloadComponents", "Load the components from their respective files.")
+    .AddParameter("string", "path", "The path where the components are located.");
 
-myClass.AddMethod(MethodAccess.Internal, MethodScope.None, "MyMethod", "Executes an operation.")
-    .AddParameter("int", "length", "The length.")
-    .AddParameter("int", "count", "The count.")
-    .Code
-    .AddLine("if (count > length)")
-    .AddBlock()
-        .AddLine("count = length - 1;")
-    .Close()
-    .AddLine("else")
-    .AddBlock()
-        .AddLine("length = count + 1;")
-    .Close();
+// Add the code to reload each component.
+foreach (string component in components)
+{
+    reloadMethod.Code
+        .AddLine($"{component}.Deserialize(File.ReadAllText(Path.Combine(path, @\"{component}.cmpt\")))")
+        .End();
+}
 
-File.WriteAllText("test.cs", test.Generate());
+File.WriteAllText("Component.cs", main.Generate());

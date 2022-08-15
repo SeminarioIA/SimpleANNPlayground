@@ -2,7 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-namespace SimpleAnnPlayground.Utils.Serialization
+namespace SimpleAnnPlayground.Utils.Serialization.Yml
 {
     /// <summary>
     /// Interface of types that can be serialized from text strings.

@@ -17,9 +17,10 @@ namespace SimpleAnnPlayground.Graphical.Terminals
         /// </summary>
         /// <param name="owner">The owning <see cref="CanvasObject"/>.</param>
         /// <param name="connector">The base connector of type <see cref="Connector.Types.Output"/>.</param>
+        /// <param name="index">The terminal index.</param>
         /// <exception cref="ArgumentException">If the <paramref name="connector"/> type is different from <see cref="Connector.Types.Output"/>.</exception>
-        public OutputTerminal(CanvasObject owner, Connector connector)
-            : base(owner, connector)
+        public OutputTerminal(CanvasObject owner, Connector connector, int index)
+            : base(owner, connector, index)
         {
             if (connector.Type != Connector.Types.Output) throw new ArgumentException($"The {nameof(Connector.Type)} must be {Connector.Types.Output}.", nameof(connector));
         }

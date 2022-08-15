@@ -2,9 +2,11 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.Serialization.Json;
 using static SimpleAnnPlayground.Graphical.Component;
 
 namespace SimpleAnnPlayground.Graphical.Visualization
@@ -12,14 +14,16 @@ namespace SimpleAnnPlayground.Graphical.Visualization
     /// <summary>
     /// Represents an object to be drawn on a <seealso cref="Canvas"/>.
     /// </summary>
+    [JsonConverter(typeof(CanvasObjConverter))]
     internal abstract class CanvasObject : DrawableObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasObject"/> class.
         /// </summary>
         /// <param name="other">Other object to copy.</param>
-        public CanvasObject(CanvasObject other)
-            : base(other)
+        /// <param name="mode">The creation mode.</param>
+        protected CanvasObject(CanvasObject other, CreationMode mode)
+            : base(other, mode)
         {
             Location = other.Location;
             Component = other.Component;
@@ -40,10 +44,11 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             Inputs = new List<InputTerminal>();
             Outputs = new List<OutputTerminal>();
 
+            int inIndex = 0, outIndex = 0;
             foreach (var connector in component.Connectors)
             {
-                if (connector.Type == Connector.Types.Input) Inputs.Add(new InputTerminal(this, connector));
-                else if (connector.Type == Connector.Types.Output) Outputs.Add(new OutputTerminal(this, connector));
+                if (connector.Type == Connector.Types.Input) Inputs.Add(new InputTerminal(this, connector, inIndex++));
+                else if (connector.Type == Connector.Types.Output) Outputs.Add(new OutputTerminal(this, connector, outIndex++));
                 else throw new NotImplementedException();
             }
         }
@@ -51,36 +56,43 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Gets the graphical component linked to this object.
         /// </summary>
+        [JsonConverter(typeof(ComponentConverter))]
         public Component Component { get; }
 
         /// <summary>
         /// Gets the connectors of this object.
         /// </summary>
+        [JsonIgnore]
         public List<InputTerminal> Inputs { get; }
 
         /// <summary>
         /// Gets the connectors of this object.
         /// </summary>
+        [JsonIgnore]
         public List<OutputTerminal> Outputs { get; }
 
         /// <summary>
         /// Gets the list of all the terminals.
         /// </summary>
+        [JsonIgnore]
         public List<Terminal> Terminals => new List<Terminal>().Union(Inputs).Union(Outputs).ToList();
 
         /// <summary>
         /// Gets or sets the state of this object.
         /// </summary>
+        [JsonIgnore]
         public State State { get; set; }
 
         /// <summary>
         /// Gets the active connector with the cursor over it.
         /// </summary>
+        [JsonIgnore]
         public Terminal? ActiveTerminal { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the object is selected.
         /// </summary>
+        [JsonIgnore]
         public bool Selected => State.HasFlag(State.Selected);
 
         /// <summary>
@@ -91,6 +103,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Gets the selection area of this object.
         /// </summary>
+        [JsonIgnore]
         public RectangleF SelectionArea
         {
             get
@@ -104,7 +117,18 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Gets the bounds rectangle for this object.
         /// </summary>
+        [JsonIgnore]
         public RectangleF Bounds => Component.Selector.Rectangle.OffsetTo(((PointF)Location).OffsetTo(Component.Center));
+
+        /// <summary>
+        /// Gets a generic clone of a <see cref="CanvasObject"/>.
+        /// </summary>
+        /// <param name="other">The object to copy.</param>
+        /// <returns>A new object clone of <paramref name="other"/>.</returns>
+        public static CanvasObject Clone(CanvasObject other)
+        {
+            return Activator.CreateInstance(other.GetType(), other, CreationMode.Clone) as CanvasObject ?? throw new NotImplementedException();
+        }
 
         /// <summary>
         /// Gets a generic copy of a <see cref="CanvasObject"/>.
@@ -113,7 +137,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <returns>A new object copy of <paramref name="other"/>.</returns>
         public static CanvasObject Copy(CanvasObject other)
         {
-            return Activator.CreateInstance(other.GetType(), other) as CanvasObject ?? throw new NotImplementedException();
+            return Activator.CreateInstance(other.GetType(), other, CreationMode.Copy) as CanvasObject ?? throw new NotImplementedException();
         }
 
         /// <summary>
