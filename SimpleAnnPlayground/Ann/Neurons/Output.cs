@@ -3,14 +3,13 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical;
-using SimpleAnnPlayground.Graphical.Visualization;
 
 namespace SimpleAnnPlayground.Ann.Neurons
 {
     /// <summary>
     /// Represents an internal neurone in a neural network.
     /// </summary>
-    internal class Output : CanvasObject
+    internal class Output : Neuron
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Output"/> class.
@@ -31,5 +30,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
             : base(other, mode)
         {
         }
+
+        /// <inheritdoc/>
+        internal override int? UpwardLayer => -1;
+
+        /// <inheritdoc/>
+        internal override int? DownwardLayer => (Inputs.FirstOrDefault(input => input.Connection != null)?.Connection?.Source.Owner as Neuron)?.DownwardLayer + 1;
     }
 }

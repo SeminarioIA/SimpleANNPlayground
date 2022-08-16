@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Visualization;
-using SimpleAnnPlayground.Utils.Serialization.Json;
 
 namespace SimpleAnnPlayground.Graphical.Terminals
 {

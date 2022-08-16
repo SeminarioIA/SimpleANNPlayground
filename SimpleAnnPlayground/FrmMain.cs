@@ -351,5 +351,9 @@ namespace SimpleAnnPlayground
         {
             _frmData.Show(this);
         }
+
+        private void BtnCheck_Click(object sender, EventArgs e)
+        {
+        }
     }
 }

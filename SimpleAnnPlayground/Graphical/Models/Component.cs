@@ -266,13 +266,13 @@ namespace SimpleAnnPlayground.Graphical
                     // Draw elements connectors.
                     foreach (Connector connector in Connectors)
                     {
-                        connector.Paint(graphics, Connector.DrawMode.Hover);
+                        connector.Paint(graphics, Connector.DrawMode.Shadow);
                     }
                 }
 
                 if (selectConnector != null && Connectors.Contains(selectConnector))
                 {
-                    selectConnector.Paint(graphics, Connector.DrawMode.Shadow);
+                    selectConnector.Paint(graphics, Connector.DrawMode.Hover);
                 }
             }
 

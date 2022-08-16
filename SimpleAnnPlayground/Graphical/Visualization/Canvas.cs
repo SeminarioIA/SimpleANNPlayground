@@ -336,7 +336,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         {
             foreach (var obj in Objects)
             {
-                if (obj != connecting.Start.Owner) obj.OnMouseConnecting(Point.Truncate(location), connecting.Type);
+                if (obj != connecting.Start.Owner) obj.OnMouseConnecting(Point.Truncate(location), connecting);
             }
         }
 
@@ -357,6 +357,23 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             {
                 obj.Paint(graphics);
             }
+        }
+
+        /// <summary>
+        /// Determines the number of layers.
+        /// </summary>
+        /// <returns>The number of layers.</returns>
+        internal int? GetNetworkLayers()
+        {
+            foreach (var obj in Objects)
+            {
+                if (obj is Output output && output.Layer != -1)
+                {
+                    return output.Layer;
+                }
+            }
+
+            return null;
         }
 
         private static int ShadowValue(byte value)
