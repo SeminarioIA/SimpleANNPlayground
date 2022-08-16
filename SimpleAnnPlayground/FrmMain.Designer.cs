@@ -382,6 +382,7 @@
             this.MnuEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.MnuEditCut.Size = new System.Drawing.Size(180, 22);
             this.MnuEditCut.Text = "Cut";
+            this.MnuEditCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
             // MnuEditPaste
             // 

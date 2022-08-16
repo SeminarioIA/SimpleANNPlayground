@@ -315,6 +315,7 @@ namespace SimpleAnnPlayground
 
         private void MnuEditCopy_Click(object sender, EventArgs e)
         {
+            if (!_workspace.Canvas.AnySelected()) return;
             var copyBag = new ClipboardBag(_workspace);
             Clipboard.SetData("SimpleAnnPlayground.Copy", copyBag.Serialize());
             MnuEditPaste.Enabled = true;
@@ -327,6 +328,15 @@ namespace SimpleAnnPlayground
                 var pasteBag = ClipboardBag.Deserialize(data);
                 pasteBag.Paste(_workspace);
             }
+        }
+
+        private void MnuEditCut_Click(object sender, EventArgs e)
+        {
+            if (!_workspace.Canvas.AnySelected()) return;
+            var cutBag = new ClipboardBag(_workspace);
+            Clipboard.SetData("SimpleAnnPlayground.Copy", cutBag.Serialize());
+            MnuEditPaste.Enabled = true;
+            _workspace.Actions.AddRemoveAction(Actions.RecordableAction.ActionType.Cut);
         }
     }
 }

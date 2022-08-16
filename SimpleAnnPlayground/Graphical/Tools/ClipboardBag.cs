@@ -94,7 +94,7 @@ namespace SimpleAnnPlayground.Graphical.Tools
                 obj.Location = location;
                 workspace.Canvas.AddObject(obj);
                 workspace.Shadow.AddObject(obj);
-                obj.SetStateFlag(Component.State.Selected);
+                workspace.Canvas.Select(obj);
             }
 
             foreach (Connection conn in Connections)
