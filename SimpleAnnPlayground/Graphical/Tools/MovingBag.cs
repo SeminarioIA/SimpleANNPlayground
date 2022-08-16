@@ -35,6 +35,16 @@ namespace SimpleAnnPlayground.Graphical.Tools
         public PointF StartPoint { get; }
 
         /// <summary>
+        /// Gets the moving offset.
+        /// </summary>
+        public PointF Offset { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the objects have been moved.
+        /// </summary>
+        public bool WasMoved => Offset != PointF.Empty;
+
+        /// <summary>
         /// Gets the collection of selected objects.
         /// </summary>
         public Collection<CanvasObject> Selection => new (_selection.Keys.ToList());
@@ -47,9 +57,9 @@ namespace SimpleAnnPlayground.Graphical.Tools
         {
             foreach (var obj in _selection)
             {
-                var offset = Point.Truncate(new PointF(location.X - StartPoint.X, location.Y - StartPoint.Y));
+                Offset = new PointF(location.X - StartPoint.X, location.Y - StartPoint.Y);
                 Point dest = obj.Value;
-                dest.Offset(offset);
+                dest.Offset(Point.Truncate(Offset));
                 obj.Key.Location = dest;
             }
         }
