@@ -7,6 +7,7 @@ using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Utils;
 using SimpleAnnPlayground.Utils.Serialization.Json;
+using System.ComponentModel;
 using static SimpleAnnPlayground.Graphical.Component;
 
 namespace SimpleAnnPlayground.Graphical.Visualization
@@ -54,9 +55,15 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         }
 
         /// <summary>
+        /// Gets the object type.
+        /// </summary>
+        [Browsable(false)]
+        public string Type => GetType().ToString();
+
+        /// <summary>
         /// Gets the graphical component linked to this object.
         /// </summary>
-        [JsonConverter(typeof(ComponentConverter))]
+        [JsonIgnore]
         public Component Component { get; }
 
         /// <summary>

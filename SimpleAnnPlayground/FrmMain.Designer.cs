@@ -281,41 +281,41 @@
             // MnuFileNew
             // 
             this.MnuFileNew.Name = "MnuFileNew";
-            this.MnuFileNew.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileNew.Size = new System.Drawing.Size(114, 22);
             this.MnuFileNew.Text = "New";
             // 
             // MnuFileOpen
             // 
             this.MnuFileOpen.Name = "MnuFileOpen";
-            this.MnuFileOpen.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileOpen.Size = new System.Drawing.Size(114, 22);
             this.MnuFileOpen.Text = "Open";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(111, 6);
             // 
             // MnuFileSave
             // 
             this.MnuFileSave.Name = "MnuFileSave";
-            this.MnuFileSave.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileSave.Size = new System.Drawing.Size(114, 22);
             this.MnuFileSave.Text = "Save";
             // 
             // MnuFileSaveAs
             // 
             this.MnuFileSaveAs.Name = "MnuFileSaveAs";
-            this.MnuFileSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileSaveAs.Size = new System.Drawing.Size(114, 22);
             this.MnuFileSaveAs.Text = "Save As";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(111, 6);
             // 
             // MnuFileExit
             // 
             this.MnuFileExit.Name = "MnuFileExit";
-            this.MnuFileExit.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileExit.Size = new System.Drawing.Size(114, 22);
             this.MnuFileExit.Text = "Exit";
             // 
             // MnuEdit
@@ -370,6 +370,7 @@
             // 
             this.MnuEditCopy.Enabled = false;
             this.MnuEditCopy.Name = "MnuEditCopy";
+            this.MnuEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.MnuEditCopy.Size = new System.Drawing.Size(180, 22);
             this.MnuEditCopy.Text = "Copy";
             this.MnuEditCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
@@ -378,6 +379,7 @@
             // 
             this.MnuEditCut.Enabled = false;
             this.MnuEditCut.Name = "MnuEditCut";
+            this.MnuEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.MnuEditCut.Size = new System.Drawing.Size(180, 22);
             this.MnuEditCut.Text = "Cut";
             // 
@@ -385,6 +387,7 @@
             // 
             this.MnuEditPaste.Enabled = false;
             this.MnuEditPaste.Name = "MnuEditPaste";
+            this.MnuEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
             this.MnuEditPaste.Size = new System.Drawing.Size(180, 22);
             this.MnuEditPaste.Text = "Paste";
             this.MnuEditPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);

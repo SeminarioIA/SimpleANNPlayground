@@ -17,7 +17,7 @@ namespace SimpleAnnPlayground.Graphical.Tools
     /// </summary>
     internal class ClipboardBag
     {
-        private const int OffsetIncrement = 5;
+        private const int OffsetIncrement = 30;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClipboardBag"/> class.
@@ -74,6 +74,8 @@ namespace SimpleAnnPlayground.Graphical.Tools
         /// <returns>The deserialized object.</returns>
         public static ClipboardBag Deserialize(string data)
         {
+            ConnectionConverter.Objects.Clear();
+            ConnectionConverter.Ids.Clear();
             return JsonConvert.DeserializeObject<ClipboardBag>(data) ?? throw new ArgumentException("Invalid data string.", nameof(data));
         }
 
@@ -83,29 +85,26 @@ namespace SimpleAnnPlayground.Graphical.Tools
         /// <param name="workspace">The workspace where the object are being inserted.</param>
         public void Paste(Workspace workspace)
         {
-            var pasting = new Dictionary<CanvasObject, CanvasObject>();
+            workspace.Canvas.UnselectAll();
+
             foreach (CanvasObject obj in Objects)
             {
-                var copy = CanvasObject.Copy(obj);
-                copy.Location.Offset(Offset, Offset);
-                workspace.Canvas.AddObject(copy);
-                workspace.Shadow.AddObject(copy);
-                pasting.Add(obj, copy);
+                var location = obj.Location;
+                location.Offset(Offset, Offset);
+                obj.Location = location;
+                workspace.Canvas.AddObject(obj);
+                workspace.Shadow.AddObject(obj);
+                obj.SetStateFlag(Component.State.Selected);
             }
 
             foreach (Connection conn in Connections)
             {
-                // Get the new source terminal.
-                var sourceObj = pasting[conn.Source.Owner];
-
-                // Get the new destination terminal.
-                var destObj = pasting[conn.Destination.Owner];
-
                 // Add the new connection.
-                workspace.Canvas.AddConnection(new Connection(sourceObj.Outputs[conn.Source.Index], destObj.Inputs[conn.Destination.Index]));
+                workspace.Canvas.AddConnection(conn);
             }
 
             Offset += OffsetIncrement;
+            workspace.Refresh();
         }
 
         /// <summary>

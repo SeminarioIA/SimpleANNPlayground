@@ -15,6 +15,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
     /// <summary>
     /// Represents the connection between two components.
     /// </summary>
+    [JsonConverter(typeof(ConnectionConverter))]
     internal class Connection : DrawableObject
     {
         private const float Width = 0.1f;
