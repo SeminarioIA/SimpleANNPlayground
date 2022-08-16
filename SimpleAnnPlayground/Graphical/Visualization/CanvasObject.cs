@@ -5,7 +5,7 @@
 using Newtonsoft.Json;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
-using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.Graphics;
 using SimpleAnnPlayground.Utils.Serialization.Json;
 using System.ComponentModel;
 using static SimpleAnnPlayground.Graphical.Component;

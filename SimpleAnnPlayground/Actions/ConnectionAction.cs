@@ -4,7 +4,7 @@
 
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Environment;
-using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.Graphics;
 using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Actions

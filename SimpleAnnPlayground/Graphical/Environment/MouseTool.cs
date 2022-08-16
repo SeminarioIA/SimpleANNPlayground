@@ -8,7 +8,7 @@ using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Graphical.Visualization;
-using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.Graphics;
 using System.Collections.ObjectModel;
 using static SimpleAnnPlayground.Actions.RecordableAction;
 

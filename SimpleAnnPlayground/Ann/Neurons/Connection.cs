@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Graphical.Visualization;
-using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.Graphics;
 using SimpleAnnPlayground.Utils.Serialization.Json;
 using System.Collections.ObjectModel;
 

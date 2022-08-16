@@ -3,7 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Neurons;
-using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.Graphics;
 using System.Drawing.Drawing2D;
 
 namespace SimpleAnnPlayground.Graphical.Tools

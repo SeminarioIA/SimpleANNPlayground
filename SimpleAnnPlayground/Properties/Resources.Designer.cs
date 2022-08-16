@@ -153,6 +153,26 @@ namespace SimpleAnnPlayground.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Data_32 {
+            get {
+                object obj = ResourceManager.GetObject("Data-32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap import_32 {
+            get {
+                object obj = ResourceManager.GetObject("import_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Input_Icono_32 {
             get {
                 object obj = ResourceManager.GetObject("Input_Icono_32", resourceCulture);
