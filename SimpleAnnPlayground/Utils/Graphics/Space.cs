@@ -4,7 +4,7 @@
 
 using System.Drawing.Drawing2D;
 
-namespace SimpleAnnPlayground.Utils
+namespace SimpleAnnPlayground.Utils.Graphics
 {
     /// <summary>
     /// Utility class to make spacial operations.

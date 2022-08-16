@@ -7,6 +7,8 @@ using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Tools;
+using SimpleAnnPlayground.Screens;
+using SimpleAnnPlayground.Utils;
 using System.Diagnostics;
 
 namespace SimpleAnnPlayground
@@ -87,6 +89,11 @@ namespace SimpleAnnPlayground
 #endif
 
         /// <summary>
+        /// The form to import the model data.
+        /// </summary>
+        private readonly FrmData _frmData;
+
+        /// <summary>
         /// The design workspace area.
         /// </summary>
         private readonly Workspace _workspace;
@@ -113,6 +120,7 @@ namespace SimpleAnnPlayground
             _frmObjectsViewer = new FrmObjectsViewer(_workspace);
             _frmActionsViewer = new FrmActionsViewer(_workspace.Actions);
 #endif
+            _frmData = new FrmData();
         }
 
         /// <summary>
@@ -337,6 +345,11 @@ namespace SimpleAnnPlayground
             Clipboard.SetData("SimpleAnnPlayground.Copy", cutBag.Serialize());
             MnuEditPaste.Enabled = true;
             _workspace.Actions.AddRemoveAction(Actions.RecordableAction.ActionType.Cut);
+        }
+
+        private void BtnData_Click(object sender, EventArgs e)
+        {
+            _frmData.Show(this);
         }
     }
 }

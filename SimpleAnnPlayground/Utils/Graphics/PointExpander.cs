@@ -2,7 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-namespace SimpleAnnPlayground.Utils
+namespace SimpleAnnPlayground.Utils.Graphics
 {
     /// <summary>
     /// Utility class to expand <see cref="Point"/> and <see cref="PointF"/> classes.

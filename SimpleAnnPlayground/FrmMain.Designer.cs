@@ -21,6 +21,7 @@
                 _frmObjectsViewer.Dispose();
                 _frmActionsViewer.Dispose();
 #endif
+                _frmData.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -89,6 +90,7 @@
             this.BtnCxStep = new System.Windows.Forms.ToolStripButton();
             this.BtnNeuronStep = new System.Windows.Forms.ToolStripButton();
             this.BtnLayerStep = new System.Windows.Forms.ToolStripButton();
+            this.BtnData = new System.Windows.Forms.ToolStripButton();
             this.TspEdition.SuspendLayout();
             this.SspStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
@@ -114,6 +116,7 @@
             this.BtnInternalNeurone,
             this.BtnOutputNeurone,
             this.toolStripSeparator2,
+            this.BtnData,
             this.BtnCheck,
             this.BtnTraining,
             this.BtnTest});
@@ -281,41 +284,41 @@
             // MnuFileNew
             // 
             this.MnuFileNew.Name = "MnuFileNew";
-            this.MnuFileNew.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileNew.Size = new System.Drawing.Size(180, 22);
             this.MnuFileNew.Text = "New";
             // 
             // MnuFileOpen
             // 
             this.MnuFileOpen.Name = "MnuFileOpen";
-            this.MnuFileOpen.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileOpen.Size = new System.Drawing.Size(180, 22);
             this.MnuFileOpen.Text = "Open";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(111, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuFileSave
             // 
             this.MnuFileSave.Name = "MnuFileSave";
-            this.MnuFileSave.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileSave.Size = new System.Drawing.Size(180, 22);
             this.MnuFileSave.Text = "Save";
             // 
             // MnuFileSaveAs
             // 
             this.MnuFileSaveAs.Name = "MnuFileSaveAs";
-            this.MnuFileSaveAs.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileSaveAs.Size = new System.Drawing.Size(180, 22);
             this.MnuFileSaveAs.Text = "Save As";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(111, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuFileExit
             // 
             this.MnuFileExit.Name = "MnuFileExit";
-            this.MnuFileExit.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileExit.Size = new System.Drawing.Size(180, 22);
             this.MnuFileExit.Text = "Exit";
             // 
             // MnuEdit
@@ -339,7 +342,7 @@
             this.MnuEditUndo.Enabled = false;
             this.MnuEditUndo.Name = "MnuEditUndo";
             this.MnuEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.MnuEditUndo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditUndo.Size = new System.Drawing.Size(144, 22);
             this.MnuEditUndo.Text = "Undo";
             this.MnuEditUndo.Click += new System.EventHandler(this.MnuEditUndo_Click);
             // 
@@ -348,21 +351,21 @@
             this.MnuEditRedo.Enabled = false;
             this.MnuEditRedo.Name = "MnuEditRedo";
             this.MnuEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.MnuEditRedo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditRedo.Size = new System.Drawing.Size(144, 22);
             this.MnuEditRedo.Text = "Redo";
             this.MnuEditRedo.Click += new System.EventHandler(this.MnuEditRedo_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(141, 6);
             // 
             // MnuEditDelete
             // 
             this.MnuEditDelete.Enabled = false;
             this.MnuEditDelete.Name = "MnuEditDelete";
             this.MnuEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.MnuEditDelete.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditDelete.Size = new System.Drawing.Size(144, 22);
             this.MnuEditDelete.Text = "Delete";
             this.MnuEditDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
@@ -371,7 +374,7 @@
             this.MnuEditCopy.Enabled = false;
             this.MnuEditCopy.Name = "MnuEditCopy";
             this.MnuEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.MnuEditCopy.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCopy.Size = new System.Drawing.Size(144, 22);
             this.MnuEditCopy.Text = "Copy";
             this.MnuEditCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
             // 
@@ -380,7 +383,7 @@
             this.MnuEditCut.Enabled = false;
             this.MnuEditCut.Name = "MnuEditCut";
             this.MnuEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.MnuEditCut.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCut.Size = new System.Drawing.Size(144, 22);
             this.MnuEditCut.Text = "Cut";
             this.MnuEditCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
@@ -389,19 +392,19 @@
             this.MnuEditPaste.Enabled = false;
             this.MnuEditPaste.Name = "MnuEditPaste";
             this.MnuEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.MnuEditPaste.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditPaste.Size = new System.Drawing.Size(144, 22);
             this.MnuEditPaste.Text = "Paste";
             this.MnuEditPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(141, 6);
             // 
             // MnuEditOptions
             // 
             this.MnuEditOptions.Name = "MnuEditOptions";
-            this.MnuEditOptions.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditOptions.Size = new System.Drawing.Size(144, 22);
             this.MnuEditOptions.Text = "Options";
             // 
             // MnuView
@@ -621,6 +624,16 @@
             this.BtnLayerStep.Text = "L-Step";
             this.BtnLayerStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
+            // BtnData
+            // 
+            this.BtnData.Image = global::SimpleAnnPlayground.Properties.Resources.Data_32;
+            this.BtnData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnData.Name = "BtnData";
+            this.BtnData.Size = new System.Drawing.Size(39, 53);
+            this.BtnData.Text = "Data";
+            this.BtnData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnData.Click += new System.EventHandler(this.BtnData_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -716,5 +729,6 @@
         private ToolStripButton BtnNeuronStep;
         private ToolStripButton BtnLayerStep;
         private ToolStripButton BtnTraining;
+        private ToolStripButton BtnData;
     }
 }

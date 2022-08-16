@@ -2,7 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-namespace SimpleAnnPlayground
+namespace SimpleAnnPlayground.Utils
 {
     /// <summary>
     /// Class that contains all the strings for the supported languages.
@@ -41,9 +41,7 @@ namespace SimpleAnnPlayground
                     foreach (ToolStripItem item in toolStrip.Items)
                     {
                         if (words.ContainsKey(item.Name))
-                        {
                             item.Text = words[item.Name][(int)language];
-                        }
 
                         // If the toolStrip contains child elements.
                         SetMenuLanguage(item, words, language);
@@ -53,9 +51,7 @@ namespace SimpleAnnPlayground
                 {
                     // Change the text for other controls.
                     if (words.ContainsKey(control.Name))
-                    {
                         control.Text = words[control.Name][(int)language];
-                    }
                 }
             }
         }
