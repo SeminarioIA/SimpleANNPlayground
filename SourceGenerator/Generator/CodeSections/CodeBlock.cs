@@ -3,6 +3,8 @@
 // </copyright>
 
 using SourceGenerator.Generator.Types;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 
@@ -16,11 +18,13 @@ namespace SourceGenerator.Generator.CodeSections
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeBlock"/> class.
         /// </summary>
-        /// <param name="parent">The parent <see cref="CodeBlock"/> of this <see cref="CodeBlock"/>.</param>
-        public CodeBlock(CodeBlock parent = null)
+        /// <param name="parent">The parent <see cref="CodeSection"/> of this <see cref="CodeBlock"/>.</param>
+        /// <param name="semiColon">Indicates if the block is semi-colon ended.</param>
+        public CodeBlock(CodeSection parent, bool semiColon = false)
+            : base(parent)
         {
             Sections = new Collection<CodeSection>();
-            Parent = parent;
+            SemiColon = semiColon;
         }
 
         /// <summary>
@@ -29,54 +33,87 @@ namespace SourceGenerator.Generator.CodeSections
         public Collection<CodeSection> Sections { get; }
 
         /// <summary>
-        /// Gets the parent <see cref="CodeBlock"/> of this <see cref="CodeBlock"/>.
+        /// Gets a value indicating whether the code block is semiColon ended.
         /// </summary>
-        public CodeBlock Parent { get; }
+        public bool SemiColon { get; }
 
         /// <summary>
         /// Adds a new <see cref="CodeLine"/> to this <see cref="CodeBlock"/>.
         /// </summary>
         /// <param name="line">The line of code to add.</param>
         /// <returns>The current <see cref="CodeBlock"/>.</returns>
-        public CodeBlock AddLine(string line) => AddSection(new CodeLine(line));
+        public CodeBlock AddLine(string line) => AddSection(new CodeLine(this, line));
+
+        /// <summary>
+        /// Adds a new <see cref="CodeLine"/> to this <see cref="CodeBlock"/>.
+        /// </summary>
+        /// <param name="items">A collection of items.</param>
+        /// <param name="line">A function that return the code line.</param>
+        /// <returns>The current <see cref="CodeBlock"/>.</returns>
+        public CodeBlock AddLines(ICollection<string> items, Func<string, string> line)
+        {
+            if (items == null) throw new ArgumentNullException(nameof(items));
+            foreach (string item in items)
+            {
+                Sections.Add(new CodeLine(this, line?.Invoke(item)));
+            }
+
+            return this;
+        }
 
         /// <summary>
         /// Adds a new <see cref="EmptyLine"/> to this <see cref="CodeBlock"/>.
         /// </summary>
         /// <returns>The current <see cref="CodeBlock"/>.</returns>
-        public CodeBlock AddEmptyLine() => AddSection(new EmptyLine());
+        public CodeBlock AddEmptyLine() => AddSection(new EmptyLine(this));
 
         /// <summary>
         /// Adds a new <see cref="Comment"/> to this <see cref="CodeBlock"/>.
         /// </summary>
         /// <param name="text">The text to add as a comment.</param>
         /// <returns>The current <see cref="CodeBlock"/>.</returns>
-        public CodeBlock AddComment(string text) => AddSection(new Comment(text));
+        public CodeBlock AddComment(string text) => AddSection(new Comment(this, text));
 
         /// <summary>
         /// Adds a nested <see cref="CodeBlock"/> to this <see cref="CodeBlock"/>.
         /// </summary>
+        /// <param name="semiColon">Indicates if the block is semi-colon ended.</param>
         /// <returns>The new added <see cref="CodeBlock"/>.</returns>
-        public CodeBlock AddBlock()
+        public CodeBlock AddBlock(bool semiColon = false)
         {
-            var block = new CodeBlock(this);
+            var block = new CodeBlock(this, semiColon);
             Sections.Add(block);
             return block;
         }
 
         /// <summary>
-        /// Closes the current <see cref="CodeBlock"/> and continues with the <see cref="Parent"/>.
+        /// Closes the current <see cref="CodeBlock"/> and continues with the parent.
         /// </summary>
         /// <returns>The parent <see cref="CodeBlock"/>.</returns>
-        public CodeBlock Close() => Parent;
+        public CodeBlock Close() => Parent as CodeBlock;
 
         /// <summary>
-        /// Ends the <see cref="CodeBlock"/> code adding.
+        /// Adds a new <see cref="FieldValue"/> to this <see cref="CodeBlock"/>.
         /// </summary>
-#pragma warning disable CA1822 // Mark members as static
-        public void End()
-#pragma warning restore CA1822 // Mark members as static
+        /// <param name="value">The value to initialize.</param>
+        /// <returns>The current <see cref="CodeBlock"/>.</returns>
+        public CodeBlock AddFieldValue(string value)
         {
+            var fieldValue = new FieldValue(this, value);
+            Sections.Add(fieldValue);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a new <see cref="FieldValue"/> to this <see cref="CodeBlock"/>.
+        /// </summary>
+        /// <param name="value">The value to initialize.</param>
+        /// <returns>The current <see cref="CodeBlock"/>.</returns>
+        public FieldValue AddFieldValueBlock(string value)
+        {
+            var fieldValue = new FieldValue(this, value);
+            Sections.Add(fieldValue);
+            return fieldValue;
         }
 
         /// <inheritdoc/>
@@ -93,7 +130,9 @@ namespace SourceGenerator.Generator.CodeSections
 
             identation--;
             SourceSnippet.Ident(source, identation);
-            _ = source.AppendLine("}");
+            _ = source.Append('}');
+            if (SemiColon) _ = source.Append(';');
+            _ = source.AppendLine();
         }
 
         private CodeBlock AddSection(CodeSection section)

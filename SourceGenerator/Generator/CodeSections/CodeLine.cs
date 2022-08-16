@@ -12,8 +12,10 @@ namespace SourceGenerator.Generator.CodeSections
         /// <summary>
         /// Initializes a new instance of the <see cref="CodeLine"/> class.
         /// </summary>
+        /// <param name="parent">The parent <see cref="CodeSection"/>.</param>
         /// <param name="code">The code to add.</param>
-        public CodeLine(string code)
+        public CodeLine(CodeSection parent, string code)
+            : base(parent)
         {
             Code = code;
         }
@@ -24,6 +26,6 @@ namespace SourceGenerator.Generator.CodeSections
         public string Code { get; }
 
         /// <inheritdoc/>
-        public override string ToString() => Code + ";";
+        public override string ToString() => Code;
     }
 }

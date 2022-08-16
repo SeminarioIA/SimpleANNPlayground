@@ -2,8 +2,11 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SourceGenerator.Generator.CodeSections;
 using SourceGenerator.Generator.Members.Methods;
+using SourceGenerator.Generator.Types;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace SourceGenerator.Generator.Members.Properties
@@ -83,18 +86,19 @@ namespace SourceGenerator.Generator.Members.Properties
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertySource"/> class.
         /// </summary>
+        /// <param name="parent">The parent source element.</param>
         /// <param name="access">The <see cref="MethodAccess"/> attributes.</param>
         /// <param name="scope">The <see cref="MethodScope"/> attributes.</param>
         /// <param name="name">The property name.</param>
         /// <param name="type">The property type.</param>
         /// <param name="value">The property initialization value.</param>
-        public PropertySource(PropertyAccess access, PropertyScope scope, string type, string name, string value = "")
-            : base(name)
+        public PropertySource(SourceSnippet parent, PropertyAccess access, PropertyScope scope, string type, string name, string value = "")
+            : base(parent, name)
         {
             Access = access;
             Scope = scope;
             Type = type;
-            Value = value;
+            Value = new FieldValue(this, value);
         }
 
         /// <summary>
@@ -115,7 +119,47 @@ namespace SourceGenerator.Generator.Members.Properties
         /// <summary>
         /// Gets the <see cref="PropertySource"/> value.
         /// </summary>
-        public string Value { get; private set; }
+        public FieldValue Value { get; private set; }
+
+        /// <summary>
+        /// Adds the description to the last member added to the class source codes.
+        /// </summary>
+        /// <param name="description">Description to add to the laset added source member.</param>
+        /// <returns>This <see cref="PropertySource"/>.</returns>
+        public PropertySource AddDoc(string description)
+        {
+            SetDescription(description);
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a new <see cref="CodeLine"/> to this <see cref="CodeBlock"/>.
+        /// </summary>
+        /// <param name="line">The line of code to add.</param>
+        /// <returns>The current <see cref="CodeBlock"/>.</returns>
+        public PropertySource AddValue(string line)
+        {
+            Value.Code.Sections.Add(new CodeLine(this, line));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Adds a new <see cref="CodeLine"/> to this <see cref="CodeBlock"/>.
+        /// </summary>
+        /// <param name="items">A collection of items.</param>
+        /// <param name="line">A function that return the code line.</param>
+        /// <returns>The current <see cref="CodeBlock"/>.</returns>
+        public PropertySource AddValues(ICollection<string> items, Func<string, string> line)
+        {
+            if (items == null) throw new ArgumentNullException(nameof(items));
+            foreach (string item in items)
+            {
+                Value.Code.Sections.Add(new CodeLine(this, line?.Invoke(item)));
+            }
+
+            return this;
+        }
 
         /// <inheritdoc/>
         internal override void Generate(StringBuilder source, int identation)
@@ -124,7 +168,26 @@ namespace SourceGenerator.Generator.Members.Properties
 
             if (Code.Sections.Count == 0)
             {
-                _ = ExpressionBody == null ? source.AppendLine(" { get; }") : source.AppendLine(" => " + ExpressionBody);
+                if (ExpressionBody == null)
+                {
+                    if (string.IsNullOrWhiteSpace(Value.Value))
+                    {
+                        _ = source.AppendLine(" { get; }");
+                    }
+                    else
+                    {
+                        _ = source.AppendLine("=> " + Value.Value);
+
+                        if (Value.Code.Sections.Count > 0)
+                        {
+                            Value.Code.Generate(source, identation);
+                        }
+                    }
+                }
+                else
+                {
+                    _ = source.AppendLine(" => " + ExpressionBody);
+                }
             }
             else
             {

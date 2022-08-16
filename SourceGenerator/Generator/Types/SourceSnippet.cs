@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SourceGenerator.Generator.CodeSections;
 using System.Text;
 
 namespace SourceGenerator.Generator.Types
@@ -9,13 +10,15 @@ namespace SourceGenerator.Generator.Types
     /// <summary>
     /// Represents a source code element.
     /// </summary>
-    public abstract class SourceSnippet
+    public abstract class SourceSnippet : CodeSection
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SourceSnippet"/> class.
         /// </summary>
+        /// <param name="parent">The parent source element.</param>
         /// <param name="name">The <see cref="SourceSnippet"/> name.</param>
-        protected SourceSnippet(string name)
+        protected SourceSnippet(SourceSnippet parent, string name)
+            : base(parent)
         {
             Name = name;
         }
@@ -35,15 +38,6 @@ namespace SourceGenerator.Generator.Types
         /// </summary>
         /// <param name="description">Description to add to the source snippet.</param>
         public void SetDescription(string description) => Description = description;
-
-        /// <summary>
-        /// Ends the <see cref="SourceSnippet"/> code adding.
-        /// </summary>
-#pragma warning disable CA1822 // Mark members as static
-        public void End()
-#pragma warning restore CA1822 // Mark members as static
-        {
-        }
 
         /// <inheritdoc/>
         public override string ToString() => Name;
@@ -72,13 +66,6 @@ namespace SourceGenerator.Generator.Types
             Ident(source, identation);
             _ = source.AppendLine("/// </summary>");
         }
-
-        /// <summary>
-        /// Generates the <see cref="SourceSnippet"/> source code.
-        /// </summary>
-        /// <param name="source">The <see cref="StringBuilder"/> to append the source code.</param>
-        /// <param name="identation">The identation to follow when appending the code.</param>
-        internal abstract void Generate(StringBuilder source, int identation);
 
         /// <summary>
         /// Generates this <see cref="SourceSnippet"/> source code and appends the code into a <see cref="StringBuilder"/>.

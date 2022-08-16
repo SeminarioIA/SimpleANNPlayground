@@ -67,11 +67,12 @@ namespace SourceGenerator.Generator.Types
         /// <summary>
         /// Initializes a new instance of the <see cref="StructSource"/> class.
         /// </summary>
+        /// <param name="parent">The parent source element.</param>
         /// <param name="access">The <see cref="StructAccess"/> attributes.</param>
         /// <param name="scope">The <see cref="StructScope"/> attributes.</param>
         /// <param name="name">The <see cref="ClassSource"/> name.</param>
-        public StructSource(StructAccess access, StructScope scope, string name)
-            : base(name)
+        public StructSource(SourceSnippet parent, StructAccess access, StructScope scope, string name)
+            : base(parent, name)
         {
             Access = access;
             Scope = scope;

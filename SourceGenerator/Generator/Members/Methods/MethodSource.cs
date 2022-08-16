@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SourceGenerator.Generator.CodeSections;
+using SourceGenerator.Generator.Types;
 using System.Collections.ObjectModel;
 using System.Text;
 
@@ -77,12 +79,13 @@ namespace SourceGenerator.Generator.Members.Methods
         /// <summary>
         /// Initializes a new instance of the <see cref="MethodSource"/> class.
         /// </summary>
+        /// <param name="parent">The parent source element.</param>
         /// <param name="access">The <see cref="MethodAccess"/> attributes.</param>
         /// <param name="scope">The <see cref="MethodScope"/> attributes.</param>
         /// <param name="name">The method name.</param>
         /// <param name="description">The method description to add in the documentation.</param>
-        internal MethodSource(MethodAccess access, MethodScope scope, string name, string description = "")
-            : base(name)
+        internal MethodSource(SourceSnippet parent, MethodAccess access, MethodScope scope, string name, string description = "")
+            : base(parent, name)
         {
             Access = access;
             Scope = scope;
@@ -106,6 +109,17 @@ namespace SourceGenerator.Generator.Members.Methods
         public Collection<Parameter> Parameters { get; }
 
         /// <summary>
+        /// Adds the description to this <see cref="MethodSource"/>.
+        /// </summary>
+        /// <param name="description">Description to add to the laset added source member.</param>
+        /// <returns>This <see cref="MethodSource"/>.</returns>
+        public MethodSource AddDoc(string description)
+        {
+            SetDescription(description);
+            return this;
+        }
+
+        /// <summary>
         /// Adds a new <see cref="Parameter"/> to the source file.
         /// </summary>
         /// <param name="type">The <see cref="Parameter"/> type.</param>
@@ -116,6 +130,17 @@ namespace SourceGenerator.Generator.Members.Methods
         {
             var param = new Parameter(type, name, description);
             Parameters.Add(param);
+            return this;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CodeBlock"/> object of this method.
+        /// </summary>
+        /// <param name="codeBlock">The <see cref="CodeBlock"/> of this method.</param>
+        /// <returns>The current method.</returns>
+        public MethodSource GetCodeBlock(out CodeBlock codeBlock)
+        {
+            codeBlock = Code;
             return this;
         }
 

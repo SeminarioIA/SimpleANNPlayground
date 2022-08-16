@@ -14,10 +14,11 @@ namespace SourceGenerator.Generator.Members.Methods
         /// <summary>
         /// Initializes a new instance of the <see cref="ConstructorSource"/> class.
         /// </summary>
+        /// <param name="parent">The parent source element.</param>
         /// <param name="access">The <see cref="MethodAccess"/> attributes.</param>
         /// <param name="class">The <see cref="ClassSource"/> reference object.</param>
-        internal ConstructorSource(MethodAccess access, ClassSource @class)
-            : base(access, MethodScope.None, @class?.Name, $"Initializes a new instance of the <see cref=\"{@class.Name}\"/> class.")
+        internal ConstructorSource(SourceSnippet parent, MethodAccess access, ClassSource @class)
+            : base(parent, access, MethodScope.None, @class?.Name, $"Initializes a new instance of the <see cref=\"{@class.Name}\"/> class.")
         {
         }
 

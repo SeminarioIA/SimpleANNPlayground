@@ -14,7 +14,9 @@ namespace SourceGenerator.Generator.CodeSections
         /// <summary>
         /// Initializes a new instance of the <see cref="EmptyLine"/> class.
         /// </summary>
-        public EmptyLine()
+        /// <param name="parent">The parent <see cref="CodeSection"/>.</param>
+        public EmptyLine(CodeSection parent)
+            : base(parent)
         {
         }
 

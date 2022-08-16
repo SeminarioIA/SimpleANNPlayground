@@ -16,11 +16,12 @@ namespace SourceGenerator.Generator.Members
         /// <summary>
         /// Initializes a new instance of the <see cref="MemberSource"/> class.
         /// </summary>
+        /// <param name="parent">The parent source element.</param>
         /// <param name="name">The <see cref="MemberSource"/> name.</param>
-        protected MemberSource(string name)
-            : base(name)
+        protected MemberSource(SourceSnippet parent, string name)
+            : base(parent, name)
         {
-            Code = new CodeBlock();
+            Code = new CodeBlock(this);
         }
 
         /// <summary>

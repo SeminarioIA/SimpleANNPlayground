@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SourceGenerator.Generator.Types;
 using System.Text;
 
 namespace SourceGenerator.Generator.Members.Fields
@@ -60,12 +61,13 @@ namespace SourceGenerator.Generator.Members.Fields
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldSource"/> class.
         /// </summary>
+        /// <param name="parent">The parent source element.</param>
         /// <param name="attributes">The <see cref="FieldAttributes"/>.</param>
         /// <param name="name">The <see cref="FieldSource"/> name.</param>
         /// <param name="value">The <see cref="FieldSource"/> value.</param>
         /// <param name="description">The method description to add in the documentation.</param>
-        internal FieldSource(FieldAttributes attributes, string name, string value, string description = "")
-            : base(name)
+        internal FieldSource(SourceSnippet parent, FieldAttributes attributes, string name, string value, string description = "")
+            : base(parent, name)
         {
             Attributes = attributes;
             SetDescription(description);

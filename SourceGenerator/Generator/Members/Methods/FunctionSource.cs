@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SourceGenerator.Generator.Types;
+
 namespace SourceGenerator.Generator.Members.Methods
 {
     /// <summary>
@@ -12,12 +14,13 @@ namespace SourceGenerator.Generator.Members.Methods
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionSource"/> class.
         /// </summary>
+        /// <param name="parent">The parent source element.</param>
         /// <param name="access">The <see cref="MethodAccess"/> attributes.</param>
         /// <param name="scope">The <see cref="MethodScope"/> attributes.</param>
         /// <param name="name">The function name.</param>
         /// <param name="description">The method description to add in the documentation.</param>
-        internal FunctionSource(MethodAccess access, MethodScope scope, string name, string description)
-            : base(access, scope, name, description)
+        internal FunctionSource(SourceSnippet parent, MethodAccess access, MethodScope scope, string name, string description)
+            : base(parent, access, scope, name, description)
         {
         }
 

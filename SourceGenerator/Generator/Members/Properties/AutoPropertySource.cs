@@ -3,6 +3,7 @@
 // </copyright>
 
 using SourceGenerator.Generator.CodeSections;
+using SourceGenerator.Generator.Types;
 using System;
 using System.Text;
 
@@ -16,17 +17,18 @@ namespace SourceGenerator.Generator.Members.Properties
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoPropertySource"/> class.
         /// </summary>
+        /// <param name="parent">The parent source element.</param>
         /// <param name="access">The <see cref="PropertyAccess"/> attributes for the get property.</param>
         /// <param name="scope">The <see cref="PropertyScope"/> attributes for the property.</param>
         /// <param name="type">The property type.</param>
         /// <param name="name">The property name.</param>
         /// <param name="setAccess">The <see cref="PropertyAccess"/> attributes for the set property.</param>
         /// <param name="value">The property initialization value.</param>
-        public AutoPropertySource(PropertyAccess access, PropertyScope scope, string type, string name, PropertyAccess setAccess = PropertyAccess.Default, string value = "")
-            : base(access, scope, type, name, value)
+        public AutoPropertySource(SourceSnippet parent, PropertyAccess access, PropertyScope scope, string type, string name, PropertyAccess setAccess = PropertyAccess.Default, string value = "")
+            : base(parent, access, scope, type, name, value)
         {
             SetAccess = setAccess;
-            SetCode = new CodeBlock();
+            SetCode = new CodeBlock(this);
         }
 
         /// <summary>
@@ -132,7 +134,9 @@ namespace SourceGenerator.Generator.Members.Properties
                 _ = source.Append('}');
             }
 
-            _ = string.IsNullOrWhiteSpace(Value) ? source.AppendLine() : source.AppendLine($" = {Value};");
+            _ = source.Append(" = ");
+            Value.Generate(source, identation);
+            _ = source.AppendLine();
         }
     }
 }

@@ -15,9 +15,11 @@ namespace SourceGenerator.Generator.CodeSections
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumElement"/> class.
         /// </summary>
+        /// <param name="parent">The parent <see cref="CodeSection"/>.</param>
         /// <param name="name">The name of the enum element.</param>
         /// <param name="description">The description of the enum element.</param>
-        internal EnumElement(string name, string description)
+        internal EnumElement(CodeSection parent, string name, string description)
+            : base(parent)
         {
             Name = name;
             Description = description;
@@ -26,10 +28,12 @@ namespace SourceGenerator.Generator.CodeSections
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumElement"/> class.
         /// </summary>
+        /// <param name="parent">The parent <see cref="CodeSection"/>.</param>
         /// <param name="name">The name of the enum element.</param>
         /// <param name="value">The enum element value.</param>
         /// <param name="description">The description of the enum element.</param>
-        internal EnumElement(string name, string value, string description)
+        internal EnumElement(CodeSection parent, string name, string value, string description)
+            : base(parent)
         {
             Name = name;
             Value = value;
@@ -57,7 +61,6 @@ namespace SourceGenerator.Generator.CodeSections
         /// <inheritdoc/>
         internal override void Generate(StringBuilder source, int identation)
         {
-            SourceSnippet.Ident(source, identation);
             SourceSnippet.GenerateSummary(source, identation, Description);
             SourceSnippet.Ident(source, identation);
 

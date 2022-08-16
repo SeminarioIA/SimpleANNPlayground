@@ -9,6 +9,7 @@ using SourceGenerator.Generator.Members.Methods;
 using SourceGenerator.Generator.Members.Properties;
 using SourceGenerator.Generator.Types;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -27,25 +28,25 @@ namespace SourceGenerator
         /// </summary>
         /// <param name="components">The components to add.</param>
         /// <returns>The source code text.</returns>
-        public static SourceText GenerateComponentClass(string[] components)
+        public static SourceText GenerateComponentClass(ICollection<string> components)
         {
             if (components == null) throw new ArgumentNullException(nameof(components));
 
             // Create Component.cs
-            var main = new SourceFileGenerator("Component", "SimpleAnnPlayground.Graphical");
-            var mainClass = main.AddClass(ClassAccess.Public, ClassScope.Partial, main.Name);
-            mainClass.SetDescription("Helper class to make operations with the Graphical Components.");
+            var componentFile = new SourceFileGenerator("Component", "SimpleAnnPlayground.Graphical");
+            var componentClass = componentFile.AddClass(ClassAccess.Public, ClassScope.Partial, componentFile.Name);
+            componentClass.SetDescription("Helper class to make operations with the Graphical Components.");
 
             // Add a property for each component.
             foreach (string component in components)
             {
-                mainClass.AddAutoProperty(PropertyAccess.Internal, PropertyScope.Static, "Component", component, PropertyAccess.Private, "new Component()")
-                    .AddDoc($"Gets the graphical object that represents an {component}.")
+                componentClass.AddAutoProperty(PropertyAccess.Internal, PropertyScope.Static, "Component", component, PropertyAccess.Private, "new Component()")
+                    .AddMemberDoc($"Gets the graphical object that represents an {component}.")
                     .End();
             }
 
             // Add ReloadComponents method.
-            var reloadMethod = mainClass.AddMethod(MethodAccess.Internal, MethodScope.Static, "ReloadComponents")
+            var reloadMethod = componentClass.AddMethod(MethodAccess.Internal, MethodScope.Static, "ReloadComponents")
                 .AddParameter("string", "path", "The path where the components are located.");
             reloadMethod.SetDescription("Load the components from their respective files.");
 
@@ -53,11 +54,11 @@ namespace SourceGenerator
             foreach (string component in components)
             {
                 reloadMethod.Code
-                    .AddLine($"{component}.Deserialize(File.ReadAllText(Path.Combine(path, @\"{component}.cmpt\")))")
+                    .AddLine($"{component}.Deserialize(File.ReadAllText(Path.Combine(path, @\"{component}.cmpt\")));")
                     .End();
             }
 
-            return SourceText.From(main.Generate(), Encoding.UTF8);
+            return SourceText.From(componentFile.Generate(), Encoding.UTF8);
         }
 
         /// <inheritdoc/>

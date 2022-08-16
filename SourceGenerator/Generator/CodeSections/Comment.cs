@@ -12,10 +12,12 @@ namespace SourceGenerator.Generator.CodeSections
         /// <summary>
         /// Initializes a new instance of the <see cref="Comment"/> class.
         /// </summary>
+        /// <param name="parent">The parent <see cref="CodeSection"/>.</param>
         /// <param name="comment">The comment to add.</param>
-        public Comment(string comment)
+        public Comment(CodeSection parent, string comment)
+            : base(parent)
         {
-            Text = comment;
+            Text = "// " + comment;
         }
 
         /// <summary>
