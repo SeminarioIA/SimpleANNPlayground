@@ -5,7 +5,7 @@
 using System.Globalization;
 using System.Text;
 
-namespace SimpleAnnPlayground.Utils.Serialization
+namespace SimpleAnnPlayground.Utils.Serialization.Yml
 {
     /// <summary>
     /// Serializes and deserializes lists and dictionaries from a text input.
@@ -125,7 +125,7 @@ namespace SimpleAnnPlayground.Utils.Serialization
         private static List<KeyValuePair<string, string>> DeserializeIdented(IEnumerable<string> lines)
         {
             var data = new List<KeyValuePair<string, string>>();
-            StringBuilder content = new StringBuilder();
+            var content = new StringBuilder();
             string key = string.Empty;
 
             foreach (string line in lines)

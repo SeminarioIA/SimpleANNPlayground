@@ -3,7 +3,9 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Graphical.Models;
 using System.Collections.ObjectModel;
+using static SimpleAnnPlayground.Graphical.Models.DrawableObject;
 
 namespace SimpleAnnPlayground.Graphical.Visualization
 {
@@ -22,7 +24,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <inheritdoc/>
         public override void AddObject(CanvasObject obj)
         {
-            object? copy = Activator.CreateInstance(obj.GetType(), obj);
+            object? copy = Activator.CreateInstance(obj.GetType(), obj, CreationMode.Clone);
             if (copy is CanvasObject shadow)
             {
                 base.AddObject(shadow);
@@ -43,7 +45,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <inheritdoc/>
         public override void AddConnection(Connection connection)
         {
-            var shadow = new Connection(connection, this);
+            var shadow = new Connection(connection, Objects, DrawableObject.CreationMode.Clone);
             shadow.IsShadow = true;
             base.AddConnection(shadow);
         }

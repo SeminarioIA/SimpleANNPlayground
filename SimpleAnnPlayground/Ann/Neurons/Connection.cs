@@ -2,16 +2,20 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.Serialization.Json;
+using System.Collections.ObjectModel;
 
 namespace SimpleAnnPlayground.Ann.Neurons
 {
     /// <summary>
     /// Represents the connection between two components.
     /// </summary>
+    [JsonConverter(typeof(ConnectionConverter))]
     internal class Connection : DrawableObject
     {
         private const float Width = 0.1f;
@@ -23,20 +27,19 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// Initializes a new instance of the <see cref="Connection"/> class.
         /// </summary>
         /// <param name="other">Other instance to copy.</param>
-        /// <param name="shadowCanvas">Reference shadow canvas.</param>
-        public Connection(Connection other, ShadowCanvas shadowCanvas)
-            : base(other)
+        /// <param name="referenceObjects">Reference shadow canvas.</param>
+        /// <param name="mode">The creation mode.</param>
+        public Connection(Connection other, Collection<CanvasObject> referenceObjects, CreationMode mode)
+            : base(other, mode)
         {
             // Get the shadow source terminal.
-            CanvasObject shadowSourceOwner = shadowCanvas.GetObjectFromReference(other.Source.Owner) ?? throw new ArgumentException("Invalid connection source", nameof(other));
-            int sourceTerminalIndex = other.Source.Owner.Outputs.IndexOf(other.Source);
-            Source = shadowSourceOwner.Outputs[sourceTerminalIndex] ?? throw new ArgumentException("Invalid connection source", nameof(other));
+            CanvasObject shadowSourceOwner = referenceObjects.First(obj => obj.Equals(other.Source.Owner));
+            Source = shadowSourceOwner.Outputs[other.Source.Index] ?? throw new ArgumentException("Invalid connection source", nameof(other));
             Source.Connection = this;
 
             // Get the shadow destination terminal.
-            CanvasObject shadowDestinationOwner = shadowCanvas.GetObjectFromReference(other.Destination.Owner) ?? throw new ArgumentException("Invalid connection destination", nameof(other));
-            int destinationTerminalIndex = other.Destination.Owner.Inputs.IndexOf(other.Destination);
-            Destination = shadowDestinationOwner.Inputs[destinationTerminalIndex] ?? throw new ArgumentException("Invalid connection destination", nameof(other));
+            CanvasObject shadowDestinationOwner = referenceObjects.First(obj => obj.Equals(other.Destination.Owner));
+            Destination = shadowDestinationOwner.Inputs[other.Destination.Index] ?? throw new ArgumentException("Invalid connection destination", nameof(other));
             Destination.Connection = this;
         }
 
@@ -56,21 +59,25 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <summary>
         /// Gets the source object.
         /// </summary>
+        [JsonConverter(typeof(TerminalConverter))]
         public OutputTerminal Source { get; private set; }
 
         /// <summary>
         /// Gets the destination object.
         /// </summary>
+        [JsonConverter(typeof(TerminalConverter))]
         public InputTerminal Destination { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this connection is shadow.
         /// </summary>
+        [JsonIgnore]
         public bool IsShadow { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this connection is selected.
         /// </summary>
+        [JsonIgnore]
         public bool IsSelected { get; set; }
 
         /// <summary>
@@ -127,12 +134,12 @@ namespace SimpleAnnPlayground.Ann.Neurons
             // Draw source connectors.
             graphics.TranslateTransform(Source.Owner.Location.X - Source.Owner.Component.Center.X, Source.Owner.Location.Y - Source.Owner.Component.Center.Y);
             Source.Connector.Paint(graphics, Connector.DrawMode.Connected);
-            graphics.TranslateTransform(-Source.Owner.Location.X, -Source.Owner.Location.Y);
+            graphics.TranslateTransform(Source.Owner.Component.Center.X - Source.Owner.Location.X, Source.Owner.Component.Center.Y - Source.Owner.Location.Y);
 
             // Draw destination connectors.
-            graphics.TranslateTransform(Destination.Owner.Location.X, Destination.Owner.Location.Y);
+            graphics.TranslateTransform(Destination.Owner.Location.X - Destination.Owner.Component.Center.X, Destination.Owner.Location.Y - Destination.Owner.Component.Center.Y);
             Destination.Connector.Paint(graphics, Connector.DrawMode.Connected);
-            graphics.TranslateTransform(Source.Owner.Component.Center.X - Destination.Owner.Location.X, Source.Owner.Component.Center.Y - Destination.Owner.Location.Y);
+            graphics.TranslateTransform(Destination.Owner.Component.Center.X - Destination.Owner.Location.X, Destination.Owner.Component.Center.Y - Destination.Owner.Location.Y);
         }
     }
 }

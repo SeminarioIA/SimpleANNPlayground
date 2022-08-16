@@ -5,7 +5,7 @@
 using SimpleAnnPlayground.Graphical.Models;
 using System.Globalization;
 
-namespace SimpleAnnPlayground.Utils.Serialization
+namespace SimpleAnnPlayground.Utils.Serialization.Yml
 {
     /// <summary>
     /// Helper class to set or get an object properties.

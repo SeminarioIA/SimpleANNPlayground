@@ -26,8 +26,9 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// Initializes a new instance of the <see cref="Internal"/> class.
         /// </summary>
         /// <param name="other">Other object to copy.</param>
-        public Internal(Internal other)
-            : base(other)
+        /// <param name="mode">The creation mode.</param>
+        public Internal(Internal other, CreationMode mode)
+            : base(other, mode)
         {
         }
     }

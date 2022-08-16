@@ -3,7 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical.Models;
-using SimpleAnnPlayground.Utils.Serialization;
+using SimpleAnnPlayground.Utils.Serialization.Yml;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -18,31 +18,25 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Initializes a new instance of the <see cref="Component"/> class.
         /// </summary>
-        public Component()
+        /// <param name="name">The base name of this element.</param>
+        public Component(string name)
         {
             Elements = new Collection<Element>();
             Connectors = new Collection<Connector>();
             Selector = new Selector(0f, 0f);
+            Name = name;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Component"/> class.
         /// </summary>
-        /// <param name="text">The text string containing the Component information.</param>
-        public Component(string text)
-            : this()
-        {
-            Deserialize(text);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Component"/> class.
-        /// </summary>
+        /// <param name="name">The base name of this element.</param>
         /// <param name="elements">The list of elements.</param>
         /// <param name="connectors">The list of components.</param>
         /// <param name="selector">The selector object.</param>
-        internal Component(Collection<Element> elements, Collection<Connector> connectors, Selector selector)
+        internal Component(string name, Collection<Element> elements, Collection<Connector> connectors, Selector selector)
         {
+            Name = name;
             Elements = elements;
             Connectors = connectors;
             Selector = selector;
@@ -137,6 +131,12 @@ namespace SimpleAnnPlayground.Graphical
         /// </summary>
         [Browsable(false)]
         public PointF Center => new (X, Y);
+
+        /// <summary>
+        /// Gets the component name.
+        /// </summary>
+        [Description("The base name of this element.")]
+        public string Name { get; }
 
         /// <summary>
         /// Serializes a collection of elements into a string.

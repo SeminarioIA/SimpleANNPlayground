@@ -40,7 +40,7 @@ namespace SimpleAnnPlayground.Debugging
         {
             InitializeComponent();
 
-            _component = new Component();
+            _component = new Component("NewComponent");
 
             FileManager = new TextFileManager();
             FileManager.AddFileFormat("cmpt", "Draw component.");

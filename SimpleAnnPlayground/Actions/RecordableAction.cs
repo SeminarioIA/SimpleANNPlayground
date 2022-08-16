@@ -49,6 +49,11 @@ namespace SimpleAnnPlayground.Actions
             /// A group of selected objects was deleted.
             /// </summary>
             Deleted,
+
+            /// <summary>
+            /// A group of selected objects was cut.
+            /// </summary>
+            Cut,
         }
 
         /// <summary>

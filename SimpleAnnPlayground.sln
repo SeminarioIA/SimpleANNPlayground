@@ -10,7 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SourceGenerator", "SourceGenerator\SourceGenerator.csproj", "{0CDF0DD6-661D-485E-A10F-36FB75D1D6FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SourceGenerator", "SourceGenerator\SourceGenerator.csproj", "{0CDF0DD6-661D-485E-A10F-36FB75D1D6FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestSourceGenerator", "TestSourceGenerator\TestSourceGenerator.csproj", "{FF624D92-1FBD-4073-8F2D-E7FC2C3E1AE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SorceGeneratorCL", "SorceGeneratorCL\SorceGeneratorCL.csproj", "{B917B80A-EA68-4DC6-9BE8-39F16B217D02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +30,14 @@ Global
 		{0CDF0DD6-661D-485E-A10F-36FB75D1D6FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CDF0DD6-661D-485E-A10F-36FB75D1D6FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CDF0DD6-661D-485E-A10F-36FB75D1D6FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF624D92-1FBD-4073-8F2D-E7FC2C3E1AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF624D92-1FBD-4073-8F2D-E7FC2C3E1AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF624D92-1FBD-4073-8F2D-E7FC2C3E1AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF624D92-1FBD-4073-8F2D-E7FC2C3E1AE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B917B80A-EA68-4DC6-9BE8-39F16B217D02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B917B80A-EA68-4DC6-9BE8-39F16B217D02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B917B80A-EA68-4DC6-9BE8-39F16B217D02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B917B80A-EA68-4DC6-9BE8-39F16B217D02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

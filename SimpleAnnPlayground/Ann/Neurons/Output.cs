@@ -26,8 +26,9 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// Initializes a new instance of the <see cref="Output"/> class.
         /// </summary>
         /// <param name="other">Other object to copy.</param>
-        public Output(Output other)
-            : base(other)
+        /// <param name="mode">The creation mode.</param>
+        public Output(Output other, CreationMode mode)
+            : base(other, mode)
         {
         }
     }

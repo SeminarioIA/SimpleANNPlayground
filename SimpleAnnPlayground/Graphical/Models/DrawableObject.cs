@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
+
 namespace SimpleAnnPlayground.Graphical.Models
 {
     /// <summary>
@@ -12,6 +14,7 @@ namespace SimpleAnnPlayground.Graphical.Models
         /// <summary>
         ///  The global instances count.
         /// </summary>
+        [JsonIgnore]
         private static int _instances;
 
         /// <summary>
@@ -23,10 +26,16 @@ namespace SimpleAnnPlayground.Graphical.Models
         /// Initializes a new instance of the <see cref="DrawableObject"/> class.
         /// </summary>
         /// <param name="other">The other object to copy.</param>
-        protected DrawableObject(DrawableObject other)
+        /// <param name="mode">The creation mode.</param>
+        protected DrawableObject(DrawableObject other, CreationMode mode)
         {
             Instance = _instances++;
-            Id = other.Id;
+            Id = mode switch
+            {
+                CreationMode.Clone => other.Id,
+                CreationMode.Copy => _ids++,
+                _ => throw new NotImplementedException(),
+            };
         }
 
         /// <summary>
@@ -39,14 +48,31 @@ namespace SimpleAnnPlayground.Graphical.Models
         }
 
         /// <summary>
+        /// Type of object to create.
+        /// </summary>
+        public enum CreationMode
+        {
+            /// <summary>
+            /// Creates a copy object.
+            /// </summary>
+            Copy,
+
+            /// <summary>
+            /// Creates a clone object.
+            /// </summary>
+            Clone,
+        }
+
+        /// <summary>
         /// Gets the instance number of this object.
         /// </summary>
+        [JsonIgnore]
         public int Instance { get; }
 
         /// <summary>
         /// Gets the id number of this object.
         /// </summary>
-        public int Id { get; }
+        public int Id { get; private set; }
 
         /// <inheritdoc/>
         public override bool Equals(object? obj) => obj is DrawableObject other && other.Id == Id;
@@ -56,5 +82,10 @@ namespace SimpleAnnPlayground.Graphical.Models
 
         /// <inheritdoc/>
         public override string ToString() => $"{GetType().Name}: Id={Id} (Instance={Instance})";
+
+        /// <summary>
+        /// Converts the object from a clone into a copy.
+        /// </summary>
+        protected void ConvertToCopy() => Id = _ids++;
     }
 }

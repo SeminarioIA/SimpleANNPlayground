@@ -132,6 +132,15 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         }
 
         /// <summary>
+        /// Selects the object.
+        /// </summary>
+        /// <param name="object">The object to select.</param>
+        internal void Select(CanvasObject @object)
+        {
+            if (Objects.Contains(@object)) @object.SetStateFlag(Component.State.Selected);
+        }
+
+        /// <summary>
         /// Selects the objects in the given collection.
         /// </summary>
         /// <param name="objects">The collection of objects to select.</param>
@@ -206,6 +215,12 @@ namespace SimpleAnnPlayground.Graphical.Visualization
                 }
             }
         }
+
+        /// <summary>
+        /// Obtains if any object is selected.
+        /// </summary>
+        /// <returns>True if there are selected objects, otherwise false.</returns>
+        internal bool AnySelected() => Objects.Any(obj => obj.State.HasFlag(Component.State.Selected));
 
         /// <summary>
         /// Obtains a collection of the selected objects.
