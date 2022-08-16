@@ -230,13 +230,13 @@ namespace SimpleAnnPlayground.Graphical.Environment
                 {
                     // Grab the moving action to be able to undo later.
                     Workspace.Actions.AddObjectsAction(ActionType.Moved, Moving.Selection);
-
-                    // Select the moved objects.
-                    Workspace.Canvas.Select(Moving.Selection);
-
-                    // Invoke SelectionChanged event.
-                    OnSelectionChanged(Moving.Selection.FirstOrDefault());
                 }
+
+                // Select the moved objects.
+                Workspace.Canvas.Select(Moving.Selection);
+
+                // Invoke SelectionChanged event.
+                OnSelectionChanged(Moving.Selection.FirstOrDefault());
 
                 // Finish the operation clearing Moving.
                 Moving = null;

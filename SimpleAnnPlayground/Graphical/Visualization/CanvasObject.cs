@@ -27,6 +27,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         protected CanvasObject(CanvasObject other, CreationMode mode)
             : base(other, mode)
         {
+            Canvas = other.Canvas;
             Location = other.Location;
             Component = other.Component;
             Inputs = other.Inputs.ConvertAll(input => new InputTerminal(input));
@@ -36,11 +37,13 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasObject"/> class.
         /// </summary>
+        /// <param name="canvas">The containing canvas.</param>
         /// <param name="component">The graphical component linked to this object.</param>
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
-        protected CanvasObject(Component component, int x, int y)
+        protected CanvasObject(Canvas canvas, Component component, int x, int y)
         {
+            Canvas = canvas;
             Location = new Point(x, y);
             Component = component;
             Inputs = new List<InputTerminal>();
@@ -54,6 +57,13 @@ namespace SimpleAnnPlayground.Graphical.Visualization
                 else throw new NotImplementedException();
             }
         }
+
+        /// <summary>
+        /// Gets the containing <see cref="Canvas"/>.
+        /// </summary>
+        [JsonIgnore]
+        [Browsable(false)]
+        public Canvas Canvas { get; }
 
         /// <summary>
         /// Gets the object type.

@@ -137,44 +137,46 @@ namespace SimpleAnnPlayground.Graphical.Models
         /// <param name="state">Indicates the state of the selector.</param>
         internal void Paint(Graphics graphics, bool selected, Component.State state = Component.State.None)
         {
-            switch (state)
-            {
-                case Component.State.SimulationStep:
-                {
-                    using (Brush brush = new SolidBrush(StepColor))
-                    {
-                        graphics.FillRectangle(brush, X, Y, Width, Height);
-                    }
-
-                    break;
-                }
-
-                case Component.State.SimulationPass:
-                {
-                    using (Brush brush = new SolidBrush(PassedColor))
-                    {
-                        graphics.FillRectangle(brush, X, Y, Width, Height);
-                    }
-
-                    break;
-                }
-
-                case Component.State.SimulationError:
-                {
-                    using (Brush brush = new SolidBrush(ErrorColor))
-                    {
-                        graphics.FillRectangle(brush, X, Y, Width, Height);
-                    }
-
-                    break;
-                }
-            }
-
             if (selected)
             {
                 using (var pen = new Pen(SelectionColor, 0.1f) { DashStyle = System.Drawing.Drawing2D.DashStyle.Dash })
                 {
                     graphics.DrawRectangle(pen, X, Y, Width, Height);
+                }
+            }
+            else
+            {
+                switch (state & Component.State.ComponentStatusMask)
+                {
+                    case Component.State.ExecutionStep:
+                    {
+                        using (Brush brush = new SolidBrush(StepColor))
+                        {
+                            graphics.FillRectangle(brush, X, Y, Width, Height);
+                        }
+
+                        break;
+                    }
+
+                    case Component.State.ExecutionPass:
+                    {
+                        using (Brush brush = new SolidBrush(PassedColor))
+                        {
+                            graphics.FillRectangle(brush, X, Y, Width, Height);
+                        }
+
+                        break;
+                    }
+
+                    case Component.State.ComponentError:
+                    {
+                        using (Brush brush = new SolidBrush(ErrorColor))
+                        {
+                            graphics.FillRectangle(brush, X, Y, Width, Height);
+                        }
+
+                        break;
+                    }
                 }
             }
         }

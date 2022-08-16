@@ -26,12 +26,12 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Gets the list of objects on this canvas.
         /// </summary>
-        protected Collection<CanvasObject> Objects { get; }
+        internal Collection<CanvasObject> Objects { get; }
 
         /// <summary>
         /// Gets the list of connections on this canvas.
         /// </summary>
-        protected Collection<Connection> Connections { get; }
+        internal Collection<Connection> Connections { get; }
 
         /// <summary>
         /// Converts a color object into another color with less bright.

@@ -91,6 +91,8 @@
             this.BtnCxStep = new System.Windows.Forms.ToolStripButton();
             this.BtnNeuronStep = new System.Windows.Forms.ToolStripButton();
             this.BtnLayerStep = new System.Windows.Forms.ToolStripButton();
+            this.BtnClean = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.TspEdition.SuspendLayout();
             this.SspStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
@@ -116,8 +118,10 @@
             this.BtnInternalNeurone,
             this.BtnOutputNeurone,
             this.toolStripSeparator2,
-            this.BtnData,
             this.BtnCheck,
+            this.BtnClean,
+            this.toolStripSeparator3,
+            this.BtnData,
             this.BtnTraining,
             this.BtnTest});
             this.TspEdition.Location = new System.Drawing.Point(0, 24);
@@ -215,6 +219,7 @@
             // 
             // BtnTraining
             // 
+            this.BtnTraining.Enabled = false;
             this.BtnTraining.Image = global::SimpleAnnPlayground.Properties.Resources.training_32;
             this.BtnTraining.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnTraining.Name = "BtnTraining";
@@ -224,6 +229,7 @@
             // 
             // BtnTest
             // 
+            this.BtnTest.Enabled = false;
             this.BtnTest.Image = global::SimpleAnnPlayground.Properties.Resources.testing_32;
             this.BtnTest.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnTest.Name = "BtnTest";
@@ -635,6 +641,21 @@
             this.BtnLayerStep.Text = "L-Step";
             this.BtnLayerStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
+            // BtnClean
+            // 
+            this.BtnClean.Image = global::SimpleAnnPlayground.Properties.Resources.clear_32;
+            this.BtnClean.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnClean.Name = "BtnClean";
+            this.BtnClean.Size = new System.Drawing.Size(44, 53);
+            this.BtnClean.Text = "Clean";
+            this.BtnClean.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnClean.Click += new System.EventHandler(this.BtnClean_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 56);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -731,5 +752,7 @@
         private ToolStripButton BtnLayerStep;
         private ToolStripButton BtnTraining;
         private ToolStripButton BtnData;
+        private ToolStripButton BtnClean;
+        private ToolStripSeparator toolStripSeparator3;
     }
 }

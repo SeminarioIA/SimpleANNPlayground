@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical;
+using SimpleAnnPlayground.Graphical.Visualization;
 
 namespace SimpleAnnPlayground.Ann.Neurons
 {
@@ -14,10 +15,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <summary>
         /// Initializes a new instance of the <see cref="Internal"/> class.
         /// </summary>
+        /// <param name="canvas">The containing canvas.</param>
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
-        public Internal(int x, int y)
-            : base(Component.InternalNeuron, x, y)
+        public Internal(Canvas canvas, int x, int y)
+            : base(canvas, Component.InternalNeuron, x, y)
         {
         }
 
@@ -32,9 +34,9 @@ namespace SimpleAnnPlayground.Ann.Neurons
         }
 
         /// <inheritdoc/>
-        internal override int? UpwardLayer => (Outputs.FirstOrDefault(output => output.Connection != null)?.Connection?.Destination.Owner as Neuron)?.UpwardLayer - 1;
+        internal override int? UpwardLayer => (Outputs.FirstOrDefault(output => output.IsConnected)?.AnyConnection?.Destination.Owner as Neuron)?.UpwardLayer - 1;
 
         /// <inheritdoc/>
-        internal override int? DownwardLayer => (Inputs.FirstOrDefault(input => input.Connection != null)?.Connection?.Source.Owner as Neuron)?.DownwardLayer + 1;
+        internal override int? DownwardLayer => (Inputs.FirstOrDefault(input => input.IsConnected)?.AnyConnection?.Source.Owner as Neuron)?.DownwardLayer + 1;
     }
 }

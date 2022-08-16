@@ -109,34 +109,29 @@ namespace SimpleAnnPlayground.Graphical.Tools
         internal Terminal? GetActiveTerminal(CanvasObject obj, PointF location)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
-            if (obj is Neuron neuron)
+            if (obj is Neuron neuron && Start.Owner is Neuron start)
             {
                 if (Type == Connector.Types.Input)
                 {
-                    // Get the neuron where the connection starts.
-                    if (Start.Owner is not Neuron start) return null;
-
                     // Verify the layers are consecutive.
                     if (start.Layer != null && neuron.Layer != null && neuron.Layer > 0 && neuron.Layer != start.Layer + 1) return null;
 
                     // TODO: Look for the nearest terminal.
                     foreach (var terminal in neuron.Inputs)
                     {
-                        return terminal;
+                        // Verify if the terminals are already connected.
+                        if (!Workspace.Canvas.Connections.Any(conn => conn.IsConnecting(Start, terminal))) return terminal;
                     }
                 }
                 else if (Type == Connector.Types.Output)
                 {
-                    // Get the neuron where the connection starts.
-                    if (Start.Owner is not Neuron start) return null;
-
                     // Verify the layers are consecutive.
                     if (start.Layer != null && neuron.Layer != null && start.Layer > 0 && neuron.Layer != start.Layer - 1) return null;
 
                     // TODO: Look for the nearest terminal.
                     foreach (var terminal in neuron.Outputs)
                     {
-                        return terminal;
+                        if (!Workspace.Canvas.Connections.Any(conn => conn.IsConnecting(Start, terminal))) return terminal;
                     }
                 }
             }

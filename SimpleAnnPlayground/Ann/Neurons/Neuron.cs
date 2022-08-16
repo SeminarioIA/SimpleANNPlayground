@@ -15,11 +15,12 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <summary>
         /// Initializes a new instance of the <see cref="Neuron"/> class.
         /// </summary>
+        /// <param name="canvas">The containing canvas.</param>
         /// <param name="component">The graphical component linked to this object.</param>
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
-        public Neuron(Component component, int x, int y)
-            : base(component, x, y)
+        public Neuron(Canvas canvas, Component component, int x, int y)
+            : base(canvas, component, x, y)
         {
         }
 

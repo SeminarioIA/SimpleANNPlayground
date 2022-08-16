@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Graphical;
+using SimpleAnnPlayground.Graphical.Visualization;
 
 namespace SimpleAnnPlayground.Ann.Neurons
 {
@@ -14,10 +15,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <summary>
         /// Initializes a new instance of the <see cref="Input"/> class.
         /// </summary>
+        /// <param name="canvas">The containing canvas.</param>
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
-        public Input(int x, int y)
-            : base(Component.InputNeuron, x, y)
+        public Input(Canvas canvas, int x, int y)
+            : base(canvas, Component.InputNeuron, x, y)
         {
         }
 
