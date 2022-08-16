@@ -40,7 +40,7 @@ namespace SourceGenerator
             // Add a property for each component.
             foreach (string component in components)
             {
-                componentClass.AddAutoProperty(PropertyAccess.Internal, PropertyScope.Static, "Component", component, PropertyAccess.Private, "new Component()")
+                componentClass.AddAutoProperty(PropertyAccess.Internal, PropertyScope.Static, "Component", component, PropertyAccess.Private, $"new Component(nameof({component}))")
                     .AddMemberDoc($"Gets the graphical object that represents an {component}.")
                     .End();
             }
