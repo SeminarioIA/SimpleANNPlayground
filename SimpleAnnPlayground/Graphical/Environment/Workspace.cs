@@ -177,7 +177,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             WorkSheet.Paint(e.Graphics);
 
             // Draw the shadow canvas.
-            Shadow.Paint(e.Graphics);
+            /* Shadow.Paint(e.Graphics); */
 
             // Draw the main canvas.
             Canvas.Paint(e.Graphics);

@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Visualization;
-using SimpleAnnPlayground.Utils.Serialization.Json;
 
 namespace SimpleAnnPlayground.Graphical.Terminals
 {
@@ -40,12 +39,6 @@ namespace SimpleAnnPlayground.Graphical.Terminals
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="Connection"/> object.
-        /// </summary>
-        [JsonIgnore]
-        public Connection? Connection { get; internal set; }
-
-        /// <summary>
         /// Gets the owner object of this terminal.
         /// </summary>
         [JsonIgnore]
@@ -69,6 +62,16 @@ namespace SimpleAnnPlayground.Graphical.Terminals
         public PointF Location => Owner.GetAbsolute(Connector.Location);
 
         /// <summary>
+        /// Gets a value indicating whether if the terminal is connected.
+        /// </summary>
+        public bool IsConnected => Owner.Canvas.Connections.Any(conn => conn.HasTerminal(this));
+
+        /// <summary>
+        /// Gets any connection linked to this terminal.
+        /// </summary>
+        public Connection? AnyConnection => Owner.Canvas.Connections.FirstOrDefault(conn => conn.HasTerminal(this));
+
+        /// <summary>
         /// Creates a copy from a given <see cref="Terminal"/>.
         /// </summary>
         /// <param name="other">The object to copy.</param>
@@ -76,6 +79,21 @@ namespace SimpleAnnPlayground.Graphical.Terminals
         public static Terminal Copy(Terminal other)
         {
             return Activator.CreateInstance(other.GetType(), other) as Terminal ?? throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Determines all the connections realated to this terminal.
+        /// </summary>
+        /// <returns>A list of all the connections.</returns>
+        public List<Connection> GetConnections()
+        {
+            var connections = new List<Connection>();
+            foreach (var conn in Owner.Canvas.Connections)
+            {
+                if (conn.Source == this || conn.Destination == this) connections.Add(conn);
+            }
+
+            return connections;
         }
     }
 }

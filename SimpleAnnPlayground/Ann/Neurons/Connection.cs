@@ -35,12 +35,10 @@ namespace SimpleAnnPlayground.Ann.Neurons
             // Get the shadow source terminal.
             CanvasObject shadowSourceOwner = referenceObjects.First(obj => obj.Equals(other.Source.Owner));
             Source = shadowSourceOwner.Outputs[other.Source.Index] ?? throw new ArgumentException("Invalid connection source", nameof(other));
-            Source.Connection = this;
 
             // Get the shadow destination terminal.
             CanvasObject shadowDestinationOwner = referenceObjects.First(obj => obj.Equals(other.Destination.Owner));
             Destination = shadowDestinationOwner.Inputs[other.Destination.Index] ?? throw new ArgumentException("Invalid connection destination", nameof(other));
-            Destination.Connection = this;
         }
 
         /// <summary>
@@ -51,9 +49,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public Connection(OutputTerminal source, InputTerminal destination)
         {
             Source = source;
-            Source.Connection = this;
             Destination = destination;
-            Destination.Connection = this;
         }
 
         /// <summary>
@@ -140,6 +136,24 @@ namespace SimpleAnnPlayground.Ann.Neurons
             graphics.TranslateTransform(Destination.Owner.Location.X - Destination.Owner.Component.Center.X, Destination.Owner.Location.Y - Destination.Owner.Component.Center.Y);
             Destination.Connector.Paint(graphics, Connector.DrawMode.Connected);
             graphics.TranslateTransform(Destination.Owner.Component.Center.X - Destination.Owner.Location.X, Destination.Owner.Component.Center.Y - Destination.Owner.Location.Y);
+        }
+
+        /// <summary>
+        /// Determines if the connection is connecting the passed terminal.
+        /// </summary>
+        /// <param name="terminal">The terminal to find.</param>
+        /// <returns>True if the terminal is connected, otherwise false.</returns>
+        internal bool HasTerminal(Terminal terminal) => Source == terminal || Destination == terminal;
+
+        /// <summary>
+        /// Determines if this connection is connecting two terminals.
+        /// </summary>
+        /// <param name="terminal1">A terminal.</param>
+        /// <param name="terminal2">Another terminal.</param>
+        /// <returns>True if they are connected, otherwise false.</returns>
+        internal bool IsConnecting(Terminal terminal1, Terminal terminal2)
+        {
+            return (Source == terminal1 && Destination == terminal2) || (Source == terminal2 && Destination == terminal1);
         }
     }
 }

@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Ann.Networks;
 using SimpleAnnPlayground.Debugging;
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Environment;
@@ -99,6 +100,11 @@ namespace SimpleAnnPlayground
         private readonly Workspace _workspace;
 
         /// <summary>
+        /// The neural network to be executed.
+        /// </summary>
+        private readonly Network _network;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FrmMain"/> class.
         /// </summary>
         public FrmMain()
@@ -112,6 +118,7 @@ namespace SimpleAnnPlayground
             _workspace.MouseTool.SelectionChanged += Workspace_SelectionChanged;
             _workspace.SelectionChanged += Workspace_SelectionChanged;
             _workspace.Actions.ActionPerformed += Actions_ActionPerformed;
+            _network = new Network(_workspace);
 
 #if DEBUG
             // Add debug elements.
@@ -243,9 +250,9 @@ namespace SimpleAnnPlayground
                 btn.Checked = btn == button;
             }
 
-            if (button == BtnInputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(0, 0));
-            else if (button == BtnInternalNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Internal(0, 0));
-            else if (button == BtnOutputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Output(0, 0));
+            if (button == BtnInputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(_workspace.Canvas, 0, 0));
+            else if (button == BtnInternalNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Internal(_workspace.Canvas, 0, 0));
+            else if (button == BtnOutputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Output(_workspace.Canvas, 0, 0));
             else _workspace.MouseTool.CancelOperation();
         }
 
@@ -313,6 +320,8 @@ namespace SimpleAnnPlayground
         {
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+            BtnTraining.Enabled = false;
+            BtnTest.Enabled = false;
             _frmActionsViewer.RefreshActions();
         }
 
@@ -350,6 +359,18 @@ namespace SimpleAnnPlayground
         private void BtnData_Click(object sender, EventArgs e)
         {
             _frmData.Show(this);
+        }
+
+        private void BtnCheck_Click(object sender, EventArgs e)
+        {
+            bool result = _network.Build();
+            BtnTraining.Enabled = result;
+            BtnTest.Enabled = result;
+        }
+
+        private void BtnClean_Click(object sender, EventArgs e)
+        {
+            _network.Clean();
         }
     }
 }

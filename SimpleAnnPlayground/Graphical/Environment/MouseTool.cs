@@ -189,7 +189,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
         public void StartConnection(Terminal startTerminal)
         {
             Workspace.Canvas.UnselectAll();
-            Connecting = new ConnectingLine(startTerminal);
+            Connecting = new ConnectingLine(Workspace, startTerminal);
             Workspace.PictureBox.Cursor = Cursors.Cross;
             Workspace.Refresh();
         }
@@ -215,7 +215,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                     Workspace.Actions.AddObjectsAction(ActionType.Inserted, Workspace.Canvas.GetSelectedObjects());
 
                     // Invoke SelectionChanged event.
-                    SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Inserting));
+                    OnSelectionChanged(Inserting);
 
                     // Invoke ObjectAdded event.
                     ObjectAdded?.Invoke(this, new ObjectAddedEventArgs(Inserting, Workspace));
@@ -226,22 +226,25 @@ namespace SimpleAnnPlayground.Graphical.Environment
             }
             else if (Moving != null)
             {
-                // Grab the moving action to be able to undo later.
-                Workspace.Actions.AddObjectsAction(ActionType.Moved, Moving.Selection);
+                if (Moving.WasMoved)
+                {
+                    // Grab the moving action to be able to undo later.
+                    Workspace.Actions.AddObjectsAction(ActionType.Moved, Moving.Selection);
+                }
 
                 // Select the moved objects.
                 Workspace.Canvas.Select(Moving.Selection);
 
                 // Invoke SelectionChanged event.
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Moving.Selection.FirstOrDefault()));
+                OnSelectionChanged(Moving.Selection.FirstOrDefault());
 
                 // Finish the operation clearing Moving.
                 Moving = null;
             }
             else if (Selecting != null)
             {
-                SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(Workspace.Canvas.GetSelectedObjects().FirstOrDefault() as object
-                    ?? Workspace.Canvas.GetSelectedConnections().FirstOrDefault()));
+                OnSelectionChanged(Workspace.Canvas.GetSelectedObjects().FirstOrDefault() as object
+                    ?? Workspace.Canvas.GetSelectedConnections().FirstOrDefault());
                 Selecting = null;
             }
             else if (Connecting != null)
@@ -305,6 +308,15 @@ namespace SimpleAnnPlayground.Graphical.Environment
                     cross.Paint(graphics);
                 }
             }
+        }
+
+        /// <summary>
+        /// Raises the <see cref="SelectionChanged"/> event.
+        /// </summary>
+        /// <param name="selectedObject">The object that was selected.</param>
+        protected void OnSelectionChanged(object? selectedObject)
+        {
+            SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(selectedObject));
         }
 
         private void PictureBox_MouseMove(object? sender, MouseEventArgs e)
@@ -374,6 +386,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                     Workspace.Canvas.UnselectAll();
                     connection.IsSelected = true;
                     Workspace.Refresh();
+                    OnSelectionChanged(connection);
                 }
                 else
                 {

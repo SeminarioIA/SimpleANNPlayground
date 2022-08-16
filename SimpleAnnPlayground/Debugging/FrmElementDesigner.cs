@@ -365,9 +365,9 @@ namespace SimpleAnnPlayground.Debugging
             if (LstModes.SelectedItem != null)
             {
                 _state = (Component.State)LstModes.SelectedItem;
-                if (_state.HasFlag(Component.State.SimulationStep)
-                        || _state.HasFlag(Component.State.SimulationPass)
-                        || _state.HasFlag(Component.State.SimulationError))
+                if (_state.HasFlag(Component.State.ExecutionStep)
+                        || _state.HasFlag(Component.State.ExecutionPass)
+                        || _state.HasFlag(Component.State.ComponentError))
                 {
                     ClbElements.SelectedItem = null;
                     LstConnectors.SelectedItem = null;

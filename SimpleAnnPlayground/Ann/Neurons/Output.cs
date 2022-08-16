@@ -10,15 +10,16 @@ namespace SimpleAnnPlayground.Ann.Neurons
     /// <summary>
     /// Represents an internal neurone in a neural network.
     /// </summary>
-    internal class Output : CanvasObject
+    internal class Output : Neuron
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Output"/> class.
         /// </summary>
+        /// <param name="canvas">The containing canvas.</param>
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
-        public Output(int x, int y)
-            : base(Component.OutputNeuron, x, y)
+        public Output(Canvas canvas, int x, int y)
+            : base(canvas, Component.OutputNeuron, x, y)
         {
         }
 
@@ -31,5 +32,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
             : base(other, mode)
         {
         }
+
+        /// <inheritdoc/>
+        internal override int? UpwardLayer => -1;
+
+        /// <inheritdoc/>
+        internal override int? DownwardLayer => (Inputs.FirstOrDefault(input => input.IsConnected)?.AnyConnection?.Source.Owner as Neuron)?.DownwardLayer + 1;
     }
 }

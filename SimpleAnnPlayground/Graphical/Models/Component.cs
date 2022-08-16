@@ -71,27 +71,22 @@ namespace SimpleAnnPlayground.Graphical
             /// <summary>
             /// The component is going to be executed in the simulation.
             /// </summary>
-            SimulationStep = 8,
+            ExecutionStep = 8,
 
             /// <summary>
             /// The component was succesfully simulated.
             /// </summary>
-            SimulationPass = 16,
-
-            /// <summary>
-            /// The component had a simulation error.
-            /// </summary>
-            SimulationError = 32,
-
-            /// <summary>
-            /// There is a warning about the component.
-            /// </summary>
-            ComponentWarn = 64,
+            ExecutionPass = 16,
 
             /// <summary>
             /// There is an error about the component.
             /// </summary>
-            ComponentError = 128,
+            ComponentError = 32,
+
+            /// <summary>
+            /// Component status mask.
+            /// </summary>
+            ComponentStatusMask = ExecutionStep | ExecutionPass | ComponentError,
         }
 
         /// <summary>
@@ -247,7 +242,7 @@ namespace SimpleAnnPlayground.Graphical
             graphics.TranslateTransform(location.X - Center.X, location.Y - Center.Y);
 
             // Draw backgroung selector
-            if (state.HasFlag(State.SimulationStep) || state.HasFlag(State.SimulationPass) || state.HasFlag(State.SimulationError))
+            if (state.HasFlag(State.ExecutionStep) || state.HasFlag(State.ExecutionPass) || state.HasFlag(State.ComponentError))
             {
                 Selector.Paint(graphics, false, state);
             }
@@ -266,13 +261,13 @@ namespace SimpleAnnPlayground.Graphical
                     // Draw elements connectors.
                     foreach (Connector connector in Connectors)
                     {
-                        connector.Paint(graphics, Connector.DrawMode.Hover);
+                        connector.Paint(graphics, Connector.DrawMode.Shadow);
                     }
                 }
 
                 if (selectConnector != null && Connectors.Contains(selectConnector))
                 {
-                    selectConnector.Paint(graphics, Connector.DrawMode.Shadow);
+                    selectConnector.Paint(graphics, Connector.DrawMode.Hover);
                 }
             }
 

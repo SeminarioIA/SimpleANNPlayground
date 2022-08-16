@@ -43,6 +43,7 @@
             this.BtnInternalNeurone = new System.Windows.Forms.ToolStripButton();
             this.BtnOutputNeurone = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.BtnData = new System.Windows.Forms.ToolStripButton();
             this.BtnCheck = new System.Windows.Forms.ToolStripButton();
             this.BtnTraining = new System.Windows.Forms.ToolStripButton();
             this.BtnTest = new System.Windows.Forms.ToolStripButton();
@@ -90,7 +91,8 @@
             this.BtnCxStep = new System.Windows.Forms.ToolStripButton();
             this.BtnNeuronStep = new System.Windows.Forms.ToolStripButton();
             this.BtnLayerStep = new System.Windows.Forms.ToolStripButton();
-            this.BtnData = new System.Windows.Forms.ToolStripButton();
+            this.BtnClean = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.TspEdition.SuspendLayout();
             this.SspStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
@@ -116,8 +118,10 @@
             this.BtnInternalNeurone,
             this.BtnOutputNeurone,
             this.toolStripSeparator2,
-            this.BtnData,
             this.BtnCheck,
+            this.BtnClean,
+            this.toolStripSeparator3,
+            this.BtnData,
             this.BtnTraining,
             this.BtnTest});
             this.TspEdition.Location = new System.Drawing.Point(0, 24);
@@ -193,6 +197,16 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 56);
             // 
+            // BtnData
+            // 
+            this.BtnData.Image = global::SimpleAnnPlayground.Properties.Resources.Data_32;
+            this.BtnData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnData.Name = "BtnData";
+            this.BtnData.Size = new System.Drawing.Size(39, 53);
+            this.BtnData.Text = "Data";
+            this.BtnData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnData.Click += new System.EventHandler(this.BtnData_Click);
+            // 
             // BtnCheck
             // 
             this.BtnCheck.Image = global::SimpleAnnPlayground.Properties.Resources.check_32;
@@ -201,9 +215,11 @@
             this.BtnCheck.Size = new System.Drawing.Size(46, 53);
             this.BtnCheck.Text = "Check";
             this.BtnCheck.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnCheck.Click += new System.EventHandler(this.BtnCheck_Click);
             // 
             // BtnTraining
             // 
+            this.BtnTraining.Enabled = false;
             this.BtnTraining.Image = global::SimpleAnnPlayground.Properties.Resources.training_32;
             this.BtnTraining.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnTraining.Name = "BtnTraining";
@@ -213,6 +229,7 @@
             // 
             // BtnTest
             // 
+            this.BtnTest.Enabled = false;
             this.BtnTest.Image = global::SimpleAnnPlayground.Properties.Resources.testing_32;
             this.BtnTest.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnTest.Name = "BtnTest";
@@ -284,41 +301,41 @@
             // MnuFileNew
             // 
             this.MnuFileNew.Name = "MnuFileNew";
-            this.MnuFileNew.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileNew.Size = new System.Drawing.Size(114, 22);
             this.MnuFileNew.Text = "New";
             // 
             // MnuFileOpen
             // 
             this.MnuFileOpen.Name = "MnuFileOpen";
-            this.MnuFileOpen.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileOpen.Size = new System.Drawing.Size(114, 22);
             this.MnuFileOpen.Text = "Open";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(111, 6);
             // 
             // MnuFileSave
             // 
             this.MnuFileSave.Name = "MnuFileSave";
-            this.MnuFileSave.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileSave.Size = new System.Drawing.Size(114, 22);
             this.MnuFileSave.Text = "Save";
             // 
             // MnuFileSaveAs
             // 
             this.MnuFileSaveAs.Name = "MnuFileSaveAs";
-            this.MnuFileSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileSaveAs.Size = new System.Drawing.Size(114, 22);
             this.MnuFileSaveAs.Text = "Save As";
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(111, 6);
             // 
             // MnuFileExit
             // 
             this.MnuFileExit.Name = "MnuFileExit";
-            this.MnuFileExit.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileExit.Size = new System.Drawing.Size(114, 22);
             this.MnuFileExit.Text = "Exit";
             // 
             // MnuEdit
@@ -624,15 +641,20 @@
             this.BtnLayerStep.Text = "L-Step";
             this.BtnLayerStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
-            // BtnData
+            // BtnClean
             // 
-            this.BtnData.Image = global::SimpleAnnPlayground.Properties.Resources.Data_32;
-            this.BtnData.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnData.Name = "BtnData";
-            this.BtnData.Size = new System.Drawing.Size(39, 53);
-            this.BtnData.Text = "Data";
-            this.BtnData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.BtnData.Click += new System.EventHandler(this.BtnData_Click);
+            this.BtnClean.Image = global::SimpleAnnPlayground.Properties.Resources.clear_32;
+            this.BtnClean.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnClean.Name = "BtnClean";
+            this.BtnClean.Size = new System.Drawing.Size(44, 53);
+            this.BtnClean.Text = "Clean";
+            this.BtnClean.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnClean.Click += new System.EventHandler(this.BtnClean_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 56);
             // 
             // FrmMain
             // 
@@ -730,5 +752,7 @@
         private ToolStripButton BtnLayerStep;
         private ToolStripButton BtnTraining;
         private ToolStripButton BtnData;
+        private ToolStripButton BtnClean;
+        private ToolStripSeparator toolStripSeparator3;
     }
 }

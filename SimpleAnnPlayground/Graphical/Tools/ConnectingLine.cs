@@ -3,8 +3,10 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
+using SimpleAnnPlayground.Graphical.Visualization;
 
 namespace SimpleAnnPlayground.Graphical.Tools
 {
@@ -23,9 +25,11 @@ namespace SimpleAnnPlayground.Graphical.Tools
         /// <summary>
         /// Initializes a new instance of the <see cref="ConnectingLine"/> class.
         /// </summary>
+        /// <param name="workspace">The workspace where the connection is performed.</param>
         /// <param name="startTerminal">The terminal object for the connection.</param>
-        public ConnectingLine(Terminal startTerminal)
+        public ConnectingLine(Workspace workspace, Terminal startTerminal)
         {
+            Workspace = workspace;
             Start = startTerminal;
             _endPoint = Start.Location;
             Type = Start is InputTerminal ? Connector.Types.Output : Connector.Types.Input;
@@ -35,6 +39,11 @@ namespace SimpleAnnPlayground.Graphical.Tools
         /// Gets the destination connection type.
         /// </summary>
         public Connector.Types Type { get; }
+
+        /// <summary>
+        /// Gets the workspace where the connection is performed.
+        /// </summary>
+        public Workspace Workspace { get; }
 
         /// <summary>
         /// Gets the start terminal.
@@ -88,6 +97,46 @@ namespace SimpleAnnPlayground.Graphical.Tools
             {
                 graphics.DrawLine(pen, Start.Location, _endPoint);
             }
+        }
+
+        /// <summary>
+        /// Determines the active terminal for the connection.
+        /// </summary>
+        /// <param name="obj">The object being connected.</param>
+        /// <param name="location">The location relative to the object.</param>
+        /// <returns>The active terminal for the connection.</returns>
+#pragma warning disable IDE0060 // Remove unused parameter
+        internal Terminal? GetActiveTerminal(CanvasObject obj, PointF location)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            if (obj is Neuron neuron && Start.Owner is Neuron start)
+            {
+                if (Type == Connector.Types.Input)
+                {
+                    // Verify the layers are consecutive.
+                    if (start.Layer != null && neuron.Layer != null && neuron.Layer > 0 && neuron.Layer != start.Layer + 1) return null;
+
+                    // TODO: Look for the nearest terminal.
+                    foreach (var terminal in neuron.Inputs)
+                    {
+                        // Verify if the terminals are already connected.
+                        if (!Workspace.Canvas.Connections.Any(conn => conn.IsConnecting(Start, terminal))) return terminal;
+                    }
+                }
+                else if (Type == Connector.Types.Output)
+                {
+                    // Verify the layers are consecutive.
+                    if (start.Layer != null && neuron.Layer != null && start.Layer > 0 && neuron.Layer != start.Layer - 1) return null;
+
+                    // TODO: Look for the nearest terminal.
+                    foreach (var terminal in neuron.Outputs)
+                    {
+                        if (!Workspace.Canvas.Connections.Any(conn => conn.IsConnecting(Start, terminal))) return terminal;
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

@@ -5,6 +5,7 @@
 using Newtonsoft.Json;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Terminals;
+using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Utils.Graphics;
 using SimpleAnnPlayground.Utils.Serialization.Json;
 using System.ComponentModel;
@@ -26,6 +27,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         protected CanvasObject(CanvasObject other, CreationMode mode)
             : base(other, mode)
         {
+            Canvas = other.Canvas;
             Location = other.Location;
             Component = other.Component;
             Inputs = other.Inputs.ConvertAll(input => new InputTerminal(input));
@@ -35,11 +37,13 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Initializes a new instance of the <see cref="CanvasObject"/> class.
         /// </summary>
+        /// <param name="canvas">The containing canvas.</param>
         /// <param name="component">The graphical component linked to this object.</param>
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
-        protected CanvasObject(Component component, int x, int y)
+        protected CanvasObject(Canvas canvas, Component component, int x, int y)
         {
+            Canvas = canvas;
             Location = new Point(x, y);
             Component = component;
             Inputs = new List<InputTerminal>();
@@ -53,6 +57,13 @@ namespace SimpleAnnPlayground.Graphical.Visualization
                 else throw new NotImplementedException();
             }
         }
+
+        /// <summary>
+        /// Gets the containing <see cref="Canvas"/>.
+        /// </summary>
+        [JsonIgnore]
+        [Browsable(false)]
+        public Canvas Canvas { get; }
 
         /// <summary>
         /// Gets the object type.
@@ -181,28 +192,22 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// Method to be called when the mouse moves over the object.
         /// </summary>
         /// <param name="location">The cursor location.</param>
-        public void OnMouseMove(Point location)
+        public void OnMouseMove(PointF location)
         {
-            if (AdjustStateFlag(State.Hover, HasPoint(location)))
-            {
-                SelectConnector(location);
-            }
-            else
-            {
-                ActiveTerminal = null;
-            }
+            ActiveTerminal = AdjustStateFlag(State.Hover, HasPoint(location)) ? GetActiveTerminal(location) : null;
         }
 
         /// <summary>
         /// Method to be called when the mouse is connecting over the object.
         /// </summary>
         /// <param name="location">The cursor location.</param>
-        /// <param name="type">The connector type looking for.</param>
-        public void OnMouseConnecting(Point location, Connector.Types type)
+        /// <param name="connecting">The connector making a connection.</param>
+        public void OnMouseConnecting(PointF location, ConnectingLine connecting)
         {
             if (HasPoint(location))
             {
-                SelectConnector(location, type);
+                MakeRelative(ref location);
+                ActiveTerminal = connecting.GetActiveTerminal(this, location);
             }
             else
             {
@@ -267,39 +272,18 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// Selects the connector if the passed location belongs to it.
         /// </summary>
         /// <param name="location">The location point.</param>
-        /// <param name="type">The connector type to looking for.</param>
-        private void SelectConnector(PointF location, Connector.Types? type = null)
+        private Terminal? GetActiveTerminal(PointF location)
         {
             MakeRelative(ref location);
-            if (type == Connector.Types.Input)
+            foreach (var terminal in Terminals)
             {
-                foreach (var terminal in Inputs)
+                if (terminal.Connector.HasPoint(location))
                 {
-                    ActiveTerminal = terminal;
-                    return;
-                }
-            }
-            else if (type == Connector.Types.Output)
-            {
-                foreach (var terminal in Outputs)
-                {
-                    ActiveTerminal = terminal;
-                    return;
-                }
-            }
-            else
-            {
-                foreach (var terminal in Terminals)
-                {
-                    if (terminal.Connector.HasPoint(location))
-                    {
-                        ActiveTerminal = terminal;
-                        return;
-                    }
+                    return terminal;
                 }
             }
 
-            ActiveTerminal = null;
+            return null;
         }
     }
 }
