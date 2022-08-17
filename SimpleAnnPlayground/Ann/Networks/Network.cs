@@ -91,7 +91,12 @@ namespace SimpleAnnPlayground.Ann.Networks
             Graph = new Graph(this);
 
             // Get the input layer
-            Workspace.Canvas.Objects.ToList().FindAll(obj => obj is Input).OrderBy(obj => obj.Location.Y).ToList().ConvertAll(obj => obj as Input).ForEach(Graph.AddInput);
+            Workspace.Canvas.Objects
+                .Where(obj => obj is Input)
+                .OrderBy(obj => obj.Location.Y)
+                .Select(obj => obj as Input)
+                .ToList()
+                .ForEach(Graph.AddInput);
 
             // Expand the graph
             Graph.Expand();

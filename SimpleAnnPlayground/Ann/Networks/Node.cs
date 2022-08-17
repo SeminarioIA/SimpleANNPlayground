@@ -66,7 +66,7 @@ namespace SimpleAnnPlayground.Ann.Networks
                         if (node == null)
                         {
                             // Create a new node.
-                            node = new Node(Graph, Neuron);
+                            node = new Node(Graph, neuron);
                             Graph.Nodes.Add(node);
 
                             // Expand the node.
