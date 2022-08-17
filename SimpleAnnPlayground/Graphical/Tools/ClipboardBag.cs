@@ -70,10 +70,12 @@ namespace SimpleAnnPlayground.Graphical.Tools
         /// <summary>
         /// Deserializes a object from the JSON data.
         /// </summary>
+        /// <param name="workspace">The target workspace.</param>
         /// <param name="data">The JSON data.</param>
         /// <returns>The deserialized object.</returns>
-        public static ClipboardBag Deserialize(string data)
+        public static ClipboardBag Deserialize(Workspace workspace, string data)
         {
+            CanvasObjConverter.Canvas = workspace.Canvas;
             ConnectionConverter.Objects.Clear();
             ConnectionConverter.Ids.Clear();
             return JsonConvert.DeserializeObject<ClipboardBag>(data) ?? throw new ArgumentException("Invalid data string.", nameof(data));

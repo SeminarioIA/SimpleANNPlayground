@@ -176,6 +176,19 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Shadow = new ShadowCanvas(document.Objects, document.Connections);
         }
 
+        /// <summary>
+        /// Cleans the workspace.
+        /// </summary>
+        internal void Clean()
+        {
+            Canvas.Objects.Clear();
+            Canvas.Connections.Clear();
+            Shadow.Objects.Clear();
+            Shadow.Connections.Clear();
+            Actions.Clear();
+            Refresh();
+        }
+
         private void UpdateTransform()
         {
             Transform.Reset();
