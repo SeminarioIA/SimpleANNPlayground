@@ -127,6 +127,7 @@ namespace SimpleAnnPlayground
             _network = new Network(_workspace);
             _fileManager = new TextFileManager();
             _fileManager.AddFileFormat("annpj", "Artificial neural network project");
+            _fileManager.FilePathChanged += FileManager_FilePathChanged;
 
 #if DEBUG
             // Add debug elements.
@@ -350,7 +351,7 @@ namespace SimpleAnnPlayground
         {
             if (Clipboard.GetData("SimpleAnnPlayground.Copy") is string data)
             {
-                var pasteBag = ClipboardBag.Deserialize(data);
+                var pasteBag = ClipboardBag.Deserialize(_workspace, data);
                 pasteBag.Paste(_workspace);
             }
         }
@@ -389,6 +390,25 @@ namespace SimpleAnnPlayground
         private void MnuFileSaveAs_Click(object sender, EventArgs e)
         {
             _ = _fileManager.SaveAs(_workspace.GenerateDocument().Serialize());
+        }
+
+        private void MnuFileNew_Click(object sender, EventArgs e)
+        {
+            _fileManager.New();
+            _workspace.Clean();
+        }
+
+        private void MnuFileOpen_Click(object sender, EventArgs e)
+        {
+            if (_fileManager.Open() && _fileManager.FileContent is string data)
+            {
+                _workspace.LoadDocument(Document.Deserialize(_workspace, data));
+            }
+        }
+
+        private void FileManager_FilePathChanged(object? sender, EventArgs e)
+        {
+            Text = "SimpleAnnPlayground" + (string.IsNullOrWhiteSpace(_fileManager.FileName) ? string.Empty : $" - {_fileManager.FileName}");
         }
     }
 }

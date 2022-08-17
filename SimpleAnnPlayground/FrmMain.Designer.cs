@@ -139,6 +139,7 @@
             this.BtnNew.Size = new System.Drawing.Size(38, 53);
             this.BtnNew.Text = "New";
             this.BtnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnNew.Click += new System.EventHandler(this.MnuFileNew_Click);
             // 
             // BtnOpen
             // 
@@ -148,6 +149,7 @@
             this.BtnOpen.Size = new System.Drawing.Size(44, 53);
             this.BtnOpen.Text = "Open";
             this.BtnOpen.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnOpen.Click += new System.EventHandler(this.MnuFileOpen_Click);
             // 
             // BtnSave
             // 
@@ -319,20 +321,22 @@
             // 
             this.MnuFileNew.Name = "MnuFileNew";
             this.MnuFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.MnuFileNew.Size = new System.Drawing.Size(146, 22);
+            this.MnuFileNew.Size = new System.Drawing.Size(180, 22);
             this.MnuFileNew.Text = "New";
+            this.MnuFileNew.Click += new System.EventHandler(this.MnuFileNew_Click);
             // 
             // MnuFileOpen
             // 
             this.MnuFileOpen.Name = "MnuFileOpen";
             this.MnuFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.MnuFileOpen.Size = new System.Drawing.Size(146, 22);
+            this.MnuFileOpen.Size = new System.Drawing.Size(180, 22);
             this.MnuFileOpen.Text = "Open";
+            this.MnuFileOpen.Click += new System.EventHandler(this.MnuFileOpen_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(111, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuFileSave
             // 
@@ -352,12 +356,12 @@
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(111, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuFileExit
             // 
             this.MnuFileExit.Name = "MnuFileExit";
-            this.MnuFileExit.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileExit.Size = new System.Drawing.Size(180, 22);
             this.MnuFileExit.Text = "Exit";
             // 
             // MnuEdit

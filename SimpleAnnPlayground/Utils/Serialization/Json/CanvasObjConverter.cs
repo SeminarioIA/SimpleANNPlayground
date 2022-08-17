@@ -5,7 +5,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SimpleAnnPlayground.Graphical.Visualization;
-using System.Reflection;
 
 namespace SimpleAnnPlayground.Utils.Serialization.Json
 {
@@ -16,6 +15,11 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
     internal class CanvasObjConverter : JsonConverter<CanvasObject>
 #pragma warning restore CA1812
     {
+        /// <summary>
+        /// Gets or sets the Canvas where placing the deserialized objects.
+        /// </summary>
+        public static Canvas? Canvas { get; set; }
+
         /// <inheritdoc/>
         public override bool CanWrite => false;
 
@@ -28,6 +32,8 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
         /// <inheritdoc/>
         public override CanvasObject? ReadJson(JsonReader reader, Type objectType, CanvasObject? existingValue, bool hasExistingValue, JsonSerializer serializer)
         {
+            if (Canvas == null) throw new InvalidOperationException(nameof(Canvas));
+
             // Load the Json object.
             JObject jo = JObject.Load(reader);
             if (jo == null) return null;
@@ -51,7 +57,7 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
             Type myType = Util.GetTypeFromString(typeName);
 
             // Create a new object instance.
-            if (Activator.CreateInstance(myType, x, y) is not CanvasObject obj) return null;
+            if (Activator.CreateInstance(myType, Canvas, x, y) is not CanvasObject obj) return null;
 
             // Register the new object in the ConnectionCoverter.
             ConnectionConverter.Objects.Add(obj);

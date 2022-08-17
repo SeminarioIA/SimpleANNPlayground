@@ -122,6 +122,24 @@ namespace SimpleAnnPlayground.Actions
             Workspace.Refresh();
         }
 
+        /// <summary>
+        /// Clears all the actions.
+        /// </summary>
+        internal void Clear()
+        {
+            _actions.Clear();
+            _reverted.Clear();
+            OnActionPerformed();
+        }
+
+        /// <summary>
+        /// Raises the <see cref="ActionPerformed"/> event.
+        /// </summary>
+        protected void OnActionPerformed()
+        {
+            ActionPerformed?.Invoke(this, new EventArgs());
+        }
+
         private void AddAction(RecordableAction action)
         {
             // Clear redo actions.
@@ -131,7 +149,7 @@ namespace SimpleAnnPlayground.Actions
             _actions.Push(action);
 
             // Invoke ActionPerformed event.
-            ActionPerformed?.Invoke(this, new EventArgs());
+            OnActionPerformed();
         }
     }
 }

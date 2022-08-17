@@ -47,10 +47,12 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <summary>
         /// Deserializes a object from the JSON data.
         /// </summary>
+        /// <param name="workspace">The workspace to deserialize the objects.</param>
         /// <param name="data">The JSON data.</param>
         /// <returns>The deserialized object.</returns>
-        public static Document Deserialize(string data)
+        public static Document Deserialize(Workspace workspace, string data)
         {
+            CanvasObjConverter.Canvas = workspace.Canvas;
             ConnectionConverter.Objects.Clear();
             ConnectionConverter.Ids.Clear();
             return JsonConvert.DeserializeObject<Document>(data) ?? throw new ArgumentException("Invalid data string.", nameof(data));
