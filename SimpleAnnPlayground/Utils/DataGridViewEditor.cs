@@ -2,10 +2,13 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using System.Globalization;
+using System.Reflection;
+
 namespace SimpleAnnPlayground.Utils
 {
     /// <summary>
-    /// Configures a <see cref="EditableViewer"/> to be editable.
+    /// Configures a <see cref="DataGridView"/> to be editable.
     /// </summary>
     public class DataGridViewEditor
     {
@@ -22,18 +25,20 @@ namespace SimpleAnnPlayground.Utils
         /// <summary>
         /// Initializes a new instance of the <see cref="DataGridViewEditor"/> class.
         /// </summary>
-        /// <param name="dataGridView">The <see cref="EditableViewer"/> control to be asociated to this object.</param>
+        /// <param name="dataGridView">The <see cref="DataGridView"/> control to be asociated to this object.</param>
         public DataGridViewEditor(DataGridView dataGridView)
         {
-            EditableViewer = dataGridView;
-            EditableViewer.MultiSelect = false;
-            EditableViewer.EditingControlShowing += EditableViewer_EditingControlShowing;
-            EditableViewer.CellMouseDown += EditableViewer_CellMouseDown;
-            EditableViewer.SelectionChanged += EditableViewer_SelectionChanged;
-            EditableViewer.CellValueChanged += EditableViewer_CellValueChanged;
-            EditableViewer.CurrentCellDirtyStateChanged += EditableViewer_CurrentCellDirtyStateChanged;
-            EditableViewer.CellEndEdit += EditableViewer_CellEndEdit;
-            EditableViewer.DataError += EditableViewer_DataError;
+            ViewerEnableDoubleBuffered(dataGridView);
+            Viewer = dataGridView;
+            Viewer.MultiSelect = false;
+            Viewer.AllowUserToResizeRows = false;
+            Viewer.EditingControlShowing += EditableViewer_EditingControlShowing;
+            Viewer.CellMouseDown += EditableViewer_CellMouseDown;
+            Viewer.SelectionChanged += EditableViewer_SelectionChanged;
+            Viewer.CellValueChanged += EditableViewer_CellValueChanged;
+            Viewer.CurrentCellDirtyStateChanged += EditableViewer_CurrentCellDirtyStateChanged;
+            Viewer.CellEndEdit += EditableViewer_CellEndEdit;
+            Viewer.DataError += EditableViewer_DataError;
         }
 
         /// <summary>
@@ -47,9 +52,29 @@ namespace SimpleAnnPlayground.Utils
         public event EventHandler<EventArgs>? CellEndEdit;
 
         /// <summary>
-        /// Gets the <see cref="EditableViewer"/> linked to this instance of <see cref="DataGridViewEditor"/>.
+        /// Ocurrs when a <see cref="DataGridViewRow"/> had been edited.
         /// </summary>
-        public DataGridView EditableViewer { get; private set; }
+        public event EventHandler<EventArgs>? CellValueChanged;
+
+        /// <summary>
+        /// Gets the <see cref="DataGridView"/> linked to this instance of <see cref="DataGridViewEditor"/>.
+        /// </summary>
+        public DataGridView Viewer { get; private set; }
+
+        /// <summary>
+        /// Enables double buffer for a <see cref="DataGridView"/>.
+        /// </summary>
+        /// <param name="viewer">The control to modify.</param>
+        internal static void ViewerEnableDoubleBuffered(DataGridView viewer)
+        {
+            _ = typeof(DataGridView).InvokeMember(
+                "DoubleBuffered",
+                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty,
+                null,
+                viewer,
+                new object[] { true },
+                CultureInfo.InvariantCulture);
+        }
 
         private static void EditableViewer_DataError(object? sender, DataGridViewDataErrorEventArgs e)
         {
@@ -74,9 +99,10 @@ namespace SimpleAnnPlayground.Utils
 
         private void EditableViewer_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
         {
-            if (!_changing && e.RowIndex >= 0 && sender is DataGridView viewer)
+            if (!_changing && e.RowIndex >= 0 && e.ColumnIndex >= 0 && sender is DataGridView viewer)
             {
                 _changing = true;
+                CellValueChanged?.Invoke(viewer.Rows[e.RowIndex].Cells[e.ColumnIndex], EventArgs.Empty);
                 RowUpdated?.Invoke(viewer.Rows[e.RowIndex], EventArgs.Empty);
                 _changing = false;
             }

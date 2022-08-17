@@ -63,6 +63,16 @@ namespace SimpleAnnPlayground.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cancel_32 {
+            get {
+                object obj = ResourceManager.GetObject("cancel_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap check_32 {
             get {
                 object obj = ResourceManager.GetObject("check_32", resourceCulture);
@@ -206,6 +216,16 @@ namespace SimpleAnnPlayground.Properties {
         internal static System.Drawing.Bitmap new_32 {
             get {
                 object obj = ResourceManager.GetObject("new_32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap ok_32 {
+            get {
+                object obj = ResourceManager.GetObject("ok_32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
