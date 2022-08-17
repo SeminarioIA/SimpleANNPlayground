@@ -159,6 +159,23 @@ namespace SimpleAnnPlayground.Graphical.Environment
             UpdateTransform();
         }
 
+        /// <summary>
+        /// Generates a document to save the workspace information into a file.
+        /// </summary>
+        /// <returns>The generated document.</returns>
+        public Document GenerateDocument() => new(WorkSheet, Canvas.Objects, Canvas.Connections);
+
+        /// <summary>
+        /// Loads an existing document into the workspace.
+        /// </summary>
+        /// <param name="document">The document to load.</param>
+        public void LoadDocument(Document document)
+        {
+            WorkSheet = document.WorkSheet;
+            Canvas = new Canvas(document.Objects, document.Connections);
+            Shadow = new ShadowCanvas(document.Objects, document.Connections);
+        }
+
         private void UpdateTransform()
         {
             Transform.Reset();

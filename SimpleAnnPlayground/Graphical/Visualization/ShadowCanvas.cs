@@ -21,6 +21,17 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShadowCanvas"/> class.
+        /// </summary>
+        /// <param name="objects">The objects to add to the canvas.</param>
+        /// <param name="connections">The connections to add to the canvas.</param>
+        public ShadowCanvas(Collection<CanvasObject> objects, Collection<Connection> connections)
+        {
+            objects.ToList().ForEach(AddObject);
+            connections.ToList().ForEach(AddConnection);
+        }
+
         /// <inheritdoc/>
         public override void AddObject(CanvasObject obj)
         {
@@ -45,7 +56,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <inheritdoc/>
         public override void AddConnection(Connection connection)
         {
-            var shadow = new Connection(connection, Objects, DrawableObject.CreationMode.Clone);
+            var shadow = new Connection(connection, Objects, CreationMode.Clone);
             shadow.IsShadow = true;
             base.AddConnection(shadow);
         }

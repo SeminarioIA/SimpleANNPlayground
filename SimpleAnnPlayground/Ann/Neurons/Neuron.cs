@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Visualization;
 
@@ -37,6 +38,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <summary>
         /// Gets the neuron current layer.
         /// </summary>
+        [JsonIgnore]
         public int? Layer => DownwardLayer ?? UpwardLayer;
 
         /// <summary>
