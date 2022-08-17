@@ -24,6 +24,17 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Canvas"/> class.
+        /// </summary>
+        /// <param name="objects">The objects to add to the canvas.</param>
+        /// <param name="connections">The connections to add to the canvas.</param>
+        public Canvas(Collection<CanvasObject> objects, Collection<Connection> connections)
+        {
+            Objects = objects;
+            Connections = connections;
+        }
+
+        /// <summary>
         /// Gets the list of objects on this canvas.
         /// </summary>
         internal Collection<CanvasObject> Objects { get; }

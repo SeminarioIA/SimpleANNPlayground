@@ -2,6 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Visualization;
 
@@ -16,6 +17,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Initializes a new instance of the <see cref="WorkSheet"/> class.
         /// </summary>
         /// <param name="size">The sheet size.</param>
+        [JsonConstructor]
         public WorkSheet(Size size)
         {
             Cross = new Cross(Color.DarkGray, PointF.Empty, 10);
@@ -25,6 +27,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <summary>
         /// Gets the center cross.
         /// </summary>
+        [JsonIgnore]
         public Cross Cross { get; }
 
         /// <summary>
@@ -35,6 +38,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <summary>
         /// Gets the rectangle that represents the working area.
         /// </summary>
+        [JsonIgnore]
         public Rectangle Bounds => new(-Size.Width / 2, -Size.Height / 2, Size.Width, Size.Height);
 
         /// <summary>

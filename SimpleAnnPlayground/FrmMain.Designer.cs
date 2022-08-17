@@ -22,6 +22,7 @@
                 _frmActionsViewer.Dispose();
 #endif
                 _frmData.Dispose();
+                _fileManager.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -43,8 +44,10 @@
             this.BtnInternalNeurone = new System.Windows.Forms.ToolStripButton();
             this.BtnOutputNeurone = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.BtnData = new System.Windows.Forms.ToolStripButton();
             this.BtnCheck = new System.Windows.Forms.ToolStripButton();
+            this.BtnClean = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.BtnData = new System.Windows.Forms.ToolStripButton();
             this.BtnTraining = new System.Windows.Forms.ToolStripButton();
             this.BtnTest = new System.Windows.Forms.ToolStripButton();
             this.SspStatus = new System.Windows.Forms.StatusStrip();
@@ -91,8 +94,6 @@
             this.BtnCxStep = new System.Windows.Forms.ToolStripButton();
             this.BtnNeuronStep = new System.Windows.Forms.ToolStripButton();
             this.BtnLayerStep = new System.Windows.Forms.ToolStripButton();
-            this.BtnClean = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.TspEdition.SuspendLayout();
             this.SspStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
@@ -156,6 +157,7 @@
             this.BtnSave.Size = new System.Drawing.Size(39, 53);
             this.BtnSave.Text = "Save";
             this.BtnSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnSave.Click += new System.EventHandler(this.MnuFileSave_Click);
             // 
             // toolStripSeparator1
             // 
@@ -197,16 +199,6 @@
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 56);
             // 
-            // BtnData
-            // 
-            this.BtnData.Image = global::SimpleAnnPlayground.Properties.Resources.Data_32;
-            this.BtnData.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnData.Name = "BtnData";
-            this.BtnData.Size = new System.Drawing.Size(39, 53);
-            this.BtnData.Text = "Data";
-            this.BtnData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.BtnData.Click += new System.EventHandler(this.BtnData_Click);
-            // 
             // BtnCheck
             // 
             this.BtnCheck.Image = global::SimpleAnnPlayground.Properties.Resources.check_32;
@@ -216,6 +208,31 @@
             this.BtnCheck.Text = "Check";
             this.BtnCheck.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnCheck.Click += new System.EventHandler(this.BtnCheck_Click);
+            // 
+            // BtnClean
+            // 
+            this.BtnClean.Image = global::SimpleAnnPlayground.Properties.Resources.clear_32;
+            this.BtnClean.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnClean.Name = "BtnClean";
+            this.BtnClean.Size = new System.Drawing.Size(44, 53);
+            this.BtnClean.Text = "Clean";
+            this.BtnClean.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnClean.Click += new System.EventHandler(this.BtnClean_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 56);
+            // 
+            // BtnData
+            // 
+            this.BtnData.Image = global::SimpleAnnPlayground.Properties.Resources.Data_32;
+            this.BtnData.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnData.Name = "BtnData";
+            this.BtnData.Size = new System.Drawing.Size(39, 53);
+            this.BtnData.Text = "Data";
+            this.BtnData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnData.Click += new System.EventHandler(this.BtnData_Click);
             // 
             // BtnTraining
             // 
@@ -301,13 +318,15 @@
             // MnuFileNew
             // 
             this.MnuFileNew.Name = "MnuFileNew";
-            this.MnuFileNew.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.MnuFileNew.Size = new System.Drawing.Size(146, 22);
             this.MnuFileNew.Text = "New";
             // 
             // MnuFileOpen
             // 
             this.MnuFileOpen.Name = "MnuFileOpen";
-            this.MnuFileOpen.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.MnuFileOpen.Size = new System.Drawing.Size(146, 22);
             this.MnuFileOpen.Text = "Open";
             // 
             // toolStripMenuItem1
@@ -318,14 +337,17 @@
             // MnuFileSave
             // 
             this.MnuFileSave.Name = "MnuFileSave";
-            this.MnuFileSave.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.MnuFileSave.Size = new System.Drawing.Size(180, 22);
             this.MnuFileSave.Text = "Save";
+            this.MnuFileSave.Click += new System.EventHandler(this.MnuFileSave_Click);
             // 
             // MnuFileSaveAs
             // 
             this.MnuFileSaveAs.Name = "MnuFileSaveAs";
-            this.MnuFileSaveAs.Size = new System.Drawing.Size(114, 22);
+            this.MnuFileSaveAs.Size = new System.Drawing.Size(180, 22);
             this.MnuFileSaveAs.Text = "Save As";
+            this.MnuFileSaveAs.Click += new System.EventHandler(this.MnuFileSaveAs_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -640,21 +662,6 @@
             this.BtnLayerStep.Size = new System.Drawing.Size(49, 53);
             this.BtnLayerStep.Text = "L-Step";
             this.BtnLayerStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            // 
-            // BtnClean
-            // 
-            this.BtnClean.Image = global::SimpleAnnPlayground.Properties.Resources.clear_32;
-            this.BtnClean.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnClean.Name = "BtnClean";
-            this.BtnClean.Size = new System.Drawing.Size(44, 53);
-            this.BtnClean.Text = "Clean";
-            this.BtnClean.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.BtnClean.Click += new System.EventHandler(this.BtnClean_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 56);
             // 
             // FrmMain
             // 

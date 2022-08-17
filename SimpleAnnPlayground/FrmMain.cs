@@ -10,6 +10,7 @@ using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Screens;
 using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.FileManagment;
 using System.Diagnostics;
 
 namespace SimpleAnnPlayground
@@ -105,6 +106,11 @@ namespace SimpleAnnPlayground
         private readonly Network _network;
 
         /// <summary>
+        /// The file manager to handle file operations.
+        /// </summary>
+        private readonly TextFileManager _fileManager;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="FrmMain"/> class.
         /// </summary>
         public FrmMain()
@@ -119,6 +125,8 @@ namespace SimpleAnnPlayground
             _workspace.SelectionChanged += Workspace_SelectionChanged;
             _workspace.Actions.ActionPerformed += Actions_ActionPerformed;
             _network = new Network(_workspace);
+            _fileManager = new TextFileManager();
+            _fileManager.AddFileFormat("annpj", "Artificial neural network project");
 
 #if DEBUG
             // Add debug elements.
@@ -371,6 +379,16 @@ namespace SimpleAnnPlayground
         private void BtnClean_Click(object sender, EventArgs e)
         {
             _network.Clean();
+        }
+
+        private void MnuFileSave_Click(object sender, EventArgs e)
+        {
+            _ = _fileManager.Save(_workspace.GenerateDocument().Serialize());
+        }
+
+        private void MnuFileSaveAs_Click(object sender, EventArgs e)
+        {
+            _ = _fileManager.SaveAs(_workspace.GenerateDocument().Serialize());
         }
     }
 }
