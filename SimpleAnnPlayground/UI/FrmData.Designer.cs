@@ -18,6 +18,7 @@ namespace SimpleAnnPlayground.Screens
             if (disposing && (components != null))
             {
                 components.Dispose();
+                _typeRow.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -31,27 +32,85 @@ namespace SimpleAnnPlayground.Screens
         private void InitializeComponent()
         {
             this.SsBar = new System.Windows.Forms.StatusStrip();
+            this.LbColumns = new System.Windows.Forms.ToolStripStatusLabel();
+            this.LbInputs = new System.Windows.Forms.ToolStripStatusLabel();
+            this.LbOutputs = new System.Windows.Forms.ToolStripStatusLabel();
+            this.LbRegisters = new System.Windows.Forms.ToolStripStatusLabel();
             this.TsTools = new System.Windows.Forms.ToolStrip();
             this.BtnImport = new System.Windows.Forms.ToolStripButton();
             this.LbTest = new System.Windows.Forms.ToolStripLabel();
             this.PbData = new SimpleAnnPlayground.UI.Controls.ToolStripTrackBar();
             this.LbTraining = new System.Windows.Forms.ToolStripLabel();
-            this.DgvData = new System.Windows.Forms.DataGridView();
-            this.BtnShuffle = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.BtnShuffle = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.DgData = new System.Windows.Forms.DataGridView();
+            this.SsBar.SuspendLayout();
             this.TsTools.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DgvData)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DgData)).BeginInit();
             this.SuspendLayout();
             // 
             // SsBar
             // 
+            this.SsBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.LbColumns,
+            this.LbInputs,
+            this.LbOutputs,
+            this.LbRegisters});
             this.SsBar.Location = new System.Drawing.Point(0, 411);
             this.SsBar.Name = "SsBar";
             this.SsBar.Size = new System.Drawing.Size(590, 22);
             this.SsBar.TabIndex = 0;
             this.SsBar.Text = "statusStrip1";
+            // 
+            // LbColumns
+            // 
+            this.LbColumns.AutoSize = false;
+            this.LbColumns.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.LbColumns.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.LbColumns.Name = "LbColumns";
+            this.LbColumns.Size = new System.Drawing.Size(100, 17);
+            this.LbColumns.Text = "Columns:";
+            this.LbColumns.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // LbInputs
+            // 
+            this.LbInputs.AutoSize = false;
+            this.LbInputs.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.LbInputs.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.LbInputs.Name = "LbInputs";
+            this.LbInputs.Size = new System.Drawing.Size(100, 17);
+            this.LbInputs.Text = "Inputs:";
+            this.LbInputs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // LbOutputs
+            // 
+            this.LbOutputs.AutoSize = false;
+            this.LbOutputs.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.LbOutputs.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.LbOutputs.Name = "LbOutputs";
+            this.LbOutputs.Size = new System.Drawing.Size(100, 17);
+            this.LbOutputs.Text = "Outputs:";
+            this.LbOutputs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // LbRegisters
+            // 
+            this.LbRegisters.AutoSize = false;
+            this.LbRegisters.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.LbRegisters.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.LbRegisters.Name = "LbRegisters";
+            this.LbRegisters.Size = new System.Drawing.Size(100, 17);
+            this.LbRegisters.Text = "Registers: ";
+            this.LbRegisters.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // TsTools
             // 
@@ -79,6 +138,7 @@ namespace SimpleAnnPlayground.Screens
             this.BtnImport.Name = "BtnImport";
             this.BtnImport.Size = new System.Drawing.Size(71, 28);
             this.BtnImport.Text = "Import";
+            this.BtnImport.Click += new System.EventHandler(this.BtnImport_Click);
             // 
             // LbTest
             // 
@@ -104,28 +164,6 @@ namespace SimpleAnnPlayground.Screens
             this.LbTraining.Size = new System.Drawing.Size(90, 28);
             this.LbTraining.Text = "Training - 80 %";
             // 
-            // DgvData
-            // 
-            this.DgvData.AllowUserToAddRows = false;
-            this.DgvData.AllowUserToDeleteRows = false;
-            this.DgvData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DgvData.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DgvData.Location = new System.Drawing.Point(0, 31);
-            this.DgvData.Name = "DgvData";
-            this.DgvData.ReadOnly = true;
-            this.DgvData.RowTemplate.Height = 25;
-            this.DgvData.Size = new System.Drawing.Size(590, 380);
-            this.DgvData.TabIndex = 2;
-            // 
-            // BtnShuffle
-            // 
-            this.BtnShuffle.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.BtnShuffle.Image = global::SimpleAnnPlayground.Properties.Resources.Shuffle_32;
-            this.BtnShuffle.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnShuffle.Name = "BtnShuffle";
-            this.BtnShuffle.Size = new System.Drawing.Size(72, 28);
-            this.BtnShuffle.Text = "Shuffle";
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -137,18 +175,39 @@ namespace SimpleAnnPlayground.Screens
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
             // 
+            // BtnShuffle
+            // 
+            this.BtnShuffle.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.BtnShuffle.Image = global::SimpleAnnPlayground.Properties.Resources.Shuffle_32;
+            this.BtnShuffle.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnShuffle.Name = "BtnShuffle";
+            this.BtnShuffle.Size = new System.Drawing.Size(72, 28);
+            this.BtnShuffle.Text = "Shuffle";
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 31);
             // 
+            // DgData
+            // 
+            this.DgData.AllowUserToAddRows = false;
+            this.DgData.AllowUserToDeleteRows = false;
+            this.DgData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DgData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DgData.Location = new System.Drawing.Point(0, 31);
+            this.DgData.Name = "DgData";
+            this.DgData.RowTemplate.Height = 25;
+            this.DgData.Size = new System.Drawing.Size(590, 380);
+            this.DgData.TabIndex = 2;
+            // 
             // FrmData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(590, 433);
-            this.Controls.Add(this.DgvData);
+            this.Controls.Add(this.DgData);
             this.Controls.Add(this.TsTools);
             this.Controls.Add(this.SsBar);
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -156,9 +215,12 @@ namespace SimpleAnnPlayground.Screens
             this.Name = "FrmData";
             this.Text = "Data";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmData_FormClosing);
+            this.Load += new System.EventHandler(this.FrmData_Load);
+            this.SsBar.ResumeLayout(false);
+            this.SsBar.PerformLayout();
             this.TsTools.ResumeLayout(false);
             this.TsTools.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DgvData)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DgData)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -172,10 +234,14 @@ namespace SimpleAnnPlayground.Screens
         private ToolStripLabel LbTest;
         private ToolStripTrackBar PbData;
         private ToolStripLabel LbTraining;
-        private DataGridView DgvData;
+        private DataGridView DgData;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripSeparator toolStripSeparator2;
         private ToolStripButton BtnShuffle;
         private ToolStripSeparator toolStripSeparator3;
+        private ToolStripStatusLabel LbInputs;
+        private ToolStripStatusLabel LbOutputs;
+        private ToolStripStatusLabel LbColumns;
+        private ToolStripStatusLabel LbRegisters;
     }
 }
