@@ -183,6 +183,7 @@ namespace SimpleAnnPlayground.Screens
             this.BtnShuffle.Name = "BtnShuffle";
             this.BtnShuffle.Size = new System.Drawing.Size(72, 28);
             this.BtnShuffle.Text = "Shuffle";
+            this.BtnShuffle.Click += new System.EventHandler(this.BtnShuffle_Click);
             // 
             // toolStripSeparator3
             // 
