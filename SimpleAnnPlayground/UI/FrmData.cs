@@ -140,7 +140,8 @@ namespace SimpleAnnPlayground.Screens
                     // Generates a random number between 1 to 1000, if that number is even, changes the current position with the next position. Last position avoided.
                     if ((randomNumber % 2 == 0) && (temporalRow.Index + 1 < temporalDgData.Rows.Count))
                     {
-                        /* Uncomment to test the shuffle if the random generated number is even and it's within the first ten positions 
+                        // Uncomment to test the shuffle if the random generated number is even and it's within the first ten positions
+                        /*
                         if (temporalRow.Index < 10)
                         {
                             Debug.WriteLine("Generated number: " + randomNumber + ", it's going to modify the position: " + temporalRow.Index);
