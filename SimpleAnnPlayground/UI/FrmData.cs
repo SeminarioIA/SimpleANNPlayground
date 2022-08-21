@@ -3,7 +3,6 @@
 // </copyright>
 
 using SimpleAnnPlayground.Data;
-using SimpleAnnPlayground.Graphical.Elements;
 using SimpleAnnPlayground.UI;
 using SimpleAnnPlayground.Utils;
 
