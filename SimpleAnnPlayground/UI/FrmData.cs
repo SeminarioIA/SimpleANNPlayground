@@ -6,6 +6,7 @@ using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical.Elements;
 using SimpleAnnPlayground.UI;
 using SimpleAnnPlayground.Utils;
+using System.Security.Cryptography;
 
 namespace SimpleAnnPlayground.Screens
 {
@@ -29,12 +30,18 @@ namespace SimpleAnnPlayground.Screens
             _typeRow = new DataGridViewRow();
             PbData.ValueChanged += PbData_ValueChanged;
             _table.CellValueChanged += Table_CellValueChanged;
+            DataLoaded = false;
         }
 
         /// <summary>
         /// Gets the data table.
         /// </summary>
         public DataTable? DataTable { get; private set; }
+
+        /// <summary>
+        ///  Gets a value indicating whether the data has been loaded into the DataGridViewer.
+        /// </summary>
+        public bool DataLoaded { get; private set; }
 
         private void PbData_ValueChanged(object? sender, EventArgs e)
         {
@@ -73,6 +80,8 @@ namespace SimpleAnnPlayground.Screens
             DataTable = table;
             DgData.Rows.Clear();
             DgData.Columns.Clear();
+            _typeRow.Cells.Clear();
+
             foreach (DataLabel label in DataTable.Labels)
             {
                 _ = DgData.Columns.Add(label.Text, label.Text);
@@ -97,6 +106,7 @@ namespace SimpleAnnPlayground.Screens
                 row.HeaderCell.Value = register.Id;
             }
 
+            DataLoaded = true;
             UpdateInfo();
         }
 
@@ -121,6 +131,35 @@ namespace SimpleAnnPlayground.Screens
 
         private void FrmData_Load(object sender, EventArgs e)
         {
+        }
+
+        private void BtnShuffle_Click(object sender, EventArgs e)
+        {
+            if (DataLoaded)
+            {
+                DataGridViewEditor temporalTable = _table;
+                temporalTable.Viewer.Rows.RemoveAt(_typeRow.Index);
+                int randomColumnIndex = temporalTable.Viewer.Columns.Add("Random numbers", "Randoms:");
+
+                // _typeRow.Cells[randomColumnIndex].Value = "Random";
+                foreach (DataGridViewRow temporalRow in temporalTable.Viewer.Rows)
+                {
+                    object randomNumber = RandomNumberGenerator.GetInt32(1, temporalTable.Viewer.RowCount);
+                    temporalTable.Viewer.Rows[temporalRow.Index].Cells[randomColumnIndex].Value = randomNumber;
+                }
+
+                temporalTable.Viewer.Sort(temporalTable.Viewer.Columns[randomColumnIndex], System.ComponentModel.ListSortDirection.Descending);
+                temporalTable.Viewer.Rows.Insert(0, _typeRow);
+
+                temporalTable.Viewer.Columns.RemoveAt(randomColumnIndex);
+                DgData = temporalTable.Viewer;
+
+                UpdateInfo();
+            }
+            else
+            {
+                _ = MessageBox.Show("Error, you first have to load data.", "Error", MessageBoxButtons.OK);
+            }
         }
     }
 }
