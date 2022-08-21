@@ -4,8 +4,9 @@
 
 using System.Globalization;
 using System.Reflection;
+using System.Security.Cryptography;
 
-namespace SimpleAnnPlayground.Utils
+namespace SimpleAnnPlayground.Utils.DataView
 {
     /// <summary>
     /// Configures a <see cref="DataGridView"/> to be editable.
@@ -54,12 +55,30 @@ namespace SimpleAnnPlayground.Utils
         /// <summary>
         /// Ocurrs when a <see cref="DataGridViewRow"/> had been edited.
         /// </summary>
-        public event EventHandler<EventArgs>? CellValueChanged;
+        public event EventHandler<CellValueChangedEventArgs>? CellValueChanged;
 
         /// <summary>
         /// Gets the <see cref="DataGridView"/> linked to this instance of <see cref="DataGridViewEditor"/>.
         /// </summary>
         public DataGridView Viewer { get; private set; }
+
+        /// <summary>
+        /// Reorders the <see cref="Viewer"/> rows randomly.
+        /// </summary>
+        public void Shuffle()
+        {
+            Viewer.CellValueChanged -= EditableViewer_CellValueChanged;
+            int randomColumnIndex = Viewer.Columns.Add("Random numbers", "Randoms:");
+            foreach (DataGridViewRow temporalRow in Viewer.Rows)
+            {
+                object randomNumber = RandomNumberGenerator.GetInt32(1, Viewer.RowCount);
+                Viewer.Rows[temporalRow.Index].Cells[randomColumnIndex].Value = randomNumber;
+            }
+
+            Viewer.Sort(Viewer.Columns[randomColumnIndex], System.ComponentModel.ListSortDirection.Descending);
+            Viewer.Columns.RemoveAt(randomColumnIndex);
+            Viewer.CellValueChanged += EditableViewer_CellValueChanged;
+        }
 
         /// <summary>
         /// Enables double buffer for a <see cref="DataGridView"/>.
@@ -92,9 +111,7 @@ namespace SimpleAnnPlayground.Utils
         private void EditableViewer_CurrentCellDirtyStateChanged(object? sender, EventArgs e)
         {
             if (sender is DataGridView viewer && viewer.IsCurrentCellDirty)
-            {
                 _ = viewer.CommitEdit(DataGridViewDataErrorContexts.Commit);
-            }
         }
 
         private void EditableViewer_CellValueChanged(object? sender, DataGridViewCellEventArgs e)
@@ -102,7 +119,7 @@ namespace SimpleAnnPlayground.Utils
             if (!_changing && e.RowIndex >= 0 && e.ColumnIndex >= 0 && sender is DataGridView viewer)
             {
                 _changing = true;
-                CellValueChanged?.Invoke(viewer.Rows[e.RowIndex].Cells[e.ColumnIndex], EventArgs.Empty);
+                CellValueChanged?.Invoke(viewer, new CellValueChangedEventArgs(viewer.Rows[e.RowIndex].Cells[e.ColumnIndex]));
                 RowUpdated?.Invoke(viewer.Rows[e.RowIndex], EventArgs.Empty);
                 _changing = false;
             }

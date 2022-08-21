@@ -151,6 +151,7 @@ namespace SimpleAnnPlayground.Screens
             // PbData
             // 
             this.PbData.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.PbData.Enabled = false;
             this.PbData.Name = "PbData";
             this.PbData.Size = new System.Drawing.Size(100, 28);
             this.PbData.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
@@ -178,6 +179,7 @@ namespace SimpleAnnPlayground.Screens
             // BtnShuffle
             // 
             this.BtnShuffle.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.BtnShuffle.Enabled = false;
             this.BtnShuffle.Image = global::SimpleAnnPlayground.Properties.Resources.Shuffle_32;
             this.BtnShuffle.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnShuffle.Name = "BtnShuffle";

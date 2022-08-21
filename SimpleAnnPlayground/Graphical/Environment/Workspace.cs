@@ -6,6 +6,7 @@ using SimpleAnnPlayground.Actions;
 using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Visualization;
+using SimpleAnnPlayground.Storage;
 using System.Drawing.Drawing2D;
 
 namespace SimpleAnnPlayground.Graphical.Environment
@@ -61,9 +62,14 @@ namespace SimpleAnnPlayground.Graphical.Environment
         }
 
         /// <summary>
-        /// Ocurs when the mouse had selected a new object.
+        /// Occurs when the mouse had selected a new object.
         /// </summary>
         public event EventHandler<SelectionChangedEventArgs>? SelectionChanged;
+
+        /// <summary>
+        /// Occurs when the data table is cleared or changes.
+        /// </summary>
+        public event EventHandler? DataTableChanged;
 
         /// <summary>
         /// Gets the <seealso cref="PictureBox"/> object linked to this workspace.
@@ -170,7 +176,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Generates a document to save the workspace information into a file.
         /// </summary>
         /// <returns>The generated document.</returns>
-        public Document GenerateDocument() => new(WorkSheet, Canvas.Objects, Canvas.Connections);
+        public Document GenerateDocument() => new(WorkSheet, Canvas.Objects, Canvas.Connections, DataTable);
 
         /// <summary>
         /// Loads an existing document into the workspace.
@@ -181,6 +187,8 @@ namespace SimpleAnnPlayground.Graphical.Environment
             WorkSheet = document.WorkSheet;
             Canvas = new Canvas(document.Objects, document.Connections);
             Shadow = new ShadowCanvas(document.Objects, document.Connections);
+            DataTable = document.DataTable;
+            DataTableChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -192,8 +200,10 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Canvas.Connections.Clear();
             Shadow.Objects.Clear();
             Shadow.Connections.Clear();
+            DataTable.Clear();
             Actions.Clear();
             Refresh();
+            DataTableChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void UpdateTransform()

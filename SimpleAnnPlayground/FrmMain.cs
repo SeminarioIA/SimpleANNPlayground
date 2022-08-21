@@ -9,6 +9,7 @@ using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Screens;
+using SimpleAnnPlayground.Storage;
 using SimpleAnnPlayground.Utils;
 using SimpleAnnPlayground.Utils.FileManagment;
 using System.Diagnostics;
@@ -136,7 +137,7 @@ namespace SimpleAnnPlayground
             _frmObjectsViewer = new FrmObjectsViewer(_workspace);
             _frmActionsViewer = new FrmActionsViewer(_workspace.Actions);
 #endif
-            _frmData = new FrmData();
+            _frmData = new FrmData(_workspace);
         }
 
         /// <summary>

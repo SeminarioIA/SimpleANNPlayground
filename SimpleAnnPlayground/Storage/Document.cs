@@ -4,11 +4,13 @@
 
 using Newtonsoft.Json;
 using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Data;
+using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Utils.Serialization.Json;
 using System.Collections.ObjectModel;
 
-namespace SimpleAnnPlayground.Graphical.Environment
+namespace SimpleAnnPlayground.Storage
 {
     /// <summary>
     /// Represents all the elements that can be saved in a file.
@@ -21,12 +23,14 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <param name="workSheet">The document workspace sheet.</param>
         /// <param name="objects">The objects to add.</param>
         /// <param name="connections">The connections to add.</param>
+        /// <param name="dataTable">The document data.</param>
         [JsonConstructor]
-        public Document(WorkSheet workSheet, Collection<CanvasObject> objects, Collection<Connection> connections)
+        public Document(WorkSheet workSheet, Collection<CanvasObject> objects, Collection<Connection> connections, DataTable dataTable)
         {
             WorkSheet = workSheet;
             Objects = objects;
             Connections = connections;
+            DataTable = dataTable;
         }
 
         /// <summary>
@@ -43,6 +47,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Gets the list of <see cref="Connection"/>.
         /// </summary>
         public Collection<Connection> Connections { get; }
+
+        /// <summary>
+        /// Gets the document data.
+        /// </summary>
+        public DataTable DataTable { get; }
 
         /// <summary>
         /// Deserializes a object from the JSON data.

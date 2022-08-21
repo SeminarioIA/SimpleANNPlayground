@@ -3,9 +3,11 @@
 // </copyright>
 
 using SimpleAnnPlayground.Data;
+using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.UI;
-using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.DataView;
 using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace SimpleAnnPlayground.Screens
 {
@@ -21,26 +23,59 @@ namespace SimpleAnnPlayground.Screens
         /// <summary>
         /// Initializes a new instance of the <see cref="FrmData"/> class.
         /// </summary>
-        public FrmData()
+        /// <param name="workspace">The workspace containing the data.</param>
+        public FrmData(Workspace workspace)
         {
             InitializeComponent();
 
+            Workspace = workspace;
+            Workspace.DataTableChanged += Workspace_DataTableChanged;
             _table = new DataGridViewEditor(DgData);
             _typeRow = new DataGridViewRow();
             PbData.ValueChanged += PbData_ValueChanged;
             _table.CellValueChanged += Table_CellValueChanged;
-            DataLoaded = false;
         }
 
         /// <summary>
         /// Gets the data table.
         /// </summary>
-        public DataTable? DataTable { get; private set; }
+        public Workspace Workspace { get; }
 
-        /// <summary>
-        ///  Gets a value indicating whether the data has been loaded into the DataGridViewer.
-        /// </summary>
-        public bool DataLoaded { get; private set; }
+        private void Workspace_DataTableChanged(object? sender, EventArgs e)
+        {
+            DgData.Rows.Clear();
+            DgData.Columns.Clear();
+            _typeRow.Cells.Clear();
+
+            if (Workspace.DataTable.HasData())
+            {
+                foreach (DataLabel label in Workspace.DataTable.Labels)
+                {
+                    _ = DgData.Columns.Add(label.Text, label.Text);
+
+                    // Add the type row.
+                    var typeCell = new DataGridViewComboBoxCell();
+                    _ = _typeRow.Cells.Add(typeCell);
+                    typeCell.Items.AddRange(Enum.GetNames<DataType>());
+                    typeCell.Value = label.DataType.ToString();
+                }
+
+                _typeRow.HeaderCell.Value = "Type:";
+                _typeRow.Frozen = true;
+                _ = DgData.Rows.Add(_typeRow);
+                DgData.RowHeadersWidth = 100;
+
+                foreach (DataRegister register in Workspace.DataTable.Registers)
+                {
+                    int rowIndex = DgData.Rows.Add(register.GetStrings());
+                    var row = DgData.Rows[rowIndex];
+                    row.ReadOnly = true;
+                    row.HeaderCell.Value = register.Id.ToString();
+                }
+            }
+
+            UpdateInfo();
+        }
 
         private void PbData_ValueChanged(object? sender, EventArgs e)
         {
@@ -65,52 +100,18 @@ namespace SimpleAnnPlayground.Screens
                 fileName = ofd.FileName;
             }
 
-            using (var frmImportData = new FrmImportData(fileName))
+            using (var frmImportData = new FrmImportData(fileName, Workspace.DataTable))
             {
-                if (frmImportData.GetData() is DataTable data)
+                if (frmImportData.GetData())
                 {
-                    LoadData(data);
+                    Workspace_DataTableChanged(null, EventArgs.Empty);
                 }
             }
         }
 
-        private void LoadData(DataTable table)
+        private void Table_CellValueChanged(object? sender, CellValueChangedEventArgs e)
         {
-            DataTable = table;
-            DgData.Rows.Clear();
-            DgData.Columns.Clear();
-            _typeRow.Cells.Clear();
-
-            foreach (DataLabel label in DataTable.Labels)
-            {
-                _ = DgData.Columns.Add(label.Text, label.Text);
-
-                // Add the type row.
-                var typeCell = new DataGridViewComboBoxCell();
-                _ = _typeRow.Cells.Add(typeCell);
-                typeCell.Items.AddRange(Enum.GetNames<DataType>());
-                typeCell.Value = label == DataTable.Labels.Last() ? DataType.Output.ToString() : DataType.Input.ToString();
-            }
-
-            _typeRow.HeaderCell.Value = "Type:";
-            _typeRow.Frozen = true;
-            _ = DgData.Rows.Add(_typeRow);
-            DgData.RowHeadersWidth = 100;
-
-            foreach (DataRegister register in table.Registers)
-            {
-                int rowIndex = DgData.Rows.Add(register.GetStrings());
-                var row = DgData.Rows[rowIndex];
-                row.ReadOnly = true;
-                row.HeaderCell.Value = register.Id;
-            }
-
-            DataLoaded = true;
-            UpdateInfo();
-        }
-
-        private void Table_CellValueChanged(object? sender, EventArgs e)
-        {
+            if (e.Cell.RowIndex == 0) Workspace.DataTable.Labels[e.Cell.ColumnIndex].DataType = Enum.Parse<DataType>(e.Cell.Value?.ToString() ?? string.Empty);
         }
 
         private void UpdateInfo()
@@ -126,6 +127,9 @@ namespace SimpleAnnPlayground.Screens
             LbRegisters.Text = $"Registers: {DgData.RowCount - ControlRows}";
             LbInputs.Text = $"Inputs: {inputs}";
             LbOutputs.Text = $"Outputs: {outputs}";
+
+            BtnShuffle.Enabled = Workspace.DataTable.HasData();
+            PbData.Enabled = Workspace.DataTable.HasData();
         }
 
         private void FrmData_Load(object sender, EventArgs e)
@@ -134,31 +138,9 @@ namespace SimpleAnnPlayground.Screens
 
         private void BtnShuffle_Click(object sender, EventArgs e)
         {
-            if (DataLoaded)
-            {
-                DataGridViewEditor temporalTable = _table;
-                temporalTable.Viewer.Rows.RemoveAt(_typeRow.Index);
-                int randomColumnIndex = temporalTable.Viewer.Columns.Add("Random numbers", "Randoms:");
-
-                // _typeRow.Cells[randomColumnIndex].Value = "Random";
-                foreach (DataGridViewRow temporalRow in temporalTable.Viewer.Rows)
-                {
-                    object randomNumber = RandomNumberGenerator.GetInt32(1, temporalTable.Viewer.RowCount);
-                    temporalTable.Viewer.Rows[temporalRow.Index].Cells[randomColumnIndex].Value = randomNumber;
-                }
-
-                temporalTable.Viewer.Sort(temporalTable.Viewer.Columns[randomColumnIndex], System.ComponentModel.ListSortDirection.Descending);
-                temporalTable.Viewer.Rows.Insert(0, _typeRow);
-
-                temporalTable.Viewer.Columns.RemoveAt(randomColumnIndex);
-                DgData = temporalTable.Viewer;
-
-                UpdateInfo();
-            }
-            else
-            {
-                _ = MessageBox.Show("Error, you first have to load data.", "Error", MessageBoxButtons.OK);
-            }
+            _table.Viewer.Rows.Remove(_typeRow);
+            _table.Shuffle();
+            _table.Viewer.Rows.Insert(0, _typeRow);
         }
     }
 }

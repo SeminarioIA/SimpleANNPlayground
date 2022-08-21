@@ -35,7 +35,7 @@ namespace SimpleAnnPlayground.UI.Controls
         /// <inheritdoc/>
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (e == null) return;
+            if (e == null || !Enabled) return;
             Rectangle rectangle = e.ClipRectangle;
             rectangle.Width = (int)(rectangle.Width * ((double)Value / Maximum)) - 4;
             ProgressBarRenderer.DrawHorizontalBar(e.Graphics, e.ClipRectangle);
