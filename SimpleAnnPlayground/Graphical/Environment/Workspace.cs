@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Actions;
+using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Visualization;
 using System.Drawing.Drawing2D;
@@ -41,6 +42,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Canvas = new Canvas();
             Shadow = new ShadowCanvas();
             Actions = new ActionsManager(this);
+            DataTable = new DataTable();
 
             // PictureBox events.
             PictureBox.Paint += PictureBox_Paint;
@@ -82,6 +84,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Gets the workspace sheet.
         /// </summary>
         public WorkSheet WorkSheet { get; private set; }
+
+        /// <summary>
+        /// Gets the workspace data table.
+        /// </summary>
+        public DataTable DataTable { get; private set; }
 
         /// <summary>
         /// Gets the active <seealso cref="MouseTool"/> object.

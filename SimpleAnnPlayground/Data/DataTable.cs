@@ -12,6 +12,15 @@ namespace SimpleAnnPlayground.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTable"/> class.
         /// </summary>
+        public DataTable()
+        {
+            Labels = new List<DataLabel>();
+            Registers = new List<DataRegister>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataTable"/> class.
+        /// </summary>
         /// <param name="labels">The header labels for this table.</param>
         public DataTable(IEnumerable<string> labels)
         {
