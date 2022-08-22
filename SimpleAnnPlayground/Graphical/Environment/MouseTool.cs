@@ -393,7 +393,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                 // Check if the cursor is over an object.
                 if (GetObjectOver() is CanvasObject obj)
                 {
-                    if (e.Button == MouseButtons.Left)
+                    if (e.Button == MouseButtons.Left && !Workspace.ReadOnly)
                     {
                         // Check if the cursor is also over a connection terminal.
                         if (obj.ActiveTerminal != null)
@@ -407,7 +407,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                             MoveObjects(obj, Location.Value);
                         }
                     }
-                    else if (e.Button == MouseButtons.Right)
+                    else if (e.Button == MouseButtons.Right || Workspace.ReadOnly)
                     {
                         // Select the object.
                         Workspace.Canvas.UnselectAll();

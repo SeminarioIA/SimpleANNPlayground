@@ -134,9 +134,31 @@ namespace SimpleAnnPlayground.Graphical.Environment
         public float Scale => Zoom / 100f;
 
         /// <summary>
+        /// Gets a value indicating whether the workspace is in read only mode.
+        /// </summary>
+        public bool ReadOnly { get; private set; }
+
+        /// <summary>
         /// Forces to paint the workspace.
         /// </summary>
         public void Refresh() => PictureBox.Invalidate();
+
+        /// <summary>
+        /// Set the workspace as read only.
+        /// </summary>
+        public void SetReadOnly()
+        {
+            ReadOnly = true;
+            if (Canvas.GetSelectedObjects().Any()) Canvas.UnselectAll();
+        }
+
+        /// <summary>
+        /// Sets the workspace as editable.
+        /// </summary>
+        public void SetEditable()
+        {
+            ReadOnly = false;
+        }
 
         /// <summary>
         /// Centers the sheet in the viewing area.

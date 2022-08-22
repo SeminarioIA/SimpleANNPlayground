@@ -330,6 +330,7 @@ namespace SimpleAnnPlayground
 
         private void MnuEditUndo_Click(object sender, EventArgs e)
         {
+            if (_workspace.ReadOnly) return;
             _workspace.Actions.Undo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
@@ -338,6 +339,7 @@ namespace SimpleAnnPlayground
 
         private void MnuEditRedo_Click(object sender, EventArgs e)
         {
+            if (_workspace.ReadOnly) return;
             _workspace.Actions.Redo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
@@ -355,12 +357,13 @@ namespace SimpleAnnPlayground
 
         private void MnuEditDelete_Click(object sender, EventArgs e)
         {
+            if (_workspace.ReadOnly) return;
             _workspace.Actions.AddRemoveAction(Actions.RecordableAction.ActionType.Deleted);
         }
 
         private void MnuEditCopy_Click(object sender, EventArgs e)
         {
-            if (!_workspace.Canvas.AnySelected()) return;
+            if (_workspace.ReadOnly || !_workspace.Canvas.AnySelected()) return;
             var copyBag = new ClipboardBag(_workspace);
             Clipboard.SetData("SimpleAnnPlayground.Copy", copyBag.Serialize());
             MnuEditPaste.Enabled = true;
@@ -368,6 +371,7 @@ namespace SimpleAnnPlayground
 
         private void MnuEditPaste_Click(object sender, EventArgs e)
         {
+            if (_workspace.ReadOnly) return;
             if (Clipboard.GetData("SimpleAnnPlayground.Copy") is string data)
             {
                 var pasteBag = ClipboardBag.Deserialize(_workspace, data);
@@ -377,7 +381,7 @@ namespace SimpleAnnPlayground
 
         private void MnuEditCut_Click(object sender, EventArgs e)
         {
-            if (!_workspace.Canvas.AnySelected()) return;
+            if (_workspace.ReadOnly || !_workspace.Canvas.AnySelected()) return;
             var cutBag = new ClipboardBag(_workspace);
             Clipboard.SetData("SimpleAnnPlayground.Copy", cutBag.Serialize());
             MnuEditPaste.Enabled = true;
@@ -446,6 +450,12 @@ namespace SimpleAnnPlayground
 
         private void CmsDraw_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if(_workspace.ReadOnly)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             switch (_workspace.Canvas.GetSelectedObjects().Count)
             {
                 case 0:
@@ -529,14 +539,28 @@ namespace SimpleAnnPlayground
 
         private void BtnTraining_Click(object sender, EventArgs e)
         {
+            MnuEdit.Enabled = false;
             TspEdition.Visible = false;
             TspExecution.Visible = true;
+            UncheckToolsButtons(null);
+            _workspace.SetReadOnly();
+        }
+
+        private void BtnTest_Click(object sender, EventArgs e)
+        {
+            MnuEdit.Enabled = false;
+            TspEdition.Visible = false;
+            TspExecution.Visible = true;
+            UncheckToolsButtons(null);
+            _workspace.SetReadOnly();
         }
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
+            MnuEdit.Enabled = true;
             TspEdition.Visible = true;
             TspExecution.Visible = false;
+            _workspace.SetEditable();
         }
     }
 }

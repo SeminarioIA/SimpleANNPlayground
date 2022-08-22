@@ -267,6 +267,7 @@
             this.BtnTest.Size = new System.Drawing.Size(53, 53);
             this.BtnTest.Text = "Testing";
             this.BtnTest.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnTest.Click += new System.EventHandler(this.BtnTest_Click);
             // 
             // SspStatus
             // 
