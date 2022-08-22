@@ -4,6 +4,7 @@
 
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Environment;
+using static SimpleAnnPlayground.Graphical.Component;
 
 namespace SimpleAnnPlayground.Ann.Networks
 {
@@ -41,6 +42,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             result &= CheckUnconnected();
             if (result) result &= CheckForInputs();
             if (result) result &= CheckForOutputs();
+            if (result) result &= CheckForDataLinks();
             if (result) result &= BuildGraph();
             Workspace.Refresh();
             return result;
@@ -53,7 +55,7 @@ namespace SimpleAnnPlayground.Ann.Networks
         {
             foreach (var obj in Workspace.Canvas.Objects)
             {
-                obj.ClearStateFlag(Graphical.Component.State.ComponentStatusMask);
+                obj.ClearStateFlag(State.ComponentStatusMask);
             }
 
             Graph = null;
@@ -68,7 +70,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             {
                 if (obj.Terminals.Any(terminal => !terminal.GetConnections().Any()))
                 {
-                    obj.SetStateFlag(Graphical.Component.State.ComponentError);
+                    obj.SetStateFlag(State.ComponentError);
                     result = false;
                 }
             }
@@ -86,6 +88,44 @@ namespace SimpleAnnPlayground.Ann.Networks
             return Workspace.Canvas.Objects.Any(obj => obj is Output);
         }
 
+        private bool CheckForDataLinks()
+        {
+            bool result = true;
+
+            foreach (var obj in Workspace.Canvas.Objects)
+            {
+                switch (obj)
+                {
+                    case Input input:
+                    {
+                        if (input.DataLabel == null)
+                        {
+                            obj.SetStateFlag(State.ComponentError);
+                            result = false;
+                        }
+
+                        break;
+                    }
+
+                    case Output output:
+                    {
+                        if (output.DataLabel == null)
+                        {
+                            obj.SetStateFlag(State.ComponentError);
+                            result = false;
+                        }
+
+                        break;
+                    }
+
+                    default:
+                        break;
+                }
+            }
+
+            return result;
+        }
+
         private bool BuildGraph()
         {
             Graph = new Graph(this);
@@ -101,7 +141,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             // Expand the graph
             Graph.Expand();
 
-            return false;
+            return Graph.Nodes.Count == Workspace.Canvas.Objects.Count;
         }
     }
 }

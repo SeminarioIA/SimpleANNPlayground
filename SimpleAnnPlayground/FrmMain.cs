@@ -389,7 +389,7 @@ namespace SimpleAnnPlayground
         {
             bool result = _network.Build();
             BtnTraining.Enabled = result;
-            BtnTest.Enabled = result;
+            BtnTest.Enabled = false;
         }
 
         private void BtnClean_Click(object sender, EventArgs e)
@@ -417,7 +417,7 @@ namespace SimpleAnnPlayground
         {
             if (_fileManager.Open() && _fileManager.FileContent is string data)
             {
-                _workspace.LoadDocument(Document.Deserialize(_workspace, data));
+                _workspace.LoadDocument(Document.Deserialize(data));
             }
         }
 
