@@ -13,16 +13,31 @@ namespace SimpleAnnPlayground.Data
         /// Initializes a new instance of the <see cref="DataRegister"/> class.
         /// </summary>
         /// <param name="id">The register id.</param>
-        public DataRegister(string id)
+        public DataRegister(int id)
         {
             Id = id;
             Fields = new List<DataValue>();
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DataRegister"/> class.
+        /// </summary>
+        /// <param name="csvLine">A text line from a CSV file.</param>
+        public DataRegister(string csvLine)
+        {
+            string[] values = csvLine.Split(',');
+            Id = Convert.ToInt32(values[0], 10);
+            Fields = new List<DataValue>();
+            foreach (string value in values.Skip(1))
+            {
+                Fields.Add(new DataValue(value));
+            }
+        }
+
+        /// <summary>
         /// Gets the register id.
         /// </summary>
-        public string Id { get; }
+        public int Id { get; }
 
         /// <summary>
         /// Gets the list of values.

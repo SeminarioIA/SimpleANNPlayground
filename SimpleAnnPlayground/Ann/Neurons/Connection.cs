@@ -74,7 +74,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// Gets or sets a value indicating whether this connection is selected.
         /// </summary>
         [JsonIgnore]
-        public bool IsSelected { get; set; }
+        public bool Selected { get; set; }
 
         /// <summary>
         /// Determines if a point is near enough to the connection line.
@@ -122,7 +122,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <param name="graphics">The graphics object.</param>
         internal void Paint(Graphics graphics)
         {
-            using (Pen pen = new Pen(IsSelected ? _selectColor : _color, Width))
+            using (Pen pen = new Pen(Selected ? _selectColor : _color, Width))
             {
                 graphics.DrawLine(pen, Source.Location, Destination.Location);
             }

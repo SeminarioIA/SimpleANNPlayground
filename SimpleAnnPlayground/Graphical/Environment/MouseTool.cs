@@ -209,7 +209,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                     Workspace.Canvas.AddObject(Inserting);
 
                     // Select the new inserted object.
-                    Inserting.SetStateFlag(Component.State.Selected);
+                    Inserting.Selected = true;
 
                     // Grab the insertion action to be able to undo later.
                     Workspace.Actions.AddObjectsAction(ActionType.Inserted, Workspace.Canvas.GetSelectedObjects());
@@ -311,6 +311,24 @@ namespace SimpleAnnPlayground.Graphical.Environment
         }
 
         /// <summary>
+        /// Determines if the mouse tool is over an object.
+        /// </summary>
+        /// <returns>The <see cref="CanvasObject"/> , otherwise false.</returns>
+        internal CanvasObject? GetObjectOver()
+        {
+            return Location != null && Workspace.Canvas.IsObject(Location.Value) is CanvasObject obj ? obj : null;
+        }
+
+        /// <summary>
+        /// Determines if the mouse tool is over an object.
+        /// </summary>
+        /// <returns>The <see cref="CanvasObject"/> , otherwise false.</returns>
+        internal Connection? GetConnectionOver()
+        {
+            return Location != null && Workspace.Canvas.IsConnection(Location.Value) is Connection conn ? conn : null;
+        }
+
+        /// <summary>
         /// Raises the <see cref="SelectionChanged"/> event.
         /// </summary>
         /// <param name="selectedObject">The object that was selected.</param>
@@ -363,28 +381,46 @@ namespace SimpleAnnPlayground.Graphical.Environment
 
         private void PictureBox_MouseDown(object? sender, MouseEventArgs e)
         {
+            if (Location == null)
+            {
+                ControlLocation = e.Location;
+                Location = Space.ScalePoint((PointF)ControlLocation, Workspace.Transform);
+            }
+
             // Start an action from the mouse only id idle.
-            if (Location != null && State == MouseState.Idle)
+            if (State == MouseState.Idle)
             {
                 // Check if the cursor is over an object.
-                if (Workspace.Canvas.IsObject(Location.Value) is CanvasObject obj)
+                if (GetObjectOver() is CanvasObject obj)
                 {
-                    // Check if the cursor is also over a connection terminal.
-                    if (obj.ActiveTerminal != null)
+                    if (e.Button == MouseButtons.Left)
                     {
-                        // Start connecting terminals.
-                        StartConnection(obj.ActiveTerminal);
+                        // Check if the cursor is also over a connection terminal.
+                        if (obj.ActiveTerminal != null)
+                        {
+                            // Start connecting terminals.
+                            StartConnection(obj.ActiveTerminal);
+                        }
+                        else
+                        {
+                            // Move the selected objects.
+                            MoveObjects(obj, Location.Value);
+                        }
                     }
-                    else
+                    else if (e.Button == MouseButtons.Right)
                     {
-                        // Move the selected objects.
-                        MoveObjects(obj, Location.Value);
+                        // Select the object.
+                        Workspace.Canvas.UnselectAll();
+                        obj.Selected = true;
+                        Workspace.Refresh();
+                        OnSelectionChanged(obj);
                     }
                 }
-                else if (Workspace.Canvas.IsConnection(Location.Value) is Connection connection)
+                else if (GetConnectionOver() is Connection connection)
                 {
+                    // Select the connection.
                     Workspace.Canvas.UnselectAll();
-                    connection.IsSelected = true;
+                    connection.Selected = true;
                     Workspace.Refresh();
                     OnSelectionChanged(connection);
                 }

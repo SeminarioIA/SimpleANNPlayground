@@ -3,8 +3,12 @@
 // </copyright>
 
 using SimpleAnnPlayground.Actions;
+using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Visualization;
+using SimpleAnnPlayground.Storage;
+using System.Collections.ObjectModel;
 using System.Drawing.Drawing2D;
 
 namespace SimpleAnnPlayground.Graphical.Environment
@@ -41,6 +45,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Canvas = new Canvas();
             Shadow = new ShadowCanvas();
             Actions = new ActionsManager(this);
+            DataTable = new DataTable();
 
             // PictureBox events.
             PictureBox.Paint += PictureBox_Paint;
@@ -59,9 +64,14 @@ namespace SimpleAnnPlayground.Graphical.Environment
         }
 
         /// <summary>
-        /// Ocurs when the mouse had selected a new object.
+        /// Occurs when the mouse had selected a new object.
         /// </summary>
         public event EventHandler<SelectionChangedEventArgs>? SelectionChanged;
+
+        /// <summary>
+        /// Occurs when the data table is cleared or changes.
+        /// </summary>
+        public event EventHandler? DataTableChanged;
 
         /// <summary>
         /// Gets the <seealso cref="PictureBox"/> object linked to this workspace.
@@ -82,6 +92,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Gets the workspace sheet.
         /// </summary>
         public WorkSheet WorkSheet { get; private set; }
+
+        /// <summary>
+        /// Gets the workspace data table.
+        /// </summary>
+        public DataTable DataTable { get; private set; }
 
         /// <summary>
         /// Gets the active <seealso cref="MouseTool"/> object.
@@ -163,7 +178,24 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Generates a document to save the workspace information into a file.
         /// </summary>
         /// <returns>The generated document.</returns>
-        public Document GenerateDocument() => new(WorkSheet, Canvas.Objects, Canvas.Connections);
+        public Document GenerateDocument()
+        {
+            var dataLinks = new Collection<DataLink>();
+            foreach (var obj in Canvas.Objects)
+            {
+                switch (obj)
+                {
+                    case Input input:
+                        if (input.DataLabel != null) dataLinks.Add(new DataLink(input.Id, input.DataLabel.Text));
+                        break;
+                    case Output output:
+                        if (output.DataLabel != null) dataLinks.Add(new DataLink(output.Id, output.DataLabel.Text));
+                        break;
+                }
+            }
+
+            return new(WorkSheet, Canvas.Objects, Canvas.Connections, DataTable, dataLinks);
+        }
 
         /// <summary>
         /// Loads an existing document into the workspace.
@@ -171,9 +203,12 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <param name="document">The document to load.</param>
         public void LoadDocument(Document document)
         {
+            MouseTool.CancelOperation();
             WorkSheet = document.WorkSheet;
             Canvas = new Canvas(document.Objects, document.Connections);
             Shadow = new ShadowCanvas(document.Objects, document.Connections);
+            DataTable = document.DataTable;
+            DataTableChanged?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -185,8 +220,10 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Canvas.Connections.Clear();
             Shadow.Objects.Clear();
             Shadow.Connections.Clear();
+            DataTable.Clear();
             Actions.Clear();
             Refresh();
+            DataTableChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void UpdateTransform()

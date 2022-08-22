@@ -2,8 +2,10 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Visualization;
+using System.Text.Json.Serialization;
 
 namespace SimpleAnnPlayground.Ann.Neurons
 {
@@ -38,5 +40,27 @@ namespace SimpleAnnPlayground.Ann.Neurons
 
         /// <inheritdoc/>
         internal override int? DownwardLayer => (Inputs.FirstOrDefault(input => input.IsConnected)?.AnyConnection?.Source.Owner as Neuron)?.DownwardLayer + 1;
+
+        /// <summary>
+        /// Gets or sets the linked data label.
+        /// </summary>
+        [JsonInclude]
+        internal DataLabel? DataLabel { get; set; }
+
+        /// <inheritdoc/>
+        public override void Paint(Graphics graphics)
+        {
+            base.Paint(graphics);
+            if (DataLabel != null)
+            {
+                using (var font = new Font("Arial", 8))
+                using (var brush = new SolidBrush(Color.Black))
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
+                {
+                    var location = new PointF(Location.X, Location.Y + Component.Y);
+                    graphics.DrawString(DataLabel.Text, font, brush, location, format);
+                }
+            }
+        }
     }
 }

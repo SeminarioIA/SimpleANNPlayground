@@ -725,3 +725,4 @@ dotnet_diagnostic.CA1001.severity = warning
 dotnet_diagnostic.SA1500.severity = silent
 dotnet_diagnostic.SA1407.severity = silent
 dotnet_diagnostic.SA1000.severity = silent
+csharp_style_prefer_top_level_statements = true:silent

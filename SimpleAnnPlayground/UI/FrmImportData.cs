@@ -3,7 +3,9 @@
 // </copyright>
 
 using SimpleAnnPlayground.Data;
+using SimpleAnnPlayground.Screens;
 using SimpleAnnPlayground.Utils;
+using SimpleAnnPlayground.Utils.DataView;
 
 namespace SimpleAnnPlayground.UI
 {
@@ -13,19 +15,38 @@ namespace SimpleAnnPlayground.UI
     public partial class FrmImportData : Form
     {
         private const int ControlRows = 1;
+
+        /// <summary>
+        /// Contains the words for each control.
+        /// </summary>
+        private static readonly Dictionary<string, List<string>> FormWords = new()
+        {
+            // Window text.
+            { nameof(FrmData), new() { "Project data", "Datos del projecto" } },
+
+            // Buttons texts.
+            { nameof(BtnImport), new() { "Import", "Importar" } },
+            { nameof(BtnCancel), new() { "Cancel", "Cancelar" } },
+
+            // Context menus.
+        };
+
         private readonly string _fileName;
         private readonly DataGridViewEditor _table;
         private readonly DataGridViewRow _checkRow;
+        private readonly DataTable _dataTable;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FrmImportData"/> class.
         /// </summary>
         /// <param name="fileName">The file path to load the data from.</param>
-        public FrmImportData(string fileName)
+        /// <param name="dataTable">The data table to fill with the data.</param>
+        internal FrmImportData(string fileName, DataTable dataTable)
         {
             InitializeComponent();
 
             _fileName = fileName;
+            _dataTable = dataTable;
             _table = new DataGridViewEditor(DgImport);
             _checkRow = new DataGridViewRow();
             TkSelect.ValueChanged += TkSelect_ValueChanged;
@@ -35,36 +56,42 @@ namespace SimpleAnnPlayground.UI
         /// <summary>
         /// Shows the window and returns the imported data.
         /// </summary>
-        /// <returns>The imported data.</returns>
-        internal DataTable? GetData()
+        /// <returns>True if there was imported data, otherwise false.</returns>
+        internal bool GetData()
         {
             if (ShowDialog() == DialogResult.OK)
             {
-                var columns = new List<string>();
+                _dataTable.Clear();
                 foreach (DataGridViewCheckBoxCell cell in _checkRow.Cells)
                 {
-                    if ((bool)cell.Value) columns.Add(cell.OwningColumn.HeaderText);
+                    var dataType = cell.ColumnIndex < DgImport.ColumnCount - 1 ? DataType.Input : DataType.Output;
+                    if ((bool)cell.Value) _dataTable.Labels.Add(new DataLabel(cell.OwningColumn.HeaderText, dataType));
                 }
 
-                var data = new DataTable(columns);
                 foreach (var row in DgImport.GetRowRange(ControlRows, GetSelectedRowsCount()))
                 {
-                    var register = new DataRegister(row.HeaderCell.Value?.ToString() ?? string.Empty);
-                    data.Registers.Add(register);
-                    foreach (string column in columns)
+                    var register = new DataRegister(Convert.ToInt32(row.HeaderCell.Value?.ToString() ?? "0", 10));
+                    _dataTable.Registers.Add(register);
+                    foreach (DataLabel label in _dataTable.Labels)
                     {
-                        register.Fields.Add(new DataValue(row.Cells[column].Value.ToString() ?? string.Empty));
+                        register.Fields.Add(new DataValue(row.Cells[label.Text].Value.ToString() ?? string.Empty));
                     }
                 }
 
-                return data;
+                return true;
             }
 
-            return null;
+            return false;
         }
 
         private void FrmImportData_Load(object sender, EventArgs e)
         {
+            // Getting application language from user settings.
+            var formLanguage = Languages.GetApplicationLanguge();
+
+            // Applying form language.
+            Languages.ChangeFormLanguage(this, FormWords, formLanguage);
+
             string[] lines = File.ReadAllLines(_fileName);
             string[] headers = lines.First().Split(',');
 

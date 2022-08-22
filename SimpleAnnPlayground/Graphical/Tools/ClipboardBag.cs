@@ -75,10 +75,10 @@ namespace SimpleAnnPlayground.Graphical.Tools
         /// <returns>The deserialized object.</returns>
         public static ClipboardBag Deserialize(Workspace workspace, string data)
         {
-            CanvasObjConverter.Canvas = workspace.Canvas;
-            ConnectionConverter.Objects.Clear();
-            ConnectionConverter.Ids.Clear();
-            return JsonConvert.DeserializeObject<ClipboardBag>(data) ?? throw new ArgumentException("Invalid data string.", nameof(data));
+            CanvasObjConverter.OpenDeserialization(workspace.Canvas, false);
+            var clipboard = JsonConvert.DeserializeObject<ClipboardBag>(data) ?? throw new ArgumentException("Invalid data string.", nameof(data));
+            CanvasObjConverter.CloseDeserialization();
+            return clipboard;
         }
 
         /// <summary>

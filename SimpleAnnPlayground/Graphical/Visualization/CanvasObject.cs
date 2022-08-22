@@ -48,14 +48,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             Component = component;
             Inputs = new List<InputTerminal>();
             Outputs = new List<OutputTerminal>();
-
-            int inIndex = 0, outIndex = 0;
-            foreach (var connector in component.Connectors)
-            {
-                if (connector.Type == Connector.Types.Input) Inputs.Add(new InputTerminal(this, connector, inIndex++));
-                else if (connector.Type == Connector.Types.Output) Outputs.Add(new OutputTerminal(this, connector, outIndex++));
-                else throw new NotImplementedException();
-            }
+            InitializeConnectors(component);
         }
 
         /// <summary>
@@ -108,10 +101,14 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         public Terminal? ActiveTerminal { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether the object is selected.
+        /// Gets or sets a value indicating whether the object is selected.
         /// </summary>
         [JsonIgnore]
-        public bool Selected => State.HasFlag(State.Selected);
+        public bool Selected
+        {
+            get => State.HasFlag(State.Selected);
+            set => AdjustStateFlag(State.Selected, value);
+        }
 
         /// <summary>
         /// Gets or sets the object location in the draw.
@@ -171,7 +168,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// Draws the object over a canvas.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>
-        public void Paint(Graphics graphics)
+        public virtual void Paint(Graphics graphics)
         {
             Component.Paint(graphics, Location, State, ActiveTerminal?.Connector);
         }
@@ -284,6 +281,21 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Initializes the connectors terminals.
+        /// </summary>
+        /// <param name="component">The graphical component linked to this object.</param>
+        private void InitializeConnectors(Component component)
+        {
+            int inIndex = 0, outIndex = 0;
+            foreach (var connector in component.Connectors)
+            {
+                if (connector.Type == Connector.Types.Input) Inputs.Add(new InputTerminal(this, connector, inIndex++));
+                else if (connector.Type == Connector.Types.Output) Outputs.Add(new OutputTerminal(this, connector, outIndex++));
+                else throw new NotImplementedException();
+            }
         }
     }
 }
