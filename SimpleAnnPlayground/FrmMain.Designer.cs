@@ -40,14 +40,14 @@
             this.BtnNew = new System.Windows.Forms.ToolStripButton();
             this.BtnOpen = new System.Windows.Forms.ToolStripButton();
             this.BtnSave = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.TspEditionSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.BtnInputNeurone = new System.Windows.Forms.ToolStripButton();
             this.BtnInternalNeurone = new System.Windows.Forms.ToolStripButton();
             this.BtnOutputNeurone = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.TspEditionSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.BtnCheck = new System.Windows.Forms.ToolStripButton();
             this.BtnClean = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.TspEditionSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.BtnData = new System.Windows.Forms.ToolStripButton();
             this.BtnTraining = new System.Windows.Forms.ToolStripButton();
             this.BtnTest = new System.Windows.Forms.ToolStripButton();
@@ -67,20 +67,20 @@
             this.MnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuFileSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuFileSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuEditUndo = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuEditRedo = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuEditSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuEditDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuEditCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuEditCut = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuEditPaste = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuEditSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuEditOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuViewCenterScreen = new System.Windows.Forms.ToolStripMenuItem();
@@ -125,14 +125,14 @@
             this.BtnNew,
             this.BtnOpen,
             this.BtnSave,
-            this.toolStripSeparator1,
+            this.TspEditionSep1,
             this.BtnInputNeurone,
             this.BtnInternalNeurone,
             this.BtnOutputNeurone,
-            this.toolStripSeparator2,
+            this.TspEditionSep2,
             this.BtnCheck,
             this.BtnClean,
-            this.toolStripSeparator3,
+            this.TspEditionSep3,
             this.BtnData,
             this.BtnTraining,
             this.BtnTest});
@@ -172,10 +172,10 @@
             this.BtnSave.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnSave.Click += new System.EventHandler(this.MnuFileSave_Click);
             // 
-            // toolStripSeparator1
+            // TspEditionSep1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 56);
+            this.TspEditionSep1.Name = "TspEditionSep1";
+            this.TspEditionSep1.Size = new System.Drawing.Size(6, 56);
             // 
             // BtnInputNeurone
             // 
@@ -207,10 +207,10 @@
             this.BtnOutputNeurone.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnOutputNeurone.Click += new System.EventHandler(this.BtnInsertNeurone_Click);
             // 
-            // toolStripSeparator2
+            // TspEditionSep2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 56);
+            this.TspEditionSep2.Name = "TspEditionSep2";
+            this.TspEditionSep2.Size = new System.Drawing.Size(6, 56);
             // 
             // BtnCheck
             // 
@@ -232,10 +232,10 @@
             this.BtnClean.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnClean.Click += new System.EventHandler(this.BtnClean_Click);
             // 
-            // toolStripSeparator3
+            // TspEditionSep3
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 56);
+            this.TspEditionSep3.Name = "TspEditionSep3";
+            this.TspEditionSep3.Size = new System.Drawing.Size(6, 56);
             // 
             // BtnData
             // 
@@ -256,6 +256,7 @@
             this.BtnTraining.Size = new System.Drawing.Size(58, 53);
             this.BtnTraining.Text = "Training";
             this.BtnTraining.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnTraining.Click += new System.EventHandler(this.BtnTraining_Click);
             // 
             // BtnTest
             // 
@@ -266,6 +267,7 @@
             this.BtnTest.Size = new System.Drawing.Size(53, 53);
             this.BtnTest.Text = "Testing";
             this.BtnTest.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnTest.Click += new System.EventHandler(this.BtnTest_Click);
             // 
             // SspStatus
             // 
@@ -390,10 +392,10 @@
             this.MnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MnuFileNew,
             this.MnuFileOpen,
-            this.toolStripMenuItem1,
+            this.MnuFileSep1,
             this.MnuFileSave,
             this.MnuFileSaveAs,
-            this.toolStripMenuItem2,
+            this.MnuFileSep2,
             this.MnuFileExit});
             this.MnuFile.Name = "MnuFile";
             this.MnuFile.Size = new System.Drawing.Size(37, 20);
@@ -415,10 +417,10 @@
             this.MnuFileOpen.Text = "Open";
             this.MnuFileOpen.Click += new System.EventHandler(this.MnuFileOpen_Click);
             // 
-            // toolStripMenuItem1
+            // MnuFileSep1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(143, 6);
+            this.MnuFileSep1.Name = "MnuFileSep1";
+            this.MnuFileSep1.Size = new System.Drawing.Size(143, 6);
             // 
             // MnuFileSave
             // 
@@ -435,10 +437,10 @@
             this.MnuFileSaveAs.Text = "Save As";
             this.MnuFileSaveAs.Click += new System.EventHandler(this.MnuFileSaveAs_Click);
             // 
-            // toolStripMenuItem2
+            // MnuFileSep2
             // 
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(143, 6);
+            this.MnuFileSep2.Name = "MnuFileSep2";
+            this.MnuFileSep2.Size = new System.Drawing.Size(143, 6);
             // 
             // MnuFileExit
             // 
@@ -451,12 +453,12 @@
             this.MnuEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MnuEditUndo,
             this.MnuEditRedo,
-            this.toolStripMenuItem3,
+            this.MnuEditSep1,
             this.MnuEditDelete,
             this.MnuEditCopy,
             this.MnuEditCut,
             this.MnuEditPaste,
-            this.toolStripMenuItem4,
+            this.MnuEditSep2,
             this.MnuEditOptions});
             this.MnuEdit.Name = "MnuEdit";
             this.MnuEdit.Size = new System.Drawing.Size(39, 20);
@@ -467,7 +469,7 @@
             this.MnuEditUndo.Enabled = false;
             this.MnuEditUndo.Name = "MnuEditUndo";
             this.MnuEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.MnuEditUndo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditUndo.Size = new System.Drawing.Size(144, 22);
             this.MnuEditUndo.Text = "Undo";
             this.MnuEditUndo.Click += new System.EventHandler(this.MnuEditUndo_Click);
             // 
@@ -476,21 +478,21 @@
             this.MnuEditRedo.Enabled = false;
             this.MnuEditRedo.Name = "MnuEditRedo";
             this.MnuEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.MnuEditRedo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditRedo.Size = new System.Drawing.Size(144, 22);
             this.MnuEditRedo.Text = "Redo";
             this.MnuEditRedo.Click += new System.EventHandler(this.MnuEditRedo_Click);
             // 
-            // toolStripMenuItem3
+            // MnuEditSep1
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(177, 6);
+            this.MnuEditSep1.Name = "MnuEditSep1";
+            this.MnuEditSep1.Size = new System.Drawing.Size(141, 6);
             // 
             // MnuEditDelete
             // 
             this.MnuEditDelete.Enabled = false;
             this.MnuEditDelete.Name = "MnuEditDelete";
             this.MnuEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.MnuEditDelete.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditDelete.Size = new System.Drawing.Size(144, 22);
             this.MnuEditDelete.Text = "Delete";
             this.MnuEditDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
@@ -499,7 +501,7 @@
             this.MnuEditCopy.Enabled = false;
             this.MnuEditCopy.Name = "MnuEditCopy";
             this.MnuEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.MnuEditCopy.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCopy.Size = new System.Drawing.Size(144, 22);
             this.MnuEditCopy.Text = "Copy";
             this.MnuEditCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
             // 
@@ -508,7 +510,7 @@
             this.MnuEditCut.Enabled = false;
             this.MnuEditCut.Name = "MnuEditCut";
             this.MnuEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.MnuEditCut.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCut.Size = new System.Drawing.Size(144, 22);
             this.MnuEditCut.Text = "Cut";
             this.MnuEditCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
@@ -517,19 +519,19 @@
             this.MnuEditPaste.Enabled = false;
             this.MnuEditPaste.Name = "MnuEditPaste";
             this.MnuEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.MnuEditPaste.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditPaste.Size = new System.Drawing.Size(144, 22);
             this.MnuEditPaste.Text = "Paste";
             this.MnuEditPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);
             // 
-            // toolStripMenuItem4
+            // MnuEditSep2
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(177, 6);
+            this.MnuEditSep2.Name = "MnuEditSep2";
+            this.MnuEditSep2.Size = new System.Drawing.Size(141, 6);
             // 
             // MnuEditOptions
             // 
             this.MnuEditOptions.Name = "MnuEditOptions";
-            this.MnuEditOptions.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditOptions.Size = new System.Drawing.Size(144, 22);
             this.MnuEditOptions.Text = "Options";
             // 
             // MnuView
@@ -543,7 +545,7 @@
             // MnuViewCenterScreen
             // 
             this.MnuViewCenterScreen.Name = "MnuViewCenterScreen";
-            this.MnuViewCenterScreen.Size = new System.Drawing.Size(180, 22);
+            this.MnuViewCenterScreen.Size = new System.Drawing.Size(146, 22);
             this.MnuViewCenterScreen.Text = "Center screen";
             this.MnuViewCenterScreen.Click += new System.EventHandler(this.MnuViewCenterScreen_Click);
             // 
@@ -558,7 +560,7 @@
             // MnuToolsLanguage
             // 
             this.MnuToolsLanguage.Name = "MnuToolsLanguage";
-            this.MnuToolsLanguage.Size = new System.Drawing.Size(180, 22);
+            this.MnuToolsLanguage.Size = new System.Drawing.Size(126, 22);
             this.MnuToolsLanguage.Text = "Language";
             // 
             // MnuHelp
@@ -712,6 +714,7 @@
             this.BtnStop.Size = new System.Drawing.Size(39, 53);
             this.BtnStop.Text = "Stop";
             this.BtnStop.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnStop.Click += new System.EventHandler(this.BtnStop_Click);
             // 
             // BtnRun
             // 
@@ -793,7 +796,7 @@
         private ToolStripButton BtnNew;
         private ToolStripButton BtnOpen;
         private ToolStripButton BtnSave;
-        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripSeparator TspEditionSep1;
         private ToolStripButton BtnInputNeurone;
         private ToolStripButton BtnInternalNeurone;
         private ToolStripButton BtnOutputNeurone;
@@ -803,20 +806,20 @@
         private ToolStripMenuItem MnuFile;
         private ToolStripMenuItem MnuFileNew;
         private ToolStripMenuItem MnuFileOpen;
-        private ToolStripSeparator toolStripMenuItem1;
+        private ToolStripSeparator MnuFileSep1;
         private ToolStripMenuItem MnuFileSave;
         private ToolStripMenuItem MnuFileSaveAs;
-        private ToolStripSeparator toolStripMenuItem2;
+        private ToolStripSeparator MnuFileSep2;
         private ToolStripMenuItem MnuFileExit;
         private ToolStripMenuItem MnuEdit;
         private ToolStripMenuItem MnuEditUndo;
         private ToolStripMenuItem MnuEditRedo;
-        private ToolStripSeparator toolStripMenuItem3;
+        private ToolStripSeparator MnuEditSep1;
         private ToolStripMenuItem MnuEditDelete;
         private ToolStripMenuItem MnuEditCopy;
         private ToolStripMenuItem MnuEditCut;
         private ToolStripMenuItem MnuEditPaste;
-        private ToolStripSeparator toolStripMenuItem4;
+        private ToolStripSeparator MnuEditSep2;
         private ToolStripMenuItem MnuEditOptions;
         private ToolStripMenuItem MnuHelp;
         private ToolStripMenuItem MnuHelpAbout;
@@ -835,7 +838,7 @@
         private ToolStripMenuItem MnuView;
         private ToolStripMenuItem MnuViewCenterScreen;
         private ToolStripMenuItem MnuDebugActionsViewer;
-        private ToolStripSeparator toolStripSeparator2;
+        private ToolStripSeparator TspEditionSep2;
         private ToolStripButton BtnCheck;
         private ToolStripButton BtnTest;
         private ToolStrip TspExecution;
@@ -847,7 +850,7 @@
         private ToolStripButton BtnTraining;
         private ToolStripButton BtnData;
         private ToolStripButton BtnClean;
-        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripSeparator TspEditionSep3;
         private ContextMenuStrip CmsDraw;
         private ToolStripMenuItem MnuContextLinkTo;
         private ToolStripSeparator MnuContextSep1;

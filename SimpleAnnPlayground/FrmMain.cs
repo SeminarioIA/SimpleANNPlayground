@@ -262,10 +262,9 @@ namespace SimpleAnnPlayground
             e.Cancel = false;
         }
 
-        private void BtnInsertNeurone_Click(object? sender, EventArgs e)
+        private void UncheckToolsButtons(ToolStripButton? button)
         {
             var insertButtons = new ToolStripButton[] { BtnInputNeurone, BtnInternalNeurone, BtnOutputNeurone };
-            ToolStripButton? button = sender as ToolStripButton;
 
             if (button?.Checked ?? false) button = null;
 
@@ -273,7 +272,12 @@ namespace SimpleAnnPlayground
             {
                 btn.Checked = btn == button;
             }
+        }
 
+        private void BtnInsertNeurone_Click(object? sender, EventArgs e)
+        {
+            ToolStripButton? button = sender as ToolStripButton;
+            UncheckToolsButtons(button);
             if (button == BtnInputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(_workspace.Canvas, 0, 0));
             else if (button == BtnInternalNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Internal(_workspace.Canvas, 0, 0));
             else if (button == BtnOutputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Output(_workspace.Canvas, 0, 0));
@@ -326,6 +330,7 @@ namespace SimpleAnnPlayground
 
         private void MnuEditUndo_Click(object sender, EventArgs e)
         {
+            if (_workspace.ReadOnly) return;
             _workspace.Actions.Undo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
@@ -334,6 +339,7 @@ namespace SimpleAnnPlayground
 
         private void MnuEditRedo_Click(object sender, EventArgs e)
         {
+            if (_workspace.ReadOnly) return;
             _workspace.Actions.Redo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
@@ -351,12 +357,13 @@ namespace SimpleAnnPlayground
 
         private void MnuEditDelete_Click(object sender, EventArgs e)
         {
+            if (_workspace.ReadOnly) return;
             _workspace.Actions.AddRemoveAction(Actions.RecordableAction.ActionType.Deleted);
         }
 
         private void MnuEditCopy_Click(object sender, EventArgs e)
         {
-            if (!_workspace.Canvas.AnySelected()) return;
+            if (_workspace.ReadOnly || !_workspace.Canvas.AnySelected()) return;
             var copyBag = new ClipboardBag(_workspace);
             Clipboard.SetData("SimpleAnnPlayground.Copy", copyBag.Serialize());
             MnuEditPaste.Enabled = true;
@@ -364,6 +371,7 @@ namespace SimpleAnnPlayground
 
         private void MnuEditPaste_Click(object sender, EventArgs e)
         {
+            if (_workspace.ReadOnly) return;
             if (Clipboard.GetData("SimpleAnnPlayground.Copy") is string data)
             {
                 var pasteBag = ClipboardBag.Deserialize(_workspace, data);
@@ -373,7 +381,7 @@ namespace SimpleAnnPlayground
 
         private void MnuEditCut_Click(object sender, EventArgs e)
         {
-            if (!_workspace.Canvas.AnySelected()) return;
+            if (_workspace.ReadOnly || !_workspace.Canvas.AnySelected()) return;
             var cutBag = new ClipboardBag(_workspace);
             Clipboard.SetData("SimpleAnnPlayground.Copy", cutBag.Serialize());
             MnuEditPaste.Enabled = true;
@@ -389,7 +397,7 @@ namespace SimpleAnnPlayground
         {
             bool result = _network.Build();
             BtnTraining.Enabled = result;
-            BtnTest.Enabled = result;
+            BtnTest.Enabled = false;
         }
 
         private void BtnClean_Click(object sender, EventArgs e)
@@ -411,13 +419,15 @@ namespace SimpleAnnPlayground
         {
             _fileManager.New();
             _workspace.Clean();
+            UncheckToolsButtons(null);
         }
 
         private void MnuFileOpen_Click(object sender, EventArgs e)
         {
             if (_fileManager.Open() && _fileManager.FileContent is string data)
             {
-                _workspace.LoadDocument(Document.Deserialize(_workspace, data));
+                _workspace.LoadDocument(Document.Deserialize(data));
+                UncheckToolsButtons(null);
             }
         }
 
@@ -440,6 +450,12 @@ namespace SimpleAnnPlayground
 
         private void CmsDraw_Opening(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if(_workspace.ReadOnly)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             switch (_workspace.Canvas.GetSelectedObjects().Count)
             {
                 case 0:
@@ -519,6 +535,32 @@ namespace SimpleAnnPlayground
                 output.DataLabel = label;
                 _workspace.Refresh();
             }
+        }
+
+        private void BtnTraining_Click(object sender, EventArgs e)
+        {
+            MnuEdit.Enabled = false;
+            TspEdition.Visible = false;
+            TspExecution.Visible = true;
+            UncheckToolsButtons(null);
+            _workspace.SetReadOnly();
+        }
+
+        private void BtnTest_Click(object sender, EventArgs e)
+        {
+            MnuEdit.Enabled = false;
+            TspEdition.Visible = false;
+            TspExecution.Visible = true;
+            UncheckToolsButtons(null);
+            _workspace.SetReadOnly();
+        }
+
+        private void BtnStop_Click(object sender, EventArgs e)
+        {
+            MnuEdit.Enabled = true;
+            TspEdition.Visible = true;
+            TspExecution.Visible = false;
+            _workspace.SetEditable();
         }
     }
 }

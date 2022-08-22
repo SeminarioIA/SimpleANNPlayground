@@ -3,7 +3,6 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Neurons;
-using SimpleAnnPlayground.Graphical.Models;
 using System.Collections.ObjectModel;
 using static SimpleAnnPlayground.Graphical.Models.DrawableObject;
 
@@ -24,12 +23,11 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Initializes a new instance of the <see cref="ShadowCanvas"/> class.
         /// </summary>
-        /// <param name="objects">The objects to add to the canvas.</param>
-        /// <param name="connections">The connections to add to the canvas.</param>
-        public ShadowCanvas(Collection<CanvasObject> objects, Collection<Connection> connections)
+        /// <param name="canvas">The canvas to copy as a shadow.</param>
+        public ShadowCanvas(Canvas canvas)
         {
-            objects.ToList().ForEach(AddObject);
-            connections.ToList().ForEach(AddConnection);
+            canvas.Objects.ToList().ForEach(obj => AddObject(obj));
+            canvas.Connections.ToList().ForEach(conn => AddConnection(conn));
         }
 
         /// <inheritdoc/>

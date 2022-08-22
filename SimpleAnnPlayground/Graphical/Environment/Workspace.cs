@@ -134,9 +134,31 @@ namespace SimpleAnnPlayground.Graphical.Environment
         public float Scale => Zoom / 100f;
 
         /// <summary>
+        /// Gets a value indicating whether the workspace is in read only mode.
+        /// </summary>
+        public bool ReadOnly { get; private set; }
+
+        /// <summary>
         /// Forces to paint the workspace.
         /// </summary>
         public void Refresh() => PictureBox.Invalidate();
+
+        /// <summary>
+        /// Set the workspace as read only.
+        /// </summary>
+        public void SetReadOnly()
+        {
+            ReadOnly = true;
+            if (Canvas.GetSelectedObjects().Any()) Canvas.UnselectAll();
+        }
+
+        /// <summary>
+        /// Sets the workspace as editable.
+        /// </summary>
+        public void SetEditable()
+        {
+            ReadOnly = false;
+        }
 
         /// <summary>
         /// Centers the sheet in the viewing area.
@@ -194,7 +216,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                 }
             }
 
-            return new(WorkSheet, Canvas.Objects, Canvas.Connections, DataTable, dataLinks);
+            return new(WorkSheet, Canvas, DataTable, dataLinks);
         }
 
         /// <summary>
@@ -205,8 +227,8 @@ namespace SimpleAnnPlayground.Graphical.Environment
         {
             MouseTool.CancelOperation();
             WorkSheet = document.WorkSheet;
-            Canvas = new Canvas(document.Objects, document.Connections);
-            Shadow = new ShadowCanvas(document.Objects, document.Connections);
+            Canvas = document.Canvas;
+            Shadow = new ShadowCanvas(Canvas);
             DataTable = document.DataTable;
             DataTableChanged?.Invoke(this, EventArgs.Empty);
         }
