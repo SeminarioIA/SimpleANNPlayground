@@ -29,8 +29,24 @@ namespace SimpleAnnPlayground.Storage
         public Document(WorkSheet workSheet, Collection<CanvasObject> objects, Collection<Connection> connections, DataTable dataTable, Collection<DataLink> dataLinks)
         {
             WorkSheet = workSheet;
-            Objects = objects;
-            Connections = connections;
+            Canvas = objects.Any() ? objects.First().Canvas : new Canvas();
+            objects.ToList().ForEach(obj => Canvas.AddObject(obj));
+            connections.ToList().ForEach(connection => Canvas.AddConnection(connection));
+            DataTable = dataTable;
+            DataLinks = dataLinks;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Document"/> class.
+        /// </summary>
+        /// <param name="workSheet">The document workspace sheet.</param>
+        /// <param name="canvas">The canvas holding the objects and collections.</param>
+        /// <param name="dataTable">The document data.</param>
+        /// <param name="dataLinks">The list of <see cref="DataLink"/>.</param>
+        public Document(WorkSheet workSheet, Canvas canvas, DataTable dataTable, Collection<DataLink> dataLinks)
+        {
+            WorkSheet = workSheet;
+            Canvas = canvas;
             DataTable = dataTable;
             DataLinks = dataLinks;
         }
@@ -43,12 +59,12 @@ namespace SimpleAnnPlayground.Storage
         /// <summary>
         /// Gets the list of <see cref="CanvasObject"/>.
         /// </summary>
-        public Collection<CanvasObject> Objects { get; }
+        public Collection<CanvasObject> Objects => Canvas.Objects;
 
         /// <summary>
         /// Gets the list of <see cref="Connection"/>.
         /// </summary>
-        public Collection<Connection> Connections { get; }
+        public Collection<Connection> Connections => Canvas.Connections;
 
         /// <summary>
         /// Gets the document data.
@@ -61,14 +77,19 @@ namespace SimpleAnnPlayground.Storage
         public Collection<DataLink> DataLinks { get; }
 
         /// <summary>
+        /// Gets the document canvas holding all the objects.
+        /// </summary>
+        [JsonIgnore]
+        public Canvas Canvas { get; }
+
+        /// <summary>
         /// Deserializes a object from the JSON data.
         /// </summary>
-        /// <param name="workspace">The workspace to deserialize the objects.</param>
         /// <param name="data">The JSON data.</param>
         /// <returns>The deserialized object.</returns>
-        public static Document Deserialize(Workspace workspace, string data)
+        public static Document Deserialize(string data)
         {
-            CanvasObjConverter.OpenDeserialization(workspace.Canvas, true);
+            CanvasObjConverter.OpenDeserialization(new Canvas(), true);
             var document = JsonConvert.DeserializeObject<Document>(data) ?? throw new ArgumentException("Invalid data string.", nameof(data));
 
             // Desersialize links between data and neurons.

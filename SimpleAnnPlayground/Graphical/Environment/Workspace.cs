@@ -194,7 +194,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                 }
             }
 
-            return new(WorkSheet, Canvas.Objects, Canvas.Connections, DataTable, dataLinks);
+            return new(WorkSheet, Canvas, DataTable, dataLinks);
         }
 
         /// <summary>
@@ -205,8 +205,8 @@ namespace SimpleAnnPlayground.Graphical.Environment
         {
             MouseTool.CancelOperation();
             WorkSheet = document.WorkSheet;
-            Canvas = new Canvas(document.Objects, document.Connections);
-            Shadow = new ShadowCanvas(document.Objects, document.Connections);
+            Canvas = document.Canvas;
+            Shadow = new ShadowCanvas(Canvas);
             DataTable = document.DataTable;
             DataTableChanged?.Invoke(this, EventArgs.Empty);
         }
