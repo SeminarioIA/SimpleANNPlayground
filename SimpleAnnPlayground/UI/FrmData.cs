@@ -135,11 +135,19 @@ namespace SimpleAnnPlayground.Screens
                 {
                     if (label.DataType == DataType.Input)
                     {
-                        Workspace.Canvas.Objects.Where(obj => obj is Input).ToList().ConvertAll(obj => (Input)obj).ForEach(input => input.DataLabel = null);
+                        Workspace.Canvas.Objects
+                            .Where(obj => obj is Input input && input.DataLabel == label)
+                            .ToList()
+                            .ConvertAll(obj => (Input)obj)
+                            .ForEach(input => input.DataLabel = null);
                     }
                     else if (label.DataType == DataType.Output)
                     {
-                        Workspace.Canvas.Objects.Where(obj => obj is Output).ToList().ConvertAll(obj => (Output)obj).ForEach(output => output.DataLabel = null);
+                        Workspace.Canvas.Objects
+                            .Where(obj => obj is Output output && output.DataLabel == label)
+                            .ToList()
+                            .ConvertAll(obj => (Output)obj)
+                            .ForEach(output => output.DataLabel = null);
                     }
 
                     label.DataType = dataType;
