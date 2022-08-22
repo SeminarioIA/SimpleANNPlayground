@@ -262,10 +262,9 @@ namespace SimpleAnnPlayground
             e.Cancel = false;
         }
 
-        private void BtnInsertNeurone_Click(object? sender, EventArgs e)
+        private void UncheckToolsButtons(ToolStripButton? button)
         {
             var insertButtons = new ToolStripButton[] { BtnInputNeurone, BtnInternalNeurone, BtnOutputNeurone };
-            ToolStripButton? button = sender as ToolStripButton;
 
             if (button?.Checked ?? false) button = null;
 
@@ -273,7 +272,12 @@ namespace SimpleAnnPlayground
             {
                 btn.Checked = btn == button;
             }
+        }
 
+        private void BtnInsertNeurone_Click(object? sender, EventArgs e)
+        {
+            ToolStripButton? button = sender as ToolStripButton;
+            UncheckToolsButtons(button);
             if (button == BtnInputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(_workspace.Canvas, 0, 0));
             else if (button == BtnInternalNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Internal(_workspace.Canvas, 0, 0));
             else if (button == BtnOutputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Output(_workspace.Canvas, 0, 0));
@@ -411,6 +415,7 @@ namespace SimpleAnnPlayground
         {
             _fileManager.New();
             _workspace.Clean();
+            UncheckToolsButtons(null);
         }
 
         private void MnuFileOpen_Click(object sender, EventArgs e)
@@ -418,6 +423,7 @@ namespace SimpleAnnPlayground
             if (_fileManager.Open() && _fileManager.FileContent is string data)
             {
                 _workspace.LoadDocument(Document.Deserialize(data));
+                UncheckToolsButtons(null);
             }
         }
 
