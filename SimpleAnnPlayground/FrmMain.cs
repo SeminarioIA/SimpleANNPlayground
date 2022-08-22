@@ -526,5 +526,17 @@ namespace SimpleAnnPlayground
                 _workspace.Refresh();
             }
         }
+
+        private void BtnTraining_Click(object sender, EventArgs e)
+        {
+            TspEdition.Visible = false;
+            TspExecution.Visible = true;
+        }
+
+        private void BtnStop_Click(object sender, EventArgs e)
+        {
+            TspEdition.Visible = true;
+            TspExecution.Visible = false;
+        }
     }
 }

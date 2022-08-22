@@ -256,6 +256,7 @@
             this.BtnTraining.Size = new System.Drawing.Size(58, 53);
             this.BtnTraining.Text = "Training";
             this.BtnTraining.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnTraining.Click += new System.EventHandler(this.BtnTraining_Click);
             // 
             // BtnTest
             // 
@@ -403,7 +404,7 @@
             // 
             this.MnuFileNew.Name = "MnuFileNew";
             this.MnuFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.MnuFileNew.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileNew.Size = new System.Drawing.Size(146, 22);
             this.MnuFileNew.Text = "New";
             this.MnuFileNew.Click += new System.EventHandler(this.MnuFileNew_Click);
             // 
@@ -411,39 +412,39 @@
             // 
             this.MnuFileOpen.Name = "MnuFileOpen";
             this.MnuFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.MnuFileOpen.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileOpen.Size = new System.Drawing.Size(146, 22);
             this.MnuFileOpen.Text = "Open";
             this.MnuFileOpen.Click += new System.EventHandler(this.MnuFileOpen_Click);
             // 
             // MnuFileSep1
             // 
             this.MnuFileSep1.Name = "MnuFileSep1";
-            this.MnuFileSep1.Size = new System.Drawing.Size(177, 6);
+            this.MnuFileSep1.Size = new System.Drawing.Size(143, 6);
             // 
             // MnuFileSave
             // 
             this.MnuFileSave.Name = "MnuFileSave";
             this.MnuFileSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.MnuFileSave.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileSave.Size = new System.Drawing.Size(146, 22);
             this.MnuFileSave.Text = "Save";
             this.MnuFileSave.Click += new System.EventHandler(this.MnuFileSave_Click);
             // 
             // MnuFileSaveAs
             // 
             this.MnuFileSaveAs.Name = "MnuFileSaveAs";
-            this.MnuFileSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileSaveAs.Size = new System.Drawing.Size(146, 22);
             this.MnuFileSaveAs.Text = "Save As";
             this.MnuFileSaveAs.Click += new System.EventHandler(this.MnuFileSaveAs_Click);
             // 
             // MnuFileSep2
             // 
             this.MnuFileSep2.Name = "MnuFileSep2";
-            this.MnuFileSep2.Size = new System.Drawing.Size(177, 6);
+            this.MnuFileSep2.Size = new System.Drawing.Size(143, 6);
             // 
             // MnuFileExit
             // 
             this.MnuFileExit.Name = "MnuFileExit";
-            this.MnuFileExit.Size = new System.Drawing.Size(180, 22);
+            this.MnuFileExit.Size = new System.Drawing.Size(146, 22);
             this.MnuFileExit.Text = "Exit";
             // 
             // MnuEdit
@@ -467,7 +468,7 @@
             this.MnuEditUndo.Enabled = false;
             this.MnuEditUndo.Name = "MnuEditUndo";
             this.MnuEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.MnuEditUndo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditUndo.Size = new System.Drawing.Size(144, 22);
             this.MnuEditUndo.Text = "Undo";
             this.MnuEditUndo.Click += new System.EventHandler(this.MnuEditUndo_Click);
             // 
@@ -476,21 +477,21 @@
             this.MnuEditRedo.Enabled = false;
             this.MnuEditRedo.Name = "MnuEditRedo";
             this.MnuEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.MnuEditRedo.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditRedo.Size = new System.Drawing.Size(144, 22);
             this.MnuEditRedo.Text = "Redo";
             this.MnuEditRedo.Click += new System.EventHandler(this.MnuEditRedo_Click);
             // 
             // MnuEditSep1
             // 
             this.MnuEditSep1.Name = "MnuEditSep1";
-            this.MnuEditSep1.Size = new System.Drawing.Size(177, 6);
+            this.MnuEditSep1.Size = new System.Drawing.Size(141, 6);
             // 
             // MnuEditDelete
             // 
             this.MnuEditDelete.Enabled = false;
             this.MnuEditDelete.Name = "MnuEditDelete";
             this.MnuEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.MnuEditDelete.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditDelete.Size = new System.Drawing.Size(144, 22);
             this.MnuEditDelete.Text = "Delete";
             this.MnuEditDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
@@ -499,7 +500,7 @@
             this.MnuEditCopy.Enabled = false;
             this.MnuEditCopy.Name = "MnuEditCopy";
             this.MnuEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.MnuEditCopy.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCopy.Size = new System.Drawing.Size(144, 22);
             this.MnuEditCopy.Text = "Copy";
             this.MnuEditCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
             // 
@@ -508,7 +509,7 @@
             this.MnuEditCut.Enabled = false;
             this.MnuEditCut.Name = "MnuEditCut";
             this.MnuEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.MnuEditCut.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditCut.Size = new System.Drawing.Size(144, 22);
             this.MnuEditCut.Text = "Cut";
             this.MnuEditCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
@@ -517,19 +518,19 @@
             this.MnuEditPaste.Enabled = false;
             this.MnuEditPaste.Name = "MnuEditPaste";
             this.MnuEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.MnuEditPaste.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditPaste.Size = new System.Drawing.Size(144, 22);
             this.MnuEditPaste.Text = "Paste";
             this.MnuEditPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);
             // 
             // MnuEditSep2
             // 
             this.MnuEditSep2.Name = "MnuEditSep2";
-            this.MnuEditSep2.Size = new System.Drawing.Size(177, 6);
+            this.MnuEditSep2.Size = new System.Drawing.Size(141, 6);
             // 
             // MnuEditOptions
             // 
             this.MnuEditOptions.Name = "MnuEditOptions";
-            this.MnuEditOptions.Size = new System.Drawing.Size(180, 22);
+            this.MnuEditOptions.Size = new System.Drawing.Size(144, 22);
             this.MnuEditOptions.Text = "Options";
             // 
             // MnuView
@@ -543,7 +544,7 @@
             // MnuViewCenterScreen
             // 
             this.MnuViewCenterScreen.Name = "MnuViewCenterScreen";
-            this.MnuViewCenterScreen.Size = new System.Drawing.Size(180, 22);
+            this.MnuViewCenterScreen.Size = new System.Drawing.Size(146, 22);
             this.MnuViewCenterScreen.Text = "Center screen";
             this.MnuViewCenterScreen.Click += new System.EventHandler(this.MnuViewCenterScreen_Click);
             // 
@@ -558,7 +559,7 @@
             // MnuToolsLanguage
             // 
             this.MnuToolsLanguage.Name = "MnuToolsLanguage";
-            this.MnuToolsLanguage.Size = new System.Drawing.Size(180, 22);
+            this.MnuToolsLanguage.Size = new System.Drawing.Size(126, 22);
             this.MnuToolsLanguage.Text = "Language";
             // 
             // MnuHelp
@@ -572,7 +573,7 @@
             // MnuHelpAbout
             // 
             this.MnuHelpAbout.Name = "MnuHelpAbout";
-            this.MnuHelpAbout.Size = new System.Drawing.Size(180, 22);
+            this.MnuHelpAbout.Size = new System.Drawing.Size(107, 22);
             this.MnuHelpAbout.Text = "About";
             // 
             // MnuDebug
@@ -590,21 +591,21 @@
             // MnuDebugElementDesigner
             // 
             this.MnuDebugElementDesigner.Name = "MnuDebugElementDesigner";
-            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugElementDesigner.Text = "Element designer";
             this.MnuDebugElementDesigner.Click += new System.EventHandler(this.MnuDebugElementDesigner_Click);
             // 
             // MnuDebugObjectViewer
             // 
             this.MnuDebugObjectViewer.Name = "MnuDebugObjectViewer";
-            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugObjectViewer.Text = "Objects viewer";
             this.MnuDebugObjectViewer.Click += new System.EventHandler(this.MnuDebugObjectsViewer_Click);
             // 
             // MnuDebugActionsViewer
             // 
             this.MnuDebugActionsViewer.Name = "MnuDebugActionsViewer";
-            this.MnuDebugActionsViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugActionsViewer.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugActionsViewer.Text = "Actions viewer";
             this.MnuDebugActionsViewer.Click += new System.EventHandler(this.MnuDebugActionsViewer_Click);
             // 
@@ -712,6 +713,7 @@
             this.BtnStop.Size = new System.Drawing.Size(39, 53);
             this.BtnStop.Text = "Stop";
             this.BtnStop.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnStop.Click += new System.EventHandler(this.BtnStop_Click);
             // 
             // BtnRun
             // 
