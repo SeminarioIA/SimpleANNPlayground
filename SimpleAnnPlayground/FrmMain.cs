@@ -3,11 +3,14 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Networks;
+using SimpleAnnPlayground.Ann.Neurons;
+using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Debugging;
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Tools;
+using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Screens;
 using SimpleAnnPlayground.Storage;
 using SimpleAnnPlayground.Utils;
@@ -33,45 +36,58 @@ namespace SimpleAnnPlayground
             { "Spanish", new() { "Spanish", "Español" } },
 
             // Window text.
-            { "FrmMain", new() { "Interactive Artificial Neural Network", "Red Neuronal Artificial Interactiva" } },
+            { nameof(FrmMain), new() { "Interactive Artificial Neural Network", "Red Neuronal Artificial Interactiva" } },
 
             // File menus texts.
-            { "MnuFile", new() { "&File", "&Archivo" } },
-            { "MnuFileNew", new() { "&New", "&Nuevo" } },
-            { "MnuFileOpen", new() { "&Open", "&Abrir" } },
-            { "MnuFileSave", new() { "&Save", "&Guardar" } },
-            { "MnuFileSaveAs", new() { "Save &As", "Guardar &como" } },
-            { "MnuFileExit", new() { "&Exit", "&Salir" } },
+            { nameof(MnuFile), new() { "&File", "&Archivo" } },
+            { nameof(MnuFileNew), new() { "&New", "&Nuevo" } },
+            { nameof(MnuFileOpen), new() { "&Open", "&Abrir" } },
+            { nameof(MnuFileSave), new() { "&Save", "&Guardar" } },
+            { nameof(MnuFileSaveAs), new() { "Save &As", "Guardar &como" } },
+            { nameof(MnuFileExit), new() { "&Exit", "&Salir" } },
 
             // Edit menus texts.
-            { "MnuEdit", new() { "&Edit", "&Edición" } },
-            { "MnuEditUndo", new() { "&Undo", "&Deshacer" } },
-            { "MnuEditRedo", new() { "&Redo", "&Rehacer" } },
-            { "MnuEditDelete", new() { "&Delete", "&Eliminar" } },
-            { "MnuEditCopy", new() { "&Copy", "&Copiar" } },
-            { "MnuEditCut", new() { "Cu&t", "Cor&tar" } },
-            { "MnuEditPaste", new() { "&Paste", "&Pegar" } },
-            { "MnuEditOptions", new() { "&Options", "&Opciones" } },
+            { nameof(MnuEdit), new() { "&Edit", "&Edición" } },
+            { nameof(MnuEditUndo), new() { "&Undo", "&Deshacer" } },
+            { nameof(MnuEditRedo), new() { "&Redo", "&Rehacer" } },
+            { nameof(MnuEditDelete), new() { "&Delete", "&Eliminar" } },
+            { nameof(MnuEditCopy), new() { "&Copy", "&Copiar" } },
+            { nameof(MnuEditCut), new() { "Cu&t", "Cor&tar" } },
+            { nameof(MnuEditPaste), new() { "&Paste", "&Pegar" } },
+            { nameof(MnuEditOptions), new() { "&Options", "&Opciones" } },
 
             // View menus texts.
-            { "MnuView", new() { "&View,", "&Ver" } },
-            { "MnuViewCenterScreen", new() { "&Center screen,", "&Centrar pantalla" } },
+            { nameof(MnuView), new() { "&View,", "&Ver" } },
+            { nameof(MnuViewCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
 
             // Tools menus texts.
-            { "MnuTools", new() { "&Tools", "&Herramientas" } },
-            { "MnuToolsLanguage", new () { "&Language", "&Idioma" } },
+            { nameof(MnuTools), new() { "&Tools", "&Herramientas" } },
+            { nameof(MnuToolsLanguage), new () { "&Language", "&Idioma" } },
 
             // Help menus texts.
-            { "MnuHelp", new() { "&Help", "Ay&uda" } },
-            { "MnuHelpAbout", new() { "&About", "&Acerca de" } },
+            { nameof(MnuHelp), new() { "&Help", "Ay&uda" } },
+            { nameof(MnuHelpAbout), new() { "&About", "&Acerca de" } },
 
             // Buttons texts.
-            { "BtnNew", new() { "New", "Nuevo" } },
-            { "BtnOpen", new() { "Open", "Abrir" } },
-            { "BtnSave", new() { "Save", "Guardar" } },
-            { "BtnInputNeurone", new() { "Input", "Entrada" } },
-            { "BtnInternalNeurone", new() { "Internal", "Interna" } },
-            { "BtnOutputNeurone", new() { "Output", "Salida" } },
+            { nameof(BtnNew), new() { "New", "Nuevo" } },
+            { nameof(BtnOpen), new() { "Open", "Abrir" } },
+            { nameof(BtnSave), new() { "Save", "Guardar" } },
+            { nameof(BtnInputNeurone), new() { "Input", "Entrada" } },
+            { nameof(BtnInternalNeurone), new() { "Internal", "Interna" } },
+            { nameof(BtnOutputNeurone), new() { "Output", "Salida" } },
+            { nameof(BtnCheck), new() { "Check", "Verificar" } },
+            { nameof(BtnClean), new() { "Clean", "Limpiar" } },
+            { nameof(BtnData), new() { "Data", "Datos" } },
+            { nameof(BtnTraining), new() { "Training", "Entrenamiento" } },
+            { nameof(BtnTest), new() { "Testing", "Prueba" } },
+
+            // Context menus.
+            { nameof(MnuContextLinkTo), new() { "&Link to", "&Asignar a" } },
+            { nameof(MnuContextCopy), new() { "&Copy", "&Copiar" } },
+            { nameof(MnuContextCut), new() { "Cu&t", "Cor&tar" } },
+            { nameof(MnuContextPaste), new() { "&Paste", "&Pegar" } },
+            { nameof(MnuContextDelete), new() { "&Delete", "&Eliminar" } },
+            { nameof(MnuContextCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
         };
 
 #if DEBUG
@@ -153,9 +169,7 @@ namespace SimpleAnnPlayground
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // Getting application language from user settings.
-            Languages.Language formLanguage = Enum.TryParse(typeof(Languages.Language), Properties.Settings.Default.DefaultLanguage, out object? objLanguage) && objLanguage is not null
-                ? (Languages.Language)objLanguage
-                : Languages.Language.English;
+            var formLanguage = Languages.GetApplicationLanguge();
 
             // Filling language menu
             foreach (Languages.Language language in Enum.GetValues(typeof(Languages.Language)))
@@ -410,6 +424,101 @@ namespace SimpleAnnPlayground
         private void FileManager_FilePathChanged(object? sender, EventArgs e)
         {
             Text = "SimpleAnnPlayground" + (string.IsNullOrWhiteSpace(_fileManager.FileName) ? string.Empty : $" - {_fileManager.FileName}");
+        }
+
+        private void ContextMenuState(bool link, bool copyPaste, bool delete)
+        {
+            MnuContextLinkTo.Visible = link;
+            MnuContextSep1.Visible = link;
+            MnuContextCopy.Visible = copyPaste;
+            MnuContextCut.Visible = copyPaste;
+            MnuContextPaste.Visible = copyPaste;
+            MnuContextSep2.Visible = copyPaste && delete;
+            MnuContextDelete.Visible = delete;
+            MnuContextCenterScreen.Visible = !link && !copyPaste && !delete;
+        }
+
+        private void CmsDraw_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            switch (_workspace.Canvas.GetSelectedObjects().Count)
+            {
+                case 0:
+                {
+                    if (_workspace.MouseTool.GetConnectionOver() is Connection)
+                    {
+                        ContextMenuState(link: false, copyPaste: false, delete: true);
+                    }
+                    else
+                    {
+                        ContextMenuState(link: false, copyPaste: false, delete: false);
+                    }
+
+                    break;
+                }
+
+                case 1:
+                {
+                    if (_workspace.MouseTool.GetObjectOver() is CanvasObject obj)
+                    {
+                        switch (obj)
+                        {
+                            case Input input:
+                                ContextMenuState(link: _workspace.DataTable.Inputs.Any(), copyPaste: true, delete: true);
+                                MnuContextLinkTo.Tag = input;
+                                MnuContextLinkTo.DropDownItems.Clear();
+                                foreach (DataLabel label in _workspace.DataTable.Inputs)
+                                {
+                                    var mnuContextLinkToInput = MnuContextLinkTo.DropDownItems.Add(label.Text);
+                                    mnuContextLinkToInput.Click += MnuContextLinkToInput_Click;
+                                    mnuContextLinkToInput.Tag = label;
+                                }
+
+                                break;
+                            case Output output:
+                                ContextMenuState(link: _workspace.DataTable.Outputs.Any(), copyPaste: true, delete: true);
+                                MnuContextLinkTo.Tag = output;
+                                MnuContextLinkTo.DropDownItems.Clear();
+                                foreach (DataLabel label in _workspace.DataTable.Outputs)
+                                {
+                                    var mnuContextLinkToOutput = MnuContextLinkTo.DropDownItems.Add(label.Text);
+                                    mnuContextLinkToOutput.Click += MnuContextLinkToOutput_Click;
+                                    mnuContextLinkToOutput.Tag = label;
+                                }
+
+                                break;
+                            case Internal:
+                                ContextMenuState(link: false, copyPaste: true, delete: true);
+                                break;
+                        }
+                    }
+
+                    break;
+                }
+
+                default:
+                {
+                    ContextMenuState(link: false, copyPaste: false, delete: false);
+                    break;
+                }
+            }
+        }
+
+        private void MnuContextLinkToInput_Click(object? sender, EventArgs e)
+        {
+            if (MnuContextLinkTo.Tag is Input input && sender is ToolStripItem item && item.Tag is DataLabel label)
+            {
+                input.DataLabel = label;
+                _workspace.Refresh();
+            }
+        }
+
+        private void MnuContextLinkToOutput_Click(object? sender, EventArgs e)
+        {
+            if (MnuContextLinkTo.Tag is Output output && sender is ToolStripItem item && item.Tag is DataLabel label)
+            {
+                output.DataLabel = label;
+                _workspace.Refresh();
+            }
         }
     }
 }

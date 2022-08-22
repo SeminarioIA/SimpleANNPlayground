@@ -148,7 +148,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <param name="object">The object to select.</param>
         internal void Select(CanvasObject @object)
         {
-            if (Objects.Contains(@object)) @object.SetStateFlag(Component.State.Selected);
+            if (Objects.Contains(@object)) @object.Selected = true;
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         {
             foreach (var obj in objects)
             {
-                if (Objects.Contains(obj)) obj.SetStateFlag(Component.State.Selected);
+                if (Objects.Contains(obj)) obj.Selected = true;
             }
         }
 
@@ -170,7 +170,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         {
             foreach (var obj in Objects)
             {
-                obj.SetStateFlag(Component.State.Selected);
+                obj.Selected = true;
             }
         }
 
@@ -186,7 +186,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
 
             foreach (var connection in Connections)
             {
-                connection.IsSelected = false;
+                connection.Selected = false;
             }
         }
 
@@ -200,21 +200,21 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             {
                 foreach (var obj in Objects)
                 {
-                    _ = obj.AdjustStateFlag(Component.State.Selected, box.Rectangle.IntersectsWith(obj.SelectionArea));
+                    obj.Selected = box.Rectangle.IntersectsWith(obj.SelectionArea);
                 }
 
                 if (GetSelectedObjects().Count == 0)
                 {
                     foreach (var connection in Connections)
                     {
-                        connection.IsSelected = box.IntersectsWith(connection);
+                        connection.Selected = box.IntersectsWith(connection);
                     }
                 }
                 else
                 {
                     foreach (var connection in Connections)
                     {
-                        connection.IsSelected = false;
+                        connection.Selected = false;
                     }
                 }
             }
@@ -222,7 +222,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             {
                 foreach (var obj in Objects)
                 {
-                    _ = obj.AdjustStateFlag(Component.State.Selected, box.Rectangle.Contains(obj.SelectionArea));
+                    obj.Selected = box.Rectangle.Contains(obj.SelectionArea);
                 }
             }
         }
@@ -231,7 +231,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// Obtains if any object is selected.
         /// </summary>
         /// <returns>True if there are selected objects, otherwise false.</returns>
-        internal bool AnySelected() => Objects.Any(obj => obj.State.HasFlag(Component.State.Selected));
+        internal bool AnySelected() => Objects.Any(obj => obj.Selected);
 
         /// <summary>
         /// Obtains a collection of the selected objects.
@@ -270,7 +270,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             {
                 foreach (var connection in Connections)
                 {
-                    if (connection.IsSelected) connections.Add(connection);
+                    if (connection.Selected) connections.Add(connection);
                 }
             }
 

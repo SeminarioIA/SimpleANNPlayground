@@ -2,11 +2,15 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using Microsoft.VisualBasic;
 using SimpleAnnPlayground.Actions;
+using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Storage;
+using SimpleAnnPlayground.Utils.Serialization.Json;
+using System.Collections.ObjectModel;
 using System.Drawing.Drawing2D;
 
 namespace SimpleAnnPlayground.Graphical.Environment
@@ -176,7 +180,24 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Generates a document to save the workspace information into a file.
         /// </summary>
         /// <returns>The generated document.</returns>
-        public Document GenerateDocument() => new(WorkSheet, Canvas.Objects, Canvas.Connections, DataTable);
+        public Document GenerateDocument()
+        {
+            var dataLinks = new Collection<DataLink>();
+            foreach (var obj in Canvas.Objects)
+            {
+                switch (obj)
+                {
+                    case Input input:
+                        if (input.DataLabel != null) dataLinks.Add(new DataLink(input.Id, input.DataLabel.Text));
+                        break;
+                    case Output output:
+                        if (output.DataLabel != null) dataLinks.Add(new DataLink(output.Id, output.DataLabel.Text));
+                        break;
+                }
+            }
+
+            return new(WorkSheet, Canvas.Objects, Canvas.Connections, DataTable, dataLinks);
+        }
 
         /// <summary>
         /// Loads an existing document into the workspace.
@@ -184,6 +205,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <param name="document">The document to load.</param>
         public void LoadDocument(Document document)
         {
+            MouseTool.CancelOperation();
             WorkSheet = document.WorkSheet;
             Canvas = new Canvas(document.Objects, document.Connections);
             Shadow = new ShadowCanvas(document.Objects, document.Connections);

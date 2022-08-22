@@ -37,6 +37,18 @@ namespace SimpleAnnPlayground.Data
         [JsonIgnore]
         public List<DataRegister> Registers { get; }
 
+        /// <summary>
+        /// Gets the labels on this table of type input.
+        /// </summary>
+        [JsonIgnore]
+        public IEnumerable<DataLabel> Inputs => Labels.Where(label => label.DataType == DataType.Input);
+
+        /// <summary>
+        /// Gets the labels on this table of type output.
+        /// </summary>
+        [JsonIgnore]
+        public IEnumerable<DataLabel> Outputs => Labels.Where(label => label.DataType == DataType.Output);
+
         [JsonRequired]
 #pragma warning disable IDE0051 // Remove unused private members
         private string RegistersCSV

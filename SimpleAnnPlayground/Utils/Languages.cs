@@ -26,6 +26,17 @@ namespace SimpleAnnPlayground.Utils
         }
 
         /// <summary>
+        /// Gets the application language from the application settings.
+        /// </summary>
+        /// <returns>The active application language.</returns>
+        internal static Languages.Language GetApplicationLanguge()
+        {
+            return Enum.TryParse(typeof(Languages.Language), Properties.Settings.Default.DefaultLanguage, out object? objLanguage) && objLanguage is not null
+                ? (Languages.Language)objLanguage
+                : Languages.Language.English;
+        }
+
+        /// <summary>
         /// Changes the language being shown in a Windows form.
         /// </summary>
         /// <param name="form">The form to apply the language.</param>

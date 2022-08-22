@@ -3,6 +3,7 @@
 // </copyright>
 
 using Newtonsoft.Json;
+using System.Security.Cryptography;
 
 namespace SimpleAnnPlayground.Graphical.Models
 {
@@ -82,6 +83,25 @@ namespace SimpleAnnPlayground.Graphical.Models
 
         /// <inheritdoc/>
         public override string ToString() => $"{GetType().Name}: Id={Id} (Instance={Instance})";
+
+        /// <summary>
+        /// Resets the Ids to be assigned to new objects.
+        /// </summary>
+        internal static void ResetIds()
+        {
+            _ids = 0;
+        }
+
+        /// <summary>
+        /// Force a <see cref="DrawableObject"/> to get an id.
+        /// </summary>
+        /// <param name="obj">The object to force.</param>
+        /// <param name="id">The id to be set.</param>
+        internal static void ForceId(DrawableObject obj, int id)
+        {
+            obj.Id = id;
+            _ids = Math.Max(id + 1, _ids);
+        }
 
         /// <summary>
         /// Converts the object from a clone into a copy.

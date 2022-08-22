@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Data;
+using SimpleAnnPlayground.Screens;
 using SimpleAnnPlayground.Utils;
 using SimpleAnnPlayground.Utils.DataView;
 
@@ -14,6 +15,22 @@ namespace SimpleAnnPlayground.UI
     public partial class FrmImportData : Form
     {
         private const int ControlRows = 1;
+
+        /// <summary>
+        /// Contains the words for each control.
+        /// </summary>
+        private static readonly Dictionary<string, List<string>> FormWords = new()
+        {
+            // Window text.
+            { nameof(FrmData), new() { "Project data", "Datos del projecto" } },
+
+            // Buttons texts.
+            { nameof(BtnImport), new() { "Import", "Importar" } },
+            { nameof(BtnCancel), new() { "Cancel", "Cancelar" } },
+
+            // Context menus.
+        };
+
         private readonly string _fileName;
         private readonly DataGridViewEditor _table;
         private readonly DataGridViewRow _checkRow;
@@ -69,6 +86,12 @@ namespace SimpleAnnPlayground.UI
 
         private void FrmImportData_Load(object sender, EventArgs e)
         {
+            // Getting application language from user settings.
+            var formLanguage = Languages.GetApplicationLanguge();
+
+            // Applying form language.
+            Languages.ChangeFormLanguage(this, FormWords, formLanguage);
+
             string[] lines = File.ReadAllLines(_fileName);
             string[] headers = lines.First().Split(',');
 

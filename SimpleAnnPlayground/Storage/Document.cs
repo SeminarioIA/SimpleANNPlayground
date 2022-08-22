@@ -24,13 +24,15 @@ namespace SimpleAnnPlayground.Storage
         /// <param name="objects">The objects to add.</param>
         /// <param name="connections">The connections to add.</param>
         /// <param name="dataTable">The document data.</param>
+        /// <param name="dataLinks">The list of <see cref="DataLink"/>.</param>
         [JsonConstructor]
-        public Document(WorkSheet workSheet, Collection<CanvasObject> objects, Collection<Connection> connections, DataTable dataTable)
+        public Document(WorkSheet workSheet, Collection<CanvasObject> objects, Collection<Connection> connections, DataTable dataTable, Collection<DataLink> dataLinks)
         {
             WorkSheet = workSheet;
             Objects = objects;
             Connections = connections;
             DataTable = dataTable;
+            DataLinks = dataLinks;
         }
 
         /// <summary>
@@ -54,6 +56,11 @@ namespace SimpleAnnPlayground.Storage
         public DataTable DataTable { get; }
 
         /// <summary>
+        /// Gets the list of <see cref="DataLink"/>.
+        /// </summary>
+        public Collection<DataLink> DataLinks { get; }
+
+        /// <summary>
         /// Deserializes a object from the JSON data.
         /// </summary>
         /// <param name="workspace">The workspace to deserialize the objects.</param>
@@ -61,10 +68,29 @@ namespace SimpleAnnPlayground.Storage
         /// <returns>The deserialized object.</returns>
         public static Document Deserialize(Workspace workspace, string data)
         {
-            CanvasObjConverter.Canvas = workspace.Canvas;
-            ConnectionConverter.Objects.Clear();
-            ConnectionConverter.Ids.Clear();
-            return JsonConvert.DeserializeObject<Document>(data) ?? throw new ArgumentException("Invalid data string.", nameof(data));
+            CanvasObjConverter.OpenDeserialization(workspace.Canvas, true);
+            var document = JsonConvert.DeserializeObject<Document>(data) ?? throw new ArgumentException("Invalid data string.", nameof(data));
+
+            // Desersialize links between data and neurons.
+            foreach (var dataLink in document.DataLinks)
+            {
+                var obj = CanvasObjConverter.Objects?.First(obj => obj.Id == dataLink.Id);
+                var label = document.DataTable.Labels.First(label => label.Text == dataLink.Label);
+                switch (obj)
+                {
+                    case Input input:
+                        input.DataLabel = label;
+                        break;
+                    case Output output:
+                        output.DataLabel = label;
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            CanvasObjConverter.CloseDeserialization();
+            return document;
         }
 
         /// <summary>

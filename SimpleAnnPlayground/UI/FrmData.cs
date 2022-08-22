@@ -2,12 +2,12 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.UI;
+using SimpleAnnPlayground.Utils;
 using SimpleAnnPlayground.Utils.DataView;
-using System.Security.Cryptography;
-using System.Windows.Forms;
 
 namespace SimpleAnnPlayground.Screens
 {
@@ -17,6 +17,22 @@ namespace SimpleAnnPlayground.Screens
     internal partial class FrmData : Form
     {
         private const int ControlRows = 1;
+
+        /// <summary>
+        /// Contains the words for each control.
+        /// </summary>
+        private static readonly Dictionary<string, List<string>> FormWords = new()
+        {
+            // Window text.
+            { nameof(FrmData), new() { "Project data", "Datos del projecto" } },
+
+            // Buttons texts.
+            { nameof(BtnImport), new() { "Import", "Importar" } },
+            { nameof(BtnShuffle), new() { "Shuffle", "Revolver" } },
+
+            // Context menus.
+        };
+
         private readonly DataGridViewEditor _table;
         private readonly DataGridViewRow _typeRow;
 
@@ -111,7 +127,25 @@ namespace SimpleAnnPlayground.Screens
 
         private void Table_CellValueChanged(object? sender, CellValueChangedEventArgs e)
         {
-            if (e.Cell.RowIndex == 0) Workspace.DataTable.Labels[e.Cell.ColumnIndex].DataType = Enum.Parse<DataType>(e.Cell.Value?.ToString() ?? string.Empty);
+            if (e.Cell.RowIndex == 0)
+            {
+                var label = Workspace.DataTable.Labels[e.Cell.ColumnIndex];
+                var dataType = Enum.Parse<DataType>(e.Cell.Value?.ToString() ?? throw new InvalidOperationException());
+                if (dataType != label.DataType)
+                {
+                    if (label.DataType == DataType.Input)
+                    {
+                        Workspace.Canvas.Objects.Where(obj => obj is Input).ToList().ConvertAll(obj => (Input)obj).ForEach(input => input.DataLabel = null);
+                    }
+                    else if (label.DataType == DataType.Output)
+                    {
+                        Workspace.Canvas.Objects.Where(obj => obj is Output).ToList().ConvertAll(obj => (Output)obj).ForEach(output => output.DataLabel = null);
+                    }
+
+                    label.DataType = dataType;
+                    Workspace.Refresh();
+                }
+            }
         }
 
         private void UpdateInfo()
@@ -134,6 +168,11 @@ namespace SimpleAnnPlayground.Screens
 
         private void FrmData_Load(object sender, EventArgs e)
         {
+            // Getting application language from user settings.
+            var formLanguage = Languages.GetApplicationLanguge();
+
+            // Applying form language.
+            Languages.ChangeFormLanguage(this, FormWords, formLanguage);
         }
 
         private void BtnShuffle_Click(object sender, EventArgs e)

@@ -5,7 +5,6 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SimpleAnnPlayground.Ann.Neurons;
-using SimpleAnnPlayground.Graphical.Visualization;
 
 namespace SimpleAnnPlayground.Utils.Serialization.Json
 {
@@ -16,16 +15,6 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
     internal class ConnectionConverter : JsonConverter<Connection>
 #pragma warning restore CA1812
     {
-        /// <summary>
-        /// Gets the list of objects to parse the connections.
-        /// </summary>
-        public static ICollection<CanvasObject> Objects { get; } = new List<CanvasObject>();
-
-        /// <summary>
-        /// Gets the dictionary containing the Objects Ids equivalence.
-        /// </summary>
-        public static Dictionary<int, int> Ids { get; } = new Dictionary<int, int>();
-
         /// <inheritdoc/>
         public override bool CanWrite => false;
 
@@ -47,8 +36,9 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
             if (source == null) return null;
             string[] sourceData = source.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (sourceData.Length != 2) return null;
-            int sourceObjectId = Ids[Convert.ToInt32(sourceData[0], 10)];
-            var sourceObject = Objects.First(obj => obj.Id == sourceObjectId);
+            int sourceObjectId = Convert.ToInt32(sourceData[0], 10);
+            if (!CanvasObjConverter.DocumentDeserialization) sourceObjectId = CanvasObjConverter.Ids?[sourceObjectId] ?? throw new InvalidOperationException();
+            var sourceObject = CanvasObjConverter.Objects?.First(obj => obj.Id == sourceObjectId) ?? throw new InvalidOperationException();
             int sourceTerminalIndex = Convert.ToInt32(sourceData[1], 10);
             var sourceTerminal = sourceObject.Outputs[sourceTerminalIndex];
 
@@ -57,8 +47,9 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
             if (destination == null) return null;
             string[] destinationData = destination.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (destinationData.Length != 2) return null;
-            int destinationObjectId = Ids[Convert.ToInt32(destinationData[0], 10)];
-            var destinationObject = Objects.First(obj => obj.Id == destinationObjectId);
+            int destinationObjectId = Convert.ToInt32(destinationData[0], 10);
+            if (!CanvasObjConverter.DocumentDeserialization) destinationObjectId = CanvasObjConverter.Ids?[destinationObjectId] ?? throw new InvalidOperationException();
+            var destinationObject = CanvasObjConverter.Objects?.First(obj => obj.Id == destinationObjectId) ?? throw new InvalidOperationException();
             int destinationTerminalIndex = Convert.ToInt32(destinationData[1], 10);
             var destinationTerminal = destinationObject.Inputs[destinationTerminalIndex];
 
