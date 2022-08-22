@@ -2,14 +2,12 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-using Microsoft.VisualBasic;
 using SimpleAnnPlayground.Actions;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
 using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Storage;
-using SimpleAnnPlayground.Utils.Serialization.Json;
 using System.Collections.ObjectModel;
 using System.Drawing.Drawing2D;
 
