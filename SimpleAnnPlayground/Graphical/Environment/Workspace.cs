@@ -238,7 +238,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <param name="document">The document to load.</param>
         public void LoadDocument(Document document)
         {
-            MouseTool.CancelOperation();
+            Clean();
             WorkSheet = document.WorkSheet;
             Canvas = document.Canvas;
             Shadow = new ShadowCanvas(Canvas);
@@ -251,6 +251,8 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// </summary>
         internal void Clean()
         {
+            MouseTool.CancelOperation();
+            Messages.Clear();
             Canvas.Objects.Clear();
             Canvas.Connections.Clear();
             Shadow.Objects.Clear();
