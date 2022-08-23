@@ -127,6 +127,8 @@ namespace SimpleAnnPlayground
         /// </summary>
         private readonly TextFileManager _fileManager;
 
+        private bool _changeMade;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="FrmMain"/> class.
         /// </summary>
@@ -154,6 +156,7 @@ namespace SimpleAnnPlayground
             _frmActionsViewer = new FrmActionsViewer(_workspace.Actions);
 #endif
             _frmData = new FrmData(_workspace);
+            _changeMade = false;
         }
 
         /// <summary>
@@ -164,6 +167,21 @@ namespace SimpleAnnPlayground
             string path = Debugger.IsAttached ? @"..\..\..\Graphical\Components" : ".";
             Component.ReloadComponents(path);
             PicWorkspace.Invalidate();
+        }
+
+        private static bool ShowSaveDialog()
+        {
+            DialogResult confirmChanges = MessageBox.Show("Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?", "Advertencia", MessageBoxButtons.YesNo);
+            if (confirmChanges == DialogResult.No)
+            {
+                return false;
+            }
+            else if (confirmChanges == DialogResult.Yes)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void FrmMain_Load(object sender, EventArgs e)
@@ -239,6 +257,7 @@ namespace SimpleAnnPlayground
 #if DEBUG
             _frmElementDesigner.Show(this);
             ReloadComponents();
+            _changeMade = true;
 #endif
         }
 
@@ -259,6 +278,14 @@ namespace SimpleAnnPlayground
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (_changeMade)
+            {
+                if (ShowSaveDialog())
+                {
+                    MnuFileSave_Click(sender, e);
+                }
+            }
+
             e.Cancel = false;
         }
 
@@ -282,6 +309,7 @@ namespace SimpleAnnPlayground
             else if (button == BtnInternalNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Internal(_workspace.Canvas, 0, 0));
             else if (button == BtnOutputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Output(_workspace.Canvas, 0, 0));
             else _workspace.MouseTool.CancelOperation();
+            _changeMade = true;
         }
 
         private void MouseTool_ObjectAdded(object? sender, ObjectAddedEventArgs e)
@@ -335,6 +363,7 @@ namespace SimpleAnnPlayground
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
             _frmActionsViewer.RefreshActions();
+            _changeMade = true;
         }
 
         private void MnuEditRedo_Click(object sender, EventArgs e)
@@ -344,6 +373,7 @@ namespace SimpleAnnPlayground
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
             _frmActionsViewer.RefreshActions();
+            _changeMade = true;
         }
 
         private void Actions_ActionPerformed(object? sender, EventArgs e)
@@ -353,12 +383,14 @@ namespace SimpleAnnPlayground
             BtnTraining.Enabled = false;
             BtnTest.Enabled = false;
             _frmActionsViewer.RefreshActions();
+            _changeMade = true;
         }
 
         private void MnuEditDelete_Click(object sender, EventArgs e)
         {
             if (_workspace.ReadOnly) return;
             _workspace.Actions.AddRemoveAction(Actions.RecordableAction.ActionType.Deleted);
+            _changeMade = true;
         }
 
         private void MnuEditCopy_Click(object sender, EventArgs e)
@@ -367,6 +399,7 @@ namespace SimpleAnnPlayground
             var copyBag = new ClipboardBag(_workspace);
             Clipboard.SetData("SimpleAnnPlayground.Copy", copyBag.Serialize());
             MnuEditPaste.Enabled = true;
+            _changeMade = true;
         }
 
         private void MnuEditPaste_Click(object sender, EventArgs e)
@@ -377,6 +410,8 @@ namespace SimpleAnnPlayground
                 var pasteBag = ClipboardBag.Deserialize(_workspace, data);
                 pasteBag.Paste(_workspace);
             }
+
+            _changeMade = true;
         }
 
         private void MnuEditCut_Click(object sender, EventArgs e)
@@ -386,6 +421,7 @@ namespace SimpleAnnPlayground
             Clipboard.SetData("SimpleAnnPlayground.Copy", cutBag.Serialize());
             MnuEditPaste.Enabled = true;
             _workspace.Actions.AddRemoveAction(Actions.RecordableAction.ActionType.Cut);
+            _changeMade = true;
         }
 
         private void BtnData_Click(object sender, EventArgs e)
@@ -408,15 +444,25 @@ namespace SimpleAnnPlayground
         private void MnuFileSave_Click(object sender, EventArgs e)
         {
             _ = _fileManager.Save(_workspace.GenerateDocument().Serialize());
+            _changeMade = false;
         }
 
         private void MnuFileSaveAs_Click(object sender, EventArgs e)
         {
             _ = _fileManager.SaveAs(_workspace.GenerateDocument().Serialize());
+            _changeMade = false;
         }
 
         private void MnuFileNew_Click(object sender, EventArgs e)
         {
+            if (_changeMade)
+            {
+                if (ShowSaveDialog())
+                {
+                    MnuFileSave_Click(sender, e);
+                }
+            }
+
             _fileManager.New();
             _workspace.Clean();
             UncheckToolsButtons(null);
@@ -424,6 +470,14 @@ namespace SimpleAnnPlayground
 
         private void MnuFileOpen_Click(object sender, EventArgs e)
         {
+            if (_changeMade)
+            {
+                if (ShowSaveDialog())
+                {
+                    MnuFileSave_Click(sender, e);
+                }
+            }
+
             if (_fileManager.Open() && _fileManager.FileContent is string data)
             {
                 _workspace.LoadDocument(Document.Deserialize(data));
