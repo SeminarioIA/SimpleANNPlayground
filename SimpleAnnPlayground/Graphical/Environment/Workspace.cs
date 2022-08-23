@@ -34,11 +34,13 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// <param name="pictureBox">The PictureBox for this workspace.</param>
         /// <param name="hScrollBar">The horizontal scroll bar control.</param>
         /// <param name="vScrollBar">The vertical scroll bar control.</param>
-        public Workspace(PictureBox pictureBox, HScrollBar hScrollBar, VScrollBar vScrollBar)
+        /// <param name="toolTip">The ToolTip control to show messages.</param>
+        public Workspace(PictureBox pictureBox, HScrollBar hScrollBar, VScrollBar vScrollBar, ToolTip toolTip)
         {
             PictureBox = pictureBox;
             HScrollBar = hScrollBar;
             VScrollBar = vScrollBar;
+            ToolTip = toolTip;
             WorkSheet = new WorkSheet(new Size(PictureBox.Width - 50, pictureBox.Height - 50));
             MouseTool = new MouseTool(this);
             Transform = new Matrix();
@@ -46,6 +48,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Shadow = new ShadowCanvas();
             Actions = new ActionsManager(this);
             DataTable = new DataTable();
+            Messages = new Collection<string>();
 
             // PictureBox events.
             PictureBox.Paint += PictureBox_Paint;
@@ -89,6 +92,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         public VScrollBar VScrollBar { get; }
 
         /// <summary>
+        /// Gets the <see cref="ToolTip"/> control used to show messages.
+        /// </summary>
+        public ToolTip ToolTip { get; }
+
+        /// <summary>
         /// Gets the workspace sheet.
         /// </summary>
         public WorkSheet WorkSheet { get; private set; }
@@ -122,6 +130,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         /// Gets the <see cref="ActionsManager"/> of this workspace.
         /// </summary>
         public ActionsManager Actions { get; }
+
+        /// <summary>
+        /// Gets the list of messages associated to this canvas.
+        /// </summary>
+        public Collection<string> Messages { get; }
 
         /// <summary>
         /// Gets the current zoom value.
@@ -270,6 +283,17 @@ namespace SimpleAnnPlayground.Graphical.Environment
 
             // Draw the main canvas.
             Canvas.Paint(e.Graphics);
+
+            // Draw the error messages if any.
+            if (Messages.Any())
+            {
+                using (var font = new Font("Arial", 12))
+                using (var brush = new SolidBrush(Color.DarkRed))
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Near })
+                {
+                    e.Graphics.DrawString(string.Join(System.Environment.NewLine, Messages), font, brush, WorkSheet.Bounds.Location, format);
+                }
+            }
 
             // Draw mouse tool controls.
             MouseTool.Paint(e.Graphics);

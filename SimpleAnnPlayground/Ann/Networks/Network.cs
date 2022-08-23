@@ -38,11 +38,12 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// <returns>True if the build was successful, otherwise false.</returns>
         public bool Build()
         {
+            CleanObjects();
             bool result = true;
             result &= CheckUnconnected();
-            if (result) result &= CheckForInputs();
-            if (result) result &= CheckForOutputs();
-            if (result) result &= CheckForDataLinks();
+            result &= CheckForInputs();
+            result &= CheckForOutputs();
+            result &= CheckForDataLinks();
             if (result) result &= BuildGraph();
             Workspace.Refresh();
             return result;
@@ -53,10 +54,7 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// </summary>
         public void Clean()
         {
-            foreach (var obj in Workspace.Canvas.Objects)
-            {
-                obj.ClearStateFlag(State.ComponentStatusMask);
-            }
+            CleanObjects();
 
             Graph = null;
             Workspace.Refresh();
@@ -71,6 +69,7 @@ namespace SimpleAnnPlayground.Ann.Networks
                 if (obj.Terminals.Any(terminal => !terminal.GetConnections().Any()))
                 {
                     obj.SetStateFlag(State.ComponentError);
+                    obj.Messages.Add("The component does not have connections.");
                     result = false;
                 }
             }
@@ -80,17 +79,25 @@ namespace SimpleAnnPlayground.Ann.Networks
 
         private bool CheckForInputs()
         {
-            return Workspace.Canvas.Objects.Any(obj => obj is Input);
+            bool result = Workspace.Canvas.Objects.Any(obj => obj is Input);
+            if (!result) Workspace.Messages.Add("The model does not have inputs.");
+            return result;
         }
 
         private bool CheckForOutputs()
         {
-            return Workspace.Canvas.Objects.Any(obj => obj is Output);
+            bool result = Workspace.Canvas.Objects.Any(obj => obj is Output);
+            if (!result) Workspace.Messages.Add("The model does not have outputs.");
+            return result;
         }
 
         private bool CheckForDataLinks()
         {
             bool result = true;
+            if (!Workspace.DataTable.HasData())
+            {
+                Workspace.Messages.Add("The workspace does not have associated input data.");
+            }
 
             foreach (var obj in Workspace.Canvas.Objects)
             {
@@ -101,6 +108,7 @@ namespace SimpleAnnPlayground.Ann.Networks
                         if (input.DataLabel == null)
                         {
                             obj.SetStateFlag(State.ComponentError);
+                            obj.Messages.Add("The input does not have a data label.");
                             result = false;
                         }
 
@@ -112,6 +120,7 @@ namespace SimpleAnnPlayground.Ann.Networks
                         if (output.DataLabel == null)
                         {
                             obj.SetStateFlag(State.ComponentError);
+                            obj.Messages.Add("The output does not have a data label.");
                             result = false;
                         }
 
@@ -142,6 +151,16 @@ namespace SimpleAnnPlayground.Ann.Networks
             Graph.Expand();
 
             return Graph.Nodes.Count == Workspace.Canvas.Objects.Count;
+        }
+
+        private void CleanObjects()
+        {
+            Workspace.Messages.Clear();
+            foreach (var obj in Workspace.Canvas.Objects)
+            {
+                obj.ClearStateFlag(State.ComponentStatusMask);
+                obj.Messages.Clear();
+            }
         }
     }
 }

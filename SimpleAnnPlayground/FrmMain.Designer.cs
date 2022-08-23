@@ -104,6 +104,7 @@
             this.BtnCxStep = new System.Windows.Forms.ToolStripButton();
             this.BtnNeuronStep = new System.Windows.Forms.ToolStripButton();
             this.BtnLayerStep = new System.Windows.Forms.ToolStripButton();
+            this.TtMessages = new System.Windows.Forms.ToolTip(this.components);
             this.TspEdition.SuspendLayout();
             this.SspStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
@@ -752,6 +753,10 @@
             this.BtnLayerStep.Text = "L-Step";
             this.BtnLayerStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             // 
+            // TtMessages
+            // 
+            this.TtMessages.ForeColor = System.Drawing.SystemColors.ControlText;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -860,5 +865,6 @@
         private ToolStripSeparator MnuContextSep2;
         private ToolStripMenuItem MnuContextDelete;
         private ToolStripMenuItem MnuContextCenterScreen;
+        private ToolTip TtMessages;
     }
 }
