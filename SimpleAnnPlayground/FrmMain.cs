@@ -135,7 +135,7 @@ namespace SimpleAnnPlayground
             InitializeComponent();
 
             // Add workspace object.
-            _workspace = new Workspace(PicWorkspace, HsbMain, VsbMain);
+            _workspace = new Workspace(PicWorkspace, HsbMain, VsbMain, TtMessages);
             _workspace.MouseTool.MouseMove += MouseTool_MouseMove;
             _workspace.MouseTool.ObjectAdded += MouseTool_ObjectAdded;
             _workspace.MouseTool.SelectionChanged += Workspace_SelectionChanged;

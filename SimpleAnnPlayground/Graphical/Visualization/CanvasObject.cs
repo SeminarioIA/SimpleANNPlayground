@@ -8,6 +8,7 @@ using SimpleAnnPlayground.Graphical.Terminals;
 using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Utils.Graphics;
 using SimpleAnnPlayground.Utils.Serialization.Json;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using static SimpleAnnPlayground.Graphical.Component;
 
@@ -32,6 +33,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             Component = other.Component;
             Inputs = other.Inputs.ConvertAll(input => new InputTerminal(input));
             Outputs = other.Outputs.ConvertAll(output => new OutputTerminal(output));
+            Messages = new Collection<string>();
         }
 
         /// <summary>
@@ -49,6 +51,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
             Inputs = new List<InputTerminal>();
             Outputs = new List<OutputTerminal>();
             InitializeConnectors(component);
+            Messages = new Collection<string>();
         }
 
         /// <summary>
@@ -114,6 +117,11 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// Gets or sets the object location in the draw.
         /// </summary>
         public Point Location { get; set; }
+
+        /// <summary>
+        /// Gets the list of message associated to this object.
+        /// </summary>
+        public Collection<string> Messages { get; }
 
         /// <summary>
         /// Gets the selection area of this object.

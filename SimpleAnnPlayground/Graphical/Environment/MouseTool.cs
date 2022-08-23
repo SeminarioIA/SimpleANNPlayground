@@ -345,6 +345,20 @@ namespace SimpleAnnPlayground.Graphical.Environment
             if (State == MouseState.Idle)
             {
                 Workspace.Canvas.UpdateMousePosition(Location.Value);
+                if (Workspace.Canvas.Objects.FirstOrDefault(obj => obj.State.HasFlag(Component.State.Hover)) is CanvasObject obj)
+                {
+                    if (Workspace.ToolTip.Tag != obj)
+                    {
+                        IWin32Window win = Workspace.PictureBox;
+                        Workspace.ToolTip.Show(string.Join(System.Environment.NewLine, obj.Messages), win, e.Location);
+                        Workspace.ToolTip.Tag = obj;
+                    }
+                }
+                else
+                {
+                    Workspace.ToolTip.Hide(Workspace.PictureBox);
+                    Workspace.ToolTip.Tag = null;
+                }
             }
             else if (Inserting != null)
             {
