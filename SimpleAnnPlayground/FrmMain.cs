@@ -466,6 +466,7 @@ namespace SimpleAnnPlayground
             _fileManager.New();
             _workspace.Clean();
             UncheckToolsButtons(null);
+            _changeMade = false;
         }
 
         private void MnuFileOpen_Click(object sender, EventArgs e)
@@ -483,6 +484,8 @@ namespace SimpleAnnPlayground
                 _workspace.LoadDocument(Document.Deserialize(data));
                 UncheckToolsButtons(null);
             }
+
+            _changeMade = false;
         }
 
         private void FileManager_FilePathChanged(object? sender, EventArgs e)
