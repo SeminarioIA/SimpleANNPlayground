@@ -70,6 +70,40 @@ namespace SimpleAnnPlayground.Utils
         }
 
         /// <summary>
+        /// Gets a string of the specified language from the passed dictionary.
+        /// </summary>
+        /// <param name="key">The key for the string.</param>
+        /// <param name="words">The dictionary.</param>
+        /// <param name="language">The languaje of the string.</param>
+        /// <returns>The string of the specified language.</returns>
+        internal static string GetString(string key, Dictionary<string, List<string>> words, Language language)
+        {
+            if (words.ContainsKey(key))
+            {
+                return words[key][(int)language];
+            }
+
+            return $"[{key}: {language}]";
+        }
+
+        /// <summary>
+        /// Gets a string of the specified language from the passed dictionary.
+        /// </summary>
+        /// <param name="key">The key for the string.</param>
+        /// <param name="words">The dictionary.</param>
+        /// <returns>The string of the specified language.</returns>
+        internal static string GetString(string key, Dictionary<string, List<string>> words)
+        {
+            Language language = GetApplicationLanguage();
+            if (words.ContainsKey(key))
+            {
+                return words[key][(int)language];
+            }
+
+            return $"[{key}: {language}]";
+        }
+
+        /// <summary>
         /// Gets an enumeration of the controls contained in a container including itself.
         /// </summary>
         /// <param name="parent">The parent control.</param>
