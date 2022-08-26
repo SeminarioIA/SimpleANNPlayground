@@ -154,6 +154,7 @@ namespace SimpleAnnPlayground
             _frmActionsViewer = new FrmActionsViewer(_workspace.Actions);
 #endif
             _frmData = new FrmData(_workspace);
+            TspExecution.Visible = false;
         }
 
         /// <summary>
@@ -544,6 +545,7 @@ namespace SimpleAnnPlayground
             TspExecution.Visible = true;
             UncheckToolsButtons(null);
             _workspace.SetReadOnly();
+            _network.Start();
         }
 
         private void BtnTest_Click(object sender, EventArgs e)
@@ -560,7 +562,13 @@ namespace SimpleAnnPlayground
             MnuEdit.Enabled = true;
             TspEdition.Visible = true;
             TspExecution.Visible = false;
+            _network.Stop();
             _workspace.SetEditable();
+        }
+
+        private void BtnCxStep_Click(object sender, EventArgs e)
+        {
+            _network.Execution?.StepIntoCx();
         }
     }
 }

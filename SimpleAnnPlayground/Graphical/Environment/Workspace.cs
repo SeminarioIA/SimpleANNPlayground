@@ -77,6 +77,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         public event EventHandler? DataTableChanged;
 
         /// <summary>
+        /// Occurs when the data table is cleared or changes.
+        /// </summary>
+        public event EventHandler? DataTableSelectRegister;
+
+        /// <summary>
         /// Gets the <seealso cref="PictureBox"/> object linked to this workspace.
         /// </summary>
         public PictureBox PictureBox { get; }
@@ -261,6 +266,16 @@ namespace SimpleAnnPlayground.Graphical.Environment
             Actions.Clear();
             Refresh();
             DataTableChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Selects a table register.
+        /// </summary>
+        /// <param name="register">The register to select.</param>
+        internal void SelectRegister(DataRegister register)
+        {
+            DataTable.SelectRegister(register);
+            DataTableSelectRegister?.Invoke(register, EventArgs.Empty);
         }
 
         private void UpdateTransform()

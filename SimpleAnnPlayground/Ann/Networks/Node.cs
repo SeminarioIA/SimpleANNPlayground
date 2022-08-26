@@ -14,20 +14,20 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// <summary>
         /// Initializes a new instance of the <see cref="Node"/> class.
         /// </summary>
-        /// <param name="graph">The parent graph for this node.</param>
+        /// <param name="layer">The parent layer for this node.</param>
         /// <param name="neuron">The neuron associated to this node.</param>
-        public Node(Graph graph, Neuron neuron)
+        public Node(Layer layer, Neuron neuron)
         {
-            Graph = graph;
+            Layer = layer;
             Neuron = neuron;
-            Next = new List<Node>();
-            Previous = new List<Node>();
+            Next = new List<Link>();
+            Previous = new List<Link>();
         }
 
         /// <summary>
-        /// Gets the parent graph for this node.
+        /// Gets the parent layer for this node.
         /// </summary>
-        public Graph Graph { get; }
+        public Layer Layer { get; }
 
         /// <summary>
         /// Gets the neuron associated to this node.
@@ -35,14 +35,14 @@ namespace SimpleAnnPlayground.Ann.Networks
         public Neuron Neuron { get; }
 
         /// <summary>
-        /// Gets the next list of nodes connected to this node.
+        /// Gets the next list of links to nodes connected to this node.
         /// </summary>
-        public List<Node> Next { get; }
+        public List<Link> Next { get; }
 
         /// <summary>
-        /// Gets the previous list of nodes connected to this node.
+        /// Gets the previous list of links to nodes connected to this node.
         /// </summary>
-        public List<Node> Previous { get; }
+        public List<Link> Previous { get; }
 
         /// <inheritdoc/>
         public override bool Equals(object? obj) => obj is Node other && other.Neuron == Neuron;
@@ -53,29 +53,33 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// <summary>
         /// Expands the node from itself.
         /// </summary>
-        internal void Expand()
+        /// <param name="nextLayer">The next layer to expand.</param>
+        internal void Expand(Layer nextLayer)
         {
             foreach (var output in Neuron.Outputs)
             {
-                foreach (var connection in output.GetConnections().OrderBy(conn => conn.Source.Owner.Location.Y))
+                // Iterate the connection in destination order.
+                foreach (var connection in output.GetConnections().OrderBy(conn => conn.Destination.Owner.Location.Y))
                 {
+                    // Add the node.
                     if (connection.Destination.Owner is Neuron neuron)
                     {
                         // Check if the node already exists.
-                        Node? node = Graph.Nodes.FirstOrDefault(n => n.Neuron == neuron);
+                        Node? node = nextLayer.Nodes.FirstOrDefault(n => n.Neuron == neuron);
                         if (node == null)
                         {
                             // Create a new node.
-                            node = new Node(Graph, neuron);
-                            Graph.Nodes.Add(node);
-
-                            // Expand the node.
-                            node.Expand();
+                            node = new Node(nextLayer, neuron);
+                            nextLayer.Nodes.Add(node);
+                            Layer.Graph.Nodes.Add(node);
                         }
 
-                        // Register the nodes.
-                        Next.Add(node);
-                        node.Previous.Add(this);
+                        // Add the link.
+                        var link = new Link(connection, this, node);
+
+                        // Register the link with the nodes.
+                        Next.Add(link);
+                        node.Previous.Add(link);
                     }
                 }
             }
