@@ -29,11 +29,11 @@ namespace SimpleAnnPlayground.Utils
         /// Gets the application language from the application settings.
         /// </summary>
         /// <returns>The active application language.</returns>
-        internal static Languages.Language GetApplicationLanguge()
+        internal static Language GetApplicationLanguage()
         {
-            return Enum.TryParse(typeof(Languages.Language), Properties.Settings.Default.DefaultLanguage, out object? objLanguage) && objLanguage is not null
-                ? (Languages.Language)objLanguage
-                : Languages.Language.English;
+            return Enum.TryParse(typeof(Language), Properties.Settings.Default.DefaultLanguage, out object? objLanguage) && objLanguage is not null
+                ? (Language)objLanguage
+                : Language.English;
         }
 
         /// <summary>
@@ -52,7 +52,9 @@ namespace SimpleAnnPlayground.Utils
                     foreach (ToolStripItem item in toolStrip.Items)
                     {
                         if (words.ContainsKey(item.Name))
+                        {
                             item.Text = words[item.Name][(int)language];
+                        }
 
                         // If the toolStrip contains child elements.
                         SetMenuLanguage(item, words, language);
@@ -65,6 +67,40 @@ namespace SimpleAnnPlayground.Utils
                         control.Text = words[control.Name][(int)language];
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets a string of the specified language from the passed dictionary.
+        /// </summary>
+        /// <param name="key">The key for the string.</param>
+        /// <param name="words">The dictionary.</param>
+        /// <param name="language">The languaje of the string.</param>
+        /// <returns>The string of the specified language.</returns>
+        internal static string GetString(string key, Dictionary<string, List<string>> words, Language language)
+        {
+            if (words.ContainsKey(key))
+            {
+                return words[key][(int)language];
+            }
+
+            return $"[{key}: {language}]";
+        }
+
+        /// <summary>
+        /// Gets a string of the specified language from the passed dictionary.
+        /// </summary>
+        /// <param name="key">The key for the string.</param>
+        /// <param name="words">The dictionary.</param>
+        /// <returns>The string of the specified language.</returns>
+        internal static string GetString(string key, Dictionary<string, List<string>> words)
+        {
+            Language language = GetApplicationLanguage();
+            if (words.ContainsKey(key))
+            {
+                return words[key][(int)language];
+            }
+
+            return $"[{key}: {language}]";
         }
 
         /// <summary>

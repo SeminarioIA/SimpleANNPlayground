@@ -17,6 +17,23 @@ namespace SimpleAnnPlayground.Utils.FileManagment
         {
         }
 
+        /// <summary>
+        /// Compares.
+        /// </summary>
+        /// <param name="currentContent">String with current json file.</param>
+        /// <returns>Returns a bool value.</returns>
+        public bool HadChanged(string currentContent)
+        {
+            if (currentContent?.Equals(FileContent) == true)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         /// <inheritdoc/>
         protected override object? NewOperation() => string.Empty;
 

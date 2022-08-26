@@ -64,6 +64,7 @@ namespace SimpleAnnPlayground.Data
             set
             {
                 Registers.Clear();
+                if (string.IsNullOrEmpty(value)) return;
                 foreach (string line in value.Split(Environment.NewLine))
                 {
                     Registers.Add(new DataRegister(line));

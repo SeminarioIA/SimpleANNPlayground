@@ -88,6 +88,10 @@ namespace SimpleAnnPlayground
             { nameof(MnuContextPaste), new() { "&Paste", "&Pegar" } },
             { nameof(MnuContextDelete), new() { "&Delete", "&Eliminar" } },
             { nameof(MnuContextCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
+
+            // Message box.
+            { nameof(ShowSaveDialog), new() { "If you have made changes to the document they will be lost, do you want to save your changes before continuing?", "Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?" } },
+            { "Warning", new() { "Warning", "Advertencia" } },
         };
 
 #if DEBUG
@@ -167,10 +171,12 @@ namespace SimpleAnnPlayground
             PicWorkspace.Invalidate();
         }
 
+        private DialogResult ShowSaveDialog() => MessageBox.Show(Languages.GetString(nameof(ShowSaveDialog), FormWords), Languages.GetString("Warning", FormWords), MessageBoxButtons.YesNoCancel);
+
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // Getting application language from user settings.
-            var formLanguage = Languages.GetApplicationLanguge();
+            var formLanguage = Languages.GetApplicationLanguage();
 
             // Filling language menu
             foreach (Languages.Language language in Enum.GetValues(typeof(Languages.Language)))
@@ -196,6 +202,9 @@ namespace SimpleAnnPlayground
 
             // Load components
             Component.ReloadComponents(@"Graphical\Components");
+
+            // Create a new file.
+            _fileManager.New(_workspace.GenerateDocument().Serialize());
         }
 
         private void Workspace_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -260,6 +269,20 @@ namespace SimpleAnnPlayground
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
+            {
+                DialogResult selection = ShowSaveDialog();
+                if (selection == DialogResult.OK)
+                {
+                    MnuFileSave_Click(sender, e);
+                }
+                else if (selection == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
             e.Cancel = false;
         }
 
@@ -418,13 +441,39 @@ namespace SimpleAnnPlayground
 
         private void MnuFileNew_Click(object sender, EventArgs e)
         {
-            _fileManager.New();
+            if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
+            {
+                DialogResult selection = ShowSaveDialog();
+                if (selection == DialogResult.OK)
+                {
+                    MnuFileSave_Click(sender, e);
+                }
+                else if (selection == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
             _workspace.Clean();
+            _fileManager.New(_workspace.GenerateDocument().Serialize());
             UncheckToolsButtons(null);
         }
 
         private void MnuFileOpen_Click(object sender, EventArgs e)
         {
+            if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
+            {
+                DialogResult selection = ShowSaveDialog();
+                if (selection == DialogResult.OK)
+                {
+                    MnuFileSave_Click(sender, e);
+                }
+                else if (selection == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
             if (_fileManager.Open() && _fileManager.FileContent is string data)
             {
                 _workspace.LoadDocument(Document.Deserialize(data));

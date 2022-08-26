@@ -187,7 +187,7 @@ namespace SimpleAnnPlayground.Screens
         private void FrmData_Load(object sender, EventArgs e)
         {
             // Getting application language from user settings.
-            var formLanguage = Languages.GetApplicationLanguge();
+            var formLanguage = Languages.GetApplicationLanguage();
 
             // Applying form language.
             Languages.ChangeFormLanguage(this, FormWords, formLanguage);

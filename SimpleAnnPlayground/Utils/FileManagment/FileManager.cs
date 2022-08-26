@@ -139,10 +139,11 @@ namespace SimpleAnnPlayground.Utils.FileManagment
         /// <summary>
         /// Clears the file parameters for a new file.
         /// </summary>
-        public void New()
+        /// <param name="content">The content of an empty file.</param>
+        public void New(object? content = null)
         {
             FilePath = string.Empty;
-            FileContent = null;
+            FileContent = content;
         }
 
         /// <inheritdoc/>
