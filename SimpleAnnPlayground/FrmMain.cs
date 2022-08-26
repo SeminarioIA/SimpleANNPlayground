@@ -166,25 +166,7 @@ namespace SimpleAnnPlayground
             PicWorkspace.Invalidate();
         }
 
-        private static string ShowSaveDialog()
-        {
-            DialogResult confirmChanges = MessageBox.Show("Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?", "Advertencia", MessageBoxButtons.YesNoCancel);
-            if (confirmChanges == DialogResult.Yes)
-            {
-                return "true";
-            }
-            else if (confirmChanges == DialogResult.Cancel)
-            {
-                Debug.WriteLine("Cancela");
-                return "false";
-            }
-            else if (confirmChanges == DialogResult.No)
-            {
-                return "No";
-            }
-
-            return "default";
-        }
+        private static DialogResult ShowSaveDialog() => MessageBox.Show("Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?", "Advertencia", MessageBoxButtons.YesNoCancel);
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
@@ -281,13 +263,14 @@ namespace SimpleAnnPlayground
         {
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
-                string selection = ShowSaveDialog();
-                if (selection == "true")
+                DialogResult selection = ShowSaveDialog();
+                if (selection == DialogResult.OK)
                 {
                     MnuFileSave_Click(sender, e);
                 }
-                else if (selection == "false")
+                else if (selection == DialogResult.Cancel)
                 {
+                    e.Cancel = true;
                     return;
                 }
             }
@@ -452,12 +435,12 @@ namespace SimpleAnnPlayground
         {
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
-                string selection = ShowSaveDialog();
-                if (selection == "true")
+                DialogResult selection = ShowSaveDialog();
+                if (selection == DialogResult.OK)
                 {
                     MnuFileSave_Click(sender, e);
                 }
-                else if (selection == "false")
+                else if (selection == DialogResult.Cancel)
                 {
                     return;
                 }
@@ -472,12 +455,12 @@ namespace SimpleAnnPlayground
         {
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
-                string selection = ShowSaveDialog();
-                if (selection == "true")
+                DialogResult selection = ShowSaveDialog();
+                if (selection == DialogResult.OK)
                 {
                     MnuFileSave_Click(sender, e);
                 }
-                else if (selection == "false")
+                else if (selection == DialogResult.Cancel)
                 {
                     return;
                 }
