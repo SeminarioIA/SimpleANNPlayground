@@ -171,7 +171,7 @@ namespace SimpleAnnPlayground
         private void FrmMain_Load(object sender, EventArgs e)
         {
             // Getting application language from user settings.
-            var formLanguage = Languages.GetApplicationLanguge();
+            var formLanguage = Languages.GetApplicationLanguage();
 
             // Filling language menu
             foreach (Languages.Language language in Enum.GetValues(typeof(Languages.Language)))
