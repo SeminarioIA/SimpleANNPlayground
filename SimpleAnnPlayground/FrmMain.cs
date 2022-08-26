@@ -88,6 +88,10 @@ namespace SimpleAnnPlayground
             { nameof(MnuContextPaste), new() { "&Paste", "&Pegar" } },
             { nameof(MnuContextDelete), new() { "&Delete", "&Eliminar" } },
             { nameof(MnuContextCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
+
+            // Message box.
+            { nameof(ShowSaveDialog), new() { "If you have made changes to the document they will be lost, do you want to save your changes before continuing?", "Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?" } },
+            { "Warning", new() { "Warning", "Advertencia" } },
         };
 
 #if DEBUG
@@ -166,7 +170,7 @@ namespace SimpleAnnPlayground
             PicWorkspace.Invalidate();
         }
 
-        private static DialogResult ShowSaveDialog() => MessageBox.Show("Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?", "Advertencia", MessageBoxButtons.YesNoCancel);
+        private DialogResult ShowSaveDialog() => MessageBox.Show(Languages.GetString(nameof(ShowSaveDialog), FormWords), Languages.GetString("Warning", FormWords), MessageBoxButtons.YesNoCancel);
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
@@ -449,7 +453,6 @@ namespace SimpleAnnPlayground
                 }
             }
 
-            _fileManager.New();
             _workspace.Clean();
             _fileManager.New(_workspace.GenerateDocument().Serialize());
             UncheckToolsButtons(null);
