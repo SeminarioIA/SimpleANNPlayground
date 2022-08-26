@@ -197,6 +197,9 @@ namespace SimpleAnnPlayground
 
             // Load components
             Component.ReloadComponents(@"Graphical\Components");
+
+            // Create a new file.
+            _fileManager.New(_workspace.GenerateDocument().Serialize());
         }
 
         private void Workspace_SelectionChanged(object? sender, SelectionChangedEventArgs e)
@@ -448,6 +451,7 @@ namespace SimpleAnnPlayground
 
             _fileManager.New();
             _workspace.Clean();
+            _fileManager.New(_workspace.GenerateDocument().Serialize());
             UncheckToolsButtons(null);
         }
 
