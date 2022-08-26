@@ -20,8 +20,10 @@ namespace SimpleAnnPlayground.Ann.Neurons
     {
         private const float Width = 0.1f;
         private const float SelectionWidth = 2f;
+        private const float ExecWidth = 5f;
         private readonly Color _color = Color.Black;
         private readonly Color _selectColor = Color.Blue;
+        private readonly Color _execColor = Color.Aquamarine;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Connection"/> class.
@@ -77,6 +79,12 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public bool Selected { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this connection is executing.
+        /// </summary>
+        [JsonIgnore]
+        public bool Executing { get; set; }
+
+        /// <summary>
         /// Determines if a point is near enough to the connection line.
         /// </summary>
         /// <param name="point">The point to test.</param>
@@ -122,11 +130,20 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <param name="graphics">The graphics object.</param>
         internal void Paint(Graphics graphics)
         {
+            if (Executing)
+            {
+                using (Pen pen = new Pen(_execColor, ExecWidth))
+                {
+                    graphics.DrawLine(pen, Source.Location, Destination.Location);
+                }
+            }
+
             using (Pen pen = new Pen(Selected ? _selectColor : _color, Width))
             {
                 graphics.DrawLine(pen, Source.Location, Destination.Location);
             }
 
+            // TODO: Move this to the object paint.
             // Draw source connectors.
             graphics.TranslateTransform(Source.Owner.Location.X - Source.Owner.Component.Center.X, Source.Owner.Location.Y - Source.Owner.Component.Center.Y);
             Source.Connector.Paint(graphics, Connector.DrawMode.Connected);

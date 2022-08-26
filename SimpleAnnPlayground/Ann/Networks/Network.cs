@@ -33,6 +33,21 @@ namespace SimpleAnnPlayground.Ann.Networks
         public Graph? Graph { get; private set; }
 
         /// <summary>
+        /// Gets the execution helper.
+        /// </summary>
+        public Execution? Execution { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the network build was successful.
+        /// </summary>
+        public bool BuildResult { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the network is being executed.
+        /// </summary>
+        public bool Running => Execution != null;
+
+        /// <summary>
         /// Builds the neural network from the workspace objects.
         /// </summary>
         /// <returns>True if the build was successful, otherwise false.</returns>
@@ -58,6 +73,24 @@ namespace SimpleAnnPlayground.Ann.Networks
 
             Graph = null;
             Workspace.Refresh();
+        }
+
+        /// <summary>
+        /// Starts the network execution.
+        /// </summary>
+        public void Start()
+        {
+            Execution = new Execution(this);
+            Execution.Start();
+        }
+
+        /// <summary>
+        /// Stops the network execution.
+        /// </summary>
+        public void Stop()
+        {
+            Execution?.Stop();
+            Execution = null;
         }
 
         private bool CheckUnconnected()
@@ -139,18 +172,21 @@ namespace SimpleAnnPlayground.Ann.Networks
         {
             Graph = new Graph(this);
 
-            // Get the input layer
+            // Get the input layer.
             Workspace.Canvas.Objects
                 .Where(obj => obj is Input)
                 .OrderBy(obj => obj.Location.Y)
-                .Select(obj => obj as Input)
                 .ToList()
+                .ConvertAll(obj => obj as Input ?? throw new InvalidOperationException())
                 .ForEach(Graph.AddInput);
 
-            // Expand the graph
+            // Expand the graph.
             Graph.Expand();
 
-            return Graph.Nodes.Count == Workspace.Canvas.Objects.Count;
+            // Verify all the neurons are included in the model.
+            BuildResult = Graph.Nodes.Count == Workspace.Canvas.Objects.Count;
+
+            return BuildResult;
         }
 
         private void CleanObjects()

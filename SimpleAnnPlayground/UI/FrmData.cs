@@ -46,6 +46,7 @@ namespace SimpleAnnPlayground.Screens
 
             Workspace = workspace;
             Workspace.DataTableChanged += Workspace_DataTableChanged;
+            Workspace.DataTableSelectRegister += Workspace_DataTableSelectRegister;
             _table = new DataGridViewEditor(DgData);
             _typeRow = new DataGridViewRow();
             PbData.ValueChanged += PbData_ValueChanged;
@@ -87,10 +88,19 @@ namespace SimpleAnnPlayground.Screens
                     var row = DgData.Rows[rowIndex];
                     row.ReadOnly = true;
                     row.HeaderCell.Value = register.Id.ToString();
+                    row.Tag = register;
                 }
             }
 
             UpdateInfo();
+        }
+
+        private void Workspace_DataTableSelectRegister(object? sender, EventArgs e)
+        {
+            foreach (DataGridViewRow row in DgData.Rows)
+            {
+                row.DefaultCellStyle.BackColor = row.Tag == sender ? Color.Yellow : Color.Empty;
+            }
         }
 
         private void PbData_ValueChanged(object? sender, EventArgs e)

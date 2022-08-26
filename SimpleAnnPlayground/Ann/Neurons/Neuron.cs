@@ -50,5 +50,38 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// Gets the neuron current layer.
         /// </summary>
         internal abstract int? DownwardLayer { get; }
+
+        /// <summary>
+        /// Gets or sets the neuron output value.
+        /// </summary>
+        internal decimal? Input { get; set; }
+
+        /// <inheritdoc/>
+        public override void Paint(Graphics graphics)
+        {
+            base.Paint(graphics);
+
+            if (Layer is not null and > 0)
+            {
+                using (var font = new Font("Arial", 8))
+                using (var brush = new SolidBrush(Color.Black))
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+                {
+                    var location = new PointF(Location.X, Location.Y);
+                    graphics.DrawString(Layer.ToString(), font, brush, location, format);
+                }
+            }
+
+            if (Input is not null)
+            {
+                using (var font = new Font("Arial", 8))
+                using (var brush = new SolidBrush(Color.Black))
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far })
+                {
+                    var location = new PointF(Location.X, Location.Y - Component.Y);
+                    graphics.DrawString(Input.ToString(), font, brush, location, format);
+                }
+            }
+        }
     }
 }

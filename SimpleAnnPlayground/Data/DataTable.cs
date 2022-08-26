@@ -38,6 +38,12 @@ namespace SimpleAnnPlayground.Data
         public List<DataRegister> Registers { get; }
 
         /// <summary>
+        /// Gets the selected register for simulation.
+        /// </summary>
+        [JsonIgnore]
+        public DataRegister? SelectedRegister { get; private set; }
+
+        /// <summary>
         /// Gets the labels on this table of type input.
         /// </summary>
         [JsonIgnore]
@@ -78,6 +84,34 @@ namespace SimpleAnnPlayground.Data
         {
             Labels.Clear();
             Registers.Clear();
+        }
+
+        /// <summary>
+        /// Selects the specified register in the table.
+        /// </summary>
+        /// <param name="register">The register to select.</param>
+        internal void SelectRegister(DataRegister register)
+        {
+            SelectedRegister = register;
+        }
+
+        /// <summary>
+        /// Gets a value from the selected register.
+        /// </summary>
+        /// <param name="dataLabel">The label to read.</param>
+        /// <returns>The value in decimal format.</returns>
+        internal decimal GetValue(DataLabel dataLabel)
+        {
+            if (SelectedRegister != null)
+            {
+                int index = Labels.IndexOf(dataLabel);
+                decimal value = decimal.Parse(SelectedRegister.Fields[index].Text);
+                return value;
+            }
+            else
+            {
+                throw new InvalidOperationException();
+            }
         }
     }
 }

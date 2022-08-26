@@ -705,7 +705,6 @@
             this.TspExecution.Size = new System.Drawing.Size(760, 56);
             this.TspExecution.TabIndex = 6;
             this.TspExecution.Text = "toolStrip2";
-            this.TspExecution.Visible = false;
             // 
             // BtnStop
             // 
@@ -734,6 +733,7 @@
             this.BtnCxStep.Size = new System.Drawing.Size(57, 53);
             this.BtnCxStep.Text = "Cx-Step";
             this.BtnCxStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnCxStep.Click += new System.EventHandler(this.BtnCxStep_Click);
             // 
             // BtnNeuronStep
             // 
