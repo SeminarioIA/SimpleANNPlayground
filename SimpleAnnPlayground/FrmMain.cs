@@ -13,6 +13,7 @@ using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Screens;
 using SimpleAnnPlayground.Storage;
+using SimpleAnnPlayground.UI;
 using SimpleAnnPlayground.Utils;
 using SimpleAnnPlayground.Utils.FileManagment;
 using System.Diagnostics;
@@ -117,6 +118,11 @@ namespace SimpleAnnPlayground
         private readonly FrmData _frmData;
 
         /// <summary>
+        /// The form to create the model based in a template.
+        /// </summary>
+        private readonly FrmTemplate _frmTemplate;
+
+        /// <summary>
         /// The design workspace area.
         /// </summary>
         private readonly Workspace _workspace;
@@ -158,6 +164,7 @@ namespace SimpleAnnPlayground
             _frmActionsViewer = new FrmActionsViewer(_workspace.Actions);
 #endif
             _frmData = new FrmData(_workspace);
+            _frmTemplate = new FrmTemplate(_workspace);
             TspExecution.Visible = false;
         }
 
@@ -618,6 +625,24 @@ namespace SimpleAnnPlayground
         private void BtnCxStep_Click(object sender, EventArgs e)
         {
             _network.Execution?.StepIntoCx();
+        }
+
+        private void BtnTemplate_Click(object sender, EventArgs e)
+        {
+            if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
+            {
+                DialogResult selection = ShowSaveDialog();
+                if (selection == DialogResult.OK)
+                {
+                    MnuFileSave_Click(sender, e);
+                }
+                else if (selection == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            // _frmTemplate.Show(this);
         }
     }
 }
