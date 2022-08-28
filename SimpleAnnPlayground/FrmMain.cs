@@ -120,7 +120,9 @@ namespace SimpleAnnPlayground
         /// <summary>
         /// The form to create the model based in a template.
         /// </summary>
+#pragma warning disable CA2213 // Aplicar Dispose a los campos a los que se pueda
         private readonly FrmTemplate _frmTemplate;
+#pragma warning restore CA2213 // Aplicar Dispose a los campos a los que se pueda
 
         /// <summary>
         /// The design workspace area.
@@ -164,7 +166,7 @@ namespace SimpleAnnPlayground
             _frmActionsViewer = new FrmActionsViewer(_workspace.Actions);
 #endif
             _frmData = new FrmData(_workspace);
-            _frmTemplate = new FrmTemplate(_workspace);
+            _frmTemplate = new FrmTemplate();
             TspExecution.Visible = false;
         }
 
@@ -642,7 +644,7 @@ namespace SimpleAnnPlayground
                 }
             }
 
-            // _frmTemplate.Show(this);
+            _frmTemplate.Show(this);
         }
     }
 }
