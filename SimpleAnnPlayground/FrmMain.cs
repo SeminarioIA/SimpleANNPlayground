@@ -58,7 +58,7 @@ namespace SimpleAnnPlayground
             { nameof(MnuEditOptions), new() { "&Options", "&Opciones" } },
 
             // View menus texts.
-            { nameof(MnuView), new() { "&View,", "&Ver" } },
+            { nameof(MnuView), new() { "&View", "&Ver" } },
             { nameof(MnuViewCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
 
             // Tools menus texts.
@@ -81,6 +81,7 @@ namespace SimpleAnnPlayground
             { nameof(BtnData), new() { "Data", "Datos" } },
             { nameof(BtnTraining), new() { "Training", "Entrenamiento" } },
             { nameof(BtnTest), new() { "Testing", "Prueba" } },
+            { nameof(BtnTemplate), new() { "Template", "Plantilla" } },
 
             // Context menus.
             { nameof(MnuContextLinkTo), new() { "&Link to", "&Asignar a" } },
@@ -93,6 +94,9 @@ namespace SimpleAnnPlayground
             // Message box.
             { nameof(ShowSaveDialog), new() { "If you have made changes to the document they will be lost, do you want to save your changes before continuing?", "Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?" } },
             { "Warning", new() { "Warning", "Advertencia" } },
+
+            // Template menus.
+            { nameof(FrmTemplate), new() { "Template", "Plantilla" } },
         };
 
 #if DEBUG

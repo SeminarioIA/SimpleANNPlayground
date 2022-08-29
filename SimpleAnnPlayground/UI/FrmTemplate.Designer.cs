@@ -41,10 +41,10 @@
             this.comboBoxOutNum = new System.Windows.Forms.ComboBox();
             this.labelOutText = new System.Windows.Forms.Label();
             this.TmptGroupBoxOptions = new System.Windows.Forms.GroupBox();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.radioCustom = new System.Windows.Forms.RadioButton();
+            this.radioFully = new System.Windows.Forms.RadioButton();
+            this.GenerateBtn = new System.Windows.Forms.Button();
+            this.CancelBtn = new System.Windows.Forms.Button();
             this.TmptGroupBoxInput.SuspendLayout();
             this.TmptGroupBoxHidden.SuspendLayout();
             this.TmptGroupBoxOutput.SuspendLayout();
@@ -57,7 +57,7 @@
             this.TmptGroupBoxInput.Controls.Add(this.labelInpText);
             this.TmptGroupBoxInput.Location = new System.Drawing.Point(12, 8);
             this.TmptGroupBoxInput.Name = "TmptGroupBoxInput";
-            this.TmptGroupBoxInput.Size = new System.Drawing.Size(189, 51);
+            this.TmptGroupBoxInput.Size = new System.Drawing.Size(217, 51);
             this.TmptGroupBoxInput.TabIndex = 0;
             this.TmptGroupBoxInput.TabStop = false;
             this.TmptGroupBoxInput.Text = "Input Layer";
@@ -65,9 +65,21 @@
             // comboBoxInputNum
             // 
             this.comboBoxInputNum.FormattingEnabled = true;
+            this.comboBoxInputNum.ItemHeight = 15;
+            this.comboBoxInputNum.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
             this.comboBoxInputNum.Location = new System.Drawing.Point(103, 16);
+            this.comboBoxInputNum.MaxDropDownItems = 5;
             this.comboBoxInputNum.Name = "comboBoxInputNum";
-            this.comboBoxInputNum.Size = new System.Drawing.Size(75, 23);
+            this.comboBoxInputNum.Size = new System.Drawing.Size(108, 23);
             this.comboBoxInputNum.TabIndex = 1;
             // 
             // labelInpText
@@ -87,7 +99,7 @@
             this.TmptGroupBoxHidden.Controls.Add(this.labelHidNumLay);
             this.TmptGroupBoxHidden.Location = new System.Drawing.Point(12, 65);
             this.TmptGroupBoxHidden.Name = "TmptGroupBoxHidden";
-            this.TmptGroupBoxHidden.Size = new System.Drawing.Size(189, 84);
+            this.TmptGroupBoxHidden.Size = new System.Drawing.Size(217, 84);
             this.TmptGroupBoxHidden.TabIndex = 1;
             this.TmptGroupBoxHidden.TabStop = false;
             this.TmptGroupBoxHidden.Text = "Hidden Layer";
@@ -95,9 +107,20 @@
             // comboBoxHidNumber
             // 
             this.comboBoxHidNumber.FormattingEnabled = true;
+            this.comboBoxHidNumber.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
             this.comboBoxHidNumber.Location = new System.Drawing.Point(103, 50);
+            this.comboBoxHidNumber.MaxDropDownItems = 5;
             this.comboBoxHidNumber.Name = "comboBoxHidNumber";
-            this.comboBoxHidNumber.Size = new System.Drawing.Size(75, 23);
+            this.comboBoxHidNumber.Size = new System.Drawing.Size(108, 23);
             this.comboBoxHidNumber.TabIndex = 3;
             // 
             // labelHidText
@@ -112,9 +135,16 @@
             // comboBoxHidLayers
             // 
             this.comboBoxHidLayers.FormattingEnabled = true;
+            this.comboBoxHidLayers.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5"});
             this.comboBoxHidLayers.Location = new System.Drawing.Point(103, 16);
+            this.comboBoxHidLayers.MaxDropDownItems = 5;
             this.comboBoxHidLayers.Name = "comboBoxHidLayers";
-            this.comboBoxHidLayers.Size = new System.Drawing.Size(75, 23);
+            this.comboBoxHidLayers.Size = new System.Drawing.Size(108, 23);
             this.comboBoxHidLayers.TabIndex = 1;
             // 
             // labelHidNumLay
@@ -132,7 +162,7 @@
             this.TmptGroupBoxOutput.Controls.Add(this.labelOutText);
             this.TmptGroupBoxOutput.Location = new System.Drawing.Point(12, 155);
             this.TmptGroupBoxOutput.Name = "TmptGroupBoxOutput";
-            this.TmptGroupBoxOutput.Size = new System.Drawing.Size(189, 53);
+            this.TmptGroupBoxOutput.Size = new System.Drawing.Size(217, 53);
             this.TmptGroupBoxOutput.TabIndex = 2;
             this.TmptGroupBoxOutput.TabStop = false;
             this.TmptGroupBoxOutput.Text = "Output Layer";
@@ -140,9 +170,20 @@
             // comboBoxOutNum
             // 
             this.comboBoxOutNum.FormattingEnabled = true;
+            this.comboBoxOutNum.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9"});
             this.comboBoxOutNum.Location = new System.Drawing.Point(103, 16);
+            this.comboBoxOutNum.MaxDropDownItems = 5;
             this.comboBoxOutNum.Name = "comboBoxOutNum";
-            this.comboBoxOutNum.Size = new System.Drawing.Size(75, 23);
+            this.comboBoxOutNum.Size = new System.Drawing.Size(108, 23);
             this.comboBoxOutNum.TabIndex = 1;
             // 
             // labelOutText
@@ -156,71 +197,75 @@
             // 
             // TmptGroupBoxOptions
             // 
-            this.TmptGroupBoxOptions.Controls.Add(this.radioButton2);
-            this.TmptGroupBoxOptions.Controls.Add(this.radioButton1);
+            this.TmptGroupBoxOptions.Controls.Add(this.radioCustom);
+            this.TmptGroupBoxOptions.Controls.Add(this.radioFully);
             this.TmptGroupBoxOptions.Location = new System.Drawing.Point(12, 214);
             this.TmptGroupBoxOptions.Name = "TmptGroupBoxOptions";
-            this.TmptGroupBoxOptions.Size = new System.Drawing.Size(189, 75);
+            this.TmptGroupBoxOptions.Size = new System.Drawing.Size(217, 75);
             this.TmptGroupBoxOptions.TabIndex = 3;
             this.TmptGroupBoxOptions.TabStop = false;
             this.TmptGroupBoxOptions.Text = "Options";
             // 
-            // radioButton2
+            // radioCustom
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(6, 47);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(135, 19);
-            this.radioButton2.TabIndex = 1;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Custom connections";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioCustom.AutoSize = true;
+            this.radioCustom.Location = new System.Drawing.Point(6, 47);
+            this.radioCustom.Name = "radioCustom";
+            this.radioCustom.Size = new System.Drawing.Size(135, 19);
+            this.radioCustom.TabIndex = 1;
+            this.radioCustom.TabStop = true;
+            this.radioCustom.Text = "Custom connections";
+            this.radioCustom.UseVisualStyleBackColor = true;
             // 
-            // radioButton1
+            // radioFully
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(6, 22);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(109, 19);
-            this.radioButton1.TabIndex = 0;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Fully connected";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.radioFully.AutoSize = true;
+            this.radioFully.Location = new System.Drawing.Point(6, 22);
+            this.radioFully.Name = "radioFully";
+            this.radioFully.Size = new System.Drawing.Size(109, 19);
+            this.radioFully.TabIndex = 0;
+            this.radioFully.TabStop = true;
+            this.radioFully.Text = "Fully connected";
+            this.radioFully.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // GenerateBtn
             // 
-            this.button1.Location = new System.Drawing.Point(126, 295);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Generar";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.GenerateBtn.Location = new System.Drawing.Point(148, 295);
+            this.GenerateBtn.Name = "GenerateBtn";
+            this.GenerateBtn.Size = new System.Drawing.Size(75, 23);
+            this.GenerateBtn.TabIndex = 4;
+            this.GenerateBtn.Text = "Generar";
+            this.GenerateBtn.UseVisualStyleBackColor = true;
+            this.GenerateBtn.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // button2
+            // CancelBtn
             // 
-            this.button2.Location = new System.Drawing.Point(12, 295);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Cancelar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.Button2_Click);
+            this.CancelBtn.Location = new System.Drawing.Point(12, 295);
+            this.CancelBtn.Name = "CancelBtn";
+            this.CancelBtn.Size = new System.Drawing.Size(75, 23);
+            this.CancelBtn.TabIndex = 5;
+            this.CancelBtn.Text = "Cancelar";
+            this.CancelBtn.UseVisualStyleBackColor = true;
+            this.CancelBtn.Click += new System.EventHandler(this.Button2_Click);
             // 
             // FrmTemplate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(213, 328);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(241, 342);
+            this.Controls.Add(this.CancelBtn);
+            this.Controls.Add(this.GenerateBtn);
             this.Controls.Add(this.TmptGroupBoxOptions);
             this.Controls.Add(this.TmptGroupBoxOutput);
             this.Controls.Add(this.TmptGroupBoxHidden);
             this.Controls.Add(this.TmptGroupBoxInput);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimizeBox = false;
             this.Name = "FrmTemplate";
             this.Text = "Templates";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmTemplate_FormClosing);
+            this.Load += new System.EventHandler(this.FrmTemplate_Load);
             this.TmptGroupBoxInput.ResumeLayout(false);
             this.TmptGroupBoxInput.PerformLayout();
             this.TmptGroupBoxHidden.ResumeLayout(false);
@@ -247,9 +292,9 @@
         private ComboBox comboBoxOutNum;
         private Label labelOutText;
         private GroupBox TmptGroupBoxOptions;
-        private RadioButton radioButton2;
-        private RadioButton radioButton1;
-        private Button button1;
-        private Button button2;
+        private RadioButton radioCustom;
+        private RadioButton radioFully;
+        private Button GenerateBtn;
+        private Button CancelBtn;
     }
 }
