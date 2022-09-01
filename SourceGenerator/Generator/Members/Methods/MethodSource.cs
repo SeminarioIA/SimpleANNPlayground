@@ -163,6 +163,11 @@ namespace SourceGenerator.Generator.Members.Methods
                 {
                     param.GenerateDoc(source, identation);
                 }
+
+                if (this is FunctionSource functionSource)
+                {
+                    functionSource.Return.GenerateDoc(source, identation);
+                }
             }
 
             Ident(source, identation);

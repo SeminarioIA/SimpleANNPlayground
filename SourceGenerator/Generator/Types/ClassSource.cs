@@ -191,11 +191,11 @@ namespace SourceGenerator.Generator.Types
         /// <param name="setAccess">The <see cref="PropertyAccess"/> attributes for the set property.</param>
         /// <param name="value">The property initialization value.</param>
         /// <returns>The current <see cref="ClassSource"/>.</returns>
-        public ClassSource AddAutoProperty(PropertyAccess access, PropertyScope scope, string type, string name, PropertyAccess setAccess, string value = "")
+        public PropertySource AddAutoProperty(PropertyAccess access, PropertyScope scope, string type, string name, PropertyAccess setAccess, string value = "")
         {
             var property = new AutoPropertySource(this, access, scope, type, name, setAccess, value);
             Members.Add(property);
-            return this;
+            return property;
         }
 
         /// <summary>
@@ -219,17 +219,6 @@ namespace SourceGenerator.Generator.Types
         public ClassSource AddDoc(string description)
         {
             SetDescription(description);
-            return this;
-        }
-
-        /// <summary>
-        /// Adds the description to the last member added to the class source codes.
-        /// </summary>
-        /// <param name="description">Description to add to the laset added source member.</param>
-        /// <returns>This <see cref="ClassSource"/>.</returns>
-        public ClassSource AddMemberDoc(string description)
-        {
-            Members.Last().SetDescription(description);
             return this;
         }
 
