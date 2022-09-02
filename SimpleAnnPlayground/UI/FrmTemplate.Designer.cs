@@ -236,7 +236,7 @@
             this.GenerateBtn.TabIndex = 4;
             this.GenerateBtn.Text = "Generar";
             this.GenerateBtn.UseVisualStyleBackColor = true;
-            this.GenerateBtn.Click += new System.EventHandler(this.Button1_Click);
+            this.GenerateBtn.Click += new System.EventHandler(this.GenerateBtn_Click);
             // 
             // CancelBtn
             // 
@@ -264,7 +264,6 @@
             this.MinimizeBox = false;
             this.Name = "FrmTemplate";
             this.Text = "Templates";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmTemplate_FormClosing);
             this.Load += new System.EventHandler(this.FrmTemplate_Load);
             this.TmptGroupBoxInput.ResumeLayout(false);
             this.TmptGroupBoxInput.PerformLayout();

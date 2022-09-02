@@ -56,21 +56,23 @@ namespace SimpleAnnPlayground.UI
             InitializeComponent();
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Shows the window and returns the selected data.
+        /// </summary>
+        /// <returns>True if there was selection made, otherwise false.</returns>
+        internal bool GetData()
         {
-            Hide();
+            if (ShowDialog() == DialogResult.OK)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void Button2_Click(object sender, EventArgs e)
         {
             Hide();
-        }
-
-        private void FrmTemplate_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            Hide();
-            e.Cancel = true;
-            _ = Owner.Focus();
         }
 
         private void FrmTemplate_Load(object sender, EventArgs e)
@@ -81,5 +83,7 @@ namespace SimpleAnnPlayground.UI
             // Applying form language.
             Languages.ChangeFormLanguage(this, FormWords, formLanguage);
         }
+
+        private void GenerateBtn_Click(object sender, EventArgs e) => DialogResult = DialogResult.OK;
     }
 }
