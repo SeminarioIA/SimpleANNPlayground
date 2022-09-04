@@ -95,18 +95,28 @@ namespace SimpleAnnPlayground.Ann.Neurons
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far })
                 {
                     var location = new PointF(Location.X, Location.Y - Component.Y);
-                    graphics.DrawString(Z.ToString(), font, brush, location, format);
+                    graphics.DrawString($"b={Bias}\nZ={Z}", font, brush, location, format);
                 }
             }
-
-            if (Bias is not null)
+            else if (Bias is not null)
             {
                 using (var font = new Font("Arial", 8))
                 using (var brush = new SolidBrush(Color.Black))
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far })
                 {
                     var location = new PointF(Location.X, Location.Y - Component.Y);
-                    graphics.DrawString($"b={Z}", font, brush, location, format);
+                    graphics.DrawString($"b={Bias}", font, brush, location, format);
+                }
+            }
+
+            if (A is not null)
+            {
+                using (var font = new Font("Arial", 8))
+                using (var brush = new SolidBrush(Color.Black))
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
+                {
+                    var location = new PointF(Location.X, Location.Y + Component.Y);
+                    graphics.DrawString($"A={A}", font, brush, location, format);
                 }
             }
 
@@ -127,7 +137,6 @@ namespace SimpleAnnPlayground.Ann.Neurons
         {
             if (previous is null) throw new ArgumentNullException(nameof(previous));
             if (weight is null) throw new ArgumentNullException(nameof(weight));
-            if (Z is null) Z = 0m;
             Z += previous * weight;
         }
 

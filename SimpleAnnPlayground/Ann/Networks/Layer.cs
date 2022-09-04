@@ -33,6 +33,11 @@ namespace SimpleAnnPlayground.Ann.Networks
         public Collection<Node> Nodes { get; }
 
         /// <summary>
+        /// Gets the next Layer.
+        /// </summary>
+        public Layer? Next { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether the layer is an output layer.
         /// </summary>
         public bool IsOutput => Nodes.First().Neuron is Output;
@@ -43,6 +48,7 @@ namespace SimpleAnnPlayground.Ann.Networks
         internal void Expand()
         {
             var nextLayer = new Layer(Graph);
+            Next = nextLayer;
             Graph.Layers.Add(nextLayer);
             foreach (var node in Nodes)
             {

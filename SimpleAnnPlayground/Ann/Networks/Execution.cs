@@ -24,9 +24,14 @@ namespace SimpleAnnPlayground.Ann.Networks
         GetData,
 
         /// <summary>
-        /// Fordward pass phase.
+        /// The neuron adds the previous neurons values multiplied by the connections weight.
         /// </summary>
-        FordwardPass,
+        ConnectionsWeights,
+
+        /// <summary>
+        /// The neuron process its value with the activation function.
+        /// </summary>
+        Activations,
 
         /// <summary>
         /// Backpropagation phase.
@@ -110,6 +115,12 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// </summary>
         public void Start()
         {
+            if (Network.Graph is null) throw new InvalidOperationException("Invalid Graph value.");
+            foreach (var node in Network.Graph.Nodes)
+            {
+                if (node.Neuron is not Input) node.Neuron.Bias = 0;
+            }
+
             Phase = ExecPhase.GetData;
             Network.Workspace.SelectRegister(_register.Current);
             foreach (var node in _layer.Current.Nodes)
@@ -169,18 +180,29 @@ namespace SimpleAnnPlayground.Ann.Networks
                         if (node.Neuron is Input input)
                         {
                             input.ClearStateFlag(Component.State.ExecutionStep);
-                            input.Z = Data.GetValue(input.DataLabel ?? throw new InvalidOperationException());
-                            input.A = input.Z;
+                            /* input.Z = Data.GetValue(input.DataLabel ?? throw new InvalidOperationException()); */
+                            input.A = Data.GetValue(input.DataLabel ?? throw new InvalidOperationException());
                         }
                     }
 
                     // Next phase
-                    Phase = ExecPhase.FordwardPass;
+                    Phase = ExecPhase.ConnectionsWeights;
+                    if (_layer.Current.Next is not null)
+                    {
+                        foreach (var node in _layer.Current.Next.Nodes)
+                        {
+                            node.Neuron.Z = 0;
+                        }
+                    }
+
                     _node.Current.Neuron.SetStateFlag(Component.State.ExecutionStep);
                     _link.Current.Connection.Executing = true;
                     break;
-                case ExecPhase.FordwardPass:
-                    if (StepCxFordward()) Phase = ExecPhase.FetchData;
+                case ExecPhase.ConnectionsWeights:
+                    Phase = StepCxWeights();
+                    break;
+                case ExecPhase.Activations:
+                    Phase = StepCxActivations();
                     break;
                 case ExecPhase.BackPropagation:
                     break;
@@ -191,7 +213,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             Network.Workspace.Refresh();
         }
 
-        private bool StepCxFordward()
+        private ExecPhase StepCxWeights()
         {
             _link.Current.Next.Neuron.AddValue(_node.Current.Neuron.A, _link.Current.Connection.Weight);
             _link.Current.Connection.Executing = false;
@@ -208,16 +230,70 @@ namespace SimpleAnnPlayground.Ann.Networks
                     if (_layer.MoveNext())
                     {
                         _node = _layer.Current.Nodes.GetEnumerator();
-                        if (!StepIntoNd())
+                        if (_node.MoveNext())
                         {
-                            if (_layer.Current.IsOutput) return true;
+                            _node.Current.Neuron.SetStateFlag(Component.State.ExecutionStep);
+                            return ExecPhase.Activations;
+                        }
+                        else
+                        {
                             throw new InvalidOperationException("Layer does not have any node.");
                         }
                     }
                 }
             }
 
-            return false;
+            return Phase;
+        }
+
+        private ExecPhase StepCxActivations()
+        {
+            if (_node.Current.Neuron.Z is null) throw new InvalidOperationException("Invalid neuron Z value.");
+            if (_node.Current.Neuron.Activation is null) throw new InvalidOperationException("Invalid or missing Activation function.");
+            _node.Current.Neuron.A = _node.Current.Neuron.Activation.Execute(_node.Current.Neuron.Z.Value);
+            _node.Current.Neuron.ClearStateFlag(Component.State.ExecutionStep);
+
+            if (_node.MoveNext())
+            {
+                _node.Current.Neuron.SetStateFlag(Component.State.ExecutionStep);
+            }
+            else
+            {
+                _node.Reset();
+                if (StepIntoNd())
+                {
+                    foreach (var node in _layer.Current.Nodes)
+                    {
+                        node.Neuron.Z = null;
+                    }
+
+                    if (_layer.Current.Next is not null)
+                    {
+                        foreach (var node in _layer.Current.Next.Nodes)
+                        {
+                            node.Neuron.Z = 0;
+                        }
+                    }
+
+                    return ExecPhase.ConnectionsWeights;
+                }
+                else
+                {
+                    if (_layer.Current.IsOutput)
+                    {
+                        foreach (var node in _layer.Current.Nodes)
+                        {
+                            node.Neuron.Z = null;
+                        }
+
+                        return ExecPhase.FetchData;
+                    }
+
+                    throw new InvalidOperationException("Layer does not have any node.");
+                }
+            }
+
+            return Phase;
         }
 
         private bool StepIntoNd()
