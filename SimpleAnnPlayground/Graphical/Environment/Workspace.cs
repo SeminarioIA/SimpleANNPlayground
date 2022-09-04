@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Actions;
+using SimpleAnnPlayground.Ann.Networks;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
@@ -42,6 +43,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
             VScrollBar = vScrollBar;
             ToolTip = toolTip;
             WorkSheet = new WorkSheet(new Size(PictureBox.Width - 50, pictureBox.Height - 50));
+            Network = new Network(this);
             MouseTool = new MouseTool(this);
             Transform = new Matrix();
             Canvas = new Canvas();
@@ -112,9 +114,14 @@ namespace SimpleAnnPlayground.Graphical.Environment
         public DataTable DataTable { get; private set; }
 
         /// <summary>
+        /// Gets the network model associated to this workspace.
+        /// </summary>
+        public Network Network { get; }
+
+        /// <summary>
         /// Gets the active <seealso cref="MouseTool"/> object.
         /// </summary>
-        public MouseTool MouseTool { get; private set; }
+        public MouseTool MouseTool { get; }
 
         /// <summary>
         /// Gets the transform of this <see cref="Workspace"/>.
@@ -310,6 +317,12 @@ namespace SimpleAnnPlayground.Graphical.Environment
                 {
                     e.Graphics.DrawString(string.Join(System.Environment.NewLine, Messages), font, brush, WorkSheet.Bounds.Location, format);
                 }
+            }
+
+            // Draw the simulation
+            if (Network.Execution != null)
+            {
+                Network.Execution.Paint(e.Graphics);
             }
 
             // Draw mouse tool controls.

@@ -62,6 +62,11 @@ namespace SimpleAnnPlayground.Ann.Networks
                 throw new InvalidOperationException("Input data does not contains registers.");
             }
 
+            foreach (var link in Network.Graph.Links)
+            {
+                link.Connection.Weight = 1;
+            }
+
             _layer = Network.Graph.Layers.GetEnumerator();
             if (_layer.MoveNext())
             {
@@ -123,6 +128,18 @@ namespace SimpleAnnPlayground.Ann.Networks
         }
 
         /// <summary>
+        /// Draws the execution elements.
+        /// </summary>
+        /// <param name="graphics">The graphics object.</param>
+        public void Paint(Graphics graphics)
+        {
+            if (_link.Current != null)
+            {
+                _link.Current.Connection.Paint(graphics);
+            }
+        }
+
+        /// <summary>
         /// Executes one connection step in the network.
         /// </summary>
         public void StepIntoCx()
@@ -140,7 +157,8 @@ namespace SimpleAnnPlayground.Ann.Networks
                     foreach (var node in _layer.Current.Nodes)
                     {
                         node.Neuron.SetStateFlag(Component.State.ExecutionStep);
-                        node.Neuron.Input = null;
+                        node.Neuron.Z = null;
+                        node.Neuron.A = null;
                     }
 
                     Phase = ExecPhase.GetData;
@@ -151,7 +169,8 @@ namespace SimpleAnnPlayground.Ann.Networks
                         if (node.Neuron is Input input)
                         {
                             input.ClearStateFlag(Component.State.ExecutionStep);
-                            input.Input = Data.GetValue(input.DataLabel ?? throw new InvalidOperationException());
+                            input.Z = Data.GetValue(input.DataLabel ?? throw new InvalidOperationException());
+                            input.A = input.Z;
                         }
                     }
 
@@ -174,6 +193,7 @@ namespace SimpleAnnPlayground.Ann.Networks
 
         private bool StepCxFordward()
         {
+            _link.Current.Next.Neuron.AddValue(_node.Current.Neuron.A, _link.Current.Connection.Weight);
             _link.Current.Connection.Executing = false;
 
             if (_link.MoveNext())

@@ -121,6 +121,7 @@ namespace SimpleAnnPlayground.Graphical.Visualization
         /// <summary>
         /// Gets the list of message associated to this object.
         /// </summary>
+        [JsonIgnore]
         public Collection<string> Messages { get; }
 
         /// <summary>

@@ -85,6 +85,12 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public bool Executing { get; set; }
 
         /// <summary>
+        /// Gets or sets the connection weight.
+        /// </summary>
+        [JsonIgnore]
+        public decimal? Weight { get; set; }
+
+        /// <summary>
         /// Determines if a point is near enough to the connection line.
         /// </summary>
         /// <param name="point">The point to test.</param>
@@ -141,6 +147,19 @@ namespace SimpleAnnPlayground.Ann.Neurons
             using (Pen pen = new Pen(Selected ? _selectColor : _color, Width))
             {
                 graphics.DrawLine(pen, Source.Location, Destination.Location);
+            }
+
+            if (Weight != null)
+            {
+                var alignH = Source.Location.Y > Destination.Location.Y ? StringAlignment.Far : StringAlignment.Near;
+                var alignV = StringAlignment.Far;
+                using (var font = new Font("Arial", 8))
+                using (var brush = new SolidBrush(Executing ? Color.Black : Color.DarkGray))
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = alignH, LineAlignment = alignV })
+                {
+                    var center = Space.Center(Source.Location, Destination.Location);
+                    graphics.DrawString($"w={Weight}", font, brush, center, format);
+                }
             }
 
             // TODO: Move this to the object paint.

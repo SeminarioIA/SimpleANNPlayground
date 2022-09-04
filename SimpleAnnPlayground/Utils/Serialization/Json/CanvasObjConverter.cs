@@ -4,6 +4,8 @@
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using SimpleAnnPlayground.Ann.Activation;
+using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Graphical.Models;
 using SimpleAnnPlayground.Graphical.Visualization;
 
@@ -16,8 +18,10 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
     internal class CanvasObjConverter : JsonConverter<CanvasObject>
 #pragma warning restore CA1812
     {
+        private bool _canWrite = true;
+
         /// <inheritdoc/>
-        public override bool CanWrite => false;
+        public override bool CanWrite => _canWrite;
 
         /// <summary>
         /// Gets the Canvas where placing the deserialized objects.
@@ -42,7 +46,29 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
         /// <inheritdoc/>
         public override void WriteJson(JsonWriter writer, CanvasObject? value, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
+            if (writer != null && value != null)
+            {
+                writer.WriteStartObject();
+
+                // Type
+                writer.WritePropertyName(nameof(value.Type));
+                serializer.Serialize(writer, value.Type);
+
+                writer.WritePropertyName(nameof(value.Location));
+                serializer.Serialize(writer, value.Location);
+
+                writer.WritePropertyName(nameof(value.Id));
+                serializer.Serialize(writer, value.Id);
+                switch (value)
+                {
+                    case Neuron neuron:
+                        writer.WritePropertyName(nameof(neuron.Activation));
+                        serializer.Serialize(writer, neuron.Activation?.Name);
+                        break;
+                }
+
+                writer.WriteEndObject();
+            }
         }
 
         /// <inheritdoc/>
@@ -74,6 +100,16 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
 
             // Create a new object instance.
             if (Activator.CreateInstance(myType, Canvas, x, y) is not CanvasObject obj) return null;
+
+            // Check if the object is a neuron
+            if (obj is Neuron neuron)
+            {
+                string? activation = jo["Activation"]?.Value<string>();
+                if (!string.IsNullOrEmpty(activation))
+                {
+                    neuron.Activation = Enum.Parse<Functions>(activation).GetActivationFunction();
+                }
+            }
 
             Objects?.Add(obj);
             if (DocumentDeserialization)

@@ -124,5 +124,18 @@ namespace SimpleAnnPlayground.Utils.Graphics
         {
             return (point.X - lineStart.X) * ((lineEnd.Y - lineStart.Y) / (lineEnd.X - lineStart.X)) + lineStart.Y;
         }
+
+        /// <summary>
+        /// Determines the center of a line segment.
+        /// </summary>
+        /// <param name="start">The line start point.</param>
+        /// <param name="end">The line end point.</param>
+        /// <returns>The center point.</returns>
+        public static PointF Center(PointF start, PointF end)
+        {
+            start.X += (end.X - start.X) / 2;
+            start.Y += (end.Y - start.Y) / 2;
+            return start;
+        }
     }
 }

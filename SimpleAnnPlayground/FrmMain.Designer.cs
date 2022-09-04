@@ -56,6 +56,7 @@
             this.PicWorkspace = new System.Windows.Forms.PictureBox();
             this.CmsDraw = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MnuContextLinkTo = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuContextActivation = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuContextSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuContextCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuContextCut = new System.Windows.Forms.ToolStripMenuItem();
@@ -307,6 +308,7 @@
             // 
             this.CmsDraw.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MnuContextLinkTo,
+            this.MnuContextActivation,
             this.MnuContextSep1,
             this.MnuContextCopy,
             this.MnuContextCut,
@@ -315,25 +317,31 @@
             this.MnuContextDelete,
             this.MnuContextCenterScreen});
             this.CmsDraw.Name = "CmsDraw";
-            this.CmsDraw.Size = new System.Drawing.Size(147, 148);
+            this.CmsDraw.Size = new System.Drawing.Size(181, 192);
             this.CmsDraw.Opening += new System.ComponentModel.CancelEventHandler(this.CmsDraw_Opening);
             // 
             // MnuContextLinkTo
             // 
             this.MnuContextLinkTo.Name = "MnuContextLinkTo";
-            this.MnuContextLinkTo.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextLinkTo.Size = new System.Drawing.Size(180, 22);
             this.MnuContextLinkTo.Text = "Link to";
+            // 
+            // MnuContextActivation
+            // 
+            this.MnuContextActivation.Name = "MnuContextActivation";
+            this.MnuContextActivation.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextActivation.Text = "Activation";
             // 
             // MnuContextSep1
             // 
             this.MnuContextSep1.Name = "MnuContextSep1";
-            this.MnuContextSep1.Size = new System.Drawing.Size(143, 6);
+            this.MnuContextSep1.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuContextCopy
             // 
             this.MnuContextCopy.Name = "MnuContextCopy";
             this.MnuContextCopy.ShortcutKeyDisplayString = "Ctrl+C";
-            this.MnuContextCopy.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextCopy.Size = new System.Drawing.Size(180, 22);
             this.MnuContextCopy.Text = "Copy";
             this.MnuContextCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
             // 
@@ -341,7 +349,7 @@
             // 
             this.MnuContextCut.Name = "MnuContextCut";
             this.MnuContextCut.ShortcutKeyDisplayString = "Ctrl+X";
-            this.MnuContextCut.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextCut.Size = new System.Drawing.Size(180, 22);
             this.MnuContextCut.Text = "Cut";
             this.MnuContextCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
@@ -349,27 +357,27 @@
             // 
             this.MnuContextPaste.Name = "MnuContextPaste";
             this.MnuContextPaste.ShortcutKeyDisplayString = "Ctrl+V";
-            this.MnuContextPaste.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextPaste.Size = new System.Drawing.Size(180, 22);
             this.MnuContextPaste.Text = "Paste";
             this.MnuContextPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);
             // 
             // MnuContextSep2
             // 
             this.MnuContextSep2.Name = "MnuContextSep2";
-            this.MnuContextSep2.Size = new System.Drawing.Size(143, 6);
+            this.MnuContextSep2.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuContextDelete
             // 
             this.MnuContextDelete.Name = "MnuContextDelete";
             this.MnuContextDelete.ShortcutKeyDisplayString = "Del";
-            this.MnuContextDelete.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextDelete.Size = new System.Drawing.Size(180, 22);
             this.MnuContextDelete.Text = "Delete";
             this.MnuContextDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
             // MnuContextCenterScreen
             // 
             this.MnuContextCenterScreen.Name = "MnuContextCenterScreen";
-            this.MnuContextCenterScreen.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextCenterScreen.Size = new System.Drawing.Size(180, 22);
             this.MnuContextCenterScreen.Text = "Center screen";
             this.MnuContextCenterScreen.Click += new System.EventHandler(this.MnuViewCenterScreen_Click);
             // 
@@ -866,5 +874,6 @@
         private ToolStripMenuItem MnuContextDelete;
         private ToolStripMenuItem MnuContextCenterScreen;
         private ToolTip TtMessages;
+        private ToolStripMenuItem MnuContextActivation;
     }
 }

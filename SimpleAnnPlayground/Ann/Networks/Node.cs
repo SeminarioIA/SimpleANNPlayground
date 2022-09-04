@@ -76,6 +76,7 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                         // Add the link.
                         var link = new Link(connection, this, node);
+                        Layer.Graph.Links.Add(link);
 
                         // Register the link with the nodes.
                         Next.Add(link);

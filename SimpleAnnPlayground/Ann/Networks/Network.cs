@@ -59,6 +59,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             result &= CheckForInputs();
             result &= CheckForOutputs();
             result &= CheckForDataLinks();
+            result &= CheckForActivations();
             if (result) result &= BuildGraph();
             Workspace.Refresh();
             return result;
@@ -162,6 +163,22 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                     default:
                         break;
+                }
+            }
+
+            return result;
+        }
+
+        private bool CheckForActivations()
+        {
+            bool result = true;
+            foreach (var obj in Workspace.Canvas.Objects)
+            {
+                if (obj is Neuron neuron && neuron is not Input && neuron.Activation is null)
+                {
+                    obj.SetStateFlag(State.ComponentError);
+                    obj.Messages.Add("The neuron does not have an activation function.");
+                    result = false;
                 }
             }
 

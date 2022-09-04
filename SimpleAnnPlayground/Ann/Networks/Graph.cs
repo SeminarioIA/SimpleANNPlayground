@@ -19,6 +19,7 @@ namespace SimpleAnnPlayground.Ann.Networks
         {
             Network = network;
             Nodes = new List<Node>();
+            Links = new List<Link>();
             Layers = new List<Layer>
             {
                 new Layer(this),
@@ -34,6 +35,11 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// Gets the list of all the nodes in this graph.
         /// </summary>
         public List<Node> Nodes { get; }
+
+        /// <summary>
+        /// Gets the list of all the links in this graph.
+        /// </summary>
+        public List<Link> Links { get; }
 
         /// <summary>
         /// Gets the list of all the layers in this graph.

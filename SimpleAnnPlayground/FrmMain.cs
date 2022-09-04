@@ -2,7 +2,7 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-using SimpleAnnPlayground.Ann.Networks;
+using SimpleAnnPlayground.Ann.Activation;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Debugging;
@@ -83,6 +83,7 @@ namespace SimpleAnnPlayground
 
             // Context menus.
             { nameof(MnuContextLinkTo), new() { "&Link to", "&Asignar a" } },
+            { nameof(MnuContextActivation), new() { "&Activation", "&Activacion" } },
             { nameof(MnuContextCopy), new() { "&Copy", "&Copiar" } },
             { nameof(MnuContextCut), new() { "Cu&t", "Cor&tar" } },
             { nameof(MnuContextPaste), new() { "&Paste", "&Pegar" } },
@@ -122,11 +123,6 @@ namespace SimpleAnnPlayground
         private readonly Workspace _workspace;
 
         /// <summary>
-        /// The neural network to be executed.
-        /// </summary>
-        private readonly Network _network;
-
-        /// <summary>
         /// The file manager to handle file operations.
         /// </summary>
         private readonly TextFileManager _fileManager;
@@ -145,7 +141,6 @@ namespace SimpleAnnPlayground
             _workspace.MouseTool.SelectionChanged += Workspace_SelectionChanged;
             _workspace.SelectionChanged += Workspace_SelectionChanged;
             _workspace.Actions.ActionPerformed += Actions_ActionPerformed;
-            _network = new Network(_workspace);
             _fileManager = new TextFileManager();
             _fileManager.AddFileFormat("annpj", "Artificial neural network project");
             _fileManager.FilePathChanged += FileManager_FilePathChanged;
@@ -419,14 +414,14 @@ namespace SimpleAnnPlayground
 
         private void BtnCheck_Click(object sender, EventArgs e)
         {
-            bool result = _network.Build();
+            bool result = _workspace.Network.Build();
             BtnTraining.Enabled = result;
             BtnTest.Enabled = false;
         }
 
         private void BtnClean_Click(object sender, EventArgs e)
         {
-            _network.Clean();
+            _workspace.Network.Clean();
         }
 
         private void MnuFileSave_Click(object sender, EventArgs e)
@@ -486,16 +481,39 @@ namespace SimpleAnnPlayground
             Text = "SimpleAnnPlayground" + (string.IsNullOrWhiteSpace(_fileManager.FileName) ? string.Empty : $" - {_fileManager.FileName}");
         }
 
-        private void ContextMenuState(bool link, bool copyPaste, bool delete)
+        private void ContextMenuState(bool link, bool activation, bool copyPaste, bool delete)
         {
             MnuContextLinkTo.Visible = link;
-            MnuContextSep1.Visible = link;
+            MnuContextActivation.Visible = activation;
+            MnuContextSep1.Visible = link || activation;
             MnuContextCopy.Visible = copyPaste;
             MnuContextCut.Visible = copyPaste;
             MnuContextPaste.Visible = copyPaste;
             MnuContextSep2.Visible = copyPaste && delete;
             MnuContextDelete.Visible = delete;
             MnuContextCenterScreen.Visible = !link && !copyPaste && !delete;
+
+            if (link)
+            {
+                MnuContextLinkTo.DropDownItems.Clear();
+                foreach (DataLabel label in _workspace.DataTable.Outputs)
+                {
+                    var mnuContextLinkToOutput = MnuContextLinkTo.DropDownItems.Add(label.Text);
+                    mnuContextLinkToOutput.Click += MnuContextLinkTo_Click;
+                    mnuContextLinkToOutput.Tag = label;
+                }
+            }
+
+            if (activation)
+            {
+                MnuContextActivation.DropDownItems.Clear();
+                foreach (Functions function in Enum.GetValues<Functions>())
+                {
+                    var mnuContextActivation = MnuContextActivation.DropDownItems.Add(function.ToString());
+                    mnuContextActivation.Click += MnuContextActivation_Click;
+                    mnuContextActivation.Tag = function.GetActivationFunction();
+                }
+            }
         }
 
         private void CmsDraw_Opening(object sender, System.ComponentModel.CancelEventArgs e)
@@ -512,11 +530,11 @@ namespace SimpleAnnPlayground
                 {
                     if (_workspace.MouseTool.GetConnectionOver() is Connection)
                     {
-                        ContextMenuState(link: false, copyPaste: false, delete: true);
+                        ContextMenuState(link: false, activation: false, copyPaste: false, delete: true);
                     }
                     else
                     {
-                        ContextMenuState(link: false, copyPaste: false, delete: false);
+                        ContextMenuState(link: false, activation: false, copyPaste: false, delete: false);
                     }
 
                     break;
@@ -529,31 +547,16 @@ namespace SimpleAnnPlayground
                         switch (obj)
                         {
                             case Input input:
-                                ContextMenuState(link: _workspace.DataTable.Inputs.Any(), copyPaste: true, delete: true);
-                                MnuContextLinkTo.Tag = input;
-                                MnuContextLinkTo.DropDownItems.Clear();
-                                foreach (DataLabel label in _workspace.DataTable.Inputs)
-                                {
-                                    var mnuContextLinkToInput = MnuContextLinkTo.DropDownItems.Add(label.Text);
-                                    mnuContextLinkToInput.Click += MnuContextLinkToInput_Click;
-                                    mnuContextLinkToInput.Tag = label;
-                                }
-
+                                ContextMenuState(link: _workspace.DataTable.Inputs.Any(), activation: false, copyPaste: true, delete: true);
+                                CmsDraw.Tag = input;
                                 break;
                             case Output output:
-                                ContextMenuState(link: _workspace.DataTable.Outputs.Any(), copyPaste: true, delete: true);
-                                MnuContextLinkTo.Tag = output;
-                                MnuContextLinkTo.DropDownItems.Clear();
-                                foreach (DataLabel label in _workspace.DataTable.Outputs)
-                                {
-                                    var mnuContextLinkToOutput = MnuContextLinkTo.DropDownItems.Add(label.Text);
-                                    mnuContextLinkToOutput.Click += MnuContextLinkToOutput_Click;
-                                    mnuContextLinkToOutput.Tag = label;
-                                }
-
+                                ContextMenuState(link: _workspace.DataTable.Outputs.Any(), activation: true, copyPaste: true, delete: true);
+                                CmsDraw.Tag = output;
                                 break;
-                            case Internal:
-                                ContextMenuState(link: false, copyPaste: true, delete: true);
+                            case Internal @internal:
+                                ContextMenuState(link: false, activation: true, copyPaste: true, delete: true);
+                                CmsDraw.Tag = @internal;
                                 break;
                         }
                     }
@@ -563,28 +566,53 @@ namespace SimpleAnnPlayground
 
                 default:
                 {
-                    ContextMenuState(link: false, copyPaste: false, delete: false);
+                    ContextMenuState(link: false, activation: false, copyPaste: false, delete: false);
                     break;
                 }
             }
         }
 
-        private void MnuContextLinkToInput_Click(object? sender, EventArgs e)
+        private void MnuContextLinkTo_Click(object? sender, EventArgs e)
         {
-            if (MnuContextLinkTo.Tag is Input input && sender is ToolStripItem item && item.Tag is DataLabel label)
+            if (sender is not ToolStripItem item || item.Tag is not DataLabel label) throw new ArgumentException("Unexpected value.", nameof(sender));
+            switch (CmsDraw.Tag)
             {
-                input.DataLabel = label;
-                _workspace.Refresh();
+                case Input input:
+                    input.DataLabel = label;
+                    break;
+                case Output output:
+                    output.DataLabel = label;
+                    break;
+                default:
+                    throw new InvalidOperationException("Unexpected type.");
             }
+
+            _workspace.Refresh();
         }
 
-        private void MnuContextLinkToOutput_Click(object? sender, EventArgs e)
+        private void MnuContextActivation_Click(object? sender, EventArgs e)
         {
-            if (MnuContextLinkTo.Tag is Output output && sender is ToolStripItem item && item.Tag is DataLabel label)
+            if (sender is not ToolStripItem item || item.Tag is not ActivationFunction function) throw new ArgumentException("Unexpected value.", nameof(sender));
+            switch (CmsDraw.Tag)
             {
-                output.DataLabel = label;
-                _workspace.Refresh();
+                case Input input:
+                    input.Activation = function;
+                    break;
+                case Internal @internal:
+                    @internal.Activation = function;
+                    break;
+                case Output output:
+                    output.Activation = function;
+                    break;
+                default:
+                    throw new InvalidOperationException("Unexpected type.");
             }
+
+            _workspace.Refresh();
+        }
+
+        private void MnuContextNormalize_Click(object? sender, EventArgs e)
+        {
         }
 
         private void BtnTraining_Click(object sender, EventArgs e)
@@ -594,7 +622,7 @@ namespace SimpleAnnPlayground
             TspExecution.Visible = true;
             UncheckToolsButtons(null);
             _workspace.SetReadOnly();
-            _network.Start();
+            _workspace.Network.Start();
         }
 
         private void BtnTest_Click(object sender, EventArgs e)
@@ -611,13 +639,13 @@ namespace SimpleAnnPlayground
             MnuEdit.Enabled = true;
             TspEdition.Visible = true;
             TspExecution.Visible = false;
-            _network.Stop();
+            _workspace.Network.Stop();
             _workspace.SetEditable();
         }
 
         private void BtnCxStep_Click(object sender, EventArgs e)
         {
-            _network.Execution?.StepIntoCx();
+            _workspace.Network.Execution?.StepIntoCx();
         }
     }
 }

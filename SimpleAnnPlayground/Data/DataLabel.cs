@@ -28,13 +28,20 @@ namespace SimpleAnnPlayground.Data
         /// <summary>
         /// Initializes a new instance of the <see cref="DataLabel"/> class.
         /// </summary>
+        /// <param name="table">The parent data table.</param>
         /// <param name="text">The label text.</param>
         /// <param name="dataType">The data type.</param>
-        public DataLabel(string text, DataType dataType)
+        public DataLabel(DataTable table, string text, DataType dataType)
         {
+            Table = table;
             Text = text;
             DataType = dataType;
         }
+
+        /// <summary>
+        /// Gets the parent <see cref="DataTable"/>.
+        /// </summary>
+        public DataTable Table { get; }
 
         /// <summary>
         /// Gets or sets the label value.
