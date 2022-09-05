@@ -646,6 +646,7 @@ namespace SimpleAnnPlayground
 
         private void BtnTraining_Click(object sender, EventArgs e)
         {
+            MnuFile.Enabled = false;
             MnuEdit.Enabled = false;
             MnuModel.Enabled = false;
             MnuExec.Visible = true;
@@ -658,6 +659,7 @@ namespace SimpleAnnPlayground
 
         private void BtnTest_Click(object sender, EventArgs e)
         {
+            MnuFile.Enabled = false;
             MnuEdit.Enabled = false;
             MnuModel.Enabled = false;
             MnuExec.Visible = true;
@@ -669,6 +671,7 @@ namespace SimpleAnnPlayground
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
+            MnuFile.Enabled = true;
             MnuEdit.Enabled = true;
             MnuModel.Enabled = true;
             MnuExec.Visible = false;
