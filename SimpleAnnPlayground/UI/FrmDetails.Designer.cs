@@ -58,6 +58,6 @@
 
         #endregion
 
-        private RichTextBox RtbInfo;
+        internal RichTextBox RtbInfo;
     }
 }

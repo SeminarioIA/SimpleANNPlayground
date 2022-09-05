@@ -16,6 +16,7 @@
             if (disposing && (components != null))
             {
                 components.Dispose();
+                _fileManager.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -112,6 +113,7 @@
             this.BtnNew.Name = "BtnNew";
             this.BtnNew.Size = new System.Drawing.Size(51, 22);
             this.BtnNew.Text = "New";
+            this.BtnNew.Click += new System.EventHandler(this.BtnNew_Click);
             // 
             // BtnOpen
             // 
@@ -120,6 +122,7 @@
             this.BtnOpen.Name = "BtnOpen";
             this.BtnOpen.Size = new System.Drawing.Size(56, 22);
             this.BtnOpen.Text = "Open";
+            this.BtnOpen.Click += new System.EventHandler(this.BtnOpen_Click);
             // 
             // BtnSave
             // 
@@ -128,6 +131,7 @@
             this.BtnSave.Name = "BtnSave";
             this.BtnSave.Size = new System.Drawing.Size(51, 22);
             this.BtnSave.Text = "Save";
+            this.BtnSave.Click += new System.EventHandler(this.BtnSave_Click);
             // 
             // BtnSaveAs
             // 
@@ -136,6 +140,7 @@
             this.BtnSaveAs.Name = "BtnSaveAs";
             this.BtnSaveAs.Size = new System.Drawing.Size(65, 22);
             this.BtnSaveAs.Text = "Save as";
+            this.BtnSaveAs.Click += new System.EventHandler(this.BtnSaveAs_Click);
             // 
             // toolStripSeparator1
             // 
@@ -149,6 +154,7 @@
             this.BtnSendText.Name = "BtnSendText";
             this.BtnSendText.Size = new System.Drawing.Size(76, 22);
             this.BtnSendText.Text = "Send text";
+            this.BtnSendText.Click += new System.EventHandler(this.BtnSendText_Click);
             // 
             // BtnGetText
             // 
@@ -157,6 +163,7 @@
             this.BtnGetText.Name = "BtnGetText";
             this.BtnGetText.Size = new System.Drawing.Size(68, 22);
             this.BtnGetText.Text = "Get text";
+            this.BtnGetText.Click += new System.EventHandler(this.BtnGetText_Click);
             // 
             // FrmRtfViewer
             // 

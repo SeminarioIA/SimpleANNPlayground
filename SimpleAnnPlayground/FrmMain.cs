@@ -197,6 +197,15 @@ namespace SimpleAnnPlayground
         }
 
         /// <summary>
+        /// Gets or sets the details window content.
+        /// </summary>
+        internal string Details
+        {
+            get => _frmDetails.RtbInfo.Rtf;
+            set => _frmDetails.RtbInfo.Rtf = value;
+        }
+
+        /// <summary>
         /// Reloads the graphical components from the file system.
         /// </summary>
         internal void ReloadComponents()
