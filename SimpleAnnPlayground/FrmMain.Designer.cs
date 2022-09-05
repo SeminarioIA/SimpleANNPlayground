@@ -36,6 +36,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.TspEdition = new System.Windows.Forms.ToolStrip();
             this.BtnNew = new System.Windows.Forms.ToolStripButton();
             this.BtnOpen = new System.Windows.Forms.ToolStripButton();
@@ -51,6 +52,8 @@
             this.BtnData = new System.Windows.Forms.ToolStripButton();
             this.BtnTraining = new System.Windows.Forms.ToolStripButton();
             this.BtnTest = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.BtnTemplate = new System.Windows.Forms.ToolStripButton();
             this.SspStatus = new System.Windows.Forms.StatusStrip();
             this.LblMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.PicWorkspace = new System.Windows.Forms.PictureBox();
@@ -151,7 +154,9 @@
             this.TspEditionSep3,
             this.BtnData,
             this.BtnTraining,
-            this.BtnTest});
+            this.BtnTest,
+            this.toolStripSeparator1,
+            this.BtnTemplate});
             this.TspEdition.Location = new System.Drawing.Point(0, 24);
             this.TspEdition.Name = "TspEdition";
             this.TspEdition.Size = new System.Drawing.Size(777, 56);
@@ -284,6 +289,21 @@
             this.BtnTest.Text = "Testing";
             this.BtnTest.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnTest.Click += new System.EventHandler(this.BtnTest_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 56);
+            // 
+            // BtnTemplate
+            // 
+            this.BtnTemplate.Image = global::SimpleAnnPlayground.Properties.Resources.TemplateWindow;
+            this.BtnTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnTemplate.Name = "BtnTemplate";
+            this.BtnTemplate.Size = new System.Drawing.Size(65, 53);
+            this.BtnTemplate.Text = "Template";
+            this.BtnTemplate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnTemplate.Click += new System.EventHandler(this.BtnTemplate_Click);
             // 
             // SspStatus
             // 
@@ -494,7 +514,7 @@
             this.MnuEditUndo.Enabled = false;
             this.MnuEditUndo.Name = "MnuEditUndo";
             this.MnuEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.MnuEditUndo.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditUndo.Size = new System.Drawing.Size(159, 22);
             this.MnuEditUndo.Text = "Undo";
             this.MnuEditUndo.Click += new System.EventHandler(this.MnuEditUndo_Click);
             // 
@@ -503,21 +523,21 @@
             this.MnuEditRedo.Enabled = false;
             this.MnuEditRedo.Name = "MnuEditRedo";
             this.MnuEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.MnuEditRedo.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditRedo.Size = new System.Drawing.Size(159, 22);
             this.MnuEditRedo.Text = "Redo";
             this.MnuEditRedo.Click += new System.EventHandler(this.MnuEditRedo_Click);
             // 
             // MnuEditSep1
             // 
             this.MnuEditSep1.Name = "MnuEditSep1";
-            this.MnuEditSep1.Size = new System.Drawing.Size(141, 6);
+            this.MnuEditSep1.Size = new System.Drawing.Size(156, 6);
             // 
             // MnuEditDelete
             // 
             this.MnuEditDelete.Enabled = false;
             this.MnuEditDelete.Name = "MnuEditDelete";
             this.MnuEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.MnuEditDelete.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditDelete.Size = new System.Drawing.Size(159, 22);
             this.MnuEditDelete.Text = "Delete";
             this.MnuEditDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
@@ -526,7 +546,7 @@
             this.MnuEditCopy.Enabled = false;
             this.MnuEditCopy.Name = "MnuEditCopy";
             this.MnuEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.MnuEditCopy.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditCopy.Size = new System.Drawing.Size(159, 22);
             this.MnuEditCopy.Text = "Copy";
             this.MnuEditCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
             // 
@@ -535,7 +555,7 @@
             this.MnuEditCut.Enabled = false;
             this.MnuEditCut.Name = "MnuEditCut";
             this.MnuEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.MnuEditCut.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditCut.Size = new System.Drawing.Size(159, 22);
             this.MnuEditCut.Text = "Cut";
             this.MnuEditCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
@@ -544,19 +564,19 @@
             this.MnuEditPaste.Enabled = false;
             this.MnuEditPaste.Name = "MnuEditPaste";
             this.MnuEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.MnuEditPaste.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditPaste.Size = new System.Drawing.Size(159, 22);
             this.MnuEditPaste.Text = "Paste";
             this.MnuEditPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);
             // 
             // MnuEditSep2
             // 
             this.MnuEditSep2.Name = "MnuEditSep2";
-            this.MnuEditSep2.Size = new System.Drawing.Size(141, 6);
+            this.MnuEditSep2.Size = new System.Drawing.Size(156, 6);
             // 
             // MnuEditOptions
             // 
             this.MnuEditOptions.Name = "MnuEditOptions";
-            this.MnuEditOptions.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditOptions.Size = new System.Drawing.Size(159, 22);
             this.MnuEditOptions.Text = "Options";
             // 
             // MnuView
@@ -899,6 +919,7 @@
             this.Controls.Add(this.TspEdition);
             this.Controls.Add(this.MenuStrip);
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MenuStrip;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrmMain";
@@ -1010,5 +1031,7 @@
         private ToolStripSeparator toolStripMenuItem1;
         private ToolStripMenuItem MnuExecRun;
         private ToolStripMenuItem MnuExecStop;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripButton BtnTemplate;
     }
 }

@@ -13,6 +13,7 @@ using SimpleAnnPlayground.Graphical.Tools;
 using SimpleAnnPlayground.Graphical.Visualization;
 using SimpleAnnPlayground.Screens;
 using SimpleAnnPlayground.Storage;
+using SimpleAnnPlayground.UI;
 using SimpleAnnPlayground.Utils;
 using SimpleAnnPlayground.Utils.FileManagment;
 using System.Diagnostics;
@@ -66,7 +67,7 @@ namespace SimpleAnnPlayground
             { nameof(MnuContextCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
 
             // View menus texts.
-            { nameof(MnuView), new() { "&View,", "&Ver" } },
+            { nameof(MnuView), new() { "&View", "&Ver" } },
             { nameof(MnuViewCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
 
             // Model menus texts.
@@ -102,10 +103,14 @@ namespace SimpleAnnPlayground
             { nameof(BtnData), new() { "Data", "Datos" } },
             { nameof(BtnTraining), new() { "Training", "Entrenamiento" } },
             { nameof(BtnTest), new() { "Testing", "Prueba" } },
+            { nameof(BtnTemplate), new() { "Template", "Plantilla" } },
 
             // Message box.
             { nameof(ShowSaveDialog), new() { "If you have made changes to the document they will be lost, do you want to save your changes before continuing?", "Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?" } },
             { "Warning", new() { "Warning", "Advertencia" } },
+
+            // Template menus.
+            { nameof(FrmTemplate), new() { "Template", "Plantilla" } },
         };
 
 #if DEBUG
@@ -684,6 +689,34 @@ namespace SimpleAnnPlayground
         private void BtnCxStep_Click(object sender, EventArgs e)
         {
             _workspace.Network.Execution?.StepIntoCx();
+        }
+
+        private void BtnTemplate_Click(object sender, EventArgs e)
+        {
+            if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
+            {
+                DialogResult selection = ShowSaveDialog();
+                if (selection == DialogResult.OK)
+                {
+                    MnuFileSave_Click(sender, e);
+                }
+                else if (selection == DialogResult.Cancel)
+                {
+                    return;
+                }
+            }
+
+            using (var frmTemplate = new FrmTemplate())
+            {
+                if (frmTemplate.GetData())
+                {
+                    Debug.WriteLine("Selection made");
+                }
+                else
+                {
+                    Debug.WriteLine("Cancel selected");
+                }
+            }
         }
     }
 }
