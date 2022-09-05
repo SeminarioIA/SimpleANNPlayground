@@ -15,6 +15,16 @@ namespace SimpleAnnPlayground.Ann.Activation
         public abstract string Name { get; }
 
         /// <summary>
+        /// Gets a value indicating whether the function is supported by output neurons.
+        /// </summary>
+        public abstract bool OutputSupported { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the function is supported by internal neurons.
+        /// </summary>
+        public abstract bool InternalSupported { get; }
+
+        /// <summary>
         /// Executes the activation function operation to calculate the output a.
         /// </summary>
         /// <param name="z">The fuction input.</param>

@@ -534,9 +534,13 @@ namespace SimpleAnnPlayground
                 MnuContextActivation.DropDownItems.Clear();
                 foreach (Functions function in Enum.GetValues<Functions>())
                 {
-                    var mnuContextActivation = MnuContextActivation.DropDownItems.Add(function.ToString());
-                    mnuContextActivation.Click += MnuContextActivation_Click;
-                    mnuContextActivation.Tag = function.GetActivationFunction();
+                    var func = function.GetActivationFunction();
+                    if ((link && func.OutputSupported) || (!link && func.InternalSupported))
+                    {
+                        var mnuContextActivation = MnuContextActivation.DropDownItems.Add(function.ToString());
+                        mnuContextActivation.Click += MnuContextActivation_Click;
+                        mnuContextActivation.Tag = function.GetActivationFunction();
+                    }
                 }
             }
         }

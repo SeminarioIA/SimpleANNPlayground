@@ -13,6 +13,12 @@ namespace SimpleAnnPlayground.Ann.Activation
         public override string Name => nameof(Sigmoid);
 
         /// <inheritdoc/>
+        public override bool OutputSupported => true;
+
+        /// <inheritdoc/>
+        public override bool InternalSupported => true;
+
+        /// <inheritdoc/>
         internal override decimal Execute(decimal z) => 1m / (1m + (decimal)Math.Exp(-(double)z));
 
         /// <inheritdoc/>
