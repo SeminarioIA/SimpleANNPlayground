@@ -52,6 +52,16 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// The network propagates the error to the internal neurons.
         /// </summary>
         ErrorPropagation,
+
+        /// <summary>
+        /// The network calcs the correction value from the accumulated error.
+        /// </summary>
+        CorrectionValue,
+
+        /// <summary>
+        /// The network updates the weights to the new calculated values.
+        /// </summary>
+        ApplyNewWeights,
     }
 
     /// <summary>
@@ -166,6 +176,8 @@ namespace SimpleAnnPlayground.Ann.Networks
                 node.Neuron.Z = null;
                 node.Neuron.Bias = null;
                 node.Neuron.A = null;
+                node.Neuron.Error = null;
+                node.Neuron.Correction = null;
                 if (node.Neuron is Output output) output.Y = null;
             }
 
@@ -203,12 +215,23 @@ namespace SimpleAnnPlayground.Ann.Networks
                     if (_node.MoveNext()) _link = _node.Current.Next.GetEnumerator();
                     if (!_link?.MoveNext() ?? false) throw new InvalidOperationException("The node does not have links.");
                     if (!_register.MoveNext()) throw new NotImplementedException("Pending to implement what to do at the end of the table.");
+
+                    // Select the current register in the table.
                     Network.Workspace.SelectRegister(_register.Current);
+
+                    // Clear all the network nodes.
+                    foreach (var node in Network.Graph.Nodes)
+                    {
+                        node.Neuron.Z = null;
+                        node.Neuron.A = null;
+                        node.Neuron.Error = null;
+                        node.Neuron.Correction = null;
+                    }
+
+                    // Select all the nodes in the input layer.
                     foreach (var node in _layer.Current.Nodes)
                     {
                         node.Neuron.SetStateFlag(Component.State.Execution);
-                        node.Neuron.Z = null;
-                        node.Neuron.A = null;
                     }
 
                     Phase = ExecPhase.GetData;
@@ -350,8 +373,16 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                                 if (_node.Current.Neuron is Input)
                                 {
-                                    Phase = ExecPhase.FetchData;
-                                    StepIntoCx();
+                                    if (Network.Graph is null) throw new InvalidOperationException();
+
+                                    // Select all the connections.
+                                    foreach (var link in Network.Graph.Links)
+                                    {
+                                        link.Connection.Executing = true;
+                                    }
+
+                                    // Move to the next phase.
+                                    Phase = ExecPhase.ApplyNewWeights;
                                 }
                                 else
                                 {
@@ -400,17 +431,45 @@ namespace SimpleAnnPlayground.Ann.Networks
                     }
                     else
                     {
-                        // Get the previous links enumerator.
-                        _link = _node.Current.Previous.GetEnumerator();
-                        if (!_link.MoveNext()) throw new InvalidOperationException("Expected a link in the node.");
-
-                        // Set the link execution mark.
-                        _link.Current.Connection.Executing = true;
-
                         // Move to the next phase.
-                        Phase = ExecPhase.WeightsCorrection;
+                        Phase = ExecPhase.CorrectionValue;
                     }
 
+                    break;
+                }
+
+                case ExecPhase.CorrectionValue:
+                {
+                    if (_node.Current.Neuron.Activation is null || _node.Current.Neuron.Error is null) throw new InvalidOperationException();
+                    _node.Current.Neuron.Correction = _node.Current.Neuron.Activation.Derivative(_node.Current.Neuron.Error.Value);
+
+                    // Get the previous links enumerator.
+                    _link = _node.Current.Previous.GetEnumerator();
+                    if (!_link.MoveNext()) throw new InvalidOperationException("Expected a link in the node.");
+
+                    // Set the link execution mark.
+                    _link.Current.Connection.Executing = true;
+
+                    // Move to the next phase.
+                    Phase = ExecPhase.WeightsCorrection;
+                    break;
+                }
+
+                case ExecPhase.ApplyNewWeights:
+                {
+                    if (Network.Graph is null) throw new InvalidOperationException();
+
+                    // Apply new weights and unselect all the connections.
+                    foreach (var link in Network.Graph.Links)
+                    {
+                        link.Connection.Weight = link.Connection.WeightCorrection;
+                        link.Connection.WeightCorrection = null;
+                        link.Connection.Executing = false;
+                    }
+
+                    // Move to the next phase.
+                    Phase = ExecPhase.FetchData;
+                    StepIntoCx();
                     break;
                 }
 

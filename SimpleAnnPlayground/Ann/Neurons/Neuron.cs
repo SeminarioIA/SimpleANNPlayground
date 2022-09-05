@@ -63,6 +63,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public decimal? Error { get; set; }
 
         /// <summary>
+        /// Gets or sets the correction value.
+        /// </summary>
+        public decimal? Correction { get; set; }
+
+        /// <summary>
         /// Gets the neuron current layer.
         /// </summary>
         internal abstract int? UpwardLayer { get; }
@@ -124,6 +129,17 @@ namespace SimpleAnnPlayground.Ann.Neurons
                 {
                     var location = new PointF(Location.X, Location.Y + Component.Y + font.Size + 2);
                     graphics.DrawString($"e={Math.Round(Error.Value, 3)}", font, brush, location, format);
+                }
+            }
+
+            if (Correction is not null)
+            {
+                using (var font = new Font("Arial", 8))
+                using (var brush = new SolidBrush(Color.Blue))
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
+                {
+                    var location = new PointF(Location.X, Location.Y + Component.Y + font.Size * 2 + 4);
+                    graphics.DrawString($"c={Math.Round(Correction.Value, 3)}", font, brush, location, format);
                 }
             }
 
