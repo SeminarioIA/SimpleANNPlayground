@@ -70,6 +70,42 @@ namespace SimpleAnnPlayground.Ann.Networks
     }
 
     /// <summary>
+    /// Enumerates the types of executions steps.
+    /// </summary>
+    internal enum StepType
+    {
+        /// <summary>
+        /// Represents a Connection step.
+        /// </summary>
+        Connection,
+
+        /// <summary>
+        /// Represents a Neuron step.
+        /// </summary>
+        Neuron,
+
+        /// <summary>
+        /// Represents a Layer step.
+        /// </summary>
+        Layer,
+
+        /// <summary>
+        /// Represents a data register step.
+        /// </summary>
+        DataRegister,
+
+        /// <summary>
+        /// Represents a batch of data step.
+        /// </summary>
+        DataBatch,
+
+        /// <summary>
+        /// Represents the full data step.
+        /// </summary>
+        DataSet,
+    }
+
+    /// <summary>
     /// Handles the network model execution.
     /// </summary>
     internal class Execution
@@ -206,10 +242,79 @@ namespace SimpleAnnPlayground.Ann.Networks
         }
 
         /// <summary>
+        /// Executes the full data set in the network.
+        /// </summary>
+        public void Run()
+        {
+            StepType stepType;
+            do
+            {
+                stepType = OneStep();
+            }
+            while (stepType is not StepType.DataSet);
+
+            Network.Workspace.Refresh();
+        }
+
+        /// <summary>
         /// Executes one connection step in the network.
         /// </summary>
         public void StepIntoCx()
         {
+            _ = OneStep();
+
+            Network.Workspace.Refresh();
+        }
+
+        /// <summary>
+        /// Executes one Neuron step in the network.
+        /// </summary>
+        public void StepIntoNeuron()
+        {
+            StepType stepType;
+            do
+            {
+                stepType = OneStep();
+            }
+            while (stepType is StepType.Connection);
+
+            Network.Workspace.Refresh();
+        }
+
+        /// <summary>
+        /// Executes one Layer step in the network.
+        /// </summary>
+        public void StepIntoLayer()
+        {
+            StepType stepType;
+            do
+            {
+                stepType = OneStep();
+            }
+            while (stepType is StepType.Connection or StepType.Neuron);
+
+            Network.Workspace.Refresh();
+        }
+
+        /// <summary>
+        /// Executes one Layer step in the network.
+        /// </summary>
+        public void StepIntoData()
+        {
+            StepType stepType;
+            do
+            {
+                stepType = OneStep();
+            }
+            while (stepType is StepType.Connection or StepType.Neuron or StepType.Layer);
+
+            Network.Workspace.Refresh();
+        }
+
+        private StepType OneStep()
+        {
+            StepType stepType = StepType.Connection;
+
             switch (Phase)
             {
                 case ExecPhase.FetchData:
@@ -222,7 +327,8 @@ namespace SimpleAnnPlayground.Ann.Networks
                     if (!_register.MoveNext())
                     {
                         _register.Reset();
-                        if (!_register.MoveNext()) throw new InvalidOperationException("Expected register.");
+                        stepType = StepType.DataSet;
+                        return stepType;
                     }
 
                     // Select the current register in the table.
@@ -248,6 +354,7 @@ namespace SimpleAnnPlayground.Ann.Networks
                 }
 
                 case ExecPhase.GetData:
+                {
                     // Clear the execution mark for the nodes in the first layer.
                     foreach (var node in _layer.Current.Nodes)
                     {
@@ -258,8 +365,9 @@ namespace SimpleAnnPlayground.Ann.Networks
                         }
                     }
 
-                    // Next phase
+                    // Next phase.
                     Phase = ExecPhase.ConnectionsWeights;
+                    stepType = StepType.Layer;
 
                     // Get the next layer.
                     if (!_layer.MoveNext()) throw new InvalidOperationException("Expected an internal layer.");
@@ -267,12 +375,89 @@ namespace SimpleAnnPlayground.Ann.Networks
                     // Initialize the layer.
                     InitializeLayer();
                     break;
+                }
+
                 case ExecPhase.ConnectionsWeights:
-                    Phase = StepCxWeights();
+                {
+                    if (_link is null) throw new InvalidOperationException("Unexpected null link enumerator.");
+
+                    // Add to Z the previous A value multiplied by the link weight.
+                    _node.Current.Neuron.AddValue(_link.Current.Previous.Neuron.A, _link.Current.Connection.Weight);
+
+                    // Clear connection execution mark.
+                    _link.Current.Connection.Executing = false;
+
+                    // Move to the next connection.
+                    if (_link.MoveNext())
+                    {
+                        // Set execution mark for the next connection.
+                        _link.Current.Connection.Executing = true;
+                    }
+                    else
+                    {
+                        // If no connections then execute the activation function.
+                        Phase = ExecPhase.Activation;
+                    }
+
                     break;
+                }
+
                 case ExecPhase.Activation:
-                    Phase = StepCxActivations();
+                {
+                    if (_node.Current.Neuron.Z is null) throw new InvalidOperationException("Invalid neuron Z value.");
+                    if (_node.Current.Neuron.Activation is null) throw new InvalidOperationException("Invalid or missing Activation function.");
+
+                    // Calc the neuron output.
+                    _node.Current.Neuron.A = _node.Current.Neuron.Activation.Execute(_node.Current.Neuron.Z.Value);
+
+                    // Remove the neuron execution mark.
+                    _node.Current.Neuron.ClearStateFlag(Component.State.Execution);
+
+                    // Move to the next neuron in the layer.
+                    if (_node.MoveNext())
+                    {
+                        // Initialize the node.
+                        InitializeNode();
+
+                        // Next phase.
+                        Phase = ExecPhase.ConnectionsWeights;
+                        stepType = StepType.Neuron;
+                    }
+                    else
+                    {
+                        // Move to the next layer.
+                        if (_layer.MoveNext())
+                        {
+                            // Initialize the layer.
+                            InitializeLayer();
+
+                            // Next phase.
+                            Phase = ExecPhase.ConnectionsWeights;
+                            stepType = StepType.Layer;
+                        }
+                        else
+                        {
+                            // Prepare for backpropagation.
+                            _layer = Network.Graph?.Layers.AsEnumerable().Reverse().GetEnumerator() ?? throw new InvalidOperationException();
+
+                            // Get the next layer.
+                            if (!_layer.MoveNext()) throw new InvalidOperationException("Expected an internal layer.");
+
+                            // Set the execution mark for the nodes in the last layer.
+                            foreach (var node in _layer.Current.Nodes)
+                            {
+                                node.Neuron.SetStateFlag(Component.State.Execution);
+                            }
+
+                            // Move to the next execution phase.
+                            Phase = ExecPhase.GetOutputData;
+                            stepType = StepType.Layer;
+                        }
+                    }
+
                     break;
+                }
+
                 case ExecPhase.GetOutputData:
                 {
                     // Clear the execution mark for the nodes in the last layer and add the output value.
@@ -296,6 +481,7 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                     // Move to the next phase.
                     Phase = ExecPhase.OutputNeuronError;
+                    stepType = StepType.Layer;
                     break;
                 }
 
@@ -365,6 +551,7 @@ namespace SimpleAnnPlayground.Ann.Networks
                             {
                                 // Move to the next phase.
                                 Phase = ExecPhase.OutputNeuronError;
+                                stepType = StepType.Neuron;
                             }
                             else if (_node.Current.Neuron is Internal)
                             {
@@ -377,6 +564,7 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                                 // Move to the next phase.
                                 Phase = ExecPhase.ErrorPropagation;
+                                stepType = StepType.Neuron;
                             }
                             else
                             {
@@ -404,6 +592,7 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                                     // Move to the next phase.
                                     Phase = ExecPhase.ApplyNewWeights;
+                                    stepType = StepType.Layer;
                                 }
                                 else
                                 {
@@ -422,6 +611,7 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                                     // Move to the next phase.
                                     Phase = ExecPhase.ErrorPropagation;
+                                    stepType = StepType.Layer;
                                 }
                             }
                             else
@@ -483,87 +673,15 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                     // Move to the next phase.
                     Phase = ExecPhase.FetchData;
-                    StepIntoCx();
+                    stepType = OneStep();
                     break;
                 }
 
                 default:
-                    break;
+                    throw new NotImplementedException();
             }
 
-            Network.Workspace.Refresh();
-        }
-
-        private ExecPhase StepCxWeights()
-        {
-            if (_link is null) throw new InvalidOperationException("Unexpected null link enumerator.");
-
-            // Add to Z the previous A value multiplied by the link weight.
-            _node.Current.Neuron.AddValue(_link.Current.Previous.Neuron.A, _link.Current.Connection.Weight);
-
-            // Clear connection execution mark.
-            _link.Current.Connection.Executing = false;
-
-            // Move to the next connection.
-            if (_link.MoveNext())
-            {
-                // Set execution mark for the next connection.
-                _link.Current.Connection.Executing = true;
-                return Phase;
-            }
-            else
-            {
-                // If no connections then execute the activation function.
-                return ExecPhase.Activation;
-            }
-        }
-
-        private ExecPhase StepCxActivations()
-        {
-            if (_node.Current.Neuron.Z is null) throw new InvalidOperationException("Invalid neuron Z value.");
-            if (_node.Current.Neuron.Activation is null) throw new InvalidOperationException("Invalid or missing Activation function.");
-
-            // Calc the neuron output.
-            _node.Current.Neuron.A = _node.Current.Neuron.Activation.Execute(_node.Current.Neuron.Z.Value);
-
-            // Remove the neuron execution mark.
-            _node.Current.Neuron.ClearStateFlag(Component.State.Execution);
-
-            // Move to the next neuron in the layer.
-            if (_node.MoveNext())
-            {
-                // Initialize the node.
-                InitializeNode();
-
-                return ExecPhase.ConnectionsWeights;
-            }
-            else
-            {
-                // Move to the next layer.
-                if (_layer.MoveNext())
-                {
-                    // Initialize the layer.
-                    InitializeLayer();
-                    return ExecPhase.ConnectionsWeights;
-                }
-                else
-                {
-                    // Prepare for backpropagation.
-                    _layer = Network.Graph?.Layers.AsEnumerable().Reverse().GetEnumerator() ?? throw new InvalidOperationException();
-
-                    // Get the next layer.
-                    if (!_layer.MoveNext()) throw new InvalidOperationException("Expected an internal layer.");
-
-                    // Set the execution mark for the nodes in the last layer.
-                    foreach (var node in _layer.Current.Nodes)
-                    {
-                        if (node.Neuron is Output output) output.SetStateFlag(Component.State.Execution);
-                    }
-
-                    // Move to the next execution phase.
-                    return ExecPhase.GetOutputData;
-                }
-            }
+            return stepType;
         }
 
         private void InitializeNode()

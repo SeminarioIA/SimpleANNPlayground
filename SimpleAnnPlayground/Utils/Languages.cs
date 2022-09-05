@@ -53,7 +53,14 @@ namespace SimpleAnnPlayground.Utils
                     {
                         if (words.ContainsKey(item.Name))
                         {
-                            item.Text = words[item.Name][(int)language];
+                            if (words[item.Name][0] == "#")
+                            {
+                                item.ToolTipText = words[item.Name][(int)language + 1];
+                            }
+                            else
+                            {
+                                item.Text = words[item.Name][(int)language];
+                            }
                         }
 
                         // If the toolStrip contains child elements.
