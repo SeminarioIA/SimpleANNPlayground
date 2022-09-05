@@ -100,7 +100,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
 
             if (Bias is not null)
             {
-                string text = Z is not null ? $"b={Bias}\nZ={Math.Round(Z.Value, 3)}" : $"b={Bias}";
+                string text = Z is not null ? $"b={Math.Round(Bias.Value, 3)}\nZ={Math.Round(Z.Value, 3)}" : $"b={Math.Round(Bias.Value, 3)}";
                 using (var font = new Font("Arial", 8))
                 using (var brush = new SolidBrush(Color.Black))
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far })

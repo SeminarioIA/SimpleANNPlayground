@@ -44,7 +44,12 @@ namespace SimpleAnnPlayground.Ann.Networks
         OutputNeuronError,
 
         /// <summary>
-        /// The network changes the weights for the neuron connections.
+        /// The network calcs the new bias for the neurons.
+        /// </summary>
+        BiasCorrection,
+
+        /// <summary>
+        /// The network calcs the new weights for the neuron connections.
         /// </summary>
         WeightsCorrection,
 
@@ -214,7 +219,11 @@ namespace SimpleAnnPlayground.Ann.Networks
                     if (_layer.MoveNext()) _node = _layer.Current.Nodes.GetEnumerator();
                     if (_node.MoveNext()) _link = _node.Current.Next.GetEnumerator();
                     if (!_link?.MoveNext() ?? false) throw new InvalidOperationException("The node does not have links.");
-                    if (!_register.MoveNext()) throw new NotImplementedException("Pending to implement what to do at the end of the table.");
+                    if (!_register.MoveNext())
+                    {
+                        _register.Reset();
+                        if (!_register.MoveNext()) throw new InvalidOperationException("Expected register.");
+                    }
 
                     // Select the current register in the table.
                     Network.Workspace.SelectRegister(_register.Current);
@@ -296,6 +305,18 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                     // Calc the output neuron error.
                     output.Error = output.Activation.Derivative(output.A.Value) * (output.Y.Value - output.A.Value);
+
+                    // Move to the next phase.
+                    Phase = ExecPhase.BiasCorrection;
+                    break;
+                }
+
+                case ExecPhase.BiasCorrection:
+                {
+                    if (_node.Current.Neuron.Activation is null || _node.Current.Neuron.A is null) throw new InvalidOperationException();
+
+                    // Calc the new bias value.
+                    _node.Current.Neuron.Bias = _node.Current.Neuron.Activation.Derivative(_node.Current.Neuron.A.Value) * _node.Current.Neuron.A.Value;
 
                     // Get the node links.
                     _link = _node.Current.Previous.GetEnumerator();
@@ -443,15 +464,8 @@ namespace SimpleAnnPlayground.Ann.Networks
                     if (_node.Current.Neuron.Activation is null || _node.Current.Neuron.Error is null) throw new InvalidOperationException();
                     _node.Current.Neuron.Correction = _node.Current.Neuron.Activation.Derivative(_node.Current.Neuron.Error.Value);
 
-                    // Get the previous links enumerator.
-                    _link = _node.Current.Previous.GetEnumerator();
-                    if (!_link.MoveNext()) throw new InvalidOperationException("Expected a link in the node.");
-
-                    // Set the link execution mark.
-                    _link.Current.Connection.Executing = true;
-
                     // Move to the next phase.
-                    Phase = ExecPhase.WeightsCorrection;
+                    Phase = ExecPhase.BiasCorrection;
                     break;
                 }
 
