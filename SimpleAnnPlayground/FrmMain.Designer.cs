@@ -297,10 +297,10 @@
             this.PicWorkspace.BackColor = System.Drawing.Color.DarkGray;
             this.PicWorkspace.ContextMenuStrip = this.CmsDraw;
             this.PicWorkspace.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PicWorkspace.Location = new System.Drawing.Point(0, 80);
+            this.PicWorkspace.Location = new System.Drawing.Point(0, 136);
             this.PicWorkspace.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PicWorkspace.Name = "PicWorkspace";
-            this.PicWorkspace.Size = new System.Drawing.Size(760, 352);
+            this.PicWorkspace.Size = new System.Drawing.Size(760, 296);
             this.PicWorkspace.TabIndex = 2;
             this.PicWorkspace.TabStop = false;
             // 
@@ -317,31 +317,31 @@
             this.MnuContextDelete,
             this.MnuContextCenterScreen});
             this.CmsDraw.Name = "CmsDraw";
-            this.CmsDraw.Size = new System.Drawing.Size(181, 192);
+            this.CmsDraw.Size = new System.Drawing.Size(147, 170);
             this.CmsDraw.Opening += new System.ComponentModel.CancelEventHandler(this.CmsDraw_Opening);
             // 
             // MnuContextLinkTo
             // 
             this.MnuContextLinkTo.Name = "MnuContextLinkTo";
-            this.MnuContextLinkTo.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextLinkTo.Size = new System.Drawing.Size(146, 22);
             this.MnuContextLinkTo.Text = "Link to";
             // 
             // MnuContextActivation
             // 
             this.MnuContextActivation.Name = "MnuContextActivation";
-            this.MnuContextActivation.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextActivation.Size = new System.Drawing.Size(146, 22);
             this.MnuContextActivation.Text = "Activation";
             // 
             // MnuContextSep1
             // 
             this.MnuContextSep1.Name = "MnuContextSep1";
-            this.MnuContextSep1.Size = new System.Drawing.Size(177, 6);
+            this.MnuContextSep1.Size = new System.Drawing.Size(143, 6);
             // 
             // MnuContextCopy
             // 
             this.MnuContextCopy.Name = "MnuContextCopy";
             this.MnuContextCopy.ShortcutKeyDisplayString = "Ctrl+C";
-            this.MnuContextCopy.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextCopy.Size = new System.Drawing.Size(146, 22);
             this.MnuContextCopy.Text = "Copy";
             this.MnuContextCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
             // 
@@ -349,7 +349,7 @@
             // 
             this.MnuContextCut.Name = "MnuContextCut";
             this.MnuContextCut.ShortcutKeyDisplayString = "Ctrl+X";
-            this.MnuContextCut.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextCut.Size = new System.Drawing.Size(146, 22);
             this.MnuContextCut.Text = "Cut";
             this.MnuContextCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
@@ -357,27 +357,27 @@
             // 
             this.MnuContextPaste.Name = "MnuContextPaste";
             this.MnuContextPaste.ShortcutKeyDisplayString = "Ctrl+V";
-            this.MnuContextPaste.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextPaste.Size = new System.Drawing.Size(146, 22);
             this.MnuContextPaste.Text = "Paste";
             this.MnuContextPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);
             // 
             // MnuContextSep2
             // 
             this.MnuContextSep2.Name = "MnuContextSep2";
-            this.MnuContextSep2.Size = new System.Drawing.Size(177, 6);
+            this.MnuContextSep2.Size = new System.Drawing.Size(143, 6);
             // 
             // MnuContextDelete
             // 
             this.MnuContextDelete.Name = "MnuContextDelete";
             this.MnuContextDelete.ShortcutKeyDisplayString = "Del";
-            this.MnuContextDelete.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextDelete.Size = new System.Drawing.Size(146, 22);
             this.MnuContextDelete.Text = "Delete";
             this.MnuContextDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
             // MnuContextCenterScreen
             // 
             this.MnuContextCenterScreen.Name = "MnuContextCenterScreen";
-            this.MnuContextCenterScreen.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextCenterScreen.Size = new System.Drawing.Size(146, 22);
             this.MnuContextCenterScreen.Text = "Center screen";
             this.MnuContextCenterScreen.Click += new System.EventHandler(this.MnuViewCenterScreen_Click);
             // 
@@ -622,9 +622,9 @@
             // VsbMain
             // 
             this.VsbMain.Dock = System.Windows.Forms.DockStyle.Right;
-            this.VsbMain.Location = new System.Drawing.Point(760, 80);
+            this.VsbMain.Location = new System.Drawing.Point(760, 136);
             this.VsbMain.Name = "VsbMain";
-            this.VsbMain.Size = new System.Drawing.Size(17, 369);
+            this.VsbMain.Size = new System.Drawing.Size(17, 313);
             this.VsbMain.TabIndex = 4;
             // 
             // ScBotom
@@ -710,7 +710,7 @@
             this.BtnLayerStep});
             this.TspExecution.Location = new System.Drawing.Point(0, 80);
             this.TspExecution.Name = "TspExecution";
-            this.TspExecution.Size = new System.Drawing.Size(760, 56);
+            this.TspExecution.Size = new System.Drawing.Size(777, 56);
             this.TspExecution.TabIndex = 6;
             this.TspExecution.Text = "toolStrip2";
             // 
@@ -770,11 +770,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(777, 473);
-            this.Controls.Add(this.TspExecution);
             this.Controls.Add(this.PicWorkspace);
             this.Controls.Add(this.ScBotom);
             this.Controls.Add(this.VsbMain);
             this.Controls.Add(this.SspStatus);
+            this.Controls.Add(this.TspExecution);
             this.Controls.Add(this.TspEdition);
             this.Controls.Add(this.MenuStrip);
             this.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
