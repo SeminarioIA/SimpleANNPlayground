@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using Newtonsoft.Json;
+
 namespace SimpleAnnPlayground.Data
 {
     /// <summary>
@@ -41,6 +43,7 @@ namespace SimpleAnnPlayground.Data
         /// <summary>
         /// Gets the parent <see cref="DataTable"/>.
         /// </summary>
+        [JsonIgnore]
         public DataTable Table { get; }
 
         /// <summary>

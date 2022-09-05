@@ -48,10 +48,12 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// </summary>
         /// <param name="source">The input terminal in the source component.</param>
         /// <param name="destination">The output terminal in the destination component.</param>
-        public Connection(OutputTerminal source, InputTerminal destination)
+        /// <param name="initWeight">The initialization weight for the connection.</param>
+        public Connection(OutputTerminal source, InputTerminal destination, decimal initWeight = 1m)
         {
             Source = source;
             Destination = destination;
+            InitWeight = initWeight;
         }
 
         /// <summary>
@@ -87,8 +89,19 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <summary>
         /// Gets or sets the connection weight.
         /// </summary>
+        public decimal InitWeight { get; set; } = 1;
+
+        /// <summary>
+        /// Gets or sets the connection weight.
+        /// </summary>
         [JsonIgnore]
         public decimal? Weight { get; set; }
+
+        /// <summary>
+        /// Gets or sets the correction weight.
+        /// </summary>
+        [JsonIgnore]
+        public decimal? WeightCorrection { get; internal set; }
 
         /// <summary>
         /// Determines if a point is near enough to the connection line.
@@ -151,14 +164,15 @@ namespace SimpleAnnPlayground.Ann.Neurons
 
             if (Weight != null)
             {
+                string text = WeightCorrection is not null ? $"w={Math.Round(Weight.Value, 3)}\nw'={Math.Round(WeightCorrection.Value, 3)}" : $"w={Math.Round(Weight.Value, 3)}";
                 var alignH = Source.Location.Y > Destination.Location.Y ? StringAlignment.Far : StringAlignment.Near;
                 var alignV = StringAlignment.Far;
                 using (var font = new Font("Arial", 8))
-                using (var brush = new SolidBrush(Executing ? Color.Black : Color.DarkGray))
+                using (var brush = new SolidBrush(Executing ? _color : Selected ? _selectColor : Color.DarkGray))
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = alignH, LineAlignment = alignV })
                 {
-                    var center = Space.Center(Source.Location, Destination.Location);
-                    graphics.DrawString($"w={Weight}", font, brush, center, format);
+                    var center = Space.LinePoint(Source.Location, Destination.Location, 0.6f);
+                    graphics.DrawString(text, font, brush, center, format);
                 }
             }
 

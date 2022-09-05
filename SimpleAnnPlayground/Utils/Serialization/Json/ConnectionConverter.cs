@@ -53,8 +53,12 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
             int destinationTerminalIndex = Convert.ToInt32(destinationData[1], 10);
             var destinationTerminal = destinationObject.Inputs[destinationTerminalIndex];
 
+            // Get the connection initialization weight.
+            string? initWeightString = jo["InitWeight"]?.Value<string>();
+            decimal initWeight = initWeightString is null || !decimal.TryParse(initWeightString, out decimal value) ? 1m : value;
+
             // Create a new object instance.
-            return new Connection(sourceTerminal, destinationTerminal);
+            return new Connection(sourceTerminal, destinationTerminal, initWeight);
         }
     }
 }

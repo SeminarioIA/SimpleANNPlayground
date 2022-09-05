@@ -71,22 +71,17 @@ namespace SimpleAnnPlayground.Graphical
             /// <summary>
             /// The component is going to be executed in the simulation.
             /// </summary>
-            ExecutionStep = 8,
-
-            /// <summary>
-            /// The component was succesfully simulated.
-            /// </summary>
-            ExecutionPass = 16,
+            Execution = 8,
 
             /// <summary>
             /// There is an error about the component.
             /// </summary>
-            ComponentError = 32,
+            ComponentError = 16,
 
             /// <summary>
             /// Component status mask.
             /// </summary>
-            ComponentStatusMask = ExecutionStep | ExecutionPass | ComponentError,
+            ComponentStatusMask = Execution | ComponentError,
         }
 
         /// <summary>
@@ -242,7 +237,7 @@ namespace SimpleAnnPlayground.Graphical
             graphics.TranslateTransform(location.X - Center.X, location.Y - Center.Y);
 
             // Draw backgroung selector
-            if (state.HasFlag(State.ExecutionStep) || state.HasFlag(State.ExecutionPass) || state.HasFlag(State.ComponentError))
+            if (state.HasFlag(State.Execution) || state.HasFlag(State.ComponentError))
             {
                 Selector.Paint(graphics, false, state);
             }

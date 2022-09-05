@@ -58,6 +58,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public decimal? A { get; set; }
 
         /// <summary>
+        /// Gets or sets the output error.
+        /// </summary>
+        public decimal? Error { get; set; }
+
+        /// <summary>
         /// Gets the neuron current layer.
         /// </summary>
         internal abstract int? UpwardLayer { get; }
@@ -88,24 +93,15 @@ namespace SimpleAnnPlayground.Ann.Neurons
                 }
             }
 
-            if (Z is not null)
+            if (Bias is not null)
             {
+                string text = Z is not null ? $"b={Bias}\nZ={Math.Round(Z.Value, 3)}" : $"b={Bias}";
                 using (var font = new Font("Arial", 8))
                 using (var brush = new SolidBrush(Color.Black))
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far })
                 {
                     var location = new PointF(Location.X, Location.Y - Component.Y);
-                    graphics.DrawString($"b={Bias}\nZ={Z}", font, brush, location, format);
-                }
-            }
-            else if (Bias is not null)
-            {
-                using (var font = new Font("Arial", 8))
-                using (var brush = new SolidBrush(Color.Black))
-                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far })
-                {
-                    var location = new PointF(Location.X, Location.Y - Component.Y);
-                    graphics.DrawString($"b={Bias}", font, brush, location, format);
+                    graphics.DrawString(text, font, brush, location, format);
                 }
             }
 
@@ -116,7 +112,18 @@ namespace SimpleAnnPlayground.Ann.Neurons
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
                 {
                     var location = new PointF(Location.X, Location.Y + Component.Y);
-                    graphics.DrawString($"A={A}", font, brush, location, format);
+                    graphics.DrawString($"a={Math.Round(A.Value, 3)}", font, brush, location, format);
+                }
+            }
+
+            if (Error is not null)
+            {
+                using (var font = new Font("Arial", 8))
+                using (var brush = new SolidBrush(Color.Red))
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
+                {
+                    var location = new PointF(Location.X, Location.Y + Component.Y + font.Size + 2);
+                    graphics.DrawString($"e={Math.Round(Error.Value, 3)}", font, brush, location, format);
                 }
             }
 
@@ -138,6 +145,18 @@ namespace SimpleAnnPlayground.Ann.Neurons
             if (previous is null) throw new ArgumentNullException(nameof(previous));
             if (weight is null) throw new ArgumentNullException(nameof(weight));
             Z += previous * weight;
+        }
+
+        /// <summary>
+        /// Adds a value to the neuron.
+        /// </summary>
+        /// <param name="previous">Previous error value.</param>
+        /// <param name="weight">The connection weight.</param>
+        public virtual void AddError(decimal? previous, decimal? weight)
+        {
+            if (previous is null) throw new ArgumentNullException(nameof(previous));
+            if (weight is null) throw new ArgumentNullException(nameof(weight));
+            Error += previous * weight;
         }
 
         /// <summary>

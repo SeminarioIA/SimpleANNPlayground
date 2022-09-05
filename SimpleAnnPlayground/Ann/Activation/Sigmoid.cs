@@ -16,6 +16,9 @@ namespace SimpleAnnPlayground.Ann.Activation
         internal override decimal Execute(decimal z) => 1m / (1m + (decimal)Math.Exp(-(double)z));
 
         /// <inheritdoc/>
+        internal override decimal Derivative(decimal a) => a * (1 - a);
+
+        /// <inheritdoc/>
         internal override void Paint(Graphics graphics)
         {
             using (Pen pen = new Pen(Color.Black))

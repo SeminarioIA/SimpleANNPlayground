@@ -28,6 +28,11 @@ namespace SimpleAnnPlayground.Ann.Networks
         public Workspace Workspace { get; }
 
         /// <summary>
+        /// Gets the neural network learning rate.
+        /// </summary>
+        public decimal LearningRate { get; } = 0.25m;
+
+        /// <summary>
         /// Gets the network graph.
         /// </summary>
         public Graph? Graph { get; private set; }

@@ -22,6 +22,13 @@ namespace SimpleAnnPlayground.Ann.Activation
         internal abstract decimal Execute(decimal z);
 
         /// <summary>
+        /// Calculates the value using the derivade of the activation function.
+        /// </summary>
+        /// <param name="z">The fuction input.</param>
+        /// <returns>The function output.</returns>
+        internal abstract decimal Derivative(decimal z);
+
+        /// <summary>
         /// Draws the function representation in the given graphics object.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>

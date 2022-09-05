@@ -148,19 +148,9 @@ namespace SimpleAnnPlayground.Graphical.Models
             {
                 switch (state & Component.State.ComponentStatusMask)
                 {
-                    case Component.State.ExecutionStep:
+                    case Component.State.Execution:
                     {
                         using (Brush brush = new SolidBrush(StepColor))
-                        {
-                            graphics.FillRectangle(brush, X, Y, Width, Height);
-                        }
-
-                        break;
-                    }
-
-                    case Component.State.ExecutionPass:
-                    {
-                        using (Brush brush = new SolidBrush(PassedColor))
                         {
                             graphics.FillRectangle(brush, X, Y, Width, Height);
                         }

@@ -18,11 +18,6 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
     internal class CanvasObjConverter : JsonConverter<CanvasObject>
 #pragma warning restore CA1812
     {
-        private bool _canWrite = true;
-
-        /// <inheritdoc/>
-        public override bool CanWrite => _canWrite;
-
         /// <summary>
         /// Gets the Canvas where placing the deserialized objects.
         /// </summary>

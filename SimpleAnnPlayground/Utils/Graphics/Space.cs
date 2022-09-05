@@ -133,8 +133,20 @@ namespace SimpleAnnPlayground.Utils.Graphics
         /// <returns>The center point.</returns>
         public static PointF Center(PointF start, PointF end)
         {
-            start.X += (end.X - start.X) / 2;
-            start.Y += (end.Y - start.Y) / 2;
+            return LinePoint(start, end, 0.5f);
+        }
+
+        /// <summary>
+        /// Determines the center of a line segment.
+        /// </summary>
+        /// <param name="start">The line start point.</param>
+        /// <param name="end">The line end point.</param>
+        /// <param name="proportion">The portion of the line.</param>
+        /// <returns>The center point.</returns>
+        public static PointF LinePoint(PointF start, PointF end, float proportion)
+        {
+            start.X += (end.X - start.X) * proportion;
+            start.Y += (end.Y - start.Y) * proportion;
             return start;
         }
     }

@@ -496,11 +496,23 @@ namespace SimpleAnnPlayground
             if (link)
             {
                 MnuContextLinkTo.DropDownItems.Clear();
-                foreach (DataLabel label in _workspace.DataTable.Outputs)
+                if (activation)
                 {
-                    var mnuContextLinkToOutput = MnuContextLinkTo.DropDownItems.Add(label.Text);
-                    mnuContextLinkToOutput.Click += MnuContextLinkTo_Click;
-                    mnuContextLinkToOutput.Tag = label;
+                    foreach (DataLabel label in _workspace.DataTable.Outputs)
+                    {
+                        var mnuContextLinkToOutput = MnuContextLinkTo.DropDownItems.Add(label.Text);
+                        mnuContextLinkToOutput.Click += MnuContextLinkTo_Click;
+                        mnuContextLinkToOutput.Tag = label;
+                    }
+                }
+                else
+                {
+                    foreach (DataLabel label in _workspace.DataTable.Inputs)
+                    {
+                        var mnuContextLinkToOutput = MnuContextLinkTo.DropDownItems.Add(label.Text);
+                        mnuContextLinkToOutput.Click += MnuContextLinkTo_Click;
+                        mnuContextLinkToOutput.Tag = label;
+                    }
                 }
             }
 
