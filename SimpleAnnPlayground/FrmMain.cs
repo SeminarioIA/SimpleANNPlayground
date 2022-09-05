@@ -138,12 +138,22 @@ namespace SimpleAnnPlayground
         /// The form to view the document actions.
         /// </summary>
         private readonly FrmActionsViewer _frmActionsViewer;
+
+        /// <summary>
+        /// The form to view and debug the RTF format.
+        /// </summary>
+        private readonly FrmRtfViewer _frmRtfViewer;
 #endif
 
         /// <summary>
         /// The form to import the model data.
         /// </summary>
         private readonly FrmData _frmData;
+
+        /// <summary>
+        /// The form to show the operations details.
+        /// </summary>
+        private readonly FrmDetails _frmDetails;
 
         /// <summary>
         /// The design workspace area.
@@ -179,8 +189,10 @@ namespace SimpleAnnPlayground
             _frmElementDesigner = new FrmElementDesigner();
             _frmObjectsViewer = new FrmObjectsViewer(_workspace);
             _frmActionsViewer = new FrmActionsViewer(_workspace.Actions);
+            _frmRtfViewer = new FrmRtfViewer();
 #endif
             _frmData = new FrmData(_workspace);
+            _frmDetails = new FrmDetails();
             TspExecution.Visible = false;
         }
 
@@ -287,6 +299,13 @@ namespace SimpleAnnPlayground
 #if DEBUG
             _frmActionsViewer.RefreshActions();
             _frmActionsViewer.Show(this);
+#endif
+        }
+
+        private void MnuDebugRtfViewer_Click(object sender, EventArgs e)
+        {
+#if DEBUG
+            _frmRtfViewer.Show(this);
 #endif
         }
 
@@ -672,6 +691,7 @@ namespace SimpleAnnPlayground
             _workspace.Network.Start();
             LbSimulationPhase.Visible = true;
             LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+            _frmDetails.Show(this);
         }
 
         private void BtnTest_Click(object sender, EventArgs e)
