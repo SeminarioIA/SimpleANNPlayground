@@ -56,9 +56,31 @@ namespace SimpleAnnPlayground
             { nameof(MnuEditPaste), new() { "&Paste", "&Pegar" } },
             { nameof(MnuEditOptions), new() { "&Options", "&Opciones" } },
 
+            // Context menus.
+            { nameof(MnuContextLinkTo), new() { "&Link to", "&Asignar a" } },
+            { nameof(MnuContextActivation), new() { "&Activation", "&Activacion" } },
+            { nameof(MnuContextCopy), new() { "&Copy", "&Copiar" } },
+            { nameof(MnuContextCut), new() { "Cu&t", "Cor&tar" } },
+            { nameof(MnuContextPaste), new() { "&Paste", "&Pegar" } },
+            { nameof(MnuContextDelete), new() { "&Delete", "&Eliminar" } },
+            { nameof(MnuContextCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
+
             // View menus texts.
             { nameof(MnuView), new() { "&View,", "&Ver" } },
             { nameof(MnuViewCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
+
+            // Model menus texts.
+            { nameof(MnuModel), new() { "&Model", "&Modelo" } },
+            { nameof(MnuModelCheck), new() { "&Check", "&Verificar" } },
+            { nameof(MnuModelClean), new() { "&Clean", "&Limpiar" } },
+            { nameof(MnuModelData), new() { "&Data", "&Datos" } },
+            { nameof(MnuModelTraining), new() { "&Training", "&Entrenamiento" } },
+            { nameof(MnuModelTesting), new() { "Te&sting", "&Prueba" } },
+
+            // Execution menus texts.
+            { nameof(MnuExec), new() { "E&xecution", "&Ejecución" } },
+            { nameof(MnuExecRun), new () { "&Run", "&Correr" } },
+            { nameof(MnuExecStop), new () { "&Stop", "&Parar" } },
 
             // Tools menus texts.
             { nameof(MnuTools), new() { "&Tools", "&Herramientas" } },
@@ -80,15 +102,6 @@ namespace SimpleAnnPlayground
             { nameof(BtnData), new() { "Data", "Datos" } },
             { nameof(BtnTraining), new() { "Training", "Entrenamiento" } },
             { nameof(BtnTest), new() { "Testing", "Prueba" } },
-
-            // Context menus.
-            { nameof(MnuContextLinkTo), new() { "&Link to", "&Asignar a" } },
-            { nameof(MnuContextActivation), new() { "&Activation", "&Activacion" } },
-            { nameof(MnuContextCopy), new() { "&Copy", "&Copiar" } },
-            { nameof(MnuContextCut), new() { "Cu&t", "Cor&tar" } },
-            { nameof(MnuContextPaste), new() { "&Paste", "&Pegar" } },
-            { nameof(MnuContextDelete), new() { "&Delete", "&Eliminar" } },
-            { nameof(MnuContextCenterScreen), new() { "&Center screen,", "&Centrar pantalla" } },
 
             // Message box.
             { nameof(ShowSaveDialog), new() { "If you have made changes to the document they will be lost, do you want to save your changes before continuing?", "Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?" } },
@@ -630,6 +643,8 @@ namespace SimpleAnnPlayground
         private void BtnTraining_Click(object sender, EventArgs e)
         {
             MnuEdit.Enabled = false;
+            MnuModel.Enabled = false;
+            MnuExec.Visible = true;
             TspEdition.Visible = false;
             TspExecution.Visible = true;
             UncheckToolsButtons(null);
@@ -640,6 +655,8 @@ namespace SimpleAnnPlayground
         private void BtnTest_Click(object sender, EventArgs e)
         {
             MnuEdit.Enabled = false;
+            MnuModel.Enabled = false;
+            MnuExec.Visible = true;
             TspEdition.Visible = false;
             TspExecution.Visible = true;
             UncheckToolsButtons(null);
@@ -649,6 +666,8 @@ namespace SimpleAnnPlayground
         private void BtnStop_Click(object sender, EventArgs e)
         {
             MnuEdit.Enabled = true;
+            MnuModel.Enabled = true;
+            MnuExec.Visible = false;
             TspEdition.Visible = true;
             TspExecution.Visible = false;
             _workspace.Network.Stop();

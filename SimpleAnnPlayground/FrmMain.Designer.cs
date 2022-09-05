@@ -85,6 +85,20 @@
             this.MnuEditOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuViewCenterScreen = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuModel = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuModelCheck = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuModelClean = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuModelData = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuModelTraining = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuModelTesting = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuExec = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuExecCxStep = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuExecNStep = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuExecLStep = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuExecRun = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuExecStop = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuTools = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuToolsLanguage = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuHelp = new System.Windows.Forms.ToolStripMenuItem();
@@ -387,6 +401,8 @@
             this.MnuFile,
             this.MnuEdit,
             this.MnuView,
+            this.MnuModel,
+            this.MnuExec,
             this.MnuTools,
             this.MnuHelp,
             this.MnuDebug});
@@ -558,6 +574,111 @@
             this.MnuViewCenterScreen.Text = "Center screen";
             this.MnuViewCenterScreen.Click += new System.EventHandler(this.MnuViewCenterScreen_Click);
             // 
+            // MnuModel
+            // 
+            this.MnuModel.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuModelCheck,
+            this.MnuModelClean,
+            this.toolStripMenuItem2,
+            this.MnuModelData,
+            this.MnuModelTraining,
+            this.MnuModelTesting});
+            this.MnuModel.Name = "MnuModel";
+            this.MnuModel.Size = new System.Drawing.Size(53, 20);
+            this.MnuModel.Text = "Model";
+            // 
+            // MnuModelCheck
+            // 
+            this.MnuModelCheck.Name = "MnuModelCheck";
+            this.MnuModelCheck.Size = new System.Drawing.Size(158, 22);
+            this.MnuModelCheck.Text = "Check";
+            this.MnuModelCheck.Click += new System.EventHandler(this.BtnCheck_Click);
+            // 
+            // MnuModelClean
+            // 
+            this.MnuModelClean.Name = "MnuModelClean";
+            this.MnuModelClean.Size = new System.Drawing.Size(158, 22);
+            this.MnuModelClean.Text = "Clean messages";
+            this.MnuModelClean.Click += new System.EventHandler(this.BtnClean_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(155, 6);
+            // 
+            // MnuModelData
+            // 
+            this.MnuModelData.Name = "MnuModelData";
+            this.MnuModelData.Size = new System.Drawing.Size(158, 22);
+            this.MnuModelData.Text = "Data";
+            this.MnuModelData.Click += new System.EventHandler(this.BtnData_Click);
+            // 
+            // MnuModelTraining
+            // 
+            this.MnuModelTraining.Name = "MnuModelTraining";
+            this.MnuModelTraining.Size = new System.Drawing.Size(158, 22);
+            this.MnuModelTraining.Text = "Training";
+            this.MnuModelTraining.Click += new System.EventHandler(this.BtnTraining_Click);
+            // 
+            // MnuModelTesting
+            // 
+            this.MnuModelTesting.Name = "MnuModelTesting";
+            this.MnuModelTesting.Size = new System.Drawing.Size(158, 22);
+            this.MnuModelTesting.Text = "Testing";
+            this.MnuModelTesting.Click += new System.EventHandler(this.BtnTest_Click);
+            // 
+            // MnuExec
+            // 
+            this.MnuExec.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuExecCxStep,
+            this.MnuExecNStep,
+            this.MnuExecLStep,
+            this.toolStripMenuItem1,
+            this.MnuExecRun,
+            this.MnuExecStop});
+            this.MnuExec.Name = "MnuExec";
+            this.MnuExec.Size = new System.Drawing.Size(71, 20);
+            this.MnuExec.Text = "Execution";
+            this.MnuExec.Visible = false;
+            // 
+            // MnuExecCxStep
+            // 
+            this.MnuExecCxStep.Name = "MnuExecCxStep";
+            this.MnuExecCxStep.ShortcutKeys = System.Windows.Forms.Keys.F11;
+            this.MnuExecCxStep.Size = new System.Drawing.Size(180, 22);
+            this.MnuExecCxStep.Text = "Cx-Step";
+            this.MnuExecCxStep.Click += new System.EventHandler(this.BtnCxStep_Click);
+            // 
+            // MnuExecNStep
+            // 
+            this.MnuExecNStep.Name = "MnuExecNStep";
+            this.MnuExecNStep.Size = new System.Drawing.Size(180, 22);
+            this.MnuExecNStep.Text = "N-Step";
+            // 
+            // MnuExecLStep
+            // 
+            this.MnuExecLStep.Name = "MnuExecLStep";
+            this.MnuExecLStep.Size = new System.Drawing.Size(180, 22);
+            this.MnuExecLStep.Text = "L-Step";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            // 
+            // MnuExecRun
+            // 
+            this.MnuExecRun.Name = "MnuExecRun";
+            this.MnuExecRun.Size = new System.Drawing.Size(180, 22);
+            this.MnuExecRun.Text = "Run";
+            // 
+            // MnuExecStop
+            // 
+            this.MnuExecStop.Name = "MnuExecStop";
+            this.MnuExecStop.Size = new System.Drawing.Size(180, 22);
+            this.MnuExecStop.Text = "Stop";
+            this.MnuExecStop.Click += new System.EventHandler(this.BtnStop_Click);
+            // 
             // MnuTools
             // 
             this.MnuTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -569,7 +690,7 @@
             // MnuToolsLanguage
             // 
             this.MnuToolsLanguage.Name = "MnuToolsLanguage";
-            this.MnuToolsLanguage.Size = new System.Drawing.Size(126, 22);
+            this.MnuToolsLanguage.Size = new System.Drawing.Size(180, 22);
             this.MnuToolsLanguage.Text = "Language";
             // 
             // MnuHelp
@@ -875,5 +996,19 @@
         private ToolStripMenuItem MnuContextCenterScreen;
         private ToolTip TtMessages;
         private ToolStripMenuItem MnuContextActivation;
+        private ToolStripMenuItem MnuModel;
+        private ToolStripMenuItem MnuModelCheck;
+        private ToolStripMenuItem MnuModelClean;
+        private ToolStripSeparator toolStripMenuItem2;
+        private ToolStripMenuItem MnuModelData;
+        private ToolStripMenuItem MnuModelTraining;
+        private ToolStripMenuItem MnuModelTesting;
+        private ToolStripMenuItem MnuExec;
+        private ToolStripMenuItem MnuExecCxStep;
+        private ToolStripMenuItem MnuExecNStep;
+        private ToolStripMenuItem MnuExecLStep;
+        private ToolStripSeparator toolStripMenuItem1;
+        private ToolStripMenuItem MnuExecRun;
+        private ToolStripMenuItem MnuExecStop;
     }
 }
