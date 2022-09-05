@@ -11,3 +11,9 @@ string[] elements = new string[] { "Triangle", "Ellipse", "Box", "Line" };
 
 var elementsCode = ElementsSourceGenerator.GenerateElementClass(elements);
 File.WriteAllText("Element.cs", elementsCode.ToString());
+
+// Generate activation functions
+string[] functions = new string[] { "Sigmoid" };
+
+var functionsCode = ActivationFunctionsSourceGenerator.GenerateActivationFunctionsCode(functions);
+File.WriteAllText("ActivationFunctions.cs", functionsCode.ToString());

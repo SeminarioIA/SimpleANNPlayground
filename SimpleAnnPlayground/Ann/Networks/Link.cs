@@ -35,7 +35,7 @@ namespace SimpleAnnPlayground.Ann.Networks
         public Node Previous { get; }
 
         /// <summary>
-        /// Gets the previous <see cref="Node"/> of this <see cref="Link"/>.
+        /// Gets the next <see cref="Node"/> of this <see cref="Link"/>.
         /// </summary>
         public Node Next { get; }
     }

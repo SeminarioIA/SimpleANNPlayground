@@ -35,6 +35,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
         {
         }
 
+        /// <summary>
+        /// Gets or sets the expected output value during the training.
+        /// </summary>
+        public decimal? Y { get; set; }
+
         /// <inheritdoc/>
         internal override int? UpwardLayer => -1;
 
@@ -51,14 +56,15 @@ namespace SimpleAnnPlayground.Ann.Neurons
         public override void Paint(Graphics graphics)
         {
             base.Paint(graphics);
-            if (DataLabel != null)
+            if (DataLabel is not null)
             {
+                string text = Y is not null ? $"{DataLabel.Text} ({Y})" : DataLabel.Text;
                 using (var font = new Font("Arial", 8))
                 using (var brush = new SolidBrush(Color.Black))
-                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
                 {
-                    var location = new PointF(Location.X, Location.Y + Component.Y);
-                    graphics.DrawString(DataLabel.Text, font, brush, location, format);
+                    var location = new PointF(Location.X + Component.X, Location.Y);
+                    graphics.DrawString(text, font, brush, location, format);
                 }
             }
         }

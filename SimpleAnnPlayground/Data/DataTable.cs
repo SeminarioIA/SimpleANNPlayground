@@ -106,7 +106,7 @@ namespace SimpleAnnPlayground.Data
             if (SelectedRegister != null)
             {
                 int index = Labels.IndexOf(dataLabel);
-                decimal value = decimal.Parse(SelectedRegister.Fields[index].Text);
+                _ = decimal.TryParse(SelectedRegister.Fields[index].Text, out decimal value);
                 return value;
             }
             else

@@ -55,9 +55,9 @@ namespace SimpleAnnPlayground.Ann.Neurons
             {
                 using (var font = new Font("Arial", 8))
                 using (var brush = new SolidBrush(Color.Black))
-                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
+                using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Far, LineAlignment = StringAlignment.Center })
                 {
-                    var location = new PointF(Location.X, Location.Y + Component.Y);
+                    var location = new PointF(Location.X - Component.X, Location.Y);
                     graphics.DrawString(DataLabel.Text, font, brush, location, format);
                 }
             }

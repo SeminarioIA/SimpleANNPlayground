@@ -65,7 +65,7 @@ namespace SimpleAnnPlayground.UI
                 foreach (DataGridViewCheckBoxCell cell in _checkRow.Cells)
                 {
                     var dataType = cell.ColumnIndex < DgImport.ColumnCount - 1 ? DataType.Input : DataType.Output;
-                    if ((bool)cell.Value) _dataTable.Labels.Add(new DataLabel(cell.OwningColumn.HeaderText, dataType));
+                    if ((bool)cell.Value) _dataTable.Labels.Add(new DataLabel(_dataTable, cell.OwningColumn.HeaderText, dataType));
                 }
 
                 foreach (var row in DgImport.GetRowRange(ControlRows, GetSelectedRowsCount()))
