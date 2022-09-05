@@ -91,7 +91,7 @@ namespace SimpleAnnPlayground
             { nameof(MnuHelp), new() { "&Help", "Ay&uda" } },
             { nameof(MnuHelpAbout), new() { "&About", "&Acerca de" } },
 
-            // Buttons texts.
+            // Edition bar button texts.
             { nameof(BtnNew), new() { "New", "Nuevo" } },
             { nameof(BtnOpen), new() { "Open", "Abrir" } },
             { nameof(BtnSave), new() { "Save", "Guardar" } },
@@ -104,6 +104,16 @@ namespace SimpleAnnPlayground
             { nameof(BtnTraining), new() { "Training", "Entrenamiento" } },
             { nameof(BtnTest), new() { "Testing", "Prueba" } },
             { nameof(BtnTemplate), new() { "Template", "Plantilla" } },
+
+            // Execution bar button texts.
+            { nameof(BtnExecData), new() { "Data", "Datos" } },
+            { nameof(BtnStop), new() { "Stop", "Detener" } },
+            { nameof(BtnRun), new() { "Run", "Correr" } },
+            { nameof(BtnCxStep), new() { "#", "Connection Step.", "Ejecutar conexion." } },
+            { nameof(BtnNeuronStep), new() { "#", "Neuron Step.", "Ejecutar hasta siguiente neurona." } },
+            { nameof(BtnLayerStep), new() { "#", "Layer Step.", "Ejecutar hasta siguiente capa." } },
+            { nameof(BtnDataStep), new() { "#", "Data Register Step.", "Ejecutar hasta siguiente dato de entrada." } },
+            { nameof(BtnBatchStep), new() { "#", "Data Batch Step.", "Ejecutar hasta siguiente batch de datos." } },
 
             // Message box.
             { nameof(ShowSaveDialog), new() { "If you have made changes to the document they will be lost, do you want to save your changes before continuing?", "Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?" } },
@@ -660,6 +670,8 @@ namespace SimpleAnnPlayground
             UncheckToolsButtons(null);
             _workspace.SetReadOnly();
             _workspace.Network.Start();
+            LbSimulationPhase.Visible = true;
+            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
         }
 
         private void BtnTest_Click(object sender, EventArgs e)
@@ -672,6 +684,8 @@ namespace SimpleAnnPlayground
             TspExecution.Visible = true;
             UncheckToolsButtons(null);
             _workspace.SetReadOnly();
+            LbSimulationPhase.Visible = true;
+            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
         }
 
         private void BtnStop_Click(object sender, EventArgs e)
@@ -684,11 +698,41 @@ namespace SimpleAnnPlayground
             TspExecution.Visible = false;
             _workspace.Network.Stop();
             _workspace.SetEditable();
+            LbSimulationPhase.Visible = false;
+        }
+
+        private void BtnRun_Click(object sender, EventArgs e)
+        {
+            _workspace.Network.Execution?.Run();
+            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
         }
 
         private void BtnCxStep_Click(object sender, EventArgs e)
         {
             _workspace.Network.Execution?.StepIntoCx();
+            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+        }
+
+        private void BtnNeuronStep_Click(object sender, EventArgs e)
+        {
+            _workspace.Network.Execution?.StepIntoNeuron();
+            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+        }
+
+        private void BtnLayerStep_Click(object sender, EventArgs e)
+        {
+            _workspace.Network.Execution?.StepIntoLayer();
+            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+        }
+
+        private void BtnDataStep_Click(object sender, EventArgs e)
+        {
+            _workspace.Network.Execution?.StepIntoData();
+            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+        }
+
+        private void BtnBatchStep_Click(object sender, EventArgs e)
+        {
         }
 
         private void BtnTemplate_Click(object sender, EventArgs e)
