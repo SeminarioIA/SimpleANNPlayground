@@ -84,12 +84,12 @@ namespace SimpleAnnPlayground.Debugging
 
         private void BtnSendText_Click(object sender, EventArgs e)
         {
-            if (Owner is FrmMain frmMain) frmMain.Details = TbViewer.Text;
+            if (Owner is FrmMain frmMain) frmMain.Details = RtbText.Rtf;
         }
 
         private void BtnGetText_Click(object sender, EventArgs e)
         {
-            if (Owner is FrmMain frmMain) TbViewer.Text = frmMain.Details;
+            if (Owner is FrmMain frmMain) RtbText.Rtf = frmMain.Details;
         }
     }
 }
