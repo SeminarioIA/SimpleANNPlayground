@@ -727,6 +727,7 @@ namespace SimpleAnnPlayground
             TspExecution.Visible = false;
             _workspace.Network.Stop();
             _workspace.SetEditable();
+            _frmDetails.Hide();
             LbSimulationPhase.Visible = false;
         }
 
