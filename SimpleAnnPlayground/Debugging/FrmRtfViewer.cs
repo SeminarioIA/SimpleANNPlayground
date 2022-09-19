@@ -85,11 +85,19 @@ namespace SimpleAnnPlayground.Debugging
         private void BtnSendText_Click(object sender, EventArgs e)
         {
             if (Owner is FrmMain frmMain) frmMain.Details = RtbText.Rtf;
+            RtbText.SetSelectionLineSpacing(4, 200);
         }
 
         private void BtnGetText_Click(object sender, EventArgs e)
         {
             if (Owner is FrmMain frmMain) RtbText.Rtf = frmMain.Details;
+        }
+
+        private void FrmRtfViewer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Hide();
+            e.Cancel = true;
+            _ = Owner.Focus();
         }
     }
 }

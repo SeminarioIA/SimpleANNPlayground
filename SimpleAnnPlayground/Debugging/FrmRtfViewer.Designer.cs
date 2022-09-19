@@ -1,4 +1,6 @@
-﻿namespace SimpleAnnPlayground.Debugging
+﻿using SimpleAnnPlayground.UI.Controls;
+
+namespace SimpleAnnPlayground.Debugging
 {
     partial class FrmRtfViewer
     {
@@ -30,7 +32,7 @@
         private void InitializeComponent()
         {
             this.ScMain = new System.Windows.Forms.SplitContainer();
-            this.RtbText = new System.Windows.Forms.RichTextBox();
+            this.RtbText = new SimpleAnnPlayground.UI.Controls.CustomRichTextBox();
             this.TbViewer = new System.Windows.Forms.TextBox();
             this.TsTools = new System.Windows.Forms.ToolStrip();
             this.BtnNew = new System.Windows.Forms.ToolStripButton();
@@ -68,6 +70,8 @@
             // 
             // RtbText
             // 
+            this.RtbText.BackColor = System.Drawing.Color.White;
+            this.RtbText.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.RtbText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RtbText.Location = new System.Drawing.Point(0, 0);
             this.RtbText.Name = "RtbText";
@@ -174,6 +178,7 @@
             this.Controls.Add(this.TsTools);
             this.Name = "FrmRtfViewer";
             this.Text = "RTF Viewer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmRtfViewer_FormClosing);
             this.Load += new System.EventHandler(this.FrmRtbViewer_Load);
             this.ScMain.Panel1.ResumeLayout(false);
             this.ScMain.Panel2.ResumeLayout(false);
@@ -190,7 +195,7 @@
         #endregion
 
         private SplitContainer ScMain;
-        private RichTextBox RtbText;
+        private CustomRichTextBox RtbText;
         private TextBox TbViewer;
         private ToolStrip TsTools;
         private ToolStripButton BtnNew;
