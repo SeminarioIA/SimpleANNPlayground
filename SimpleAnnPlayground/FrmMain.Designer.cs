@@ -1,4 +1,6 @@
-﻿namespace SimpleAnnPlayground
+﻿using SimpleAnnPlayground.Debugging;
+
+namespace SimpleAnnPlayground
 {
     partial class FrmMain
     {
@@ -20,8 +22,10 @@
                 _frmElementDesigner.Dispose();
                 _frmObjectsViewer.Dispose();
                 _frmActionsViewer.Dispose();
+                _frmRtfViewer.Dispose();
 #endif
                 _frmData.Dispose();
+                _frmDetails.Dispose();
                 _fileManager.Dispose();
             }
             base.Dispose(disposing);
@@ -129,6 +133,7 @@
             this.BtnDataStep = new System.Windows.Forms.ToolStripButton();
             this.BtnBatchStep = new System.Windows.Forms.ToolStripButton();
             this.TtMessages = new System.Windows.Forms.ToolTip(this.components);
+            this.MnuDebugRtfViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.TspEdition.SuspendLayout();
             this.SspStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
@@ -751,7 +756,8 @@
             this.MnuDebug.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MnuDebugElementDesigner,
             this.MnuDebugObjectViewer,
-            this.MnuDebugActionsViewer});
+            this.MnuDebugActionsViewer,
+            this.MnuDebugRtfViewer});
             this.MnuDebug.Name = "MnuDebug";
             this.MnuDebug.Size = new System.Drawing.Size(54, 20);
             this.MnuDebug.Text = "Debug";
@@ -760,21 +766,21 @@
             // MnuDebugElementDesigner
             // 
             this.MnuDebugElementDesigner.Name = "MnuDebugElementDesigner";
-            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(165, 22);
+            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(180, 22);
             this.MnuDebugElementDesigner.Text = "Element designer";
             this.MnuDebugElementDesigner.Click += new System.EventHandler(this.MnuDebugElementDesigner_Click);
             // 
             // MnuDebugObjectViewer
             // 
             this.MnuDebugObjectViewer.Name = "MnuDebugObjectViewer";
-            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(165, 22);
+            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(180, 22);
             this.MnuDebugObjectViewer.Text = "Objects viewer";
             this.MnuDebugObjectViewer.Click += new System.EventHandler(this.MnuDebugObjectsViewer_Click);
             // 
             // MnuDebugActionsViewer
             // 
             this.MnuDebugActionsViewer.Name = "MnuDebugActionsViewer";
-            this.MnuDebugActionsViewer.Size = new System.Drawing.Size(165, 22);
+            this.MnuDebugActionsViewer.Size = new System.Drawing.Size(180, 22);
             this.MnuDebugActionsViewer.Text = "Actions viewer";
             this.MnuDebugActionsViewer.Click += new System.EventHandler(this.MnuDebugActionsViewer_Click);
             // 
@@ -978,6 +984,13 @@
             // 
             this.TtMessages.ForeColor = System.Drawing.SystemColors.ControlText;
             // 
+            // MnuDebugRtfViewer
+            // 
+            this.MnuDebugRtfViewer.Name = "MnuDebugRtfViewer";
+            this.MnuDebugRtfViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugRtfViewer.Text = "Rtf viewer";
+            this.MnuDebugRtfViewer.Click += new System.EventHandler(this.MnuDebugRtfViewer_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
@@ -1111,5 +1124,6 @@
         private ToolStripSeparator toolStripSeparator3;
         private ToolStripButton BtnDataStep;
         private ToolStripButton BtnBatchStep;
+        private ToolStripMenuItem MnuDebugRtfViewer;
     }
 }
