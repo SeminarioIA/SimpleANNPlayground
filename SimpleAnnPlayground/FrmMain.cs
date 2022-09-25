@@ -644,7 +644,71 @@ namespace SimpleAnnPlayground
             {
                 if (frmTemplate.GetData())
                 {
-                    Debug.WriteLine("Selection made");
+                    _workspace.Clean();
+                    int numberOfLayers = 2;
+                    if (frmTemplate.HiddenLayers != null)
+                    {
+                        numberOfLayers += int.Parse(frmTemplate.HiddenLayers);
+                    }
+
+                    int eachLayerSpaceWidth = _workspace.WorkSheet.Size.Width / numberOfLayers;
+                    int inputLayerSpaceWidth = -(_workspace.WorkSheet.Size.Width / 2) + eachLayerSpaceWidth / 2;
+                    int numberOfInputNeurons = 0;
+                    if (frmTemplate.InputNeuronsAmount != null)
+                    {
+                        numberOfInputNeurons = int.Parse(frmTemplate.InputNeuronsAmount);
+                    }
+
+                    int eachInputNeuronSpace = _workspace.WorkSheet.Size.Height / numberOfInputNeurons;
+                    int inputLayerSpaceHeight = -_workspace.WorkSheet.Size.Height / 2;
+                    for (int i = 0; i < numberOfInputNeurons; i++)
+                    {
+                        inputLayerSpaceHeight += eachInputNeuronSpace / 2;
+                        _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(_workspace.Canvas, inputLayerSpaceWidth, inputLayerSpaceHeight));
+                        _workspace.MouseTool.FinishOperation();
+                        inputLayerSpaceHeight += eachInputNeuronSpace / 2;
+                    }
+
+                    int hiddenLayerSpaceWidth = -(_workspace.WorkSheet.Size.Width / 2) + eachLayerSpaceWidth;
+                    int hiddenLayerSpaceHeight = -_workspace.WorkSheet.Size.Height / 2;
+                    int numberOfHiddenNeurons = 0;
+                    if (frmTemplate.HiddenNeuronsAmount != null)
+                    {
+                        numberOfHiddenNeurons = int.Parse(frmTemplate.HiddenNeuronsAmount);
+                    }
+
+                    int eachHiddenNeuronSpace = _workspace.WorkSheet.Size.Height / numberOfHiddenNeurons;
+                    for (int i = 0; i < numberOfLayers - 2; i++)
+                    {
+                        hiddenLayerSpaceWidth += eachLayerSpaceWidth / 2;
+                        for (int j = 0; j < numberOfHiddenNeurons; j++)
+                        {
+                            hiddenLayerSpaceHeight += eachHiddenNeuronSpace / 2;
+                            _workspace.MouseTool.InsertObject(new Ann.Neurons.Internal(_workspace.Canvas, hiddenLayerSpaceWidth, hiddenLayerSpaceHeight));
+                            _workspace.MouseTool.FinishOperation();
+                            hiddenLayerSpaceHeight += eachHiddenNeuronSpace / 2;
+                        }
+
+                        hiddenLayerSpaceWidth += eachLayerSpaceWidth / 2;
+                        hiddenLayerSpaceHeight = -_workspace.WorkSheet.Size.Height / 2;
+                    }
+
+                    int outputLayerSpaceWidth = hiddenLayerSpaceWidth + eachLayerSpaceWidth / 2;
+                    int numberOfOutputNeurons = 0;
+                    if (frmTemplate.OutputNeuronsAmount != null)
+                    {
+                        numberOfOutputNeurons = int.Parse(frmTemplate.OutputNeuronsAmount);
+                    }
+
+                    int eachOutputNeuronSpace = _workspace.WorkSheet.Size.Height / numberOfOutputNeurons;
+                    int outputLayerSpaceHeight = -_workspace.WorkSheet.Size.Height / 2;
+                    for (int i = 0; i < numberOfOutputNeurons; i++)
+                    {
+                        outputLayerSpaceHeight += eachOutputNeuronSpace / 2;
+                        _workspace.MouseTool.InsertObject(new Ann.Neurons.Output(_workspace.Canvas, outputLayerSpaceWidth, outputLayerSpaceHeight));
+                        _workspace.MouseTool.FinishOperation();
+                        outputLayerSpaceHeight += eachOutputNeuronSpace / 2;
+                    }
                 }
                 else
                 {

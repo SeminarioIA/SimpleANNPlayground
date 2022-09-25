@@ -3,6 +3,7 @@
 // </copyright>
 
 // using SimpleAnnPlayground.Graphical.Environment;
+using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Utils;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,35 @@ namespace SimpleAnnPlayground.UI
         public FrmTemplate()
         {
             InitializeComponent();
+            InputNeuronsAmount = "0";
+            HiddenLayers = "0";
+            HiddenNeuronsAmount = "0";
+            OutputNeuronsAmount = "0";
+            comboBoxInputNum.SelectedIndex = 0;
+            comboBoxHidLayers.SelectedIndex = 0;
+            comboBoxHidNumber.SelectedIndex = 0;
+            comboBoxOutNum.SelectedIndex = 0;
         }
+
+        /// <summary>
+        /// Gets or sets the data table.
+        /// </summary>
+        public string? InputNeuronsAmount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data table.
+        /// </summary>
+        public string? HiddenLayers { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data table.
+        /// </summary>
+        public string? HiddenNeuronsAmount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data table.
+        /// </summary>
+        public string? OutputNeuronsAmount { get; set; }
 
         /// <summary>
         /// Shows the window and returns the selected data.
@@ -84,6 +113,13 @@ namespace SimpleAnnPlayground.UI
             Languages.ChangeFormLanguage(this, FormWords, formLanguage);
         }
 
-        private void GenerateBtn_Click(object sender, EventArgs e) => DialogResult = DialogResult.OK;
+        private void GenerateBtn_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+            InputNeuronsAmount = comboBoxInputNum.SelectedItem.ToString();
+            HiddenLayers = comboBoxHidLayers.SelectedItem.ToString();
+            HiddenNeuronsAmount = comboBoxHidNumber.SelectedItem.ToString();
+            OutputNeuronsAmount = comboBoxOutNum.SelectedItem.ToString();
+        }
     }
 }

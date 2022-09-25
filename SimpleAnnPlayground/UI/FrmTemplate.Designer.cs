@@ -64,18 +64,14 @@
             // 
             // comboBoxInputNum
             // 
+            this.comboBoxInputNum.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxInputNum.FormattingEnabled = true;
             this.comboBoxInputNum.ItemHeight = 15;
             this.comboBoxInputNum.Items.AddRange(new object[] {
             "1",
             "2",
             "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9"});
+            "4"});
             this.comboBoxInputNum.Location = new System.Drawing.Point(103, 16);
             this.comboBoxInputNum.MaxDropDownItems = 5;
             this.comboBoxInputNum.Name = "comboBoxInputNum";
@@ -106,17 +102,13 @@
             // 
             // comboBoxHidNumber
             // 
+            this.comboBoxHidNumber.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxHidNumber.FormattingEnabled = true;
             this.comboBoxHidNumber.Items.AddRange(new object[] {
             "1",
             "2",
             "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9"});
+            "4"});
             this.comboBoxHidNumber.Location = new System.Drawing.Point(103, 50);
             this.comboBoxHidNumber.MaxDropDownItems = 5;
             this.comboBoxHidNumber.Name = "comboBoxHidNumber";
@@ -134,13 +126,12 @@
             // 
             // comboBoxHidLayers
             // 
+            this.comboBoxHidLayers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxHidLayers.FormattingEnabled = true;
             this.comboBoxHidLayers.Items.AddRange(new object[] {
             "1",
             "2",
-            "3",
-            "4",
-            "5"});
+            "3"});
             this.comboBoxHidLayers.Location = new System.Drawing.Point(103, 16);
             this.comboBoxHidLayers.MaxDropDownItems = 5;
             this.comboBoxHidLayers.Name = "comboBoxHidLayers";
@@ -169,17 +160,13 @@
             // 
             // comboBoxOutNum
             // 
+            this.comboBoxOutNum.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxOutNum.FormattingEnabled = true;
             this.comboBoxOutNum.Items.AddRange(new object[] {
             "1",
             "2",
             "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9"});
+            "4"});
             this.comboBoxOutNum.Location = new System.Drawing.Point(103, 16);
             this.comboBoxOutNum.MaxDropDownItems = 5;
             this.comboBoxOutNum.Name = "comboBoxOutNum";
@@ -209,6 +196,7 @@
             // radioCustom
             // 
             this.radioCustom.AutoSize = true;
+            this.radioCustom.Checked = true;
             this.radioCustom.Location = new System.Drawing.Point(6, 47);
             this.radioCustom.Name = "radioCustom";
             this.radioCustom.Size = new System.Drawing.Size(135, 19);
@@ -220,11 +208,11 @@
             // radioFully
             // 
             this.radioFully.AutoSize = true;
+            this.radioFully.Enabled = false;
             this.radioFully.Location = new System.Drawing.Point(6, 22);
             this.radioFully.Name = "radioFully";
             this.radioFully.Size = new System.Drawing.Size(109, 19);
             this.radioFully.TabIndex = 0;
-            this.radioFully.TabStop = true;
             this.radioFully.Text = "Fully connected";
             this.radioFully.UseVisualStyleBackColor = true;
             // 
