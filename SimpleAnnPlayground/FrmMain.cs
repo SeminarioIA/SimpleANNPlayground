@@ -711,6 +711,7 @@ namespace SimpleAnnPlayground
         {
             LbTotalError.Visible = true;
             LbTotalError.Text = $"Total Error: {e.TotalError:F4}";
+            LbTotalError.ToolTipText = e.TotalError.ToString();
         }
 
         private void BtnTest_Click(object sender, EventArgs e)
