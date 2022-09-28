@@ -115,6 +115,7 @@ namespace SimpleAnnPlayground
             this.MnuDebugElementDesigner = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuDebugObjectViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuDebugActionsViewer = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuDebugRtfViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.VsbMain = new System.Windows.Forms.VScrollBar();
             this.ScBotom = new System.Windows.Forms.SplitContainer();
             this.HsbMain = new System.Windows.Forms.HScrollBar();
@@ -132,8 +133,8 @@ namespace SimpleAnnPlayground
             this.BtnLayerStep = new System.Windows.Forms.ToolStripButton();
             this.BtnDataStep = new System.Windows.Forms.ToolStripButton();
             this.BtnBatchStep = new System.Windows.Forms.ToolStripButton();
+            this.LbTotalError = new System.Windows.Forms.ToolStripLabel();
             this.TtMessages = new System.Windows.Forms.ToolTip(this.components);
-            this.MnuDebugRtfViewer = new System.Windows.Forms.ToolStripMenuItem();
             this.TspEdition.SuspendLayout();
             this.SspStatus.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PicWorkspace)).BeginInit();
@@ -766,23 +767,30 @@ namespace SimpleAnnPlayground
             // MnuDebugElementDesigner
             // 
             this.MnuDebugElementDesigner.Name = "MnuDebugElementDesigner";
-            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugElementDesigner.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugElementDesigner.Text = "Element designer";
             this.MnuDebugElementDesigner.Click += new System.EventHandler(this.MnuDebugElementDesigner_Click);
             // 
             // MnuDebugObjectViewer
             // 
             this.MnuDebugObjectViewer.Name = "MnuDebugObjectViewer";
-            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugObjectViewer.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugObjectViewer.Text = "Objects viewer";
             this.MnuDebugObjectViewer.Click += new System.EventHandler(this.MnuDebugObjectsViewer_Click);
             // 
             // MnuDebugActionsViewer
             // 
             this.MnuDebugActionsViewer.Name = "MnuDebugActionsViewer";
-            this.MnuDebugActionsViewer.Size = new System.Drawing.Size(180, 22);
+            this.MnuDebugActionsViewer.Size = new System.Drawing.Size(165, 22);
             this.MnuDebugActionsViewer.Text = "Actions viewer";
             this.MnuDebugActionsViewer.Click += new System.EventHandler(this.MnuDebugActionsViewer_Click);
+            // 
+            // MnuDebugRtfViewer
+            // 
+            this.MnuDebugRtfViewer.Name = "MnuDebugRtfViewer";
+            this.MnuDebugRtfViewer.Size = new System.Drawing.Size(165, 22);
+            this.MnuDebugRtfViewer.Text = "Rtf viewer";
+            this.MnuDebugRtfViewer.Click += new System.EventHandler(this.MnuDebugRtfViewer_Click);
             // 
             // VsbMain
             // 
@@ -877,7 +885,8 @@ namespace SimpleAnnPlayground
             this.BtnNeuronStep,
             this.BtnLayerStep,
             this.BtnDataStep,
-            this.BtnBatchStep});
+            this.BtnBatchStep,
+            this.LbTotalError});
             this.TspExecution.Location = new System.Drawing.Point(0, 80);
             this.TspExecution.Name = "TspExecution";
             this.TspExecution.Size = new System.Drawing.Size(777, 56);
@@ -980,16 +989,19 @@ namespace SimpleAnnPlayground
             this.BtnBatchStep.Visible = false;
             this.BtnBatchStep.Click += new System.EventHandler(this.BtnBatchStep_Click);
             // 
+            // LbTotalError
+            // 
+            this.LbTotalError.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.LbTotalError.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LbTotalError.ForeColor = System.Drawing.Color.Red;
+            this.LbTotalError.Name = "LbTotalError";
+            this.LbTotalError.Size = new System.Drawing.Size(107, 53);
+            this.LbTotalError.Text = "Total Error: 0.25";
+            this.LbTotalError.Visible = false;
+            // 
             // TtMessages
             // 
             this.TtMessages.ForeColor = System.Drawing.SystemColors.ControlText;
-            // 
-            // MnuDebugRtfViewer
-            // 
-            this.MnuDebugRtfViewer.Name = "MnuDebugRtfViewer";
-            this.MnuDebugRtfViewer.Size = new System.Drawing.Size(180, 22);
-            this.MnuDebugRtfViewer.Text = "Rtf viewer";
-            this.MnuDebugRtfViewer.Click += new System.EventHandler(this.MnuDebugRtfViewer_Click);
             // 
             // FrmMain
             // 
@@ -1125,5 +1137,6 @@ namespace SimpleAnnPlayground
         private ToolStripButton BtnDataStep;
         private ToolStripButton BtnBatchStep;
         private ToolStripMenuItem MnuDebugRtfViewer;
+        private ToolStripLabel LbTotalError;
     }
 }

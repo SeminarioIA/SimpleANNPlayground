@@ -700,9 +700,17 @@ namespace SimpleAnnPlayground
             UncheckToolsButtons(null);
             _workspace.SetReadOnly();
             _workspace.Network.Start();
+            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
+            _workspace.Network.Execution.MetricsUpdated += Execution_MetricsUpdated;
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
             LbSimulationPhase.Visible = true;
-            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
             /*_frmDetails.Show(this);*/
+        }
+
+        private void Execution_MetricsUpdated(object? sender, Ann.Networks.MetricsUpdatedEventArgs e)
+        {
+            LbTotalError.Visible = true;
+            LbTotalError.Text = $"Total Error: {e.TotalError:F4}";
         }
 
         private void BtnTest_Click(object sender, EventArgs e)
@@ -727,6 +735,7 @@ namespace SimpleAnnPlayground
             MnuExec.Visible = false;
             TspEdition.Visible = true;
             TspExecution.Visible = false;
+            LbTotalError.Visible = false;
             _workspace.Network.Stop();
             _workspace.SetEditable();
             _frmDetails.Hide();

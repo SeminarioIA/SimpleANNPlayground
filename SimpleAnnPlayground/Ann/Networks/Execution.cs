@@ -156,6 +156,11 @@ namespace SimpleAnnPlayground.Ann.Networks
         }
 
         /// <summary>
+        /// Ocurrs when a general metrics is updated.
+        /// </summary>
+        public event EventHandler<MetricsUpdatedEventArgs>? MetricsUpdated;
+
+        /// <summary>
         /// Gets the network to execute.
         /// </summary>
         public Network Network { get; }
@@ -494,6 +499,9 @@ namespace SimpleAnnPlayground.Ann.Networks
                     // Set the execution mark for the node.
                     _node.Current.Neuron.SetStateFlag(Component.State.Execution);
 
+                    // Set the neuron error to 0.
+                    _node.Current.Neuron.Error = 0m;
+
                     // Move to the next phase.
                     Phase = ExecPhase.OutputNeuronError;
                     stepType = StepType.Layer;
@@ -510,8 +518,38 @@ namespace SimpleAnnPlayground.Ann.Networks
                     // Calc the output neuron error.
                     output.Error = 1m / n * (decimal)Math.Pow((double)(output.Y.Value - output.A.Value), 2.0);
 
-                    // Move to the next phase.
-                    Phase = ExecPhase.BiasCorrection;
+                    // Remove the node execution mark.
+                    _node.Current.Neuron.ClearStateFlag(Component.State.Execution);
+
+                    // Move to the next node.
+                    if (_node.MoveNext())
+                    {
+                        // Set the neuron error to 0.
+                        _node.Current.Neuron.Error = 0m;
+                    }
+                    else
+                    {
+                        // Get the total error.
+                        decimal error = 0m;
+                        foreach (Node node in _layer.Current.Nodes)
+                        {
+                            error += node.Neuron.Error ?? throw new InvalidOperationException();
+                        }
+
+                        // Update the error.
+                        OnMetricsUpdated(error);
+
+                        // Move to the first node again.
+                        _node.Reset();
+                        if (!_node.MoveNext()) throw new InvalidOperationException("Expected node in layer.");
+
+                        // Move to the next phase.
+                        Phase = ExecPhase.BiasCorrection;
+                    }
+
+                    // Set the node execution mark.
+                    _node.Current.Neuron.SetStateFlag(Component.State.Execution);
+
                     break;
                 }
 
@@ -724,6 +762,12 @@ namespace SimpleAnnPlayground.Ann.Networks
 
             // Initialize the node.
             InitializeNode();
+        }
+
+        private void OnMetricsUpdated(decimal error)
+        {
+            MetricsUpdatedEventArgs args = new MetricsUpdatedEventArgs(error);
+            MetricsUpdated?.Invoke(this, args);
         }
     }
 }
