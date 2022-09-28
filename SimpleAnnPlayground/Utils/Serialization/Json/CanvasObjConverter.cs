@@ -49,17 +49,27 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
                 writer.WritePropertyName(nameof(value.Type));
                 serializer.Serialize(writer, value.Type);
 
+                // Location
                 writer.WritePropertyName(nameof(value.Location));
                 serializer.Serialize(writer, value.Location);
 
+                // Id
                 writer.WritePropertyName(nameof(value.Id));
                 serializer.Serialize(writer, value.Id);
+
                 switch (value)
                 {
                     case Neuron neuron:
+                    {
+                        // InitBias
+                        writer.WritePropertyName(nameof(neuron.InitBias));
+                        serializer.Serialize(writer, neuron.InitBias);
+
+                        // Activation function
                         writer.WritePropertyName(nameof(neuron.Activation));
                         serializer.Serialize(writer, neuron.Activation?.Name);
                         break;
+                    }
                 }
 
                 writer.WriteEndObject();
@@ -99,6 +109,12 @@ namespace SimpleAnnPlayground.Utils.Serialization.Json
             // Check if the object is a neuron
             if (obj is Neuron neuron)
             {
+                string? initBias = jo["InitBias"]?.Value<string>();
+                if (!string.IsNullOrEmpty(initBias))
+                {
+                    neuron.InitBias = decimal.Parse(initBias);
+                }
+
                 string? activation = jo["Activation"]?.Value<string>();
                 if (!string.IsNullOrEmpty(activation))
                 {

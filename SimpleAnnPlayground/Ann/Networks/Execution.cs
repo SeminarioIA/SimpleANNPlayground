@@ -67,6 +67,11 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// The network updates the weights to the new calculated values.
         /// </summary>
         ApplyNewWeights,
+
+        /// <summary>
+        /// The network has completed an epoch.
+        /// </summary>
+        EpochDone,
     }
 
     /// <summary>
@@ -102,7 +107,7 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// <summary>
         /// Represents the full data step.
         /// </summary>
-        DataSet,
+        Epoch,
     }
 
     /// <summary>
@@ -178,7 +183,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             // Init all the bias values
             foreach (var node in Network.Graph.Nodes)
             {
-                if (node.Neuron is not Input) node.Neuron.Bias = 0;
+                if (node.Neuron is not Input) node.Neuron.Bias = node.Neuron.InitBias;
             }
 
             // Init the connections with the initialization weights.
@@ -251,7 +256,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             {
                 stepType = OneStep();
             }
-            while (stepType is not StepType.DataSet);
+            while (stepType is not StepType.Epoch);
 
             Network.Workspace.Refresh();
         }
@@ -313,6 +318,7 @@ namespace SimpleAnnPlayground.Ann.Networks
 
         private StepType OneStep()
         {
+            if (Network.Graph is null) throw new InvalidOperationException();
             StepType stepType = StepType.Connection;
 
             switch (Phase)
@@ -320,19 +326,10 @@ namespace SimpleAnnPlayground.Ann.Networks
                 case ExecPhase.FetchData:
                 {
                     // Get the layers in forward order.
-                    _layer = Network.Graph?.Layers.GetEnumerator() ?? throw new InvalidOperationException();
+                    _layer = Network.Graph.Layers.GetEnumerator();
                     if (_layer.MoveNext()) _node = _layer.Current.Nodes.GetEnumerator();
                     if (_node.MoveNext()) _link = _node.Current.Next.GetEnumerator();
                     if (!_link?.MoveNext() ?? false) throw new InvalidOperationException("The node does not have links.");
-                    if (!_register.MoveNext())
-                    {
-                        _register.Reset();
-                        stepType = StepType.DataSet;
-                        return stepType;
-                    }
-
-                    // Select the current register in the table.
-                    Network.Workspace.SelectRegister(_register.Current);
 
                     // Clear all the network nodes.
                     foreach (var node in Network.Graph.Nodes)
@@ -349,12 +346,30 @@ namespace SimpleAnnPlayground.Ann.Networks
                         node.Neuron.SetStateFlag(Component.State.Execution);
                     }
 
+                    if (!_register.MoveNext())
+                    {
+                        stepType = StepType.Epoch;
+                        Phase = ExecPhase.EpochDone;
+                        return stepType;
+                    }
+
+                    // Select the current register in the table.
+                    Network.Workspace.SelectRegister(_register.Current);
                     Phase = ExecPhase.GetData;
                     break;
                 }
 
                 case ExecPhase.GetData:
                 {
+                    // Clear the outputs from the neurons in the last layer.
+                    foreach (var node in Network.Graph.Layers.Last().Nodes)
+                    {
+                        if (node.Neuron is Output output)
+                        {
+                            output.Y = null;
+                        }
+                    }
+
                     // Clear the execution mark for the nodes in the first layer.
                     foreach (var node in _layer.Current.Nodes)
                     {
@@ -367,7 +382,7 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                     // Next phase.
                     Phase = ExecPhase.ConnectionsWeights;
-                    stepType = StepType.Layer;
+                    stepType = StepType.DataRegister;
 
                     // Get the next layer.
                     if (!_layer.MoveNext()) throw new InvalidOperationException("Expected an internal layer.");
@@ -438,7 +453,7 @@ namespace SimpleAnnPlayground.Ann.Networks
                         else
                         {
                             // Prepare for backpropagation.
-                            _layer = Network.Graph?.Layers.AsEnumerable().Reverse().GetEnumerator() ?? throw new InvalidOperationException();
+                            _layer = Network.Graph.Layers.AsEnumerable().Reverse().GetEnumerator() ?? throw new InvalidOperationException();
 
                             // Get the next layer.
                             if (!_layer.MoveNext()) throw new InvalidOperationException("Expected an internal layer.");
@@ -489,8 +504,11 @@ namespace SimpleAnnPlayground.Ann.Networks
                 {
                     if (_node.Current.Neuron is not Output output || output.Activation is null || output.A is null || output.Y is null) throw new InvalidOperationException();
 
+                    // Get the last layer output neurons
+                    int n = _layer.Current.Nodes.Count;
+
                     // Calc the output neuron error.
-                    output.Error = output.Activation.Derivative(output.A.Value) * (output.Y.Value - output.A.Value);
+                    output.Error = 1m / n * (decimal)Math.Pow((double)(output.Y.Value - output.A.Value), 2.0);
 
                     // Move to the next phase.
                     Phase = ExecPhase.BiasCorrection;
@@ -582,8 +600,6 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                                 if (_node.Current.Neuron is Input)
                                 {
-                                    if (Network.Graph is null) throw new InvalidOperationException();
-
                                     // Select all the connections.
                                     foreach (var link in Network.Graph.Links)
                                     {
@@ -661,8 +677,6 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                 case ExecPhase.ApplyNewWeights:
                 {
-                    if (Network.Graph is null) throw new InvalidOperationException();
-
                     // Apply new weights and unselect all the connections.
                     foreach (var link in Network.Graph.Links)
                     {
@@ -689,8 +703,8 @@ namespace SimpleAnnPlayground.Ann.Networks
             // Set the execution mark for the node.
             _node.Current.Neuron.SetStateFlag(Component.State.Execution);
 
-            // Initialize the node Z value.
-            _node.Current.Neuron.Z = 0;
+            // Initialize the Z with the bias value
+            _node.Current.Neuron.Z = _node.Current.Neuron.Bias;
 
             // Get the first node link.
             _link = _node.Current.Previous.GetEnumerator();

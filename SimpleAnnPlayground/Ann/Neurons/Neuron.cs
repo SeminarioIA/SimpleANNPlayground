@@ -21,9 +21,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <param name="component">The graphical component linked to this object.</param>
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
-        public Neuron(Canvas canvas, Component component, int x, int y)
+        /// <param name="initBias">Initialization bias.</param>
+        public Neuron(Canvas canvas, Component component, int x, int y, decimal initBias = 0m)
             : base(canvas, component, x, y)
         {
+            InitBias = initBias;
         }
 
         /// <summary>
@@ -45,7 +47,19 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <summary>
         /// Gets or sets the neuron bias value.
         /// </summary>
+        [JsonIgnore]
         public decimal? Bias { get; set; }
+
+        /// <summary>
+        /// Gets or sets the neuron bias value.
+        /// </summary>
+        public decimal InitBias { get; set; }
+
+        /// <summary>
+        /// Gets or sets the neuron bias value.
+        /// </summary>
+        [JsonIgnore]
+        public decimal? BiasCorrection { get; set; }
 
         /// <summary>
         /// Gets or sets the neuron bias value.
