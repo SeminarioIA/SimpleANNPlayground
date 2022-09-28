@@ -5,7 +5,9 @@
 using SimpleAnnPlayground.Ann.Activation;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Data;
+#if DEBUG
 using SimpleAnnPlayground.Debugging;
+#endif
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
@@ -411,7 +413,9 @@ namespace SimpleAnnPlayground
             _workspace.Actions.Undo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+#if DEBUG
             _frmActionsViewer.RefreshActions();
+#endif
         }
 
         private void MnuEditRedo_Click(object sender, EventArgs e)
@@ -420,7 +424,9 @@ namespace SimpleAnnPlayground
             _workspace.Actions.Redo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+#if DEBUG
             _frmActionsViewer.RefreshActions();
+#endif
         }
 
         private void Actions_ActionPerformed(object? sender, EventArgs e)
@@ -429,7 +435,9 @@ namespace SimpleAnnPlayground
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
             BtnTraining.Enabled = false;
             BtnTest.Enabled = false;
+#if DEBUG
             _frmActionsViewer.RefreshActions();
+#endif
         }
 
         private void MnuEditDelete_Click(object sender, EventArgs e)
