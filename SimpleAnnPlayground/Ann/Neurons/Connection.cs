@@ -164,7 +164,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
 
             if (Weight != null)
             {
-                string text = WeightCorrection is not null ? $"w={Math.Round(Weight.Value, 3)}\nw'={Math.Round(WeightCorrection.Value, 3)}" : $"w={Math.Round(Weight.Value, 3)}";
+                string text = WeightCorrection is not null ? $"w={Weight:F4}\nw'={WeightCorrection:F4}" : $"w={Weight:F4}";
                 var alignH = Source.Location.Y > Destination.Location.Y ? StringAlignment.Far : StringAlignment.Near;
                 var alignV = StringAlignment.Far;
                 using (var font = new Font("Arial", 8))
