@@ -353,7 +353,9 @@ namespace SimpleAnnPlayground
         {
             ToolStripButton? button = sender as ToolStripButton;
             UncheckToolsButtons(button);
-            if (button == BtnInputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(_workspace.Canvas, 0, 0));
+            bool enable = button?.Checked ?? false;
+            if (!enable) _workspace.MouseTool.CancelOperation();
+            else if (button == BtnInputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(_workspace.Canvas, 0, 0));
             else if (button == BtnInternalNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Internal(_workspace.Canvas, 0, 0));
             else if (button == BtnOutputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Output(_workspace.Canvas, 0, 0));
             else _workspace.MouseTool.CancelOperation();
@@ -700,7 +702,7 @@ namespace SimpleAnnPlayground
             _workspace.Network.Start();
             LbSimulationPhase.Visible = true;
             LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
-            _frmDetails.Show(this);
+            /*_frmDetails.Show(this);*/
         }
 
         private void BtnTest_Click(object sender, EventArgs e)
