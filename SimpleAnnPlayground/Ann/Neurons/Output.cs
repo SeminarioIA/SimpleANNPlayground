@@ -40,6 +40,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// </summary>
         public decimal? Y { get; set; }
 
+        /// <summary>
+        /// Gets or sets the expected output value during the training.
+        /// </summary>
+        public decimal? MSE { get; set; }
+
         /// <inheritdoc/>
         internal override int? UpwardLayer => -1;
 
@@ -60,11 +65,24 @@ namespace SimpleAnnPlayground.Ann.Neurons
             {
                 string text = Y is not null ? $"{DataLabel.Text} ({Y})" : DataLabel.Text;
                 using (var font = new Font("Arial", 8))
-                using (var brush = new SolidBrush(Color.Black))
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Near, LineAlignment = StringAlignment.Center })
                 {
-                    var location = new PointF(Location.X + Component.X, Location.Y);
-                    graphics.DrawString(text, font, brush, location, format);
+                    using (var brush = new SolidBrush(Color.Black))
+                    {
+                        var location = new PointF(Location.X + Component.X, Location.Y);
+                        graphics.DrawString(text, font, brush, location, format);
+                    }
+
+                    if (MSE is not null)
+                    {
+                        float width = graphics.MeasureString(text, font).Width;
+                        string mseText = $" MSE: {MSE:F4}";
+                        using (var brush = new SolidBrush(Color.Red))
+                        {
+                            var location = new PointF(Location.X + Component.X + width, Location.Y);
+                            graphics.DrawString(mseText, font, brush, location, format);
+                        }
+                    }
                 }
             }
         }

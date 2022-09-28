@@ -21,9 +21,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <param name="component">The graphical component linked to this object.</param>
         /// <param name="x">The X coordinate.</param>
         /// <param name="y">The Y coordinate.</param>
-        public Neuron(Canvas canvas, Component component, int x, int y)
+        /// <param name="initBias">Initialization bias.</param>
+        public Neuron(Canvas canvas, Component component, int x, int y, decimal initBias = 0m)
             : base(canvas, component, x, y)
         {
+            InitBias = initBias;
         }
 
         /// <summary>
@@ -45,7 +47,19 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// <summary>
         /// Gets or sets the neuron bias value.
         /// </summary>
+        [JsonIgnore]
         public decimal? Bias { get; set; }
+
+        /// <summary>
+        /// Gets or sets the neuron bias value.
+        /// </summary>
+        public decimal InitBias { get; set; }
+
+        /// <summary>
+        /// Gets or sets the neuron bias value.
+        /// </summary>
+        [JsonIgnore]
+        public decimal? BiasCorrection { get; set; }
 
         /// <summary>
         /// Gets or sets the neuron bias value.
@@ -100,7 +114,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
 
             if (Bias is not null)
             {
-                string text = Z is not null ? $"b={Math.Round(Bias.Value, 3)}\nZ={Math.Round(Z.Value, 3)}" : $"b={Math.Round(Bias.Value, 3)}";
+                string text = Z is not null ? $"b={Bias:F4}\nZ={Z:F4}" : $"b={Bias:F4}";
                 using (var font = new Font("Arial", 8))
                 using (var brush = new SolidBrush(Color.Black))
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far })
@@ -117,7 +131,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
                 {
                     var location = new PointF(Location.X, Location.Y + Component.Y);
-                    graphics.DrawString($"a={Math.Round(A.Value, 3)}", font, brush, location, format);
+                    graphics.DrawString($"a={A:F4}", font, brush, location, format);
                 }
             }
 
@@ -128,7 +142,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
                 {
                     var location = new PointF(Location.X, Location.Y + Component.Y + font.Size + 2);
-                    graphics.DrawString($"e={Math.Round(Error.Value, 3)}", font, brush, location, format);
+                    graphics.DrawString($"e={Error:F4}", font, brush, location, format);
                 }
             }
 
@@ -139,7 +153,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
                 {
                     var location = new PointF(Location.X, Location.Y + Component.Y + font.Size * 2 + 4);
-                    graphics.DrawString($"c={Math.Round(Correction.Value, 3)}", font, brush, location, format);
+                    graphics.DrawString($"c={Correction:F4}", font, brush, location, format);
                 }
             }
 

@@ -11,7 +11,7 @@ namespace SimpleAnnPlayground.Debugging
     /// <summary>
     /// Debug window to visualize the document actions.
     /// </summary>
-    internal partial class FrmActionsViewer : Form
+    public partial class FrmActionsViewer : Form
     {
         private readonly ActionsManager _actionsManager;
         private RecordableAction? _action;
@@ -21,7 +21,7 @@ namespace SimpleAnnPlayground.Debugging
         /// Initializes a new instance of the <see cref="FrmActionsViewer"/> class.
         /// </summary>
         /// <param name="actionsManager">The <see cref="ActionsManager"/> reference.</param>
-        public FrmActionsViewer(ActionsManager actionsManager)
+        internal FrmActionsViewer(ActionsManager actionsManager)
         {
             InitializeComponent();
             _actionsManager = actionsManager;
@@ -34,13 +34,13 @@ namespace SimpleAnnPlayground.Debugging
         internal void RefreshActions()
         {
             LstUndo.Items.Clear();
-            foreach (var action in _actionsManager.UndoStack.Reverse())
+            foreach (RecordableAction action in _actionsManager.UndoStack.Reverse())
             {
                 _ = LstUndo.Items.Add(action);
             }
 
             LstRedo.Items.Clear();
-            foreach (var action in _actionsManager.RedoStack)
+            foreach (RecordableAction action in _actionsManager.RedoStack)
             {
                 _ = LstRedo.Items.Add(action);
             }
@@ -48,10 +48,7 @@ namespace SimpleAnnPlayground.Debugging
             LstUndo.SelectedIndex = LstUndo.Items.Count - 1;
         }
 
-        private void FrmActionsViewer_Load(object sender, EventArgs e)
-        {
-            LstUndo.Select();
-        }
+        private void FrmActionsViewer_Load(object sender, EventArgs e) => LstUndo.Select();
 
         private void FrmActionsViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -66,10 +63,7 @@ namespace SimpleAnnPlayground.Debugging
             LbPos.Text = $"X: {location.X}, Y: {location.Y}";
         }
 
-        private void Pic_MouseLeave(object sender, EventArgs e)
-        {
-            LbPos.Text = "X: -, Y: -";
-        }
+        private void Pic_MouseLeave(object sender, EventArgs e) => LbPos.Text = "X: -, Y: -";
 
         private void PicBefore_Paint(object sender, PaintEventArgs e)
         {

@@ -5,7 +5,9 @@
 using SimpleAnnPlayground.Ann.Activation;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Data;
+#if DEBUG
 using SimpleAnnPlayground.Debugging;
+#endif
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Environment;
 using SimpleAnnPlayground.Graphical.Environment.EventsArgs;
@@ -353,7 +355,9 @@ namespace SimpleAnnPlayground
         {
             ToolStripButton? button = sender as ToolStripButton;
             UncheckToolsButtons(button);
-            if (button == BtnInputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(_workspace.Canvas, 0, 0));
+            bool enable = button?.Checked ?? false;
+            if (!enable) _workspace.MouseTool.CancelOperation();
+            else if (button == BtnInputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Input(_workspace.Canvas, 0, 0));
             else if (button == BtnInternalNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Internal(_workspace.Canvas, 0, 0));
             else if (button == BtnOutputNeurone) _workspace.MouseTool.InsertObject(new Ann.Neurons.Output(_workspace.Canvas, 0, 0));
             else _workspace.MouseTool.CancelOperation();
@@ -409,7 +413,9 @@ namespace SimpleAnnPlayground
             _workspace.Actions.Undo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+#if DEBUG
             _frmActionsViewer.RefreshActions();
+#endif
         }
 
         private void MnuEditRedo_Click(object sender, EventArgs e)
@@ -418,7 +424,9 @@ namespace SimpleAnnPlayground
             _workspace.Actions.Redo();
             MnuEditUndo.Enabled = _workspace.Actions.CanUndo;
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
+#if DEBUG
             _frmActionsViewer.RefreshActions();
+#endif
         }
 
         private void Actions_ActionPerformed(object? sender, EventArgs e)
@@ -427,7 +435,9 @@ namespace SimpleAnnPlayground
             MnuEditRedo.Enabled = _workspace.Actions.CanRedo;
             BtnTraining.Enabled = false;
             BtnTest.Enabled = false;
+#if DEBUG
             _frmActionsViewer.RefreshActions();
+#endif
         }
 
         private void MnuEditDelete_Click(object sender, EventArgs e)
@@ -698,9 +708,25 @@ namespace SimpleAnnPlayground
             UncheckToolsButtons(null);
             _workspace.SetReadOnly();
             _workspace.Network.Start();
+            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
+            _workspace.Network.Execution.MetricsUpdated += Execution_MetricsUpdated;
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
             LbSimulationPhase.Visible = true;
-            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
-            _frmDetails.Show(this);
+            /*_frmDetails.Show(this);*/
+        }
+
+        private void Execution_MetricsUpdated(object? sender, Ann.Networks.MetricsUpdatedEventArgs e)
+        {
+            if (e.TotalError is not null)
+            {
+                LbTotalError.Visible = true;
+                LbTotalError.Text = $"Total MSE: {e.TotalError:F4}";
+                LbTotalError.ToolTipText = e.TotalError.ToString();
+            }
+            else
+            {
+                LbTotalError.Visible = false;
+            }
         }
 
         private void BtnTest_Click(object sender, EventArgs e)
@@ -725,6 +751,7 @@ namespace SimpleAnnPlayground
             MnuExec.Visible = false;
             TspEdition.Visible = true;
             TspExecution.Visible = false;
+            LbTotalError.Visible = false;
             _workspace.Network.Stop();
             _workspace.SetEditable();
             _frmDetails.Hide();
