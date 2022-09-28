@@ -226,16 +226,22 @@ namespace SimpleAnnPlayground.Ann.Networks
                 node.Neuron.ClearStateFlag(Component.State.Execution);
                 node.Neuron.Z = null;
                 node.Neuron.Bias = null;
+                node.Neuron.BiasCorrection = null;
                 node.Neuron.A = null;
                 node.Neuron.Error = null;
                 node.Neuron.Correction = null;
-                if (node.Neuron is Output output) output.Y = null;
+                if (node.Neuron is Output output)
+                {
+                    output.Y = null;
+                    output.MSE = null;
+                }
             }
 
             // Clear the weights.
             foreach (var link in Network.Graph.Links)
             {
                 link.Connection.Weight = null;
+                link.Connection.WeightCorrection = null;
             }
         }
 
@@ -516,7 +522,14 @@ namespace SimpleAnnPlayground.Ann.Networks
                     int n = _layer.Current.Nodes.Count;
 
                     // Calc the output neuron error.
-                    output.Error = 1m / n * (decimal)Math.Pow((double)(output.Y.Value - output.A.Value), 2.0);
+                    output.MSE = 1m / n * (decimal)Math.Pow((double)(output.Y.Value - output.A.Value), 2.0);
+
+                    // From the chain rule.
+                    decimal part1 = output.A.Value - output.Y.Value;
+                    decimal part2 = output.Activation.Derivative(output.A.Value);
+
+                    // Set the neuron cost.
+                    output.Error = part1 * part2;
 
                     // Remove the node execution mark.
                     _node.Current.Neuron.ClearStateFlag(Component.State.Execution);
@@ -530,14 +543,17 @@ namespace SimpleAnnPlayground.Ann.Networks
                     else
                     {
                         // Get the total error.
-                        decimal error = 0m;
+                        decimal totalMse = 0m;
                         foreach (Node node in _layer.Current.Nodes)
                         {
-                            error += node.Neuron.Error ?? throw new InvalidOperationException();
+                            if (node.Neuron is Output output1)
+                            {
+                                totalMse += output1.MSE ?? throw new InvalidOperationException();
+                            }
                         }
 
                         // Update the error.
-                        OnMetricsUpdated(error);
+                        OnMetricsUpdated(totalMse);
 
                         // Move to the first node again.
                         _node.Reset();
@@ -555,10 +571,25 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                 case ExecPhase.BiasCorrection:
                 {
-                    if (_node.Current.Neuron.Activation is null || _node.Current.Neuron.A is null) throw new InvalidOperationException();
+                    // The chain rule for bias.
+                    decimal part12;
+                    if (_node.Current.Neuron is Output output)
+                    {
+                        if (output.Error is null) throw new InvalidOperationException();
+                        part12 = output.Error.Value;
+                    }
+                    else if (_node.Current.Neuron is Internal @internal)
+                    {
+                        if (@internal.Error is null || @internal.Correction is null) throw new InvalidOperationException();
+                        part12 = @internal.Error.Value * @internal.Correction.Value;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException();
+                    }
 
                     // Calc the new bias value.
-                    _node.Current.Neuron.Bias = _node.Current.Neuron.Activation.Derivative(_node.Current.Neuron.A.Value) * _node.Current.Neuron.A.Value;
+                    _node.Current.Neuron.BiasCorrection = _node.Current.Neuron.Bias - Network.LearningRate * part12;
 
                     // Get the node links.
                     _link = _node.Current.Previous.GetEnumerator();
@@ -576,8 +607,28 @@ namespace SimpleAnnPlayground.Ann.Networks
                 {
                     if (_link is null || _node.Current.Neuron is Input) throw new InvalidOperationException();
 
+                    // The chain rule for weights.
+                    decimal part12, part3;
+                    if (_node.Current.Neuron is Output output)
+                    {
+                        if (output.Error is null) throw new InvalidOperationException();
+                        part12 = output.Error.Value;
+                    }
+                    else if (_node.Current.Neuron is Internal @internal)
+                    {
+                        if (@internal.Error is null || @internal.Correction is null) throw new InvalidOperationException();
+                        part12 = @internal.Error.Value * @internal.Correction.Value;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException();
+                    }
+
+                    part3 = _link.Current.Previous.Neuron.A ?? throw new InvalidOperationException();
+                    decimal chain = part12 * part3;
+
                     // Calc the new connection weight.
-                    _link.Current.Connection.WeightCorrection = _link.Current.Connection.Weight + Network.LearningRate * _node.Current.Neuron.A * _node.Current.Neuron.Error;
+                    _link.Current.Connection.WeightCorrection = _link.Current.Connection.Weight - Network.LearningRate * chain;
 
                     // Remove the link execution mark.
                     _link.Current.Connection.Executing = false;
@@ -599,18 +650,18 @@ namespace SimpleAnnPlayground.Ann.Networks
                             // Set the node execution mark.
                             _node.Current.Neuron.SetStateFlag(Component.State.Execution);
 
-                            // Set the neuron error to 0.
-                            _node.Current.Neuron.Error = 0m;
-
                             // Repeat error calc phase.
                             if (_node.Current.Neuron is Output)
                             {
                                 // Move to the next phase.
-                                Phase = ExecPhase.OutputNeuronError;
+                                Phase = ExecPhase.BiasCorrection;
                                 stepType = StepType.Neuron;
                             }
-                            else if (_node.Current.Neuron is Internal)
+                            else if (_node.Current.Neuron is Internal @internal)
                             {
+                                // Set the neuron error to 0.
+                                @internal.Error = 0m;
+
                                 // Get the previous links enumerator.
                                 _link = _node.Current.Next.GetEnumerator();
                                 if (!_link.MoveNext()) throw new InvalidOperationException("Expected a link in the node.");
@@ -705,8 +756,8 @@ namespace SimpleAnnPlayground.Ann.Networks
 
                 case ExecPhase.CorrectionValue:
                 {
-                    if (_node.Current.Neuron.Activation is null || _node.Current.Neuron.Error is null) throw new InvalidOperationException();
-                    _node.Current.Neuron.Correction = _node.Current.Neuron.Activation.Derivative(_node.Current.Neuron.Error.Value);
+                    if (_node.Current.Neuron.Activation is null || _node.Current.Neuron.A is null) throw new InvalidOperationException();
+                    _node.Current.Neuron.Correction = _node.Current.Neuron.Activation.Derivative(_node.Current.Neuron.A.Value);
 
                     // Move to the next phase.
                     Phase = ExecPhase.BiasCorrection;
@@ -722,6 +773,20 @@ namespace SimpleAnnPlayground.Ann.Networks
                         link.Connection.WeightCorrection = null;
                         link.Connection.Executing = false;
                     }
+
+                    // Apply new bias and remove MSE text.
+                    foreach (Layer layer in Network.Graph.Layers.Skip(1))
+                    {
+                        foreach (Node node in layer.Nodes)
+                        {
+                            if (node.Neuron is Output output) output.MSE = null;
+                            node.Neuron.Bias = node.Neuron.BiasCorrection;
+                            node.Neuron.BiasCorrection = null;
+                        }
+                    }
+
+                    // Remove Total MSE label.
+                    OnMetricsUpdated(null);
 
                     // Move to the next phase.
                     Phase = ExecPhase.FetchData;
@@ -764,7 +829,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             InitializeNode();
         }
 
-        private void OnMetricsUpdated(decimal error)
+        private void OnMetricsUpdated(decimal? error)
         {
             MetricsUpdatedEventArgs args = new MetricsUpdatedEventArgs(error);
             MetricsUpdated?.Invoke(this, args);

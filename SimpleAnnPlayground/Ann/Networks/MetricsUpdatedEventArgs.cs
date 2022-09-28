@@ -13,7 +13,7 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// Initializes a new instance of the <see cref="MetricsUpdatedEventArgs"/> class.
         /// </summary>
         /// <param name="totalError">The total error.</param>
-        public MetricsUpdatedEventArgs(decimal totalError)
+        public MetricsUpdatedEventArgs(decimal? totalError)
         {
             TotalError = totalError;
         }
@@ -21,6 +21,6 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// <summary>
         /// Gets the total error.
         /// </summary>
-        public decimal TotalError { get; }
+        public decimal? TotalError { get; }
     }
 }

@@ -709,9 +709,16 @@ namespace SimpleAnnPlayground
 
         private void Execution_MetricsUpdated(object? sender, Ann.Networks.MetricsUpdatedEventArgs e)
         {
-            LbTotalError.Visible = true;
-            LbTotalError.Text = $"Total Error: {e.TotalError:F4}";
-            LbTotalError.ToolTipText = e.TotalError.ToString();
+            if (e.TotalError is not null)
+            {
+                LbTotalError.Visible = true;
+                LbTotalError.Text = $"Total MSE: {e.TotalError:F4}";
+                LbTotalError.ToolTipText = e.TotalError.ToString();
+            }
+            else
+            {
+                LbTotalError.Visible = false;
+            }
         }
 
         private void BtnTest_Click(object sender, EventArgs e)
