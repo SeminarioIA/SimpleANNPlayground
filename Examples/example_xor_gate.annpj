@@ -1,0 +1,112 @@
+{
+  "WorkSheet": {
+    "Size": "710, 302"
+  },
+  "Objects": [
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Input",
+      "Location": "-96, -69",
+      "Id": 0,
+      "InitBias": 0.0,
+      "Activation": null
+    },
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Input",
+      "Location": "-98, 71",
+      "Id": 1,
+      "InitBias": 0.0,
+      "Activation": null
+    },
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Internal",
+      "Location": "47, -69",
+      "Id": 2,
+      "InitBias": 0.0,
+      "Activation": "Sigmoid"
+    },
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Internal",
+      "Location": "44, 71",
+      "Id": 3,
+      "InitBias": 0.0,
+      "Activation": "Sigmoid"
+    },
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Output",
+      "Location": "146, 3",
+      "Id": 4,
+      "InitBias": 0.0,
+      "Activation": "Sigmoid"
+    }
+  ],
+  "Connections": [
+    {
+      "Source": "0, 0",
+      "Destination": "2, 0",
+      "InitWeight": 0.1,
+      "Id": 28
+    },
+    {
+      "Source": "0, 0",
+      "Destination": "3, 0",
+      "InitWeight": 0.5,
+      "Id": 29
+    },
+    {
+      "Source": "1, 0",
+      "Destination": "2, 0",
+      "InitWeight": -0.7,
+      "Id": 30
+    },
+    {
+      "Source": "1, 0",
+      "Destination": "3, 0",
+      "InitWeight": 0.3,
+      "Id": 31
+    },
+    {
+      "Source": "3, 0",
+      "Destination": "4, 0",
+      "InitWeight": 0.4,
+      "Id": 32
+    },
+    {
+      "Source": "2, 0",
+      "Destination": "4, 0",
+      "InitWeight": 0.2,
+      "Id": 33
+    }
+  ],
+  "DataTable": {
+    "Training": 40,
+    "Labels": [
+      {
+        "Text": "x1",
+        "DataType": 0
+      },
+      {
+        "Text": "x2",
+        "DataType": 0
+      },
+      {
+        "Text": "Y",
+        "DataType": 1
+      }
+    ],
+    "RegistersCSV": "1,0,1,1\r\n0,0,0,0\r\n2,1,0,1\r\n3,1,1,0"
+  },
+  "DataLinks": [
+    {
+      "Id": 0,
+      "Label": "x1"
+    },
+    {
+      "Id": 1,
+      "Label": "x2"
+    },
+    {
+      "Id": 4,
+      "Label": "Y"
+    }
+  ]
+}
