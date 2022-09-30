@@ -108,5 +108,9 @@
       "Id": 4,
       "Label": "Y"
     }
-  ]
+  ],
+  "Parameters": {
+    "LearningRate": 0.5,
+    "BatchSize": 1
+  }
 }
