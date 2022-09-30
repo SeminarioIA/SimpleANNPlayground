@@ -130,8 +130,8 @@
   <data name="Example" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\Example.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="GetData." type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>resources\GetData..rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="GetData" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\GetData.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="GetOutputData" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\GetOutputData.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
