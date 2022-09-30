@@ -2,6 +2,10 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Ann.Networks;
+using SimpleAnnPlayground.Help;
+using System.Globalization;
+
 namespace SimpleAnnPlayground.UI
 {
     /// <summary>
@@ -15,6 +19,27 @@ namespace SimpleAnnPlayground.UI
         public FrmDetails()
         {
             InitializeComponent();
+        }
+
+        /// <summary>
+        /// Sets the windows info.
+        /// </summary>
+        /// <param name="phase">Execution phase.</param>
+        internal void SetInfo(ExecPhase phase)
+        {
+            RtbInfo.Rtf = HelpSources.ResourceManager.GetString(phase.ToString(), CultureInfo.InvariantCulture);
+        }
+
+        private void FrmDetails_Load(object sender, EventArgs e)
+        {
+            RtbInfo.Rtf = HelpSources.ResourceManager.GetString("Example", CultureInfo.InvariantCulture);
+        }
+
+        private void FrmDetails_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Hide();
+            e.Cancel = true;
+            _ = Owner.Focus();
         }
     }
 }
