@@ -28,9 +28,9 @@ namespace SimpleAnnPlayground.Graphical.Models
         }
 
         /// <summary>
-        /// Gets the color to paint the cross.
+        /// Gets or sets the color to paint the cross.
         /// </summary>
-        public Color Color { get; private set; }
+        public Color Color { get; set; }
 
         /// <summary>
         /// Gets the cross location.
@@ -43,11 +43,18 @@ namespace SimpleAnnPlayground.Graphical.Models
         public float Size { get; private set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether if the <see cref="Cross"/> is visible.
+        /// </summary>
+        public bool Visible { get; set; } = true;
+
+        /// <summary>
         /// Paints the object in a <see cref="Graphics"/> object.
         /// </summary>
         /// <param name="graphics">The object to perform the paint operation.</param>
         internal void Paint(Graphics graphics)
         {
+            if (!Visible) return;
+
             using (var pen = new Pen(Color, CrossWidth))
             {
                 graphics.DrawLine(pen, Location.X - Size, Location.Y, Location.X + Size, Location.Y);

@@ -49,23 +49,11 @@ namespace SimpleAnnPlayground.Utils
                 // If control is a toolStrip the child controls are items.
                 if (control is ToolStrip toolStrip)
                 {
-                    foreach (ToolStripItem item in toolStrip.Items)
-                    {
-                        if (words.ContainsKey(item.Name))
-                        {
-                            if (words[item.Name][0] == "#")
-                            {
-                                item.ToolTipText = words[item.Name][(int)language + 1];
-                            }
-                            else
-                            {
-                                item.Text = words[item.Name][(int)language];
-                            }
-                        }
-
-                        // If the toolStrip contains child elements.
-                        SetMenuLanguage(item, words, language);
-                    }
+                    SetMenuItemsLanguage(toolStrip.Items, words, language);
+                }
+                else if (control is ContextMenuStrip context)
+                {
+                    SetMenuItemsLanguage(context.Items, words, language);
                 }
                 else
                 {
@@ -147,6 +135,27 @@ namespace SimpleAnnPlayground.Utils
                         SetMenuLanguage(downItem, words, language);
                     }
                 }
+            }
+        }
+
+        private static void SetMenuItemsLanguage(ToolStripItemCollection items, Dictionary<string, List<string>> words, Language language)
+        {
+            foreach (ToolStripItem item in items)
+            {
+                if (words.ContainsKey(item.Name))
+                {
+                    if (words[item.Name][0] == "#")
+                    {
+                        item.ToolTipText = words[item.Name][(int)language + 1];
+                    }
+                    else
+                    {
+                        item.Text = words[item.Name][(int)language];
+                    }
+                }
+
+                // If the toolStrip contains child elements.
+                SetMenuLanguage(item, words, language);
             }
         }
     }

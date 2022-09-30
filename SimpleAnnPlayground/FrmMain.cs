@@ -57,11 +57,13 @@ namespace SimpleAnnPlayground
             { nameof(MnuEditCopy), new() { "&Copy", "&Copiar" } },
             { nameof(MnuEditCut), new() { "Cu&t", "Cor&tar" } },
             { nameof(MnuEditPaste), new() { "&Paste", "&Pegar" } },
-            { nameof(MnuEditOptions), new() { "&Options", "&Opciones" } },
+            { nameof(MnuEditDocument), new() { "Document &options", "&Opciones del documento" } },
 
             // Context menus.
             { nameof(MnuContextLinkTo), new() { "&Link to", "&Asignar a" } },
             { nameof(MnuContextActivation), new() { "&Activation", "&Activacion" } },
+            { nameof(MnuContextInitBias), new() { "Initial bias", "Bias inicial" } },
+            { nameof(MnuContextInitWeight), new() { "Initial weight", "Peso inicial" } },
             { nameof(MnuContextCopy), new() { "&Copy", "&Copiar" } },
             { nameof(MnuContextCut), new() { "Cu&t", "Cor&tar" } },
             { nameof(MnuContextPaste), new() { "&Paste", "&Pegar" } },
@@ -79,6 +81,7 @@ namespace SimpleAnnPlayground
             { nameof(MnuModelData), new() { "&Data", "&Datos" } },
             { nameof(MnuModelTraining), new() { "&Training", "&Entrenamiento" } },
             { nameof(MnuModelTesting), new() { "Te&sting", "&Prueba" } },
+            { nameof(MnuModelParameters), new() { "&Parameters", "Pará&metros" } },
 
             // Execution menus texts.
             { nameof(MnuExec), new() { "E&xecution", "&Ejecución" } },
@@ -325,7 +328,7 @@ namespace SimpleAnnPlayground
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
                 DialogResult selection = ShowSaveDialog();
-                if (selection == DialogResult.OK)
+                if (selection == DialogResult.Yes)
                 {
                     MnuFileSave_Click(sender, e);
                 }
@@ -505,7 +508,7 @@ namespace SimpleAnnPlayground
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
                 DialogResult selection = ShowSaveDialog();
-                if (selection == DialogResult.OK)
+                if (selection == DialogResult.Yes)
                 {
                     MnuFileSave_Click(sender, e);
                 }
@@ -525,7 +528,7 @@ namespace SimpleAnnPlayground
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
                 DialogResult selection = ShowSaveDialog();
-                if (selection == DialogResult.OK)
+                if (selection == DialogResult.Yes)
                 {
                     MnuFileSave_Click(sender, e);
                 }
@@ -551,7 +554,9 @@ namespace SimpleAnnPlayground
         {
             MnuContextLinkTo.Visible = link;
             MnuContextActivation.Visible = activation;
-            MnuContextSep1.Visible = link || activation;
+            MnuContextInitBias.Visible = activation;
+            MnuContextInitWeight.Visible = !link && !activation;
+            MnuContextSep1.Visible = true;
             MnuContextCopy.Visible = copyPaste;
             MnuContextCut.Visible = copyPaste;
             MnuContextPaste.Visible = copyPaste;
@@ -610,8 +615,9 @@ namespace SimpleAnnPlayground
             {
                 case 0:
                 {
-                    if (_workspace.MouseTool.GetConnectionOver() is Connection)
+                    if (_workspace.MouseTool.GetConnectionOver() is Connection connection)
                     {
+                        CmsDraw.Tag = connection;
                         ContextMenuState(link: false, activation: false, copyPaste: false, delete: true);
                     }
                     else
@@ -691,10 +697,6 @@ namespace SimpleAnnPlayground
             }
 
             _workspace.Refresh();
-        }
-
-        private void MnuContextNormalize_Click(object? sender, EventArgs e)
-        {
         }
 
         private void BtnTraining_Click(object sender, EventArgs e)
@@ -816,6 +818,56 @@ namespace SimpleAnnPlayground
                 else
                 {
                     Debug.WriteLine("Cancel selected");
+                }
+            }
+        }
+
+        private void MnuEditDocument_Click(object sender, EventArgs e)
+        {
+            using (FrmDocument frmDocument = new FrmDocument(_workspace.WorkSheet))
+            {
+                if (frmDocument.ShowDialog(this) == DialogResult.OK)
+                {
+                    _workspace.Refresh();
+                }
+            }
+        }
+
+        private void MnuModelParameters_Click(object sender, EventArgs e)
+        {
+            using (FrmModel frmModel = new FrmModel(_workspace.Network))
+            {
+                if (frmModel.ShowDialog(this) == DialogResult.OK)
+                {
+                    _workspace.Refresh();
+                }
+            }
+        }
+
+        private void MnuContextInitBias_Click(object sender, EventArgs e)
+        {
+            if (CmsDraw.Tag is Neuron neuron)
+            {
+                using (var frmSetValue = new FrmSetValue(Languages.GetString(nameof(MnuContextInitBias), FormWords)))
+                {
+                    if (frmSetValue.AdjustValue(neuron.InitBias) is decimal value)
+                    {
+                        neuron.InitBias = value;
+                    }
+                }
+            }
+        }
+
+        private void MnuContextInitWeight_Click(object sender, EventArgs e)
+        {
+            if (CmsDraw.Tag is Connection connection)
+            {
+                using (var frmSetValue = new FrmSetValue(Languages.GetString(nameof(MnuContextInitWeight), FormWords)))
+                {
+                    if (frmSetValue.AdjustValue(connection.InitWeight) is decimal value)
+                    {
+                        connection.InitWeight = value;
+                    }
                 }
             }
         }
