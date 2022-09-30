@@ -90,7 +90,7 @@ namespace SimpleAnnPlayground
             this.MnuEditCut = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuEditPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuEditSep2 = new System.Windows.Forms.ToolStripSeparator();
-            this.MnuEditOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuEditDocument = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuView = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuViewCenterScreen = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuModel = new System.Windows.Forms.ToolStripMenuItem();
@@ -528,7 +528,7 @@ namespace SimpleAnnPlayground
             this.MnuEditCut,
             this.MnuEditPaste,
             this.MnuEditSep2,
-            this.MnuEditOptions});
+            this.MnuEditDocument});
             this.MnuEdit.Name = "MnuEdit";
             this.MnuEdit.Size = new System.Drawing.Size(39, 20);
             this.MnuEdit.Text = "Edit";
@@ -597,11 +597,12 @@ namespace SimpleAnnPlayground
             this.MnuEditSep2.Name = "MnuEditSep2";
             this.MnuEditSep2.Size = new System.Drawing.Size(141, 6);
             // 
-            // MnuEditOptions
+            // MnuEditDocument
             // 
-            this.MnuEditOptions.Name = "MnuEditOptions";
-            this.MnuEditOptions.Size = new System.Drawing.Size(144, 22);
-            this.MnuEditOptions.Text = "Options";
+            this.MnuEditDocument.Name = "MnuEditDocument";
+            this.MnuEditDocument.Size = new System.Drawing.Size(173, 22);
+            this.MnuEditDocument.Text = "Document options";
+            this.MnuEditDocument.Click += new System.EventHandler(this.MnuEditDocument_Click);
             // 
             // MnuView
             // 
@@ -1072,7 +1073,7 @@ namespace SimpleAnnPlayground
         private ToolStripMenuItem MnuEditCut;
         private ToolStripMenuItem MnuEditPaste;
         private ToolStripSeparator MnuEditSep2;
-        private ToolStripMenuItem MnuEditOptions;
+        private ToolStripMenuItem MnuEditDocument;
         private ToolStripMenuItem MnuHelp;
         private ToolStripMenuItem MnuHelpAbout;
         private ToolStripMenuItem MnuTools;

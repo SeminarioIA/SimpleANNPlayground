@@ -52,6 +52,16 @@ namespace SimpleAnnPlayground.Graphical.Environment
         }
 
         /// <summary>
+        /// Resizes the <see cref="WorkSheet"/>.
+        /// </summary>
+        /// <param name="width">The new width.</param>
+        /// <param name="height">The new height.</param>
+        public void Resize(int width, int height)
+        {
+            Size = new Size(width, height);
+        }
+
+        /// <summary>
         /// Paints the sheet in the given <see cref="Graphics"/> object.
         /// </summary>
         /// <param name="graphics">The graphics object.</param>

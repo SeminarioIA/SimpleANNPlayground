@@ -57,7 +57,7 @@ namespace SimpleAnnPlayground
             { nameof(MnuEditCopy), new() { "&Copy", "&Copiar" } },
             { nameof(MnuEditCut), new() { "Cu&t", "Cor&tar" } },
             { nameof(MnuEditPaste), new() { "&Paste", "&Pegar" } },
-            { nameof(MnuEditOptions), new() { "&Options", "&Opciones" } },
+            { nameof(MnuEditDocument), new() { "Document &options", "&Opciones del documento" } },
 
             // Context menus.
             { nameof(MnuContextLinkTo), new() { "&Link to", "&Asignar a" } },
@@ -816,6 +816,17 @@ namespace SimpleAnnPlayground
                 else
                 {
                     Debug.WriteLine("Cancel selected");
+                }
+            }
+        }
+
+        private void MnuEditDocument_Click(object sender, EventArgs e)
+        {
+            using (FrmDocument frmDocument = new FrmDocument(_workspace.WorkSheet))
+            {
+                if (frmDocument.ShowDialog(this) == DialogResult.OK)
+                {
+                    _workspace.Refresh();
                 }
             }
         }
