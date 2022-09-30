@@ -38,6 +38,11 @@ namespace SimpleAnnPlayground.Ann.Networks
         public decimal LearningRate { get; set; } = 0.03m;
 
         /// <summary>
+        /// Gets or sets the model batch size for training.
+        /// </summary>
+        public int BatchSize { get; set; } = 1;
+
+        /// <summary>
         /// Gets the network graph.
         /// </summary>
         public Graph? Graph { get; private set; }

@@ -1,46 +1,46 @@
 {
   "WorkSheet": {
-    "Size": "710, 246"
+    "Size": "650, 400"
   },
   "Objects": [
     {
       "Type": "SimpleAnnPlayground.Ann.Neurons.Input",
-      "Location": "-137, -48",
+      "Location": "-175, -88",
       "Id": 0,
       "InitBias": 0.0,
       "Activation": null
     },
     {
       "Type": "SimpleAnnPlayground.Ann.Neurons.Input",
-      "Location": "-136, 48",
+      "Location": "-172, 85",
       "Id": 1,
       "InitBias": 0.0,
       "Activation": null
     },
     {
       "Type": "SimpleAnnPlayground.Ann.Neurons.Internal",
-      "Location": "-7, -50",
+      "Location": "-6, -88",
       "Id": 2,
       "InitBias": 0.35,
       "Activation": "Sigmoid"
     },
     {
       "Type": "SimpleAnnPlayground.Ann.Neurons.Internal",
-      "Location": "-7, 47",
+      "Location": "-2, 85",
       "Id": 3,
       "InitBias": 0.35,
       "Activation": "Sigmoid"
     },
     {
       "Type": "SimpleAnnPlayground.Ann.Neurons.Output",
-      "Location": "115, 46",
+      "Location": "172, 85",
       "Id": 5,
       "InitBias": 0.6,
       "Activation": "Sigmoid"
     },
     {
       "Type": "SimpleAnnPlayground.Ann.Neurons.Output",
-      "Location": "116, -50",
+      "Location": "168, -89",
       "Id": 14,
       "InitBias": 0.6,
       "Activation": "Sigmoid"
@@ -98,7 +98,6 @@
   ],
   "DataTable": {
     "Training": 80,
-    "TrainingCount": 1,
     "Labels": [
       {
         "Text": "x1",

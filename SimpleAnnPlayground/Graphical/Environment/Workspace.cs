@@ -241,7 +241,7 @@ namespace SimpleAnnPlayground.Graphical.Environment
                 }
             }
 
-            return new(WorkSheet, Canvas, DataTable, dataLinks);
+            return new(WorkSheet, Canvas, DataTable, dataLinks, Network);
         }
 
         /// <summary>
@@ -254,6 +254,8 @@ namespace SimpleAnnPlayground.Graphical.Environment
             WorkSheet = document.WorkSheet;
             Canvas = document.Canvas;
             Shadow = new ShadowCanvas(Canvas);
+            Network.LearningRate = document.Parameters.LearningRate;
+            Network.BatchSize = document.Parameters.BatchSize;
             DataTable = document.DataTable;
             DataTableChanged?.Invoke(this, EventArgs.Empty);
         }

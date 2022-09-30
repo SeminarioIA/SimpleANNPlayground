@@ -3,6 +3,7 @@
 // </copyright>
 
 using Newtonsoft.Json;
+using SimpleAnnPlayground.Ann.Networks;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Data;
 using SimpleAnnPlayground.Graphical.Environment;
@@ -25,8 +26,9 @@ namespace SimpleAnnPlayground.Storage
         /// <param name="connections">The connections to add.</param>
         /// <param name="dataTable">The document data.</param>
         /// <param name="dataLinks">The list of <see cref="DataLink"/>.</param>
+        /// <param name="parameters">The network parameters.</param>
         [JsonConstructor]
-        public Document(WorkSheet workSheet, Collection<CanvasObject> objects, Collection<Connection> connections, DataTable dataTable, Collection<DataLink> dataLinks)
+        public Document(WorkSheet workSheet, Collection<CanvasObject> objects, Collection<Connection> connections, DataTable dataTable, Collection<DataLink> dataLinks, Parameters parameters)
         {
             WorkSheet = workSheet;
             Canvas = objects.Any() ? objects.First().Canvas : new Canvas();
@@ -34,6 +36,7 @@ namespace SimpleAnnPlayground.Storage
             connections.ToList().ForEach(connection => Canvas.AddConnection(connection));
             DataTable = dataTable;
             DataLinks = dataLinks;
+            Parameters = parameters;
         }
 
         /// <summary>
@@ -43,12 +46,14 @@ namespace SimpleAnnPlayground.Storage
         /// <param name="canvas">The canvas holding the objects and collections.</param>
         /// <param name="dataTable">The document data.</param>
         /// <param name="dataLinks">The list of <see cref="DataLink"/>.</param>
-        public Document(WorkSheet workSheet, Canvas canvas, DataTable dataTable, Collection<DataLink> dataLinks)
+        /// <param name="network">The network parameters.</param>
+        public Document(WorkSheet workSheet, Canvas canvas, DataTable dataTable, Collection<DataLink> dataLinks, Network network)
         {
             WorkSheet = workSheet;
             Canvas = canvas;
             DataTable = dataTable;
             DataLinks = dataLinks;
+            Parameters = new Parameters(network.LearningRate, network.BatchSize);
         }
 
         /// <summary>
@@ -75,6 +80,11 @@ namespace SimpleAnnPlayground.Storage
         /// Gets the list of <see cref="DataLink"/>.
         /// </summary>
         public Collection<DataLink> DataLinks { get; }
+
+        /// <summary>
+        /// Gets the network parameters.
+        /// </summary>
+        public Parameters Parameters { get; }
 
         /// <summary>
         /// Gets the document canvas holding all the objects.
