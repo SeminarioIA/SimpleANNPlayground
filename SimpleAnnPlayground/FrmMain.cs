@@ -62,6 +62,8 @@ namespace SimpleAnnPlayground
             // Context menus.
             { nameof(MnuContextLinkTo), new() { "&Link to", "&Asignar a" } },
             { nameof(MnuContextActivation), new() { "&Activation", "&Activacion" } },
+            { nameof(MnuContextInitBias), new() { "Initial bias", "Bias inicial" } },
+            { nameof(MnuContextInitWeight), new() { "Initial weight", "Peso inicial" } },
             { nameof(MnuContextCopy), new() { "&Copy", "&Copiar" } },
             { nameof(MnuContextCut), new() { "Cu&t", "Cor&tar" } },
             { nameof(MnuContextPaste), new() { "&Paste", "&Pegar" } },
@@ -552,7 +554,9 @@ namespace SimpleAnnPlayground
         {
             MnuContextLinkTo.Visible = link;
             MnuContextActivation.Visible = activation;
-            MnuContextSep1.Visible = link || activation;
+            MnuContextInitBias.Visible = activation;
+            MnuContextInitWeight.Visible = !link && !activation;
+            MnuContextSep1.Visible = true;
             MnuContextCopy.Visible = copyPaste;
             MnuContextCut.Visible = copyPaste;
             MnuContextPaste.Visible = copyPaste;
@@ -611,8 +615,9 @@ namespace SimpleAnnPlayground
             {
                 case 0:
                 {
-                    if (_workspace.MouseTool.GetConnectionOver() is Connection)
+                    if (_workspace.MouseTool.GetConnectionOver() is Connection connection)
                     {
+                        CmsDraw.Tag = connection;
                         ContextMenuState(link: false, activation: false, copyPaste: false, delete: true);
                     }
                     else
@@ -835,6 +840,34 @@ namespace SimpleAnnPlayground
                 if (frmModel.ShowDialog(this) == DialogResult.OK)
                 {
                     _workspace.Refresh();
+                }
+            }
+        }
+
+        private void MnuContextInitBias_Click(object sender, EventArgs e)
+        {
+            if (CmsDraw.Tag is Neuron neuron)
+            {
+                using (var frmSetValue = new FrmSetValue(Languages.GetString(nameof(MnuContextInitBias), FormWords)))
+                {
+                    if (frmSetValue.AdjustValue(neuron.InitBias) is decimal value)
+                    {
+                        neuron.InitBias = value;
+                    }
+                }
+            }
+        }
+
+        private void MnuContextInitWeight_Click(object sender, EventArgs e)
+        {
+            if (CmsDraw.Tag is Connection connection)
+            {
+                using (var frmSetValue = new FrmSetValue(Languages.GetString(nameof(MnuContextInitWeight), FormWords)))
+                {
+                    if (frmSetValue.AdjustValue(connection.InitWeight) is decimal value)
+                    {
+                        connection.InitWeight = value;
+                    }
                 }
             }
         }

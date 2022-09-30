@@ -65,6 +65,8 @@ namespace SimpleAnnPlayground
             this.CmsDraw = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.MnuContextLinkTo = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuContextActivation = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuContextInitBias = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuContextInitWeight = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuContextSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuContextCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuContextCut = new System.Windows.Forms.ToolStripMenuItem();
@@ -369,6 +371,8 @@ namespace SimpleAnnPlayground
             this.CmsDraw.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MnuContextLinkTo,
             this.MnuContextActivation,
+            this.MnuContextInitBias,
+            this.MnuContextInitWeight,
             this.MnuContextSep1,
             this.MnuContextCopy,
             this.MnuContextCut,
@@ -377,31 +381,45 @@ namespace SimpleAnnPlayground
             this.MnuContextDelete,
             this.MnuContextCenterScreen});
             this.CmsDraw.Name = "CmsDraw";
-            this.CmsDraw.Size = new System.Drawing.Size(147, 170);
+            this.CmsDraw.Size = new System.Drawing.Size(181, 236);
             this.CmsDraw.Opening += new System.ComponentModel.CancelEventHandler(this.CmsDraw_Opening);
             // 
             // MnuContextLinkTo
             // 
             this.MnuContextLinkTo.Name = "MnuContextLinkTo";
-            this.MnuContextLinkTo.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextLinkTo.Size = new System.Drawing.Size(180, 22);
             this.MnuContextLinkTo.Text = "Link to";
             // 
             // MnuContextActivation
             // 
             this.MnuContextActivation.Name = "MnuContextActivation";
-            this.MnuContextActivation.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextActivation.Size = new System.Drawing.Size(180, 22);
             this.MnuContextActivation.Text = "Activation";
+            // 
+            // MnuContextInitBias
+            // 
+            this.MnuContextInitBias.Name = "MnuContextInitBias";
+            this.MnuContextInitBias.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextInitBias.Text = "Initial bias";
+            this.MnuContextInitBias.Click += new System.EventHandler(this.MnuContextInitBias_Click);
+            // 
+            // MnuContextInitWeight
+            // 
+            this.MnuContextInitWeight.Name = "MnuContextInitWeight";
+            this.MnuContextInitWeight.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextInitWeight.Text = "Initial weight";
+            this.MnuContextInitWeight.Click += new System.EventHandler(this.MnuContextInitWeight_Click);
             // 
             // MnuContextSep1
             // 
             this.MnuContextSep1.Name = "MnuContextSep1";
-            this.MnuContextSep1.Size = new System.Drawing.Size(143, 6);
+            this.MnuContextSep1.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuContextCopy
             // 
             this.MnuContextCopy.Name = "MnuContextCopy";
             this.MnuContextCopy.ShortcutKeyDisplayString = "Ctrl+C";
-            this.MnuContextCopy.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextCopy.Size = new System.Drawing.Size(180, 22);
             this.MnuContextCopy.Text = "Copy";
             this.MnuContextCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
             // 
@@ -409,7 +427,7 @@ namespace SimpleAnnPlayground
             // 
             this.MnuContextCut.Name = "MnuContextCut";
             this.MnuContextCut.ShortcutKeyDisplayString = "Ctrl+X";
-            this.MnuContextCut.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextCut.Size = new System.Drawing.Size(180, 22);
             this.MnuContextCut.Text = "Cut";
             this.MnuContextCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
@@ -417,27 +435,27 @@ namespace SimpleAnnPlayground
             // 
             this.MnuContextPaste.Name = "MnuContextPaste";
             this.MnuContextPaste.ShortcutKeyDisplayString = "Ctrl+V";
-            this.MnuContextPaste.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextPaste.Size = new System.Drawing.Size(180, 22);
             this.MnuContextPaste.Text = "Paste";
             this.MnuContextPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);
             // 
             // MnuContextSep2
             // 
             this.MnuContextSep2.Name = "MnuContextSep2";
-            this.MnuContextSep2.Size = new System.Drawing.Size(143, 6);
+            this.MnuContextSep2.Size = new System.Drawing.Size(177, 6);
             // 
             // MnuContextDelete
             // 
             this.MnuContextDelete.Name = "MnuContextDelete";
             this.MnuContextDelete.ShortcutKeyDisplayString = "Del";
-            this.MnuContextDelete.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextDelete.Size = new System.Drawing.Size(180, 22);
             this.MnuContextDelete.Text = "Delete";
             this.MnuContextDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
             // MnuContextCenterScreen
             // 
             this.MnuContextCenterScreen.Name = "MnuContextCenterScreen";
-            this.MnuContextCenterScreen.Size = new System.Drawing.Size(146, 22);
+            this.MnuContextCenterScreen.Size = new System.Drawing.Size(180, 22);
             this.MnuContextCenterScreen.Text = "Center screen";
             this.MnuContextCenterScreen.Click += new System.EventHandler(this.MnuViewCenterScreen_Click);
             // 
@@ -540,7 +558,7 @@ namespace SimpleAnnPlayground
             this.MnuEditUndo.Enabled = false;
             this.MnuEditUndo.Name = "MnuEditUndo";
             this.MnuEditUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.MnuEditUndo.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditUndo.Size = new System.Drawing.Size(173, 22);
             this.MnuEditUndo.Text = "Undo";
             this.MnuEditUndo.Click += new System.EventHandler(this.MnuEditUndo_Click);
             // 
@@ -549,21 +567,21 @@ namespace SimpleAnnPlayground
             this.MnuEditRedo.Enabled = false;
             this.MnuEditRedo.Name = "MnuEditRedo";
             this.MnuEditRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.MnuEditRedo.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditRedo.Size = new System.Drawing.Size(173, 22);
             this.MnuEditRedo.Text = "Redo";
             this.MnuEditRedo.Click += new System.EventHandler(this.MnuEditRedo_Click);
             // 
             // MnuEditSep1
             // 
             this.MnuEditSep1.Name = "MnuEditSep1";
-            this.MnuEditSep1.Size = new System.Drawing.Size(141, 6);
+            this.MnuEditSep1.Size = new System.Drawing.Size(170, 6);
             // 
             // MnuEditDelete
             // 
             this.MnuEditDelete.Enabled = false;
             this.MnuEditDelete.Name = "MnuEditDelete";
             this.MnuEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete;
-            this.MnuEditDelete.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditDelete.Size = new System.Drawing.Size(173, 22);
             this.MnuEditDelete.Text = "Delete";
             this.MnuEditDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
@@ -572,7 +590,7 @@ namespace SimpleAnnPlayground
             this.MnuEditCopy.Enabled = false;
             this.MnuEditCopy.Name = "MnuEditCopy";
             this.MnuEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.MnuEditCopy.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditCopy.Size = new System.Drawing.Size(173, 22);
             this.MnuEditCopy.Text = "Copy";
             this.MnuEditCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
             // 
@@ -581,7 +599,7 @@ namespace SimpleAnnPlayground
             this.MnuEditCut.Enabled = false;
             this.MnuEditCut.Name = "MnuEditCut";
             this.MnuEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.MnuEditCut.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditCut.Size = new System.Drawing.Size(173, 22);
             this.MnuEditCut.Text = "Cut";
             this.MnuEditCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
@@ -590,14 +608,14 @@ namespace SimpleAnnPlayground
             this.MnuEditPaste.Enabled = false;
             this.MnuEditPaste.Name = "MnuEditPaste";
             this.MnuEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.MnuEditPaste.Size = new System.Drawing.Size(144, 22);
+            this.MnuEditPaste.Size = new System.Drawing.Size(173, 22);
             this.MnuEditPaste.Text = "Paste";
             this.MnuEditPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);
             // 
             // MnuEditSep2
             // 
             this.MnuEditSep2.Name = "MnuEditSep2";
-            this.MnuEditSep2.Size = new System.Drawing.Size(141, 6);
+            this.MnuEditSep2.Size = new System.Drawing.Size(170, 6);
             // 
             // MnuEditDocument
             // 
@@ -1157,5 +1175,7 @@ namespace SimpleAnnPlayground
         private ToolStripSeparator toolStripMenuItem5;
         private ToolStripMenuItem MnuModelParameters;
         private ToolStripLabel LbTotalError;
+        private ToolStripMenuItem MnuContextInitBias;
+        private ToolStripMenuItem MnuContextInitWeight;
     }
 }
