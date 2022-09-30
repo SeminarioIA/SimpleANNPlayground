@@ -325,7 +325,7 @@ namespace SimpleAnnPlayground
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
                 DialogResult selection = ShowSaveDialog();
-                if (selection == DialogResult.OK)
+                if (selection == DialogResult.Yes)
                 {
                     MnuFileSave_Click(sender, e);
                 }
@@ -505,7 +505,7 @@ namespace SimpleAnnPlayground
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
                 DialogResult selection = ShowSaveDialog();
-                if (selection == DialogResult.OK)
+                if (selection == DialogResult.Yes)
                 {
                     MnuFileSave_Click(sender, e);
                 }
@@ -525,7 +525,7 @@ namespace SimpleAnnPlayground
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
                 DialogResult selection = ShowSaveDialog();
-                if (selection == DialogResult.OK)
+                if (selection == DialogResult.Yes)
                 {
                     MnuFileSave_Click(sender, e);
                 }
