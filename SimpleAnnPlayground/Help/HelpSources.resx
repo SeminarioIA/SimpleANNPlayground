@@ -121,11 +121,20 @@
   <data name="Activation" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\Activation.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="ApplyNewWeights" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\ApplyNewWeights.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
   <data name="BiasCorrection" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\BiasCorrection.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="ConnectionsWeights" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\ConnectionsWeights.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="CorrectionValue" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\CorrectionValue.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="ErrorPropagation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>resources\ErrorPropagation.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="Example" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>resources\Example.rtf;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
