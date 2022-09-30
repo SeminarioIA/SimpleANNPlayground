@@ -61,6 +61,102 @@ namespace SimpleAnnPlayground.Help {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Forward pass\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Funci\&apos;f3n de activaci\&apos;f3n de la neurona\cf0\b0\fs22\lang2058\par
+        ///
+        ///\pard\sa200\sl276\slmult1 Una vez que se obtuvo el valor de \b\i Z\b0\i0 , se tiene que pasar por la funci\&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string Activation {
+            get {
+                return ResourceManager.GetString("Activation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Backpropagation\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Aplicar los nuevos pesos y bias\par
+        ///
+        ///\pard\sa200\sl276\slmult1\cf0\b0\fs22\lang2058 Una vez calculados todos los pesos (\b\i w\i0  = \i w&apos;\b0\i0 ) y bias (\b\i b\i0  = \i b&apos; [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ApplyNewWeights {
+            get {
+                return ResourceManager.GetString("ApplyNewWeights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Backpropagation\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Correcci\&apos;f3n de bias de la neurona\par
+        ///
+        ///\pard\sa200\sl276\slmult1\cf0\b0\fs22\lang2058 Para corregir el valor de bias de una neurona de capa intermedia, en su forma ya simp [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string BiasCorrection {
+            get {
+                return ResourceManager.GetString("BiasCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red\b0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Peso de las conexiones de entrada\cf0\b0\fs22\lang2058\par
+        ///
+        ///\pard\sa200\sl276\slmult1 Inmediatamente despues de cargar los valores de entrada pasamos a la siguiente capa de la red y para acumular e [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ConnectionsWeights {
+            get {
+                return ResourceManager.GetString("ConnectionsWeights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Backpropagation\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Valor de correcci\lang2058\&apos;f3n\lang9\par
+        ///
+        ///\pard\sa200\sl276\slmult1\cf0\b0\fs22\lang2058 El valor de referencia para corregir los bias y pesos ligados a la neurona se deriv [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string CorrectionValue {
+            get {
+                return ResourceManager.GetString("CorrectionValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Backpropagation\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Propagacion del error a la capa anterior\par
+        ///
+        ///\pard\sa200\sl276\slmult1\cf0\b0\fs22\lang2058 Para hacer la correcci\&apos;f3n en las capas intermedias en necesario propagar el er [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ErrorPropagation {
+            get {
+                return ResourceManager.GetString("ErrorPropagation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Segoe UI;}{\f1\fnil Segoe UI;}}
         ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
         ///\pard\f0\fs18 Explicacion de ejemplo\f1\par
@@ -70,6 +166,117 @@ namespace SimpleAnnPlayground.Help {
         internal static string Example {
             get {
                 return ResourceManager.GetString("Example", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Forward pass\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Obtenci\lang2058\&apos;f3n de los Datos\cf0\b0\fs22\par
+        ///
+        ///\pard\sa200\sl276\slmult1 Cada dato debe de ser pasado por la red para poder as\&apos;ed obtener el error (\i Fordward pass\i0 ), [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string GetData {
+            get {
+                return ResourceManager.GetString("GetData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Forward pass\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Etiquetas de los datos\cf0\b0\fs22\lang2058\par
+        ///
+        ///\pard\sa200\sl276\slmult1 Al terminar el c\&apos;e1lculo de la salida de todas las neuronas se obtienen los valores de salida de la  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string GetOutputData {
+            get {
+                return ResourceManager.GetString("GetOutputData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Backpropagation\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Correcci\&apos;f3n de bias de la neurona\par
+        ///
+        ///\pard\sa200\sl276\slmult1\cf0\b0\fs22\lang2058 Para corregir el valor de bias de una neurona de salida, en su forma ya simplificada, [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OutputBiasCorrection {
+            get {
+                return ResourceManager.GetString("OutputBiasCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red\b0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Correcci\&apos;f3n de pesos y bias\par
+        ///\cf0\b0\fs22\lang2058 En base al valor de error podemos comenzar a corregir los pesos (\b\i w\b0\i0 ) y bias (\b\i b\b0\i0 ) de la red en la siguiente etapa llamada [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OutputCorrection {
+            get {
+                return ResourceManager.GetString("OutputCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Forward pass\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Error de cada neurona\cf0\b0\fs22\lang2058\par
+        ///
+        ///\pard\sa200\sl276\slmult1 En base a los valores de salida y de etiqueta de cada neurona se puede calcular el error en cada una d [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OutputNeuronError {
+            get {
+                return ResourceManager.GetString("OutputNeuronError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Backpropagation\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Correcci\&apos;f3n de los pesos de cada conexi\&apos;f3n\par
+        ///
+        ///\pard\sa200\sl276\slmult1\cf0\b0\fs22\lang2058 Para corregir el valor de peso de una conexi\&apos;f3n de neurona de salida, en [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string OutputWeightsCorrection {
+            get {
+                return ResourceManager.GetString("OutputWeightsCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Segoe UI;}}
+        ///{\colortbl ;\red0\green77\blue187;}
+        ///{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+        ///\pard\sa200\sl240\slmult1\b\f0\fs28\lang9 Entrenamiento de la red - \i Backpropagation\b0\i0\fs22\par
+        ///
+        ///\pard\sl240\slmult1\cf1\b\fs24 Correcci\&apos;f3n de los pesos de cada conexi\&apos;f3n\par
+        ///
+        ///\pard\sa200\sl276\slmult1\cf0\b0\fs22\lang2058 Para corregir el valor de peso de una conexi\&apos;f3n de neurona de capa inter [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string WeightsCorrection {
+            get {
+                return ResourceManager.GetString("WeightsCorrection", resourceCulture);
             }
         }
     }

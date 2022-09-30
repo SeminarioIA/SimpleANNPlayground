@@ -48,6 +48,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Help\HelpSources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>HelpSources.resx</DependentUpon>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -61,6 +66,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Help\HelpSources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>HelpSources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

@@ -37,6 +37,7 @@
             this.RtbInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RtbInfo.Location = new System.Drawing.Point(0, 0);
             this.RtbInfo.Name = "RtbInfo";
+            this.RtbInfo.ReadOnly = true;
             this.RtbInfo.Size = new System.Drawing.Size(270, 244);
             this.RtbInfo.TabIndex = 0;
             this.RtbInfo.Text = "";
@@ -51,6 +52,8 @@
             this.Name = "FrmDetails";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Operation Details";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmDetails_FormClosing);
+            this.Load += new System.EventHandler(this.FrmDetails_Load);
             this.ResumeLayout(false);
 
         }

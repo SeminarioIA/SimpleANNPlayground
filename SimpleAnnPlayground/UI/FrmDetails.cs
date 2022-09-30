@@ -32,7 +32,6 @@ namespace SimpleAnnPlayground.UI
 
         private void FrmDetails_Load(object sender, EventArgs e)
         {
-            RtbInfo.Rtf = HelpSources.ResourceManager.GetString("Example", CultureInfo.InvariantCulture);
         }
 
         private void FrmDetails_FormClosing(object sender, FormClosingEventArgs e)
