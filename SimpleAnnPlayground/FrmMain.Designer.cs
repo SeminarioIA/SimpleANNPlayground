@@ -100,6 +100,8 @@ namespace SimpleAnnPlayground
             this.MnuModelData = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuModelTraining = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuModelTesting = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuModelParameters = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuExec = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuExecCxStep = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuExecNStep = new System.Windows.Forms.ToolStripMenuItem();
@@ -627,7 +629,9 @@ namespace SimpleAnnPlayground
             this.toolStripMenuItem2,
             this.MnuModelData,
             this.MnuModelTraining,
-            this.MnuModelTesting});
+            this.MnuModelTesting,
+            this.toolStripMenuItem5,
+            this.MnuModelParameters});
             this.MnuModel.Name = "MnuModel";
             this.MnuModel.Size = new System.Drawing.Size(53, 20);
             this.MnuModel.Text = "Model";
@@ -671,6 +675,18 @@ namespace SimpleAnnPlayground
             this.MnuModelTesting.Size = new System.Drawing.Size(158, 22);
             this.MnuModelTesting.Text = "Testing";
             this.MnuModelTesting.Click += new System.EventHandler(this.BtnTest_Click);
+            // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(155, 6);
+            // 
+            // MnuModelParameters
+            // 
+            this.MnuModelParameters.Name = "MnuModelParameters";
+            this.MnuModelParameters.Size = new System.Drawing.Size(158, 22);
+            this.MnuModelParameters.Text = "Parameters";
+            this.MnuModelParameters.Click += new System.EventHandler(this.MnuModelParameters_Click);
             // 
             // MnuExec
             // 
@@ -1138,6 +1154,8 @@ namespace SimpleAnnPlayground
         private ToolStripButton BtnDataStep;
         private ToolStripButton BtnBatchStep;
         private ToolStripMenuItem MnuDebugRtfViewer;
+        private ToolStripSeparator toolStripMenuItem5;
+        private ToolStripMenuItem MnuModelParameters;
         private ToolStripLabel LbTotalError;
     }
 }

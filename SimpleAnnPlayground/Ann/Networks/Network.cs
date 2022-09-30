@@ -23,14 +23,19 @@ namespace SimpleAnnPlayground.Ann.Networks
         }
 
         /// <summary>
+        /// Gets the valid learning rates for the network.
+        /// </summary>
+        public static decimal[] LearningRates { get; } = new decimal[11] { 0.00001m, 0.0001m, 0.001m, 0.003m, 0.01m, 0.03m, 0.1m, 0.3m, 1m, 3m, 10m };
+
+        /// <summary>
         /// Gets the workspace containing the elements to build the network.
         /// </summary>
         public Workspace Workspace { get; }
 
         /// <summary>
-        /// Gets the neural network learning rate.
+        /// Gets or sets the neural network learning rate.
         /// </summary>
-        public decimal LearningRate { get; } = 0.25m;
+        public decimal LearningRate { get; set; } = 0.03m;
 
         /// <summary>
         /// Gets the network graph.

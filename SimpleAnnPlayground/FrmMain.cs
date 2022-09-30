@@ -79,6 +79,7 @@ namespace SimpleAnnPlayground
             { nameof(MnuModelData), new() { "&Data", "&Datos" } },
             { nameof(MnuModelTraining), new() { "&Training", "&Entrenamiento" } },
             { nameof(MnuModelTesting), new() { "Te&sting", "&Prueba" } },
+            { nameof(MnuModelParameters), new() { "&Parameters", "Pará&metros" } },
 
             // Execution menus texts.
             { nameof(MnuExec), new() { "E&xecution", "&Ejecución" } },
@@ -693,10 +694,6 @@ namespace SimpleAnnPlayground
             _workspace.Refresh();
         }
 
-        private void MnuContextNormalize_Click(object? sender, EventArgs e)
-        {
-        }
-
         private void BtnTraining_Click(object sender, EventArgs e)
         {
             MnuFile.Enabled = false;
@@ -825,6 +822,17 @@ namespace SimpleAnnPlayground
             using (FrmDocument frmDocument = new FrmDocument(_workspace.WorkSheet))
             {
                 if (frmDocument.ShowDialog(this) == DialogResult.OK)
+                {
+                    _workspace.Refresh();
+                }
+            }
+        }
+
+        private void MnuModelParameters_Click(object sender, EventArgs e)
+        {
+            using (FrmModel frmModel = new FrmModel(_workspace.Network))
+            {
+                if (frmModel.ShowDialog(this) == DialogResult.OK)
                 {
                     _workspace.Refresh();
                 }
