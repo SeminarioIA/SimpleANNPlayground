@@ -23,7 +23,7 @@ namespace SimpleAnnPlayground.Debugging
             InitializeComponent();
 
             _fileManager = new TextFileManager();
-            _fileManager.AddFileFormat(".rtf", "Rich Text Format");
+            _fileManager.AddFileFormat("rtf", "Rich Text Format");
         }
 
         private void FrmRtbViewer_Load(object sender, EventArgs e)

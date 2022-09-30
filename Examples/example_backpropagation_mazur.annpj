@@ -1,0 +1,144 @@
+{
+  "WorkSheet": {
+    "Size": "710, 246"
+  },
+  "Objects": [
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Input",
+      "Location": "-137, -48",
+      "Id": 0,
+      "InitBias": 0.0,
+      "Activation": null
+    },
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Input",
+      "Location": "-136, 48",
+      "Id": 1,
+      "InitBias": 0.0,
+      "Activation": null
+    },
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Internal",
+      "Location": "-7, -50",
+      "Id": 2,
+      "InitBias": 0.35,
+      "Activation": "Sigmoid"
+    },
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Internal",
+      "Location": "-7, 47",
+      "Id": 3,
+      "InitBias": 0.35,
+      "Activation": "Sigmoid"
+    },
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Output",
+      "Location": "115, 46",
+      "Id": 5,
+      "InitBias": 0.6,
+      "Activation": "Sigmoid"
+    },
+    {
+      "Type": "SimpleAnnPlayground.Ann.Neurons.Output",
+      "Location": "116, -50",
+      "Id": 14,
+      "InitBias": 0.6,
+      "Activation": "Sigmoid"
+    }
+  ],
+  "Connections": [
+    {
+      "Source": "1, 0",
+      "Destination": "2, 0",
+      "InitWeight": 0.2,
+      "Id": 15
+    },
+    {
+      "Source": "2, 0",
+      "Destination": "5, 0",
+      "InitWeight": 0.5,
+      "Id": 16
+    },
+    {
+      "Source": "3, 0",
+      "Destination": "5, 0",
+      "InitWeight": 0.55,
+      "Id": 17
+    },
+    {
+      "Source": "1, 0",
+      "Destination": "3, 0",
+      "InitWeight": 0.3,
+      "Id": 18
+    },
+    {
+      "Source": "0, 0",
+      "Destination": "3, 0",
+      "InitWeight": 0.25,
+      "Id": 19
+    },
+    {
+      "Source": "0, 0",
+      "Destination": "2, 0",
+      "InitWeight": 0.15,
+      "Id": 20
+    },
+    {
+      "Source": "3, 0",
+      "Destination": "14, 0",
+      "InitWeight": 0.45,
+      "Id": 21
+    },
+    {
+      "Source": "2, 0",
+      "Destination": "14, 0",
+      "InitWeight": 0.4,
+      "Id": 22
+    }
+  ],
+  "DataTable": {
+    "Training": 80,
+    "TrainingCount": 1,
+    "Labels": [
+      {
+        "Text": "x1",
+        "DataType": 0
+      },
+      {
+        "Text": "x2",
+        "DataType": 0
+      },
+      {
+        "Text": "y1",
+        "DataType": 1
+      },
+      {
+        "Text": "y2",
+        "DataType": 1
+      }
+    ],
+    "RegistersCSV": "1,0.05,0.1,0.01,0.99"
+  },
+  "DataLinks": [
+    {
+      "Id": 0,
+      "Label": "x1"
+    },
+    {
+      "Id": 1,
+      "Label": "x2"
+    },
+    {
+      "Id": 5,
+      "Label": "y2"
+    },
+    {
+      "Id": 14,
+      "Label": "y1"
+    }
+  ],
+  "Parameters": {
+    "LearningRate": 0.5,
+    "BatchSize": 1
+  }
+}

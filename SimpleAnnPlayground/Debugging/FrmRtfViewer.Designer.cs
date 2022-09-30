@@ -78,7 +78,6 @@ namespace SimpleAnnPlayground.Debugging
             this.RtbText.Size = new System.Drawing.Size(602, 180);
             this.RtbText.TabIndex = 0;
             this.RtbText.Text = "";
-            this.RtbText.WordWrap = false;
             this.RtbText.TextChanged += new System.EventHandler(this.RtbText_TextChanged);
             // 
             // TbViewer

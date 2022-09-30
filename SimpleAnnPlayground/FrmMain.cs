@@ -713,8 +713,9 @@ namespace SimpleAnnPlayground
             if (_workspace.Network.Execution is null) throw new InvalidOperationException();
             _workspace.Network.Execution.MetricsUpdated += Execution_MetricsUpdated;
             LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
+            _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
             LbSimulationPhase.Visible = true;
-            /*_frmDetails.Show(this);*/
+            _frmDetails.Show(this);
         }
 
         private void Execution_MetricsUpdated(object? sender, Ann.Networks.MetricsUpdatedEventArgs e)
@@ -756,38 +757,48 @@ namespace SimpleAnnPlayground
             LbTotalError.Visible = false;
             _workspace.Network.Stop();
             _workspace.SetEditable();
-            _frmDetails.Hide();
             LbSimulationPhase.Visible = false;
+            if (_frmDetails.Visible) _frmDetails.Hide();
         }
 
         private void BtnRun_Click(object sender, EventArgs e)
         {
-            _workspace.Network.Execution?.Run();
-            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
+            _workspace.Network.Execution.Run();
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
+            _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
         }
 
         private void BtnCxStep_Click(object sender, EventArgs e)
         {
-            _workspace.Network.Execution?.StepIntoCx();
-            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
+            _workspace.Network.Execution.StepIntoCx();
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
+            _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
         }
 
         private void BtnNeuronStep_Click(object sender, EventArgs e)
         {
-            _workspace.Network.Execution?.StepIntoNeuron();
-            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
+            _workspace.Network.Execution.StepIntoNeuron();
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
+            _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
         }
 
         private void BtnLayerStep_Click(object sender, EventArgs e)
         {
-            _workspace.Network.Execution?.StepIntoLayer();
-            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
+            _workspace.Network.Execution.StepIntoLayer();
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
+            _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
         }
 
         private void BtnDataStep_Click(object sender, EventArgs e)
         {
-            _workspace.Network.Execution?.StepIntoData();
-            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
+            _workspace.Network.Execution.StepIntoData();
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
+            _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
         }
 
         private void BtnBatchStep_Click(object sender, EventArgs e)
