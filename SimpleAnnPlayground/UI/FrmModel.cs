@@ -29,6 +29,13 @@ namespace SimpleAnnPlayground.UI
             TkRate.Value = Network.LearningRates.ToList().IndexOf(_network.LearningRate);
             TbRate.ReadOnly = TkRate.Value != -1;
             TbRate.Text = _network.LearningRate.ToString();
+            TkBatch.Value = _network.BatchSize;
+            TbBatch.Text = _network.BatchSize.ToString();
+        }
+
+        private void TkBatch_ValueChanged(object sender, EventArgs e)
+        {
+            TbBatch.Text = TkBatch.Value.ToString();
         }
 
         private void TkRate_ValueChanged(object sender, EventArgs e)
@@ -48,6 +55,7 @@ namespace SimpleAnnPlayground.UI
         private void BtnApply_Click(object sender, EventArgs e)
         {
             _network.LearningRate = decimal.Parse(TbRate.Text);
+            _network.BatchSize = TkBatch.Value;
         }
 
         private void TbRate_KeyPress(object sender, KeyPressEventArgs e)

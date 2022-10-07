@@ -44,6 +44,11 @@ namespace SimpleAnnPlayground.Ann.Networks
         OutputNeuronError,
 
         /// <summary>
+        /// The network obtains the correction value for the output.
+        /// </summary>
+        OutputCorrection,
+
+        /// <summary>
         /// The network calcs the new bias for the neurons.
         /// </summary>
         BiasCorrection,
@@ -72,6 +77,11 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// The network has completed an epoch.
         /// </summary>
         EpochDone,
+
+        /// <summary>
+        /// The network registers a new test result.
+        /// </summary>
+        RegisterResult,
     }
 
     /// <summary>
@@ -115,9 +125,9 @@ namespace SimpleAnnPlayground.Ann.Networks
     /// </summary>
     internal class Execution
     {
-        private readonly IEnumerator<DataRegister> _register;
-        private IEnumerator<Layer> _layer;
-        private IEnumerator<Node> _node;
+        private IEnumerator<DataRegister>? _register;
+        private IEnumerator<Layer>? _layer;
+        private IEnumerator<Node>? _node;
         private IEnumerator<Link>? _link;
 
         /// <summary>
@@ -127,13 +137,81 @@ namespace SimpleAnnPlayground.Ann.Networks
         public Execution(Network network)
         {
             Network = network;
-            Data = Network.Workspace.DataTable;
             Phase = ExecPhase.FetchData;
+        }
+
+        /// <summary>
+        /// Ocurrs when a general metrics is updated.
+        /// </summary>
+        public event EventHandler<MetricsUpdatedEventArgs>? MetricsUpdated;
+
+        /// <summary>
+        /// Ocurs when a training epoch has been completed.
+        /// </summary>
+        public event EventHandler? EpochDone;
+
+        /// <summary>
+        /// Ocurs when the network obtains a new test result.
+        /// </summary>
+        public event EventHandler<GotTestResultEventArgs>? GotTestResult;
+
+        /// <summary>
+        /// Ocurs when all the test registers have been passed for the network.
+        /// </summary>
+        public event EventHandler? TestDone;
+
+        /// <summary>
+        /// Gets the network to execute.
+        /// </summary>
+        public Network Network { get; }
+
+        /// <summary>
+        /// Gets the data to process in the network.
+        /// </summary>
+        public DataTable Data => Network.Workspace.DataTable;
+
+        /// <summary>
+        /// Gets the current execution phase.
+        /// </summary>
+        public ExecPhase Phase { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the execution selected <see cref="SubGraph"/> to show the details.
+        /// </summary>
+        public SubGraph? SubGraph { get; set; }
+
+        /// <summary>
+        /// Gets the current epoch number.
+        /// </summary>
+        public int Epoch { get; private set; }
+
+        /// <summary>
+        /// Gets the current batch number.
+        /// </summary>
+        public int Batch { get; private set; }
+
+        /// <summary>
+        /// Gets the current register number.
+        /// </summary>
+        public int Register { get; private set; }
+
+        /// <summary>
+        /// Prepares the network for execution.
+        /// </summary>
+        public void Start()
+        {
+            if (Network.Graph is null) throw new InvalidOperationException("Invalid Graph value.");
             if (!Network.Workspace.ReadOnly) throw new InvalidOperationException("The workspace should be readonly.");
-            if (!Network.BuildResult || Network.Graph == null) throw new InvalidOperationException("The network should built without errors.");
+            if (!Network.BuildResult) throw new InvalidOperationException("The network should built without errors.");
 
             // Select the first register.
-            _register = Data.Registers.GetEnumerator();
+            _register = Network.Mode switch
+            {
+                NetworkMode.Training => Data.GetTrainingEnumerator(),
+                NetworkMode.Testing => Data.GetTestingEnumerator(),
+                _ => throw new InvalidOperationException()
+            };
+
             if (!_register.MoveNext())
             {
                 throw new InvalidOperationException("Input data does not contains registers.");
@@ -153,52 +231,35 @@ namespace SimpleAnnPlayground.Ann.Networks
             {
                 throw new InvalidOperationException("The network does not have layers.");
             }
-        }
-
-        /// <summary>
-        /// Ocurrs when a general metrics is updated.
-        /// </summary>
-        public event EventHandler<MetricsUpdatedEventArgs>? MetricsUpdated;
-
-        /// <summary>
-        /// Gets the network to execute.
-        /// </summary>
-        public Network Network { get; }
-
-        /// <summary>
-        /// Gets the data to process in the network.
-        /// </summary>
-        public DataTable Data { get; }
-
-        /// <summary>
-        /// Gets the current execution phase.
-        /// </summary>
-        public ExecPhase Phase { get; private set; }
-
-        /// <summary>
-        /// Prepares the network for execution.
-        /// </summary>
-        public void Start()
-        {
-            if (Network.Graph is null) throw new InvalidOperationException("Invalid Graph value.");
 
             // First phase is to get the data from the table.
             Phase = ExecPhase.GetData;
 
-            // Init all the bias values
-            foreach (var node in Network.Graph.Nodes)
+            if (Network.Mode == NetworkMode.Training)
             {
-                if (node.Neuron is not Input) node.Neuron.Bias = node.Neuron.InitBias;
-            }
+                // Init all the bias values
+                foreach (var node in Network.Graph.Nodes)
+                {
+                    if (node.Neuron is not Input) node.Neuron.Bias = node.Neuron.InitBias;
+                }
 
-            // Init the connections with the initialization weights.
-            foreach (var link in Network.Graph.Links)
-            {
-                link.Connection.Weight = link.Connection.InitWeight;
+                // Init the connections with the initialization weights.
+                foreach (var link in Network.Graph.Links)
+                {
+                    link.Connection.Weight = link.Connection.InitWeight;
+                    link.Connection.WeightCorrection = null;
+                }
             }
 
             // Select the register in the table.
             Network.Workspace.SelectRegister(_register.Current);
+            if (_register.Current.Tag is DataGridViewRow row)
+            {
+                Register = row.Index - 1;
+                Batch = 0;
+                Epoch = 0;
+                OnMetricsUpdated();
+            }
 
             // Set execution mark for the nodes in the first layer.
             foreach (var node in _layer.Current.Nodes)
@@ -243,6 +304,8 @@ namespace SimpleAnnPlayground.Ann.Networks
                 link.Connection.Weight = null;
                 link.Connection.WeightCorrection = null;
             }
+
+            SubGraph = null;
         }
 
         /// <summary>
@@ -254,6 +317,11 @@ namespace SimpleAnnPlayground.Ann.Networks
             if (_link?.Current is not null)
             {
                 _link.Current.Connection.Paint(graphics);
+            }
+
+            if (SubGraph is not null)
+            {
+                SubGraph.Node.Neuron.PaintOutput(graphics, SubGraph);
             }
         }
 
@@ -292,7 +360,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             {
                 stepType = OneStep();
             }
-            while (stepType is StepType.Connection);
+            while (stepType is < StepType.Neuron);
 
             Network.Workspace.Refresh();
         }
@@ -307,7 +375,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             {
                 stepType = OneStep();
             }
-            while (stepType is StepType.Connection or StepType.Neuron);
+            while (stepType is < StepType.Layer);
 
             Network.Workspace.Refresh();
         }
@@ -322,14 +390,44 @@ namespace SimpleAnnPlayground.Ann.Networks
             {
                 stepType = OneStep();
             }
-            while (stepType is StepType.Connection or StepType.Neuron or StepType.Layer);
+            while (stepType is < StepType.DataRegister);
+
+            Network.Workspace.Refresh();
+        }
+
+        /// <summary>
+        /// Executes one Batch step in the network.
+        /// </summary>
+        public void StepIntoBatch()
+        {
+            StepType stepType;
+            do
+            {
+                stepType = OneStep();
+            }
+            while (stepType is < StepType.DataBatch);
+
+            Network.Workspace.Refresh();
+        }
+
+        /// <summary>
+        /// Executes one Batch step in the network.
+        /// </summary>
+        public void StepIntoEpoch()
+        {
+            StepType stepType;
+            do
+            {
+                stepType = OneStep();
+            }
+            while (stepType is < StepType.Epoch);
 
             Network.Workspace.Refresh();
         }
 
         private StepType OneStep()
         {
-            if (Network.Graph is null) throw new InvalidOperationException();
+            if (Network.Graph is null || _node is null || _layer is null || _register is null) throw new InvalidOperationException();
             StepType stepType = StepType.Connection;
 
             switch (Phase)
@@ -348,7 +446,6 @@ namespace SimpleAnnPlayground.Ann.Networks
                         node.Neuron.Z = null;
                         node.Neuron.A = null;
                         node.Neuron.Error = null;
-                        node.Neuron.Correction = null;
                     }
 
                     // Select all the nodes in the input layer.
@@ -360,12 +457,29 @@ namespace SimpleAnnPlayground.Ann.Networks
                     if (!_register.MoveNext())
                     {
                         stepType = StepType.Epoch;
+                        if (Network.Mode == NetworkMode.Training) OnEpochDone();
+                        else OnTestDone();
                         Phase = ExecPhase.EpochDone;
+                        Epoch++;
+                        Batch = 0;
+                        OnMetricsUpdated();
                         return stepType;
+                    }
+                    else if ((Register + 1) % Network.BatchSize == 0)
+                    {
+                        stepType = StepType.DataBatch;
+                        Batch++;
+                        OnMetricsUpdated();
                     }
 
                     // Select the current register in the table.
                     Network.Workspace.SelectRegister(_register.Current);
+                    if (_register.Current.Tag is DataGridViewRow row)
+                    {
+                        Register = row.Index - 1;
+                        OnMetricsUpdated();
+                    }
+
                     Phase = ExecPhase.GetData;
                     break;
                 }
@@ -509,7 +623,13 @@ namespace SimpleAnnPlayground.Ann.Networks
                     _node.Current.Neuron.Error = 0m;
 
                     // Move to the next phase.
-                    Phase = ExecPhase.OutputNeuronError;
+                    Phase = Network.Mode switch
+                    {
+                        NetworkMode.Training => ExecPhase.OutputNeuronError,
+                        NetworkMode.Testing => ExecPhase.RegisterResult,
+                        _ => throw new InvalidOperationException()
+                    };
+
                     stepType = StepType.Layer;
                     break;
                 }
@@ -531,6 +651,24 @@ namespace SimpleAnnPlayground.Ann.Networks
                     // Set the neuron cost.
                     output.Error = part1 * part2;
 
+                    // Move to the next phase.
+                    Phase = ExecPhase.OutputCorrection;
+
+                    break;
+                }
+
+                case ExecPhase.OutputCorrection:
+                {
+                    // Set the correction value to the error.
+                    if (_node.Current.Neuron.Correction is null)
+                    {
+                        _node.Current.Neuron.Correction = _node.Current.Neuron.Error;
+                    }
+                    else
+                    {
+                        _node.Current.Neuron.Correction += _node.Current.Neuron.Error;
+                    }
+
                     // Remove the node execution mark.
                     _node.Current.Neuron.ClearStateFlag(Component.State.Execution);
 
@@ -539,6 +677,9 @@ namespace SimpleAnnPlayground.Ann.Networks
                     {
                         // Set the neuron error to 0.
                         _node.Current.Neuron.Error = 0m;
+
+                        // Move to the next phase.
+                        Phase = ExecPhase.OutputNeuronError;
                     }
                     else
                     {
@@ -555,12 +696,22 @@ namespace SimpleAnnPlayground.Ann.Networks
                         // Update the error.
                         OnMetricsUpdated(totalMse);
 
-                        // Move to the first node again.
-                        _node.Reset();
-                        if (!_node.MoveNext()) throw new InvalidOperationException("Expected node in layer.");
+                        // Check if this is the last batch register.
+                        if ((Register + 1) % Network.BatchSize == 0)
+                        {
+                            // Move to the first node again.
+                            _node.Reset();
+                            if (!_node.MoveNext()) throw new InvalidOperationException("Expected node in layer.");
 
-                        // Move to the next phase.
-                        Phase = ExecPhase.BiasCorrection;
+                            // Move to the next phase.
+                            Phase = ExecPhase.BiasCorrection;
+                        }
+                        else
+                        {
+                            // Move to the next phase.
+                            Phase = ExecPhase.FetchData;
+                            stepType = OneStep();
+                        }
                     }
 
                     // Set the node execution mark.
@@ -575,8 +726,8 @@ namespace SimpleAnnPlayground.Ann.Networks
                     decimal part12;
                     if (_node.Current.Neuron is Output output)
                     {
-                        if (output.Error is null) throw new InvalidOperationException();
-                        part12 = output.Error.Value;
+                        if (output.Correction is null) throw new InvalidOperationException();
+                        part12 = output.Correction.Value / Network.BatchSize;
                     }
                     else if (_node.Current.Neuron is Internal @internal)
                     {
@@ -611,8 +762,8 @@ namespace SimpleAnnPlayground.Ann.Networks
                     decimal part12, part3;
                     if (_node.Current.Neuron is Output output)
                     {
-                        if (output.Error is null) throw new InvalidOperationException();
-                        part12 = output.Error.Value;
+                        if (output.Correction is null) throw new InvalidOperationException();
+                        part12 = output.Correction.Value / Network.BatchSize;
                     }
                     else if (_node.Current.Neuron is Internal @internal)
                     {
@@ -786,11 +937,49 @@ namespace SimpleAnnPlayground.Ann.Networks
                     }
 
                     // Remove Total MSE label.
-                    OnMetricsUpdated(null);
+                    OnMetricsUpdated();
 
                     // Move to the next phase.
                     Phase = ExecPhase.FetchData;
                     stepType = OneStep();
+                    break;
+                }
+
+                case ExecPhase.RegisterResult:
+                {
+                    if (_node.Current.Neuron is Output output && output.Y is not null && output.A is not null)
+                    {
+                        OnGotTestResult(output.Y.Value, output.A.Value);
+                        Phase = ExecPhase.FetchData;
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException();
+                    }
+
+                    break;
+                }
+
+                case ExecPhase.EpochDone:
+                {
+                    _register.Reset();
+                    if (_register.MoveNext())
+                    {
+                        Network.Workspace.SelectRegister(_register.Current);
+                        if (_register.Current.Tag is DataGridViewRow row)
+                        {
+                            Register = row.Index - 1;
+                            OnMetricsUpdated();
+                        }
+
+                        Phase = ExecPhase.GetData;
+                        _ = OneStep();
+                    }
+                    else
+                    {
+                        throw new InvalidOperationException();
+                    }
+
                     break;
                 }
 
@@ -803,6 +992,8 @@ namespace SimpleAnnPlayground.Ann.Networks
 
         private void InitializeNode()
         {
+            if (_node is null) throw new InvalidOperationException();
+
             // Set the execution mark for the node.
             _node.Current.Neuron.SetStateFlag(Component.State.Execution);
 
@@ -819,6 +1010,8 @@ namespace SimpleAnnPlayground.Ann.Networks
 
         private void InitializeLayer()
         {
+            if (_layer is null) throw new InvalidOperationException();
+
             // Get the nodes enumerator for the layer.
             _node = _layer.Current.Nodes.GetEnumerator();
 
@@ -829,10 +1022,25 @@ namespace SimpleAnnPlayground.Ann.Networks
             InitializeNode();
         }
 
-        private void OnMetricsUpdated(decimal? error)
+        private void OnMetricsUpdated(decimal? error = null)
         {
-            MetricsUpdatedEventArgs args = new MetricsUpdatedEventArgs(error);
+            MetricsUpdatedEventArgs args = new MetricsUpdatedEventArgs(Batch, Epoch, error);
             MetricsUpdated?.Invoke(this, args);
+        }
+
+        private void OnEpochDone()
+        {
+            EpochDone?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnGotTestResult(decimal label, decimal output)
+        {
+            GotTestResult?.Invoke(this, new GotTestResultEventArgs(label, output));
+        }
+
+        private void OnTestDone()
+        {
+            TestDone?.Invoke(this, EventArgs.Empty);
         }
     }
 }

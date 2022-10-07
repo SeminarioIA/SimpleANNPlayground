@@ -7,23 +7,23 @@ namespace SimpleAnnPlayground.Data
     /// <summary>
     /// Represents a value from a table.
     /// </summary>
-    internal class DataValue
+    internal abstract class DataValue
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DataValue"/> class.
         /// </summary>
-        /// <param name="value">The value.</param>
-        public DataValue(string value)
+        /// <param name="value">The data value.</param>
+        public DataValue(object value)
         {
-            Text = value;
+            Value = value;
         }
 
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
-        public string Text { get; set; }
+        public object Value { get; set; }
 
         /// <inheritdoc/>
-        public override string ToString() => Text;
+        public override string ToString() => Value?.ToString() ?? string.Empty;
     }
 }

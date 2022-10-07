@@ -2,8 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
-using SimpleAnnPlayground.Ann.Activation;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 
 namespace SimpleAnnPlayground.Utils
@@ -74,6 +74,88 @@ namespace SimpleAnnPlayground.Utils
             {
                 yield return cell.Value?.ToString() ?? string.Empty;
             }
+        }
+
+        /// <summary>
+        /// Gets an integer random number in the passed range.
+        /// </summary>
+        /// <param name="start">The range start, inclusive.</param>
+        /// <param name="end">The range end, exclusive.</param>
+        /// <returns>The generated random number.</returns>
+        public static int GetRandom(int start, int end) => RandomNumberGenerator.GetInt32(start, end);
+
+        /// <summary>
+        /// Gets a decimal random number in the passed range.
+        /// </summary>
+        /// <param name="start">The range start, inclusive.</param>
+        /// <param name="end">The range end, exclusive.</param>
+        /// <param name="digits">The decimal digits.</param>
+        /// <returns>The generated random number.</returns>
+        public static double GetRandom(double start, double end, int digits)
+        {
+            int decimalSeed = (int)Math.Pow(10, digits);
+            int startSeed = (int)(start * decimalSeed);
+            int endSeed = (int)(end * decimalSeed);
+            int random = RandomNumberGenerator.GetInt32(startSeed, endSeed);
+            return (double)random / decimalSeed;
+        }
+
+        /// <summary>
+        /// Gets a decimal random number in the passed range.
+        /// </summary>
+        /// <param name="start">The range start, inclusive.</param>
+        /// <param name="end">The range end, exclusive.</param>
+        /// <param name="digits">The decimal digits.</param>
+        /// <returns>The generated random number.</returns>
+        public static decimal GetRandom(decimal start, decimal end, int digits)
+        {
+            int decimalSeed = (int)Math.Pow(10, digits);
+            int startSeed = (int)(start * decimalSeed);
+            int endSeed = (int)(end * decimalSeed);
+            int random = RandomNumberGenerator.GetInt32(startSeed, endSeed);
+            return (decimal)random / decimalSeed;
+        }
+
+        /// <summary>
+        /// Gets a decimal random number in the passed range.
+        /// </summary>
+        /// <param name="start">The range start, inclusive.</param>
+        /// <param name="end">The range end, exclusive.</param>
+        /// <param name="digits">The decimal digits.</param>
+        /// <returns>The generated random number.</returns>
+        public static double GetRandom(int start, int end, int digits)
+        {
+            int decimalSeed = (int)Math.Pow(10, digits);
+            int startSeed = start * decimalSeed;
+            int endSeed = end * decimalSeed;
+            int random = RandomNumberGenerator.GetInt32(startSeed, endSeed);
+            return (double)random / decimalSeed;
+        }
+
+        /// <summary>
+        /// Converts a polar coordinate to a rectangle coordinate.
+        /// </summary>
+        /// <param name="radio">The radio from the origin.</param>
+        /// <param name="angle">The angle from x axis.</param>
+        /// <returns>The equivalent coordinates pair.</returns>
+        public static (double, double) ToRect(double radio, double angle)
+        {
+            double x = radio * Math.Cos(angle);
+            double y = radio * Math.Sin(angle);
+            return (x, y);
+        }
+
+        /// <summary>
+        /// Converts a polar coordinate to a rectangle coordinate.
+        /// </summary>
+        /// <param name="radio">The radio from the origin.</param>
+        /// <param name="angle">The angle from x axis.</param>
+        /// <returns>The equivalent coordinates pair.</returns>
+        public static (decimal, decimal) ToRect(decimal radio, decimal angle)
+        {
+            decimal x = radio * (decimal)Math.Cos((double)angle);
+            decimal y = radio * (decimal)Math.Sin((double)angle);
+            return (x, y);
         }
     }
 }

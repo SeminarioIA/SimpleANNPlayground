@@ -33,6 +33,11 @@ namespace SimpleAnnPlayground.Ann.Networks
         public Collection<Node> Nodes { get; }
 
         /// <summary>
+        /// Gets the previous Layer.
+        /// </summary>
+        public Layer? Previous { get; private set; }
+
+        /// <summary>
         /// Gets the next Layer.
         /// </summary>
         public Layer? Next { get; private set; }
@@ -48,6 +53,7 @@ namespace SimpleAnnPlayground.Ann.Networks
         internal void Expand()
         {
             var nextLayer = new Layer(Graph);
+            nextLayer.Previous = this;
             Next = nextLayer;
             Graph.Layers.Add(nextLayer);
             foreach (var node in Nodes)

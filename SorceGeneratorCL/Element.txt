@@ -41,7 +41,7 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Gets an array containing the types of Elements.
         /// </summary>
-        internal static Type[] ElementsTypes => new Type[]
+        internal static Type[] ElementsTypes { get; } = new Type[]
         {
             typeof(Triangle),
             typeof(Ellipse),

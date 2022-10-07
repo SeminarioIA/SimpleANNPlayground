@@ -158,11 +158,11 @@ namespace SourceGenerator.Generator.Types
         /// <param name="name">The <see cref="PropertySource"/> name.</param>
         /// <param name="value">The property initialization value.</param>
         /// <returns>The current <see cref="ClassSource"/>.</returns>
-        public ClassSource AddProperty(PropertyAccess access, PropertyScope scope, string type, string name, string value = "")
+        public PropertySource AddProperty(PropertyAccess access, PropertyScope scope, string type, string name, string value = "")
         {
-            var property = new PropertySource(this, access, scope, type, name, value);
+            var property = new PropertySource(this, access, scope, type, name, value, true);
             Members.Add(property);
-            return this;
+            return property;
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace SourceGenerator.Generator.Types
         /// <returns>The current <see cref="ClassSource"/>.</returns>
         public PropertySource AddPropertyWithValue(PropertyAccess access, PropertyScope scope, string type, string name, string value = "")
         {
-            var property = new PropertySource(this, access, scope, type, name, value);
+            var property = new PropertySource(this, access, scope, type, name, value, false);
             Members.Add(property);
             return property;
         }

@@ -276,6 +276,16 @@ namespace SimpleAnnPlayground.Graphical.Environment
         }
 
         /// <summary>
+        /// Sets the workspace data table.
+        /// </summary>
+        /// <param name="dataTable">The new data table.</param>
+        internal void SetDataTable(DataTable dataTable)
+        {
+            DataTable = dataTable;
+            DataTableChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
         /// Selects a table register.
         /// </summary>
         /// <param name="register">The register to select.</param>

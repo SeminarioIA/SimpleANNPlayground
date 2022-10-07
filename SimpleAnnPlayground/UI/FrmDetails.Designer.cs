@@ -37,7 +37,8 @@
             this.RtbInfo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RtbInfo.Location = new System.Drawing.Point(0, 0);
             this.RtbInfo.Name = "RtbInfo";
-            this.RtbInfo.Size = new System.Drawing.Size(270, 244);
+            this.RtbInfo.ReadOnly = true;
+            this.RtbInfo.Size = new System.Drawing.Size(397, 243);
             this.RtbInfo.TabIndex = 0;
             this.RtbInfo.Text = "";
             // 
@@ -45,11 +46,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 244);
+            this.ClientSize = new System.Drawing.Size(397, 243);
             this.Controls.Add(this.RtbInfo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "FrmDetails";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Operation Details";
             this.ResumeLayout(false);
 

@@ -92,13 +92,15 @@ namespace SourceGenerator.Generator.Members.Properties
         /// <param name="name">The property name.</param>
         /// <param name="type">The property type.</param>
         /// <param name="value">The property initialization value.</param>
-        public PropertySource(SourceSnippet parent, PropertyAccess access, PropertyScope scope, string type, string name, string value = "")
+        /// <param name="expresionBody">The property is implemented in the expression body form.</param>
+        public PropertySource(SourceSnippet parent, PropertyAccess access, PropertyScope scope, string type, string name, string value = "", bool expresionBody = true)
             : base(parent, name)
         {
             Access = access;
             Scope = scope;
             Type = type;
             Value = new FieldValue(this, value);
+            ExpressionBodyValue = expresionBody;
         }
 
         /// <summary>
@@ -120,6 +122,11 @@ namespace SourceGenerator.Generator.Members.Properties
         /// Gets the <see cref="PropertySource"/> value.
         /// </summary>
         public FieldValue Value { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether if the property is implemented as expression body.
+        /// </summary>
+        public bool ExpressionBodyValue { get; private set; }
 
         /// <summary>
         /// Adds the description to the last member added to the class source codes.
@@ -176,7 +183,9 @@ namespace SourceGenerator.Generator.Members.Properties
                     }
                     else
                     {
-                        _ = source.AppendLine("=> " + Value.Value);
+                        _ = ExpressionBodyValue
+                            ? source.AppendLine("=> " + Value.Value)
+                            : source.AppendLine("{ get; } = " + Value.Value + (Value.Code.Sections.Count > 0 ? string.Empty : ";"));
 
                         if (Value.Code.Sections.Count > 0)
                         {

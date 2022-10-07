@@ -68,10 +68,10 @@ namespace SimpleAnnPlayground.Utils.DataView
         public void Shuffle()
         {
             Viewer.CellValueChanged -= EditableViewer_CellValueChanged;
-            int randomColumnIndex = Viewer.Columns.Add("Random numbers", "Randoms:");
+            int randomColumnIndex = Viewer.Columns.Add("cnRandom", "Randoms:");
             foreach (DataGridViewRow temporalRow in Viewer.Rows)
             {
-                object randomNumber = RandomNumberGenerator.GetInt32(1, Viewer.RowCount);
+                int randomNumber = RandomNumberGenerator.GetInt32(1, Viewer.RowCount);
                 Viewer.Rows[temporalRow.Index].Cells[randomColumnIndex].Value = randomNumber;
             }
 
