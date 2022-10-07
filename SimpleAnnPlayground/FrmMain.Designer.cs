@@ -42,7 +42,11 @@ namespace SimpleAnnPlayground
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.TspEdition = new System.Windows.Forms.ToolStrip();
-            this.BtnNew = new System.Windows.Forms.ToolStripButton();
+            this.BtnNew = new System.Windows.Forms.ToolStripDropDownButton();
+            this.BtnNewEmpty = new System.Windows.Forms.ToolStripMenuItem();
+            this.BtnNewTemplate = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.BtnNewExample = new System.Windows.Forms.ToolStripMenuItem();
             this.BtnOpen = new System.Windows.Forms.ToolStripButton();
             this.BtnSave = new System.Windows.Forms.ToolStripButton();
             this.TspEditionSep1 = new System.Windows.Forms.ToolStripSeparator();
@@ -56,8 +60,6 @@ namespace SimpleAnnPlayground
             this.BtnData = new System.Windows.Forms.ToolStripButton();
             this.BtnTraining = new System.Windows.Forms.ToolStripButton();
             this.BtnTest = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.BtnTemplate = new System.Windows.Forms.ToolStripButton();
             this.SspStatus = new System.Windows.Forms.StatusStrip();
             this.LblMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
             this.LbSimulationPhase = new System.Windows.Forms.ToolStripStatusLabel();
@@ -77,6 +79,10 @@ namespace SimpleAnnPlayground
             this.MenuStrip = new System.Windows.Forms.MenuStrip();
             this.MnuFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuFileNew = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuFileNewEmpty = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuFileNewTemplate = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuFileNewExample = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuFileSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuFileSave = new System.Windows.Forms.ToolStripMenuItem();
@@ -106,9 +112,13 @@ namespace SimpleAnnPlayground
             this.MnuModelParameters = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuExec = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuExecCxStep = new System.Windows.Forms.ToolStripMenuItem();
-            this.MnuExecNStep = new System.Windows.Forms.ToolStripMenuItem();
-            this.MnuExecLStep = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuExecNeuronStep = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuExecLayerStep = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuExecDataStep = new System.Windows.Forms.ToolStripMenuItem();
+            this.MnuExecBatchStep = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MnuExecNewEpoch = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
             this.MnuExecRun = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuExecStop = new System.Windows.Forms.ToolStripMenuItem();
             this.MnuTools = new System.Windows.Forms.ToolStripMenuItem();
@@ -128,15 +138,25 @@ namespace SimpleAnnPlayground
             this.LbZoomIn = new System.Windows.Forms.Label();
             this.TspExecution = new System.Windows.Forms.ToolStrip();
             this.BtnExecData = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.SepExec1 = new System.Windows.Forms.ToolStripSeparator();
             this.BtnStop = new System.Windows.Forms.ToolStripButton();
             this.BtnRun = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.SepExec2 = new System.Windows.Forms.ToolStripSeparator();
             this.BtnCxStep = new System.Windows.Forms.ToolStripButton();
             this.BtnNeuronStep = new System.Windows.Forms.ToolStripButton();
             this.BtnLayerStep = new System.Windows.Forms.ToolStripButton();
+            this.SepExec3 = new System.Windows.Forms.ToolStripSeparator();
             this.BtnDataStep = new System.Windows.Forms.ToolStripButton();
+            this.LbData = new System.Windows.Forms.ToolStripLabel();
+            this.SepExec4 = new System.Windows.Forms.ToolStripSeparator();
             this.BtnBatchStep = new System.Windows.Forms.ToolStripButton();
+            this.LbBatch = new System.Windows.Forms.ToolStripLabel();
+            this.SepExec5 = new System.Windows.Forms.ToolStripSeparator();
+            this.BtnRunEpoch = new System.Windows.Forms.ToolStripButton();
+            this.LbEpoch = new System.Windows.Forms.ToolStripLabel();
+            this.SepExec6 = new System.Windows.Forms.ToolStripSeparator();
+            this.BtnExecTraining = new System.Windows.Forms.ToolStripButton();
+            this.BtnExecTest = new System.Windows.Forms.ToolStripButton();
             this.LbTotalError = new System.Windows.Forms.ToolStripLabel();
             this.TtMessages = new System.Windows.Forms.ToolTip(this.components);
             this.TspEdition.SuspendLayout();
@@ -170,9 +190,7 @@ namespace SimpleAnnPlayground
             this.TspEditionSep3,
             this.BtnData,
             this.BtnTraining,
-            this.BtnTest,
-            this.toolStripSeparator1,
-            this.BtnTemplate});
+            this.BtnTest});
             this.TspEdition.Location = new System.Drawing.Point(0, 24);
             this.TspEdition.Name = "TspEdition";
             this.TspEdition.Size = new System.Drawing.Size(777, 56);
@@ -181,13 +199,45 @@ namespace SimpleAnnPlayground
             // 
             // BtnNew
             // 
+            this.BtnNew.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BtnNewEmpty,
+            this.BtnNewTemplate,
+            this.toolStripMenuItem4,
+            this.BtnNewExample});
             this.BtnNew.Image = global::SimpleAnnPlayground.Properties.Resources.new_32;
             this.BtnNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnNew.Name = "BtnNew";
-            this.BtnNew.Size = new System.Drawing.Size(38, 53);
+            this.BtnNew.Size = new System.Drawing.Size(47, 53);
             this.BtnNew.Text = "New";
             this.BtnNew.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.BtnNew.Click += new System.EventHandler(this.MnuFileNew_Click);
+            // 
+            // BtnNewEmpty
+            // 
+            this.BtnNewEmpty.Image = global::SimpleAnnPlayground.Properties.Resources.new_32;
+            this.BtnNewEmpty.Name = "BtnNewEmpty";
+            this.BtnNewEmpty.Size = new System.Drawing.Size(196, 38);
+            this.BtnNewEmpty.Text = "Empty";
+            this.BtnNewEmpty.Click += new System.EventHandler(this.BtnNewEmpty_Click);
+            // 
+            // BtnNewTemplate
+            // 
+            this.BtnNewTemplate.Image = global::SimpleAnnPlayground.Properties.Resources.TemplateWindow;
+            this.BtnNewTemplate.Name = "BtnNewTemplate";
+            this.BtnNewTemplate.Size = new System.Drawing.Size(196, 38);
+            this.BtnNewTemplate.Text = "From template";
+            this.BtnNewTemplate.Click += new System.EventHandler(this.MnuFileNewTemplate_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(193, 6);
+            // 
+            // BtnNewExample
+            // 
+            this.BtnNewExample.Image = global::SimpleAnnPlayground.Properties.Resources.Examples_32;
+            this.BtnNewExample.Name = "BtnNewExample";
+            this.BtnNewExample.Size = new System.Drawing.Size(196, 38);
+            this.BtnNewExample.Text = "Included example";
             // 
             // BtnOpen
             // 
@@ -306,21 +356,6 @@ namespace SimpleAnnPlayground
             this.BtnTest.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnTest.Click += new System.EventHandler(this.BtnTest_Click);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 56);
-            // 
-            // BtnTemplate
-            // 
-            this.BtnTemplate.Image = global::SimpleAnnPlayground.Properties.Resources.TemplateWindow;
-            this.BtnTemplate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.BtnTemplate.Name = "BtnTemplate";
-            this.BtnTemplate.Size = new System.Drawing.Size(65, 53);
-            this.BtnTemplate.Text = "Template";
-            this.BtnTemplate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-            this.BtnTemplate.Click += new System.EventHandler(this.BtnTemplate_Click);
-            // 
             // SspStatus
             // 
             this.SspStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -381,19 +416,19 @@ namespace SimpleAnnPlayground
             this.MnuContextDelete,
             this.MnuContextCenterScreen});
             this.CmsDraw.Name = "CmsDraw";
-            this.CmsDraw.Size = new System.Drawing.Size(181, 236);
+            this.CmsDraw.Size = new System.Drawing.Size(147, 170);
             this.CmsDraw.Opening += new System.ComponentModel.CancelEventHandler(this.CmsDraw_Opening);
             // 
             // MnuContextLinkTo
             // 
             this.MnuContextLinkTo.Name = "MnuContextLinkTo";
-            this.MnuContextLinkTo.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextLinkTo.Size = new System.Drawing.Size(146, 22);
             this.MnuContextLinkTo.Text = "Link to";
             // 
             // MnuContextActivation
             // 
             this.MnuContextActivation.Name = "MnuContextActivation";
-            this.MnuContextActivation.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextActivation.Size = new System.Drawing.Size(146, 22);
             this.MnuContextActivation.Text = "Activation";
             // 
             // MnuContextInitBias
@@ -413,13 +448,13 @@ namespace SimpleAnnPlayground
             // MnuContextSep1
             // 
             this.MnuContextSep1.Name = "MnuContextSep1";
-            this.MnuContextSep1.Size = new System.Drawing.Size(177, 6);
+            this.MnuContextSep1.Size = new System.Drawing.Size(143, 6);
             // 
             // MnuContextCopy
             // 
             this.MnuContextCopy.Name = "MnuContextCopy";
             this.MnuContextCopy.ShortcutKeyDisplayString = "Ctrl+C";
-            this.MnuContextCopy.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextCopy.Size = new System.Drawing.Size(146, 22);
             this.MnuContextCopy.Text = "Copy";
             this.MnuContextCopy.Click += new System.EventHandler(this.MnuEditCopy_Click);
             // 
@@ -427,7 +462,7 @@ namespace SimpleAnnPlayground
             // 
             this.MnuContextCut.Name = "MnuContextCut";
             this.MnuContextCut.ShortcutKeyDisplayString = "Ctrl+X";
-            this.MnuContextCut.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextCut.Size = new System.Drawing.Size(146, 22);
             this.MnuContextCut.Text = "Cut";
             this.MnuContextCut.Click += new System.EventHandler(this.MnuEditCut_Click);
             // 
@@ -435,27 +470,27 @@ namespace SimpleAnnPlayground
             // 
             this.MnuContextPaste.Name = "MnuContextPaste";
             this.MnuContextPaste.ShortcutKeyDisplayString = "Ctrl+V";
-            this.MnuContextPaste.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextPaste.Size = new System.Drawing.Size(146, 22);
             this.MnuContextPaste.Text = "Paste";
             this.MnuContextPaste.Click += new System.EventHandler(this.MnuEditPaste_Click);
             // 
             // MnuContextSep2
             // 
             this.MnuContextSep2.Name = "MnuContextSep2";
-            this.MnuContextSep2.Size = new System.Drawing.Size(177, 6);
+            this.MnuContextSep2.Size = new System.Drawing.Size(143, 6);
             // 
             // MnuContextDelete
             // 
             this.MnuContextDelete.Name = "MnuContextDelete";
             this.MnuContextDelete.ShortcutKeyDisplayString = "Del";
-            this.MnuContextDelete.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextDelete.Size = new System.Drawing.Size(146, 22);
             this.MnuContextDelete.Text = "Delete";
             this.MnuContextDelete.Click += new System.EventHandler(this.MnuEditDelete_Click);
             // 
             // MnuContextCenterScreen
             // 
             this.MnuContextCenterScreen.Name = "MnuContextCenterScreen";
-            this.MnuContextCenterScreen.Size = new System.Drawing.Size(180, 22);
+            this.MnuContextCenterScreen.Size = new System.Drawing.Size(146, 22);
             this.MnuContextCenterScreen.Text = "Center screen";
             this.MnuContextCenterScreen.Click += new System.EventHandler(this.MnuViewCenterScreen_Click);
             // 
@@ -492,11 +527,40 @@ namespace SimpleAnnPlayground
             // 
             // MnuFileNew
             // 
+            this.MnuFileNew.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MnuFileNewEmpty,
+            this.MnuFileNewTemplate,
+            this.toolStripMenuItem3,
+            this.MnuFileNewExample});
             this.MnuFileNew.Name = "MnuFileNew";
-            this.MnuFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.MnuFileNew.Size = new System.Drawing.Size(146, 22);
             this.MnuFileNew.Text = "New";
-            this.MnuFileNew.Click += new System.EventHandler(this.MnuFileNew_Click);
+            // 
+            // MnuFileNewEmpty
+            // 
+            this.MnuFileNewEmpty.Name = "MnuFileNewEmpty";
+            this.MnuFileNewEmpty.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+            this.MnuFileNewEmpty.Size = new System.Drawing.Size(168, 22);
+            this.MnuFileNewEmpty.Text = "Empty";
+            this.MnuFileNewEmpty.Click += new System.EventHandler(this.MnuFileNew_Click);
+            // 
+            // MnuFileNewTemplate
+            // 
+            this.MnuFileNewTemplate.Name = "MnuFileNewTemplate";
+            this.MnuFileNewTemplate.Size = new System.Drawing.Size(168, 22);
+            this.MnuFileNewTemplate.Text = "From template";
+            this.MnuFileNewTemplate.Click += new System.EventHandler(this.MnuFileNewTemplate_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(165, 6);
+            // 
+            // MnuFileNewExample
+            // 
+            this.MnuFileNewExample.Name = "MnuFileNewExample";
+            this.MnuFileNewExample.Size = new System.Drawing.Size(168, 22);
+            this.MnuFileNewExample.Text = "Included example";
             // 
             // MnuFileOpen
             // 
@@ -710,9 +774,13 @@ namespace SimpleAnnPlayground
             // 
             this.MnuExec.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MnuExecCxStep,
-            this.MnuExecNStep,
-            this.MnuExecLStep,
+            this.MnuExecNeuronStep,
+            this.MnuExecLayerStep,
+            this.MnuExecDataStep,
+            this.MnuExecBatchStep,
             this.toolStripMenuItem1,
+            this.MnuExecNewEpoch,
+            this.toolStripMenuItem6,
             this.MnuExecRun,
             this.MnuExecStop});
             this.MnuExec.Name = "MnuExec";
@@ -723,38 +791,74 @@ namespace SimpleAnnPlayground
             // MnuExecCxStep
             // 
             this.MnuExecCxStep.Name = "MnuExecCxStep";
-            this.MnuExecCxStep.ShortcutKeys = System.Windows.Forms.Keys.F11;
-            this.MnuExecCxStep.Size = new System.Drawing.Size(141, 22);
-            this.MnuExecCxStep.Text = "Cx-Step";
+            this.MnuExecCxStep.ShortcutKeys = System.Windows.Forms.Keys.F8;
+            this.MnuExecCxStep.Size = new System.Drawing.Size(181, 22);
+            this.MnuExecCxStep.Text = "Connection Step";
             this.MnuExecCxStep.Click += new System.EventHandler(this.BtnCxStep_Click);
             // 
-            // MnuExecNStep
+            // MnuExecNeuronStep
             // 
-            this.MnuExecNStep.Name = "MnuExecNStep";
-            this.MnuExecNStep.Size = new System.Drawing.Size(141, 22);
-            this.MnuExecNStep.Text = "N-Step";
+            this.MnuExecNeuronStep.Name = "MnuExecNeuronStep";
+            this.MnuExecNeuronStep.ShortcutKeys = System.Windows.Forms.Keys.F9;
+            this.MnuExecNeuronStep.Size = new System.Drawing.Size(181, 22);
+            this.MnuExecNeuronStep.Text = "Neuron Step";
+            this.MnuExecNeuronStep.Click += new System.EventHandler(this.BtnNeuronStep_Click);
             // 
-            // MnuExecLStep
+            // MnuExecLayerStep
             // 
-            this.MnuExecLStep.Name = "MnuExecLStep";
-            this.MnuExecLStep.Size = new System.Drawing.Size(141, 22);
-            this.MnuExecLStep.Text = "L-Step";
+            this.MnuExecLayerStep.Name = "MnuExecLayerStep";
+            this.MnuExecLayerStep.ShortcutKeys = System.Windows.Forms.Keys.F10;
+            this.MnuExecLayerStep.Size = new System.Drawing.Size(181, 22);
+            this.MnuExecLayerStep.Text = "Layer Step";
+            this.MnuExecLayerStep.Click += new System.EventHandler(this.BtnLayerStep_Click);
+            // 
+            // MnuExecDataStep
+            // 
+            this.MnuExecDataStep.Name = "MnuExecDataStep";
+            this.MnuExecDataStep.ShortcutKeys = System.Windows.Forms.Keys.F11;
+            this.MnuExecDataStep.Size = new System.Drawing.Size(181, 22);
+            this.MnuExecDataStep.Text = "Data Step";
+            this.MnuExecDataStep.Click += new System.EventHandler(this.BtnDataStep_Click);
+            // 
+            // MnuExecBatchStep
+            // 
+            this.MnuExecBatchStep.Name = "MnuExecBatchStep";
+            this.MnuExecBatchStep.ShortcutKeys = System.Windows.Forms.Keys.F6;
+            this.MnuExecBatchStep.Size = new System.Drawing.Size(181, 22);
+            this.MnuExecBatchStep.Text = "Batch Step";
+            this.MnuExecBatchStep.Click += new System.EventHandler(this.BtnBatchStep_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(138, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(178, 6);
+            // 
+            // MnuExecNewEpoch
+            // 
+            this.MnuExecNewEpoch.Enabled = false;
+            this.MnuExecNewEpoch.Name = "MnuExecNewEpoch";
+            this.MnuExecNewEpoch.Size = new System.Drawing.Size(181, 22);
+            this.MnuExecNewEpoch.Text = "New Epoch";
+            this.MnuExecNewEpoch.Click += new System.EventHandler(this.BtnRunEpoch_Click);
+            // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(178, 6);
             // 
             // MnuExecRun
             // 
             this.MnuExecRun.Name = "MnuExecRun";
-            this.MnuExecRun.Size = new System.Drawing.Size(141, 22);
+            this.MnuExecRun.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.MnuExecRun.Size = new System.Drawing.Size(181, 22);
             this.MnuExecRun.Text = "Run";
+            this.MnuExecRun.Click += new System.EventHandler(this.BtnRun_Click);
             // 
             // MnuExecStop
             // 
             this.MnuExecStop.Name = "MnuExecStop";
-            this.MnuExecStop.Size = new System.Drawing.Size(141, 22);
+            this.MnuExecStop.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Q)));
+            this.MnuExecStop.Size = new System.Drawing.Size(181, 22);
             this.MnuExecStop.Text = "Stop";
             this.MnuExecStop.Click += new System.EventHandler(this.BtnStop_Click);
             // 
@@ -912,15 +1016,25 @@ namespace SimpleAnnPlayground
             this.TspExecution.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.TspExecution.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.BtnExecData,
-            this.toolStripSeparator2,
+            this.SepExec1,
             this.BtnStop,
             this.BtnRun,
-            this.toolStripSeparator3,
+            this.SepExec2,
             this.BtnCxStep,
             this.BtnNeuronStep,
             this.BtnLayerStep,
+            this.SepExec3,
             this.BtnDataStep,
+            this.LbData,
+            this.SepExec4,
             this.BtnBatchStep,
+            this.LbBatch,
+            this.SepExec5,
+            this.BtnRunEpoch,
+            this.LbEpoch,
+            this.SepExec6,
+            this.BtnExecTraining,
+            this.BtnExecTest,
             this.LbTotalError});
             this.TspExecution.Location = new System.Drawing.Point(0, 80);
             this.TspExecution.Name = "TspExecution";
@@ -938,10 +1052,10 @@ namespace SimpleAnnPlayground
             this.BtnExecData.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnExecData.Click += new System.EventHandler(this.BtnData_Click);
             // 
-            // toolStripSeparator2
+            // SepExec1
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 56);
+            this.SepExec1.Name = "SepExec1";
+            this.SepExec1.Size = new System.Drawing.Size(6, 56);
             // 
             // BtnStop
             // 
@@ -963,10 +1077,10 @@ namespace SimpleAnnPlayground
             this.BtnRun.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnRun.Click += new System.EventHandler(this.BtnRun_Click);
             // 
-            // toolStripSeparator3
+            // SepExec2
             // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 56);
+            this.SepExec2.Name = "SepExec2";
+            this.SepExec2.Size = new System.Drawing.Size(6, 56);
             // 
             // BtnCxStep
             // 
@@ -1001,6 +1115,11 @@ namespace SimpleAnnPlayground
             this.BtnLayerStep.ToolTipText = "Layer Step";
             this.BtnLayerStep.Click += new System.EventHandler(this.BtnLayerStep_Click);
             // 
+            // SepExec3
+            // 
+            this.SepExec3.Name = "SepExec3";
+            this.SepExec3.Size = new System.Drawing.Size(6, 56);
+            // 
             // BtnDataStep
             // 
             this.BtnDataStep.Image = global::SimpleAnnPlayground.Properties.Resources.right_32;
@@ -1012,17 +1131,87 @@ namespace SimpleAnnPlayground
             this.BtnDataStep.ToolTipText = "Data Register Step";
             this.BtnDataStep.Click += new System.EventHandler(this.BtnDataStep_Click);
             // 
+            // LbData
+            // 
+            this.LbData.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LbData.ForeColor = System.Drawing.Color.Blue;
+            this.LbData.Name = "LbData";
+            this.LbData.Size = new System.Drawing.Size(37, 53);
+            this.LbData.Text = "Data\n0";
+            // 
+            // SepExec4
+            // 
+            this.SepExec4.Name = "SepExec4";
+            this.SepExec4.Size = new System.Drawing.Size(6, 56);
+            // 
             // BtnBatchStep
             // 
-            this.BtnBatchStep.Image = global::SimpleAnnPlayground.Properties.Resources.right_32;
+            this.BtnBatchStep.Image = global::SimpleAnnPlayground.Properties.Resources.run_32;
             this.BtnBatchStep.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BtnBatchStep.Name = "BtnBatchStep";
-            this.BtnBatchStep.Size = new System.Drawing.Size(50, 53);
-            this.BtnBatchStep.Text = "B-Step";
+            this.BtnBatchStep.Size = new System.Drawing.Size(69, 53);
+            this.BtnBatchStep.Text = "Run Batch";
             this.BtnBatchStep.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.BtnBatchStep.ToolTipText = "Batch Step";
-            this.BtnBatchStep.Visible = false;
             this.BtnBatchStep.Click += new System.EventHandler(this.BtnBatchStep_Click);
+            // 
+            // LbBatch
+            // 
+            this.LbBatch.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LbBatch.ForeColor = System.Drawing.Color.Blue;
+            this.LbBatch.Name = "LbBatch";
+            this.LbBatch.Size = new System.Drawing.Size(42, 53);
+            this.LbBatch.Text = "Batch\n0";
+            // 
+            // SepExec5
+            // 
+            this.SepExec5.Name = "SepExec5";
+            this.SepExec5.Size = new System.Drawing.Size(6, 56);
+            // 
+            // BtnRunEpoch
+            // 
+            this.BtnRunEpoch.Image = global::SimpleAnnPlayground.Properties.Resources.run_32;
+            this.BtnRunEpoch.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnRunEpoch.Name = "BtnRunEpoch";
+            this.BtnRunEpoch.Size = new System.Drawing.Size(74, 53);
+            this.BtnRunEpoch.Text = "Run Epoch";
+            this.BtnRunEpoch.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnRunEpoch.ToolTipText = "Run Epoch";
+            this.BtnRunEpoch.Click += new System.EventHandler(this.BtnRunEpoch_Click);
+            // 
+            // LbEpoch
+            // 
+            this.LbEpoch.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.LbEpoch.ForeColor = System.Drawing.Color.Blue;
+            this.LbEpoch.Name = "LbEpoch";
+            this.LbEpoch.Size = new System.Drawing.Size(45, 53);
+            this.LbEpoch.Text = "Epoch\n0";
+            // 
+            // SepExec6
+            // 
+            this.SepExec6.Name = "SepExec6";
+            this.SepExec6.Size = new System.Drawing.Size(6, 56);
+            // 
+            // BtnExecTraining
+            // 
+            this.BtnExecTraining.Image = global::SimpleAnnPlayground.Properties.Resources.training_32;
+            this.BtnExecTraining.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnExecTraining.Name = "BtnExecTraining";
+            this.BtnExecTraining.Size = new System.Drawing.Size(58, 53);
+            this.BtnExecTraining.Text = "Training";
+            this.BtnExecTraining.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnExecTraining.Click += new System.EventHandler(this.BtnExecTraining_Click);
+            // 
+            // BtnExecTest
+            // 
+            this.BtnExecTest.Enabled = false;
+            this.BtnExecTest.Image = global::SimpleAnnPlayground.Properties.Resources.testing_32;
+            this.BtnExecTest.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BtnExecTest.Name = "BtnExecTest";
+            this.BtnExecTest.Size = new System.Drawing.Size(53, 53);
+            this.BtnExecTest.Text = "Testing";
+            this.BtnExecTest.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.BtnExecTest.Click += new System.EventHandler(this.BtnExecTest_Click);
             // 
             // LbTotalError
             // 
@@ -1030,7 +1219,7 @@ namespace SimpleAnnPlayground
             this.LbTotalError.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.LbTotalError.ForeColor = System.Drawing.Color.Red;
             this.LbTotalError.Name = "LbTotalError";
-            this.LbTotalError.Size = new System.Drawing.Size(107, 53);
+            this.LbTotalError.Size = new System.Drawing.Size(107, 17);
             this.LbTotalError.Text = "Total Error: 0.25";
             this.LbTotalError.Visible = false;
             // 
@@ -1080,7 +1269,6 @@ namespace SimpleAnnPlayground
 #endregion
 
         private ToolStrip TspEdition;
-        private ToolStripButton BtnNew;
         private ToolStripButton BtnOpen;
         private ToolStripButton BtnSave;
         private ToolStripSeparator TspEditionSep1;
@@ -1158,23 +1346,44 @@ namespace SimpleAnnPlayground
         private ToolStripMenuItem MnuModelTesting;
         private ToolStripMenuItem MnuExec;
         private ToolStripMenuItem MnuExecCxStep;
-        private ToolStripMenuItem MnuExecNStep;
-        private ToolStripMenuItem MnuExecLStep;
+        private ToolStripMenuItem MnuExecNeuronStep;
+        private ToolStripMenuItem MnuExecLayerStep;
         private ToolStripSeparator toolStripMenuItem1;
         private ToolStripMenuItem MnuExecRun;
         private ToolStripMenuItem MnuExecStop;
-        private ToolStripSeparator toolStripSeparator1;
-        private ToolStripButton BtnTemplate;
         private ToolStripStatusLabel LbSimulationPhase;
         private ToolStripButton BtnExecData;
-        private ToolStripSeparator toolStripSeparator2;
-        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripSeparator SepExec1;
+        private ToolStripSeparator SepExec2;
         private ToolStripButton BtnDataStep;
         private ToolStripButton BtnBatchStep;
         private ToolStripMenuItem MnuDebugRtfViewer;
+        private ToolStripMenuItem MnuFileNewEmpty;
+        private ToolStripMenuItem MnuFileNewTemplate;
+        private ToolStripSeparator toolStripMenuItem3;
+        private ToolStripMenuItem MnuFileNewExample;
+        private ToolStripDropDownButton BtnNew;
+        private ToolStripMenuItem BtnNewEmpty;
+        private ToolStripMenuItem BtnNewTemplate;
+        private ToolStripSeparator toolStripMenuItem4;
+        private ToolStripMenuItem BtnNewExample;
+        private ToolStripMenuItem MnuExecDataStep;
+        private ToolStripMenuItem MnuExecBatchStep;
         private ToolStripSeparator toolStripMenuItem5;
         private ToolStripMenuItem MnuModelParameters;
+        private ToolStripMenuItem MnuExecNewEpoch;
+        private ToolStripSeparator toolStripMenuItem6;
+        private ToolStripSeparator SepExec3;
+        private ToolStripButton BtnRunEpoch;
+        private ToolStripButton BtnExecTest;
         private ToolStripLabel LbTotalError;
+        private ToolStripLabel LbEpoch;
+        private ToolStripSeparator SepExec4;
+        private ToolStripButton BtnExecTraining;
+        private ToolStripSeparator SepExec5;
+        private ToolStripLabel LbBatch;
+        private ToolStripLabel LbData;
+        private ToolStripSeparator SepExec6;
         private ToolStripMenuItem MnuContextInitBias;
         private ToolStripMenuItem MnuContextInitWeight;
     }

@@ -9,7 +9,6 @@ namespace SimpleAnnPlayground.UI.Controls
     /// </summary>
     public partial class ToolStripTrackBar : ToolStripProgressBar
     {
-        private static readonly Brush _brush = Brushes.ForestGreen;
         private Point? _trackPoint;
 
         /// <summary>
@@ -35,12 +34,16 @@ namespace SimpleAnnPlayground.UI.Controls
         /// <inheritdoc/>
         protected override void OnPaint(PaintEventArgs e)
         {
-            if (e == null || !Enabled) return;
+            if (e == null) return;
             Rectangle rectangle = e.ClipRectangle;
             rectangle.Width = (int)(rectangle.Width * ((double)Value / Maximum)) - 4;
             ProgressBarRenderer.DrawHorizontalBar(e.Graphics, e.ClipRectangle);
             rectangle.Height = Height - 4;
-            e.Graphics.FillRectangle(_brush, 2, 2, rectangle.Width, rectangle.Height);
+            Color color = Enabled ? Color.ForestGreen : Color.DarkGreen;
+            using (var brush = new SolidBrush(color))
+            {
+                e.Graphics.FillRectangle(brush, 2, 2, rectangle.Width, rectangle.Height);
+            }
         }
 
         /// <inheritdoc/>

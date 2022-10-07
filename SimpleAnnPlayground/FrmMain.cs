@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Ann.Activation;
+using SimpleAnnPlayground.Ann.Networks;
 using SimpleAnnPlayground.Ann.Neurons;
 using SimpleAnnPlayground.Data;
 #if DEBUG
@@ -44,6 +45,9 @@ namespace SimpleAnnPlayground
             // File menus texts.
             { nameof(MnuFile), new() { "&File", "&Archivo" } },
             { nameof(MnuFileNew), new() { "&New", "&Nuevo" } },
+            { nameof(MnuFileNewEmpty), new() { "&Empty", "&Vacio" } },
+            { nameof(MnuFileNewTemplate), new() { "From &template", "Desde &plantilla" } },
+            { nameof(MnuFileNewExample), new() { "&Included example", "Ejemplo &Incluido" } },
             { nameof(MnuFileOpen), new() { "&Open", "&Abrir" } },
             { nameof(MnuFileSave), new() { "&Save", "&Guardar" } },
             { nameof(MnuFileSaveAs), new() { "Save &As", "Guardar &como" } },
@@ -85,6 +89,7 @@ namespace SimpleAnnPlayground
 
             // Execution menus texts.
             { nameof(MnuExec), new() { "E&xecution", "&Ejecución" } },
+            { nameof(MnuExecNewEpoch), new() { "New E&poch", "Nuevo &epoch" } },
             { nameof(MnuExecRun), new () { "&Run", "&Correr" } },
             { nameof(MnuExecStop), new () { "&Stop", "&Parar" } },
 
@@ -98,6 +103,9 @@ namespace SimpleAnnPlayground
 
             // Edition bar button texts.
             { nameof(BtnNew), new() { "New", "Nuevo" } },
+            { nameof(BtnNewEmpty), new() { "Empty", "Vacio" } },
+            { nameof(BtnNewTemplate), new() { "From template", "Desde plantilla" } },
+            { nameof(BtnNewExample), new() { "Included example", "Ejemplo incluido" } },
             { nameof(BtnOpen), new() { "Open", "Abrir" } },
             { nameof(BtnSave), new() { "Save", "Guardar" } },
             { nameof(BtnInputNeurone), new() { "Input", "Entrada" } },
@@ -108,7 +116,6 @@ namespace SimpleAnnPlayground
             { nameof(BtnData), new() { "Data", "Datos" } },
             { nameof(BtnTraining), new() { "Training", "Entrenamiento" } },
             { nameof(BtnTest), new() { "Testing", "Prueba" } },
-            { nameof(BtnTemplate), new() { "Template", "Plantilla" } },
 
             // Execution bar button texts.
             { nameof(BtnExecData), new() { "Data", "Datos" } },
@@ -119,6 +126,7 @@ namespace SimpleAnnPlayground
             { nameof(BtnLayerStep), new() { "#", "Layer Step.", "Ejecutar hasta siguiente capa." } },
             { nameof(BtnDataStep), new() { "#", "Data Register Step.", "Ejecutar hasta siguiente dato de entrada." } },
             { nameof(BtnBatchStep), new() { "#", "Data Batch Step.", "Ejecutar hasta siguiente batch de datos." } },
+            { nameof(BtnRunEpoch), new() { "#", "Train another epoch.", "Entranar el modelo otra epoch." } },
 
             // Message box.
             { nameof(ShowSaveDialog), new() { "If you have made changes to the document they will be lost, do you want to save your changes before continuing?", "Si ha hecho cambios en el documento se perderán, ¿desea guardar los cambios antes de seguir?" } },
@@ -184,6 +192,14 @@ namespace SimpleAnnPlayground
             _workspace.MouseTool.SelectionChanged += Workspace_SelectionChanged;
             _workspace.SelectionChanged += Workspace_SelectionChanged;
             _workspace.Actions.ActionPerformed += Actions_ActionPerformed;
+
+            // Network execution events.
+            _workspace.Network.Execution.MetricsUpdated += Execution_MetricsUpdated;
+            _workspace.Network.Execution.EpochDone += Execution_EpochDone;
+            _workspace.Network.Execution.GotTestResult += Execution_GotTestResult;
+            _workspace.Network.Execution.TestDone += Execution_TestDone;
+
+            // Initialize the file manager.
             _fileManager = new TextFileManager();
             _fileManager.AddFileFormat("annpj", "Artificial neural network project");
             _fileManager.FilePathChanged += FileManager_FilePathChanged;
@@ -478,7 +494,7 @@ namespace SimpleAnnPlayground
 
         private void BtnData_Click(object sender, EventArgs e)
         {
-            _frmData.Show(this);
+            if (!_frmData.Visible) _frmData.Show(this);
         }
 
         private void BtnCheck_Click(object sender, EventArgs e)
@@ -491,6 +507,8 @@ namespace SimpleAnnPlayground
         private void BtnClean_Click(object sender, EventArgs e)
         {
             _workspace.Network.Clean();
+            BtnTraining.Enabled = false;
+            BtnTest.Enabled = false;
         }
 
         private void MnuFileSave_Click(object sender, EventArgs e)
@@ -615,9 +633,8 @@ namespace SimpleAnnPlayground
             {
                 case 0:
                 {
-                    if (_workspace.MouseTool.GetConnectionOver() is Connection connection)
+                    if (_workspace.MouseTool.GetConnectionOver() is Connection)
                     {
-                        CmsDraw.Tag = connection;
                         ContextMenuState(link: false, activation: false, copyPaste: false, delete: true);
                     }
                     else
@@ -705,30 +722,39 @@ namespace SimpleAnnPlayground
             MnuEdit.Enabled = false;
             MnuModel.Enabled = false;
             MnuExec.Visible = true;
+            BtnExecTraining.Visible = false;
+            BtnExecTest.Visible = true;
             TspEdition.Visible = false;
             TspExecution.Visible = true;
             UncheckToolsButtons(null);
+            _frmData.TrainingMode();
             _workspace.SetReadOnly();
-            _workspace.Network.Start();
+            LbSimulationPhase.Visible = true;
+            _workspace.Network.StartTraining();
             if (_workspace.Network.Execution is null) throw new InvalidOperationException();
-            _workspace.Network.Execution.MetricsUpdated += Execution_MetricsUpdated;
             LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
             _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
-            LbSimulationPhase.Visible = true;
+            SetExecBarMode(true);
             _frmDetails.Show(this);
         }
 
         private void Execution_MetricsUpdated(object? sender, Ann.Networks.MetricsUpdatedEventArgs e)
         {
-            if (e.TotalError is not null)
+            if (sender is Execution execution)
             {
-                LbTotalError.Visible = true;
-                LbTotalError.Text = $"Total MSE: {e.TotalError:F4}";
-                LbTotalError.ToolTipText = e.TotalError.ToString();
-            }
-            else
-            {
-                LbTotalError.Visible = false;
+                LbData.Text = $"Data\n{execution.Register}";
+                LbBatch.Text = $"Batch\n{e.Batch}";
+                LbEpoch.Text = $"Epoch\n{e.Epoch}";
+                if (e.TotalError is not null)
+                {
+                    LbTotalError.Visible = true;
+                    LbTotalError.Text = $"Total MSE: {e.TotalError:F4}";
+                    LbTotalError.ToolTipText = e.TotalError.ToString();
+                }
+                else
+                {
+                    LbTotalError.Visible = false;
+                }
             }
         }
 
@@ -738,16 +764,66 @@ namespace SimpleAnnPlayground
             MnuEdit.Enabled = false;
             MnuModel.Enabled = false;
             MnuExec.Visible = true;
+            BtnExecTraining.Visible = true;
+            BtnExecTest.Visible = false;
             TspEdition.Visible = false;
             TspExecution.Visible = true;
             UncheckToolsButtons(null);
+            _frmData.TrainingMode();
             _workspace.SetReadOnly();
             LbSimulationPhase.Visible = true;
-            LbSimulationPhase.Text = _workspace.Network.Execution?.Phase.ToString();
+            _workspace.Network.StartTesting();
+            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
+            SetExecBarMode(false);
+        }
+
+        private void BtnExecTest_Click(object sender, EventArgs e)
+        {
+            SetExecBarMode(false);
+            _frmData.TestingMode();
+            _workspace.Network.StartTesting();
+            SetExecButtons(true);
+            BtnExecTraining.Visible = true;
+            BtnExecTest.Visible = false;
+        }
+
+        private void BtnExecTraining_Click(object sender, EventArgs e)
+        {
+            SetExecBarMode(true);
+            _frmData.TrainingMode();
+            _workspace.Network.StartTraining();
+            SetExecButtons(true);
+            BtnExecTraining.Visible = false;
+            BtnExecTest.Visible = true;
+        }
+
+        private void Execution_GotTestResult(object? sender, Ann.Networks.GotTestResultEventArgs e)
+        {
+            decimal result = e.Output < 0.5m ? 0 : 1;
+            _frmData.RegisterResult(result, e.Output, e.Label != result);
+        }
+
+        private void Execution_TestDone(object? sender, EventArgs e)
+        {
+            SetExecButtons(false);
+        }
+
+        private void SetExecBarMode(bool training)
+        {
+            BtnBatchStep.Visible = training;
+            LbBatch.Visible = training;
+            BtnRunEpoch.Visible = training;
+            LbEpoch.Visible = training;
+            BtnExecTest.Visible = training;
+            SepExec3.Visible = training;
+            SepExec4.Visible = training;
+            SepExec5.Visible = training;
         }
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
+            _workspace.Network.Stop();
             MnuFile.Enabled = true;
             MnuEdit.Enabled = true;
             MnuModel.Enabled = true;
@@ -755,15 +831,15 @@ namespace SimpleAnnPlayground
             TspEdition.Visible = true;
             TspExecution.Visible = false;
             LbTotalError.Visible = false;
-            _workspace.Network.Stop();
             _workspace.SetEditable();
+            _frmData.EditingMode();
+            SetExecButtons(true);
             LbSimulationPhase.Visible = false;
             if (_frmDetails.Visible) _frmDetails.Hide();
         }
 
         private void BtnRun_Click(object sender, EventArgs e)
         {
-            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
             _workspace.Network.Execution.Run();
             LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
             _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
@@ -771,7 +847,6 @@ namespace SimpleAnnPlayground
 
         private void BtnCxStep_Click(object sender, EventArgs e)
         {
-            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
             _workspace.Network.Execution.StepIntoCx();
             LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
             _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
@@ -779,7 +854,6 @@ namespace SimpleAnnPlayground
 
         private void BtnNeuronStep_Click(object sender, EventArgs e)
         {
-            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
             _workspace.Network.Execution.StepIntoNeuron();
             LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
             _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
@@ -787,7 +861,6 @@ namespace SimpleAnnPlayground
 
         private void BtnLayerStep_Click(object sender, EventArgs e)
         {
-            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
             _workspace.Network.Execution.StepIntoLayer();
             LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
             _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
@@ -795,7 +868,6 @@ namespace SimpleAnnPlayground
 
         private void BtnDataStep_Click(object sender, EventArgs e)
         {
-            if (_workspace.Network.Execution is null) throw new InvalidOperationException();
             _workspace.Network.Execution.StepIntoData();
             LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
             _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
@@ -803,14 +875,49 @@ namespace SimpleAnnPlayground
 
         private void BtnBatchStep_Click(object sender, EventArgs e)
         {
+            _workspace.Network.Execution.StepIntoBatch();
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
+            _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
         }
 
-        private void BtnTemplate_Click(object sender, EventArgs e)
+        private void BtnRunEpoch_Click(object sender, EventArgs e)
+        {
+            _workspace.Network.Execution.StepIntoEpoch();
+            LbSimulationPhase.Text = _workspace.Network.Execution.Phase.ToString();
+            _frmDetails.SetInfo(_workspace.Network.Execution.Phase);
+        }
+
+        private void Execution_EpochDone(object? sender, EventArgs e)
+        {
+            BtnExecTest.Enabled = true;
+        }
+
+        private void SetExecButtons(bool enable)
+        {
+            // Buttons
+            BtnCxStep.Enabled = enable;
+            BtnNeuronStep.Enabled = enable;
+            BtnLayerStep.Enabled = enable;
+            BtnDataStep.Enabled = enable;
+            BtnBatchStep.Enabled = enable;
+            BtnRun.Enabled = enable;
+
+            // Menus.
+            MnuExecCxStep.Enabled = enable;
+            MnuExecNeuronStep.Enabled = enable;
+            MnuExecLayerStep.Enabled = enable;
+            MnuExecDataStep.Enabled = enable;
+            MnuExecBatchStep.Enabled = enable;
+            MnuExecRun.Enabled = enable;
+            MnuExecNewEpoch.Enabled = !enable;
+        }
+
+        private void BtnNewEmpty_Click(object sender, EventArgs e)
         {
             if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
                 DialogResult selection = ShowSaveDialog();
-                if (selection == DialogResult.OK)
+                if (selection == DialogResult.Yes)
                 {
                     MnuFileSave_Click(sender, e);
                 }
@@ -820,15 +927,29 @@ namespace SimpleAnnPlayground
                 }
             }
 
-            using (var frmTemplate = new FrmTemplate())
+            _fileManager.New(_workspace.GenerateDocument().Serialize());
+        }
+
+        private void MnuFileNewTemplate_Click(object sender, EventArgs e)
+        {
+            if (_fileManager.HadChanged(_workspace.GenerateDocument().Serialize()))
             {
-                if (frmTemplate.GetData())
+                DialogResult selection = ShowSaveDialog();
+                if (selection == DialogResult.Yes)
                 {
-                    Debug.WriteLine("Selection made");
+                    MnuFileSave_Click(sender, e);
                 }
-                else
+                else if (selection == DialogResult.Cancel)
                 {
-                    Debug.WriteLine("Cancel selected");
+                    return;
+                }
+            }
+
+            using (var frmTemplate = new FrmTemplate(_workspace))
+            {
+                if (frmTemplate.ShowDialog(this) == DialogResult.OK)
+                {
+                    _fileManager.New(_workspace.GenerateDocument().Serialize());
                 }
             }
         }

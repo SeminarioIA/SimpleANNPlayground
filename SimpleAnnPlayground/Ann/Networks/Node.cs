@@ -22,6 +22,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             Neuron = neuron;
             Next = new List<Link>();
             Previous = new List<Link>();
+            neuron.Node = this;
         }
 
         /// <summary>

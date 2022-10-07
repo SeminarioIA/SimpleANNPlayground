@@ -9,6 +9,27 @@ using static SimpleAnnPlayground.Graphical.Component;
 namespace SimpleAnnPlayground.Ann.Networks
 {
     /// <summary>
+    /// The available network modes.
+    /// </summary>
+    internal enum NetworkMode
+    {
+        /// <summary>
+        /// The network is in edition mode.
+        /// </summary>
+        Edition,
+
+        /// <summary>
+        /// The network is in training mode.
+        /// </summary>
+        Training,
+
+        /// <summary>
+        /// The network is in testing mode.
+        /// </summary>
+        Testing,
+    }
+
+    /// <summary>
     /// Represents a neural network.
     /// </summary>
     internal class Network
@@ -20,6 +41,7 @@ namespace SimpleAnnPlayground.Ann.Networks
         public Network(Workspace workspace)
         {
             Workspace = workspace;
+            Execution = new Execution(this);
         }
 
         /// <summary>
@@ -38,24 +60,29 @@ namespace SimpleAnnPlayground.Ann.Networks
         public decimal LearningRate { get; set; } = 0.03m;
 
         /// <summary>
+        /// Gets or sets the model batch size for training.
+        /// </summary>
+        public int BatchSize { get; set; } = 1;
+
+        /// <summary>
+        /// Gets the network mode.
+        /// </summary>
+        public NetworkMode Mode { get; private set; }
+
+        /// <summary>
         /// Gets the network graph.
         /// </summary>
-        public Graph? Graph { get; private set; }
+        public NetworkGraph? Graph { get; private set; }
 
         /// <summary>
         /// Gets the execution helper.
         /// </summary>
-        public Execution? Execution { get; private set; }
+        public Execution Execution { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the network build was successful.
         /// </summary>
         public bool BuildResult { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating whether the network is being executed.
-        /// </summary>
-        public bool Running => Execution != null;
 
         /// <summary>
         /// Builds the neural network from the workspace objects.
@@ -87,11 +114,20 @@ namespace SimpleAnnPlayground.Ann.Networks
         }
 
         /// <summary>
-        /// Starts the network execution.
+        /// Starts the network training.
         /// </summary>
-        public void Start()
+        public void StartTraining()
         {
-            Execution = new Execution(this);
+            Mode = NetworkMode.Training;
+            Execution.Start();
+        }
+
+        /// <summary>
+        /// Starts the network testing.
+        /// </summary>
+        public void StartTesting()
+        {
+            Mode = NetworkMode.Testing;
             Execution.Start();
         }
 
@@ -100,8 +136,8 @@ namespace SimpleAnnPlayground.Ann.Networks
         /// </summary>
         public void Stop()
         {
-            Execution?.Stop();
-            Execution = null;
+            Execution.Stop();
+            Mode = NetworkMode.Edition;
         }
 
         private bool CheckUnconnected()
@@ -197,7 +233,7 @@ namespace SimpleAnnPlayground.Ann.Networks
 
         private bool BuildGraph()
         {
-            Graph = new Graph(this);
+            Graph = new NetworkGraph(this);
 
             // Get the input layer.
             Workspace.Canvas.Objects
@@ -221,6 +257,7 @@ namespace SimpleAnnPlayground.Ann.Networks
             Workspace.Messages.Clear();
             foreach (var obj in Workspace.Canvas.Objects)
             {
+                if (obj is Neuron neuron) neuron.Node = null;
                 obj.ClearStateFlag(State.ComponentStatusMask);
                 obj.Messages.Clear();
             }

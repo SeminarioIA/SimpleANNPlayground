@@ -13,17 +13,17 @@ namespace SimpleAnnPlayground.Graphical
         /// <summary>
         /// Gets the graphical object that represents an InputNeuron.
         /// </summary>
-        internal static Component InputNeuron { get; private set; } = new Component();
+        internal static Component InputNeuron { get; private set; } = new Component(nameof(InputNeuron));
 
         /// <summary>
         /// Gets the graphical object that represents an InternalNeuron.
         /// </summary>
-        internal static Component InternalNeuron { get; private set; } = new Component();
+        internal static Component InternalNeuron { get; private set; } = new Component(nameof(InternalNeuron));
 
         /// <summary>
         /// Gets the graphical object that represents an OutputNeuron.
         /// </summary>
-        internal static Component OutputNeuron { get; private set; } = new Component();
+        internal static Component OutputNeuron { get; private set; } = new Component(nameof(OutputNeuron));
 
         /// <summary>
         /// Load the components from their respective files.

@@ -335,6 +335,11 @@ namespace SimpleAnnPlayground.Graphical.Environment
         protected void OnSelectionChanged(object? selectedObject)
         {
             SelectionChanged?.Invoke(this, new SelectionChangedEventArgs(selectedObject));
+
+            if (Workspace.Network.Execution is not null)
+            {
+                Workspace.Network.Execution.SubGraph = selectedObject is Neuron neuron && neuron.Node is not null ? new Ann.Networks.SubGraph(neuron.Node, Workspace.DataTable) : null;
+            }
         }
 
         private void PictureBox_MouseMove(object? sender, MouseEventArgs e)

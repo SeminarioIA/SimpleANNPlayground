@@ -4,6 +4,7 @@
 
 using Newtonsoft.Json;
 using SimpleAnnPlayground.Ann.Activation;
+using SimpleAnnPlayground.Ann.Networks;
 using SimpleAnnPlayground.Graphical;
 using SimpleAnnPlayground.Graphical.Visualization;
 
@@ -96,6 +97,11 @@ namespace SimpleAnnPlayground.Ann.Neurons
         /// </summary>
         internal ActivationFunction? Activation { get; set; }
 
+        /// <summary>
+        /// Gets or sets the graph node linked to this neuron.
+        /// </summary>
+        internal Node? Node { get; set; }
+
         /// <inheritdoc/>
         public override void Paint(Graphics graphics)
         {
@@ -114,7 +120,7 @@ namespace SimpleAnnPlayground.Ann.Neurons
 
             if (Bias is not null)
             {
-                string text = Z is not null ? $"b={Bias:F4}\nZ={Z:F4}" : $"b={Bias:F4}";
+                string text = BiasCorrection is not null ? $"b={Bias:F4}\nb'={BiasCorrection:F4}" : Z is not null ? $"b={Bias:F4}\nZ={Z:F4}" : $"b={Bias:F4}";
                 using (var font = new Font("Arial", 8))
                 using (var brush = new SolidBrush(Color.Black))
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Far })
@@ -152,7 +158,8 @@ namespace SimpleAnnPlayground.Ann.Neurons
                 using (var brush = new SolidBrush(Color.Blue))
                 using (var format = new StringFormat(StringFormatFlags.NoWrap) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Near })
                 {
-                    var location = new PointF(Location.X, Location.Y + Component.Y + font.Size * 2 + 4);
+                    int offset = (int)((Error is null ? 0 : font.Size + 2) + (A is null ? 0 : font.Size + 2));
+                    var location = new PointF(Location.X, Location.Y + Component.Y + offset);
                     graphics.DrawString($"c={Correction:F4}", font, brush, location, format);
                 }
             }
@@ -163,6 +170,25 @@ namespace SimpleAnnPlayground.Ann.Neurons
                 Activation.Paint(graphics);
                 graphics.TranslateTransform(-Location.X, -Location.Y);
             }
+        }
+
+        /// <summary>
+        /// Paints the neuron output detail.
+        /// </summary>
+        /// <param name="graphics">The graphics object.</param>
+        /// <param name="subGraph">The neuron graph.</param>
+        public virtual void PaintOutput(Graphics graphics, SubGraph subGraph)
+        {
+            const int width = 50, height = 50;
+            Rectangle rect = new Rectangle(Location.X - width / 2, Location.Y - height / 2, width, height);
+            using (Brush brush = new SolidBrush(Color.White))
+            using (Pen pen = new Pen(Color.Black, 0.01f))
+            {
+                graphics.FillRectangle(brush, rect);
+                graphics.DrawRectangle(pen, rect);
+            }
+
+            subGraph.Paint(graphics, rect);
         }
 
         /// <summary>

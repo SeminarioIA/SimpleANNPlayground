@@ -19,7 +19,17 @@ namespace SimpleAnnPlayground.Ann.Activation
         public override bool InternalSupported => true;
 
         /// <inheritdoc/>
-        internal override decimal Execute(decimal z) => 1m / (1m + (decimal)Math.Exp(-(double)z));
+        internal override decimal Execute(decimal z)
+        {
+            try
+            {
+                return 1m / (1m + (decimal)Math.Exp(-(double)z));
+            }
+            catch (OverflowException)
+            {
+                return 0;
+            }
+        }
 
         /// <inheritdoc/>
         internal override decimal Derivative(decimal a) => a * (1 - a);

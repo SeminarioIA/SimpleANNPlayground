@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Utils.Items;
+
 namespace SimpleAnnPlayground.Utils
 {
     /// <summary>
@@ -49,19 +51,62 @@ namespace SimpleAnnPlayground.Utils
                 // If control is a toolStrip the child controls are items.
                 if (control is ToolStrip toolStrip)
                 {
-                    SetMenuItemsLanguage(toolStrip.Items, words, language);
+                    foreach (ToolStripItem item in toolStrip.Items)
+                    {
+                        if (words.ContainsKey(item.Name))
+                        {
+                            if (words[item.Name][0] == "#")
+                            {
+                                item.ToolTipText = words[item.Name][(int)language + 1];
+                            }
+                            else
+                            {
+                                item.Text = words[item.Name][(int)language];
+                            }
+                        }
+
+                        // If the toolStrip contains child elements.
+                        SetMenuLanguage(item, words, language);
+                    }
                 }
-                else if (control is ContextMenuStrip context)
+                else if (control is ComboBox comboBox)
                 {
-                    SetMenuItemsLanguage(context.Items, words, language);
+                    ApplyComboBoxItemsLanguage(comboBox, words);
                 }
                 else
                 {
                     // Change the text for other controls.
                     if (words.ContainsKey(control.Name))
+                    {
                         control.Text = words[control.Name][(int)language];
+                    }
                 }
             }
+        }
+
+        /// <summary>
+        /// Applies the current application language to the passed <see cref="ComboBox"/> items.
+        /// </summary>
+        /// <param name="comboBox">The ComboBox control.</param>
+        /// <param name="words">The languages dictionary.</param>
+        internal static void ApplyComboBoxItemsLanguage(ComboBox comboBox, Dictionary<string, List<string>> words)
+        {
+            Language language = GetApplicationLanguage();
+
+            var items = new List<object>();
+            foreach (object item in comboBox.Items)
+            {
+                items.Add(item);
+                if (item is ComboBoxItem cbi && words.ContainsKey(cbi.Name))
+                {
+                    cbi.Text = words[cbi.Name][(int)language];
+                }
+            }
+
+            int selectedIndex = comboBox.SelectedIndex;
+            comboBox.Items.Clear();
+            comboBox.Items.AddRange(items.ToArray());
+            comboBox.SelectedIndex = selectedIndex;
         }
 
         /// <summary>
@@ -135,27 +180,6 @@ namespace SimpleAnnPlayground.Utils
                         SetMenuLanguage(downItem, words, language);
                     }
                 }
-            }
-        }
-
-        private static void SetMenuItemsLanguage(ToolStripItemCollection items, Dictionary<string, List<string>> words, Language language)
-        {
-            foreach (ToolStripItem item in items)
-            {
-                if (words.ContainsKey(item.Name))
-                {
-                    if (words[item.Name][0] == "#")
-                    {
-                        item.ToolTipText = words[item.Name][(int)language + 1];
-                    }
-                    else
-                    {
-                        item.Text = words[item.Name][(int)language];
-                    }
-                }
-
-                // If the toolStrip contains child elements.
-                SetMenuLanguage(item, words, language);
             }
         }
     }

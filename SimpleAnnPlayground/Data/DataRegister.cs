@@ -2,6 +2,8 @@
 // Copyright (c) SeminarioIA. All rights reserved.
 // </copyright>
 
+using SimpleAnnPlayground.Data.Values;
+
 namespace SimpleAnnPlayground.Data
 {
     /// <summary>
@@ -30,7 +32,7 @@ namespace SimpleAnnPlayground.Data
             Fields = new List<DataValue>();
             foreach (string value in values.Skip(1))
             {
-                Fields.Add(new DataValue(value));
+                Fields.Add(new Text(value));
             }
         }
 
@@ -44,6 +46,22 @@ namespace SimpleAnnPlayground.Data
         /// </summary>
         public List<DataValue> Fields { get; }
 
+        /// <summary>
+        /// Gets or sets data related to the register.
+        /// </summary>
+        public object? Tag { get; set; }
+
+        /// <summary>
+        /// Obtains the list of fields in it type.
+        /// </summary>
+        /// <typeparam name="T">The field type.</typeparam>
+        /// <returns>The list of fields.</returns>
+        public List<T> GetFields<T>()
+            where T : DataValue
+        {
+            return Fields.ConvertAll(field => field as T ?? throw new InvalidOperationException()).ToList();
+        }
+
         /// <inheritdoc/>
         public override string ToString() => $"{Id},{string.Join(',', Fields)}";
 
@@ -51,6 +69,6 @@ namespace SimpleAnnPlayground.Data
         /// Gets all the <see cref="DataRegister"/> <see cref="DataValue"/> as a string array.
         /// </summary>
         /// <returns>The array of values names.</returns>
-        public string[] GetStrings() => Fields.ConvertAll(field => field.Text).ToArray();
+        public string[] GetStrings() => Fields.ConvertAll(field => field.ToString()).ToArray();
     }
 }

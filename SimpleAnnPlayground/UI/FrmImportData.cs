@@ -3,6 +3,7 @@
 // </copyright>
 
 using SimpleAnnPlayground.Data;
+using SimpleAnnPlayground.Data.Values;
 using SimpleAnnPlayground.Screens;
 using SimpleAnnPlayground.Utils;
 using SimpleAnnPlayground.Utils.DataView;
@@ -74,7 +75,7 @@ namespace SimpleAnnPlayground.UI
                     _dataTable.Registers.Add(register);
                     foreach (DataLabel label in _dataTable.Labels)
                     {
-                        register.Fields.Add(new DataValue(row.Cells[label.Text].Value.ToString() ?? string.Empty));
+                        register.Fields.Add(new Text(row.Cells[label.Text].Value.ToString() ?? string.Empty));
                     }
                 }
 
